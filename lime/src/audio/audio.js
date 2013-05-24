@@ -12,7 +12,7 @@ goog.require('lime.userAgent');
 lime.audio.Audio = function(filePath) {
     goog.events.EventTarget.call(this);
 
-    if(filePath && goog.isFunction(filePath.data)){
+    if (filePath && goog.isFunction(filePath.data)) {
         filePath = filePath.data();
     }
 
@@ -36,8 +36,7 @@ lime.audio.Audio = function(filePath) {
         this.volume_ = 1;
         this.prepareContext_();
         this.loadBuffer(filePath, goog.bind(this.bufferLoadedHandler_, this));
-    }
-    else {
+    } else {
         /**
          * Internal audio element
          * @type {audio}
@@ -67,39 +66,41 @@ lime.audio.Audio.prototype.prepareContext_ = function() {
     gain['connect'](context['destination']);
 };
 
-lime.audio.Audio.prototype.loadBuffer = function (path, cb) {
+lime.audio.Audio.prototype.loadBuffer = function(path, cb) {
     var buffers = lime.audio._buffers;
     if (buffers[path] && buffers[path].buffer) {
         cb(buffers[path].buffer, path);
-    }
-    else if (buffers[path]) {
+    } else if (buffers[path]) {
         buffers[path].push(cb);
-    }
-    else {
+    } else {
         buffers[path] = [cb];
         var req = new XMLHttpRequest();
         req.open('GET', path, true);
         req.responseType = 'arraybuffer';
         req.onload = function() {
             lime.audio.context['decodeAudioData'](req.response, function(buffer) {
-               if (!buffer) {
-                   return console.error('Error decoding file:', path);
-               }
-               var cbArray = buffers[path];
-               buffers[path] = {buffer: buffer};
-               for (var i=0; i < cbArray.length; i++) {
-                   cbArray[i](buffer, path);
-               }
-            }, function(e){console.error('Error decoding file',e);});
+                if (!buffer) {
+                    return console.error('Error decoding file:', path);
+                }
+                var cbArray = buffers[path];
+                buffers[path] = {
+                    buffer: buffer
+                };
+                for (var i = 0; i < cbArray.length; i++) {
+                    cbArray[i](buffer, path);
+                }
+            }, function(e) {
+                console.error('Error decoding file', e);
+            });
         };
         req.onerror = function() {
-          console.error('XHR error loading file:', path);
+            console.error('XHR error loading file:', path);
         };
         req.send();
     }
 };
 
-lime.audio.Audio.prototype.bufferLoadedHandler_ = function (buffer, path) {
+lime.audio.Audio.prototype.bufferLoadedHandler_ = function(buffer, path) {
     this.buffer = buffer;
     this.loaded_ = true;
     var ev = new goog.events.Event('loaded');
@@ -110,7 +111,7 @@ lime.audio.Audio.prototype.bufferLoadedHandler_ = function (buffer, path) {
     }
 };
 
-lime.audio.Audio.prototype.onEnded_ = function (e) {
+lime.audio.Audio.prototype.onEnded_ = function(e) {
     this.playing_ = false;
     var ev = new goog.events.Event('ended');
     ev.event = e;
@@ -121,8 +122,7 @@ lime.audio.Audio.prototype.onEnded_ = function (e) {
         for (var i = 0; i < this.next_.length; i++) {
             this.next_[i][0].play(this.next_[i][1], delay);
         }
-    }
-    else if (ev.returnValue_ !== false && this.loop_) {
+    } else if (ev.returnValue_ !== false && this.loop_) {
         this.play(this.loop_, delay);
     }
 }
@@ -137,7 +137,7 @@ lime.audio.Audio.prototype.loadHandler_ = function() {
         this.bufferLoadedHandler_();
         clearTimeout(this.loadInterval);
     }
-    if (this.baseElement['error'])clearTimeout(this.loadInterval);
+    if (this.baseElement['error']) clearTimeout(this.loadInterval);
 
     if (lime.userAgent.IOS && this.baseElement['readyState'] == 0) {
         //ios hack do not work any more after 4.2.1 updates
@@ -189,21 +189,18 @@ lime.audio.Audio.prototype.play = function(opt_loop) {
 
             if (this.playPosition_ > 0) {
                 this.source['noteGrainOn'](delay, this.playPosition_, this.buffer.duration - this.playPosition_);
-            }
-            else {
+            } else {
                 this.source['noteOn'](delay);
             }
             this.playPositionCache = this.playPosition_;
-            this.endTimeout_ = setTimeout(goog.bind(this.onEnded_, this),
-                (this.buffer.duration - (this.playPosition_ || 0)) * 1000 - 150);
-        }
-        else {
+            this.endTimeout_ = setTimeout(goog.bind(this.onEnded_, this), (this.buffer.duration - (this.playPosition_ || 0)) * 1000 - 150);
+        } else {
             this.baseElement.play();
         }
         this.playing_ = true;
-        this.loop_ = !!opt_loop;
+        this.loop_ = !! opt_loop;
         if (lime.audio._playQueue.indexOf(this) == -1) {
-          lime.audio._playQueue.push(this);
+            lime.audio._playQueue.push(this);
         }
     }
 };
@@ -225,8 +222,7 @@ lime.audio.Audio.prototype.stop = function() {
             this.source['noteOff'](0);
             this.gain['disconnect'](lime.audio.masterGain);
             this.source = null;
-        }
-        else {
+        } else {
             this.baseElement.pause();
         }
         this.playing_ = false;
@@ -237,33 +233,31 @@ lime.audio._isMute = false;
 lime.audio._playQueue = [];
 
 lime.audio.getMute = function() {
-  return lime.audio._isMute;
+    return lime.audio._isMute;
 };
 
 lime.audio.setMute = function(bool) {
-  if (bool && !lime.audio._isMute) {
-    for (var i = 0; i < lime.audio._playQueue.length; i++) {
-      lime.audio._playQueue[i].stop();
+    if (bool && !lime.audio._isMute) {
+        for (var i = 0; i < lime.audio._playQueue.length; i++) {
+            lime.audio._playQueue[i].stop();
+        }
+        lime.audio._playQueue = [];
     }
-    lime.audio._playQueue = [];
-  }
-  lime.audio._isMute = bool;
+    lime.audio._isMute = bool;
 };
 
 lime.audio.Audio.prototype.setVolume = function(value) {
     if (lime.audio.AudioContext) {
         this.volume_ = value;
         if (this.gain) this.gain['gain']['value'] = value;
-    }
-    else {
+    } else {
         this.baseElement.volume = value;
     }
 };
 lime.audio.Audio.prototype.getVolume = function() {
     if (lime.audio.AudioContext) {
         return this.volume_;
-    }
-    else {
+    } else {
         return this.baseElement.volume;
     }
 };

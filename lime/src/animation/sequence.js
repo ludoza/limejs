@@ -24,8 +24,7 @@ lime.animation.Sequence = function(one) {
         var first = act.shift();
         this.actions = [first, new lime.animation.Sequence(act)];
 
-    }
-    else {
+    } else {
         this.actions = act;
     }
 
@@ -61,7 +60,7 @@ lime.animation.Sequence.prototype.stop = function() {
  * @inheritDoc
  * @see lime.animation.Animation#updateAll
  */
-lime.animation.Sequence.prototype.updateAll = function(t,targets) {
+lime.animation.Sequence.prototype.updateAll = function(t, targets) {
     if (this.status_ == 0) return t;
 
     var i = targets.length;
@@ -76,8 +75,7 @@ lime.animation.Sequence.prototype.updateAll = function(t,targets) {
         found = 1;
         if (this.split_ == 1) new_t = 1;
         else new_t = (t - this.split_) / (1 - this.split_);
-    }
-    else {
+    } else {
         found = 0;
         if (this.split_ != 0) new_t = t / this.split_;
         else new_t = 1;

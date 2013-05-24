@@ -36,7 +36,10 @@ lime.animation.FadeTo.prototype.makeTargetProp = function(target) {
 
         target.setDirty(lime.Dirty.ALPHA);
     }
-    return {startOpacity: op, delta: this.opacity_ - op };
+    return {
+        startOpacity: op,
+        delta: this.opacity_ - op
+    };
 };
 
 /**
@@ -61,4 +64,3 @@ lime.animation.FadeTo.prototype.clearTransition = function(target) {
         target.setDirty(lime.Dirty.ALPHA);
     }
 };
-

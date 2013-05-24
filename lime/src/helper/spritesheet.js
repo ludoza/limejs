@@ -14,16 +14,16 @@ goog.require('lime.parser.ZWOPTEX');
  * used instead of ZWOPTEX.
  * @constructor
  */
-lime.SpriteSheet = function(image, metadata, parser){
+lime.SpriteSheet = function(image, metadata, parser) {
     this.image_ = new lime.fill.Image(image);
-    
-    if(!goog.isDef(parser) && goog.DEBUG && goog.global['console'] && goog.global['console']['warn']){
+
+    if (!goog.isDef(parser) && goog.DEBUG && goog.global['console'] && goog.global['console']['warn']) {
         goog.global['console']['warn']('DEPRECATED: SpriteSheet 3rd parser parameter is now required.');
     }
-    
+
     var p = parser || lime.parser.ZWOPTEX,
-		data = metadata.data ? metadata.data() : metadata;
-    
+        data = metadata.data ? metadata.data() : metadata;
+
     this.metadata_ = p(data);
 };
 
@@ -31,10 +31,10 @@ lime.SpriteSheet = function(image, metadata, parser){
  * Return the frame from the sprite sheet that has the given name.
  * @param {string} name The name of the frame.
  */
-lime.SpriteSheet.prototype.getFrame = function(name){
+lime.SpriteSheet.prototype.getFrame = function(name) {
     var m = this.metadata_[name];
-    if(!m){
-        throw("Frame "+name+" not found in the spritesheet");
+    if (!m) {
+        throw ("Frame " + name + " not found in the spritesheet");
     }
     return new lime.fill.Frame(this.image_.image_, m[0], m[1], m[2], m[3]);
 };
@@ -43,6 +43,6 @@ lime.SpriteSheet.prototype.getFrame = function(name){
  * Returns true if the sprite sheet contains a frame with the given name.
  * @param {string} name The name to check if the sprite sheete contains.
  */
-lime.SpriteSheet.prototype.hasFrame = function(name){
+lime.SpriteSheet.prototype.hasFrame = function(name) {
     return goog.isDef(this.metadata_[name]);
 };

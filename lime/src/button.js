@@ -26,31 +26,30 @@ lime.Button = function(opt_upstate, opt_downstate) {
 
 
     var t = this;
-    goog.events.listen(this, ['mousedown', 'touchstart', 'touchmove'],
-        function(e) {
-            t.setState(lime.Button.State.DOWN);
-            e.swallow('mousemove', function(e) {
-                if (t.hitTest(e)) {
-                    t.setState(lime.Button.State.DOWN);
-                }
-                else {
-                    t.setState(lime.Button.State.UP);
-                }
-            });
-            e.swallow('touchmove', function(e) {
-                if (!t.hitTest(e)) {
-                    t.setState(lime.Button.State.UP);
-                    e.release();
-                }
-            });
-            e.swallow(['mouseup', 'touchend'], function(e) {
-                if (t.hitTest(e)) {
-                    t.dispatchEvent({type: lime.Button.Event.CLICK});
-               }
-               this.setState(lime.Button.State.UP);
-           });
-        }
-    );
+    goog.events.listen(this, ['mousedown', 'touchstart', 'touchmove'], function(e) {
+        t.setState(lime.Button.State.DOWN);
+        e.swallow('mousemove', function(e) {
+            if (t.hitTest(e)) {
+                t.setState(lime.Button.State.DOWN);
+            } else {
+                t.setState(lime.Button.State.UP);
+            }
+        });
+        e.swallow('touchmove', function(e) {
+            if (!t.hitTest(e)) {
+                t.setState(lime.Button.State.UP);
+                e.release();
+            }
+        });
+        e.swallow(['mouseup', 'touchend'], function(e) {
+            if (t.hitTest(e)) {
+                t.dispatchEvent({
+                    type: lime.Button.Event.CLICK
+                });
+            }
+            this.setState(lime.Button.State.UP);
+        });
+    });
 
 
 };
@@ -123,12 +122,16 @@ lime.Button.prototype.setState = function(value) {
 
     //event checking
     if (this.state_ == lime.Button.State.UP &&
-            value == lime.Button.State.DOWN)
-        this.dispatchEvent({type: lime.Button.Event.DOWN});
+        value == lime.Button.State.DOWN)
+        this.dispatchEvent({
+            type: lime.Button.Event.DOWN
+        });
 
     if (this.state_ == lime.Button.State.DOWN &&
-            value == lime.Button.State.UP)
-        this.dispatchEvent({type: lime.Button.Event.UP});
+        value == lime.Button.State.UP)
+        this.dispatchEvent({
+            type: lime.Button.Event.UP
+        });
 
 
     var state = this.upstate;

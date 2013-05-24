@@ -17,11 +17,9 @@ lime.animation.ScaleBy = function(factor) {
 
     if (arguments.length == 1 && goog.isNumber(factor)) {
         this.factor_ = new goog.math.Vec2(factor, factor);
-    }
-    else if (arguments.length == 2) {
+    } else if (arguments.length == 2) {
         this.factor_ = new goog.math.Vec2(arguments[0], arguments[1]);
-    }
-    else this.factor_ = factor;
+    } else this.factor_ = factor;
 
 
 };
@@ -39,17 +37,19 @@ lime.animation.ScaleBy.prototype.scope = 'scale';
 lime.animation.ScaleBy.prototype.makeTargetProp = function(target) {
     var scale = target.getScale(),
         delta = new goog.math.Vec2(scale.x * this.factor_.x - scale.x,
-                                  scale.y * this.factor_.y - scale.y);
+            scale.y * this.factor_.y - scale.y);
 
     if (this.useTransitions()) {
         target.addTransition(lime.Transition.SCALE,
             new goog.math.Vec2(scale.x + delta.x, scale.y + delta.y),
             this.duration_, this.getEasing());
-            target.setDirty(lime.Dirty.SCALE);
+        target.setDirty(lime.Dirty.SCALE);
     }
 
-    return {startScale: scale,
-            delta: delta};
+    return {
+        startScale: scale,
+        delta: delta
+    };
 };
 
 /**
@@ -62,8 +62,7 @@ lime.animation.ScaleBy.prototype.update = function(t, target) {
 
     target.setScale(
         prop.startScale.x + prop.delta.x * t,
-        prop.startScale.y + prop.delta.y * t
-    );
+        prop.startScale.y + prop.delta.y * t);
 };
 
 /**

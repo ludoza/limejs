@@ -9,7 +9,7 @@ goog.require('goog.string');
 
 // Based on MelonJS implementation.
 
-lime.parser.TMX = function (file) {
+lime.parser.TMX = function(file) {
     function loadXMLDoc(dname) {
         var xhttp, xmlDoc, parser;
         if (window.XMLHttpRequest) {
@@ -78,46 +78,46 @@ lime.parser.TMX = function (file) {
         var retdatas = new Array();
 
         switch (compression) {
-        case null:
-            {
-                switch (encoding) {
-                case null:
-                    {
-                        var datas = layer.getElementsByTagName('tile');
-                        for (j = 0; j < datas.length; j++) {
-                            gid = parseInt(datas[j].attributes.getNamedItem("gid").nodeValue);
-                            retdatas.push(gid);
-                        }
-                        return retdatas;
-                        break;
-                    }
+            case null:
+                {
+                    switch (encoding) {
+                        case null:
+                            {
+                                var datas = layer.getElementsByTagName('tile');
+                                for (j = 0; j < datas.length; j++) {
+                                    gid = parseInt(datas[j].attributes.getNamedItem("gid").nodeValue);
+                                    retdatas.push(gid);
+                                }
+                                return retdatas;
+                                break;
+                            }
 
-                case 'base64':
-                    {
-                        var content = '';
-                        for (var x = 0, len = layer.getElementsByTagName('data')[0].childNodes.length; x < len; x++) {
-                            content += layer.getElementsByTagName('data')[0].childNodes[x].nodeValue;
-                        }
-                        retdatas = decodeBase64AsArray(content, 4);
-                        return retdatas;
-                        break;
-                    }
+                        case 'base64':
+                            {
+                                var content = '';
+                                for (var x = 0, len = layer.getElementsByTagName('data')[0].childNodes.length; x < len; x++) {
+                                    content += layer.getElementsByTagName('data')[0].childNodes[x].nodeValue;
+                                }
+                                retdatas = decodeBase64AsArray(content, 4);
+                                return retdatas;
+                                break;
+                            }
 
-                default:
-                    throw "limejs: " + encoding + " encoded TMX Tile Map not supported!";
-                    break;
+                        default:
+                            throw "limejs: " + encoding + " encoded TMX Tile Map not supported!";
+                            break;
+                    }
                 }
-            }
 
-        default:
-            throw "limejs: " + compression + " compressed TMX Tile Map not supported!";
-            break;
+            default:
+                throw "limejs: " + compression + " compressed TMX Tile Map not supported!";
+                break;
         }
 
         return retdatas;
     }
 
-    this.getTile = function (gid) {
+    this.getTile = function(gid) {
         var ret = this.tiles[gid - 1];
         return ret;
 

@@ -18,8 +18,7 @@ lime.animation.MoveTo = function(position, opt_y) {
 
     if (arguments.length == 2) {
         this.position_ = new goog.math.Coordinate(arguments[0], arguments[1]);
-    }
-    else this.position_ = position;
+    } else this.position_ = position;
 
 };
 goog.inherits(lime.animation.MoveTo, lime.animation.Animation);
@@ -51,7 +50,7 @@ lime.animation.MoveTo.prototype.makeTargetProp = function(target) {
     var delta = new goog.math.Coordinate(
         this.position_.x - start.x,
         this.position_.y - start.y);
-        
+
     if (this.useTransitions()) {
         target.addTransition(lime.Transition.POSITION,
             this.position_,
@@ -59,7 +58,10 @@ lime.animation.MoveTo.prototype.makeTargetProp = function(target) {
         target.setDirty(lime.Dirty.POSITION);
     }
 
-    return {startpos: start, delta: delta};
+    return {
+        startpos: start,
+        delta: delta
+    };
 };
 
 
@@ -67,16 +69,16 @@ lime.animation.MoveTo.prototype.makeTargetProp = function(target) {
  * Calculate animations duration based on its speed.
  * @private
  */
-lime.animation.MoveTo.prototype.calcDurationFromSpeed_ = function(){
-    if(!this.speed_ || !this.targets.length) return;
-    
+lime.animation.MoveTo.prototype.calcDurationFromSpeed_ = function() {
+    if (!this.speed_ || !this.targets.length) return;
+
     var start = this.targets[0].getPosition();
     var delta = new goog.math.Coordinate(
         this.position_.x - start.x,
         this.position_.y - start.y);
-    
+
     this.setDuration(this.speed_ * goog.math.Coordinate.distance(
-            delta, new goog.math.Coordinate(0, 0)) / 100);
+        delta, new goog.math.Coordinate(0, 0)) / 100);
     this.speedCalcDone_ = 1;
 }
 
@@ -90,8 +92,7 @@ lime.animation.MoveTo.prototype.update = function(t, target) {
 
     target.setPosition(
         prop.startpos.x + prop.delta.x * t,
-        prop.startpos.y + prop.delta.y * t
-    );
+        prop.startpos.y + prop.delta.y * t);
 };
 
 /**
@@ -107,4 +108,3 @@ lime.animation.MoveTo.prototype.clearTransition = function(target) {
     }
 
 };
-

@@ -59,36 +59,35 @@ lime.Label.prototype.supportedRenderers = [
 
 (function() {
 
-var mContext;
+    var mContext;
 
-/**
- * Measure text contents of the label
- * @return {goog.math.Size} size of the text.
- */
-lime.Label.prototype.measureText = function() {
-    if (!goog.isDef(mContext)) {
-        var cvs = document.createElement('canvas');
-        mContext = cvs.getContext('2d');
-    }
+    /**
+     * Measure text contents of the label
+     * @return {goog.math.Size} size of the text.
+     */
+    lime.Label.prototype.measureText = function() {
+        if (!goog.isDef(mContext)) {
+            var cvs = document.createElement('canvas');
+            mContext = cvs.getContext('2d');
+        }
 
-    var lh = this.getLineHeight() * this.getFontSize();
-    if (this.getMultiline()) {
-        lh *= goog.string.trim(this.text_).split('\n').length
-    }
-    mContext.font = this.getStyle() + ' ' + this.getFontWeight() + ' ' + this.getFontSize() + 'px ' + this.getFontFamily();
+        var lh = this.getLineHeight() * this.getFontSize();
+        if (this.getMultiline()) {
+            lh *= goog.string.trim(this.text_).split('\n').length
+        }
+        mContext.font = this.getStyle() + ' ' + this.getFontWeight() + ' ' + this.getFontSize() + 'px ' + this.getFontFamily();
 
-    var metrics = mContext.measureText(this.text_);
-    var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
+        var metrics = mContext.measureText(this.text_);
+        var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
 
-    if (lime.userAgent.IOS5)
-        w += 1;
+        if (lime.userAgent.IOS5)
+            w += 1;
 
-    var stroke = this.stroke_?this.stroke_.width_:0;
-    return new goog.math.Size(
-        this.padding_[1] + this.padding_[3] + w + stroke*2,
-        this.padding_[0] + this.padding_[2] + lh + stroke*2
-    );
-};
+        var stroke = this.stroke_ ? this.stroke_.width_ : 0;
+        return new goog.math.Size(
+            this.padding_[1] + this.padding_[3] + w + stroke * 2,
+            this.padding_[0] + this.padding_[2] + lh + stroke * 2);
+    };
 })();
 
 /** @inheritDoc */
@@ -234,7 +233,7 @@ lime.Label.prototype.getPadding = function() {
  * @return {lime.Label} object itself.
  */
 lime.Label.prototype.setPadding = function(top, opt_right,
-        opt_bottom, opt_left) {
+    opt_bottom, opt_left) {
 
     var val = [top, top, top, top];
     if (goog.isDef(opt_right)) {
@@ -311,27 +310,24 @@ lime.Label.prototype.setMultiline = function(bool) {
  * @param {number=} opt_offsetY Shadow offset in Y axis.
  * @return {lime.Label} object itself.
  */
-lime.Label.prototype.setShadow = function(color, opt_blur, opt_offsetX, opt_offsetY){
+lime.Label.prototype.setShadow = function(color, opt_blur, opt_offsetX, opt_offsetY) {
     // provide method to reset the shadow
-    if(arguments.length == 1 && goog.isNull(color)){
+    if (arguments.length == 1 && goog.isNull(color)) {
         this.setShadowColor('#ccc'); //default color
         this.setShadowBlur(0);
-        this.setShadowOffset(0,0);
-    }
-    else if(arguments.length == 2) {
-        this.setShadowColor(/** @type {!string}*/(color));
-        this.setShadowBlur(/** @type {!number} */(opt_blur));
-        this.setShadowOffset(new goog.math.Vec2(0,0));
-    }
-    else if(arguments.length == 3) {
-        this.setShadowColor(/** @type {!string}*/(color));
-        this.setShadowBlur(/** @type {!number} */(opt_blur));
-        this.setShadowOffset(/** @type {!goog.math.Vec2} */(opt_offsetX));
-    }
-    else {
-        this.setShadowColor(/** @type {!string}*/(color));
-        this.setShadowBlur(/** @type {!number} */(opt_blur));
-        this.setShadowOffset(/** @type {!(number|goog.math.Vec2)} */(opt_offsetX), opt_offsetY);
+        this.setShadowOffset(0, 0);
+    } else if (arguments.length == 2) {
+        this.setShadowColor( /** @type {!string}*/ (color));
+        this.setShadowBlur( /** @type {!number} */ (opt_blur));
+        this.setShadowOffset(new goog.math.Vec2(0, 0));
+    } else if (arguments.length == 3) {
+        this.setShadowColor( /** @type {!string}*/ (color));
+        this.setShadowBlur( /** @type {!number} */ (opt_blur));
+        this.setShadowOffset( /** @type {!goog.math.Vec2} */ (opt_offsetX));
+    } else {
+        this.setShadowColor( /** @type {!string}*/ (color));
+        this.setShadowBlur( /** @type {!number} */ (opt_blur));
+        this.setShadowOffset( /** @type {!(number|goog.math.Vec2)} */ (opt_offsetX), opt_offsetY);
     }
     this.setDirty(lime.Dirty.FONT);
     return this;
@@ -341,7 +337,7 @@ lime.Label.prototype.setShadow = function(color, opt_blur, opt_offsetX, opt_offs
  * Returns true if the label has a shadow.
  * @private
  */
-lime.Label.prototype.hasShadow_ = function(){
+lime.Label.prototype.hasShadow_ = function() {
     return this.shadowBlur_ || this.shadowOffset_.x || this.shadowOffset_.y;
 };
 
@@ -365,7 +361,7 @@ lime.Label.prototype.getShadowOffset = function() {
  * Set the shadow color.
  * @param {string} color The shadow color.
  */
-lime.Label.prototype.setShadowColor = function(color){
+lime.Label.prototype.setShadowColor = function(color) {
     this.shadowColor_ = color;
     return this;
 };
@@ -374,7 +370,7 @@ lime.Label.prototype.setShadowColor = function(color){
  * Set the shadow blur radius.
  * @param {number} radius The shadow blur radius.
  */
-lime.Label.prototype.setShadowBlur = function(radius){
+lime.Label.prototype.setShadowBlur = function(radius) {
     this.shadowBlur_ = radius;
     return this;
 };
@@ -388,8 +384,7 @@ lime.Label.prototype.setShadowBlur = function(radius){
 lime.Label.prototype.setShadowOffset = function(offset, opt_offsetY) {
     if (arguments.length == 2) {
         this.shadowOffset_ = new goog.math.Vec2(arguments[0], arguments[1]);
-    }
-    else {
+    } else {
         this.shadowOffset_ = offset;
     }
     this.setDirty(lime.Dirty.FONT);
@@ -410,23 +405,23 @@ lime.Label.prototype.getShadowBlur = function() {
  * @return {Array.<string>} array of words.
  */
 lime.Label.prototype.calcWordsArray = function() {
-  var words = [];
-  var len = this.text_.length;
-  var regexp = goog.userAgent.GECKO ? /[\s\.]+/g : /[\s-\.]+/g;
-  var breaks = this.text_.match(regexp);
-  var st = 0;
-  if (breaks)
-  for (var i = 0; i < breaks.length; i++) {
-      var b = breaks[i];
-      var ibreak = this.text_.indexOf(b, st);
-      var wlen = ibreak + b.length;
-      words.push(this.text_.substring(st, wlen));
-      st = wlen;
-  }
-  if (st != len) {
-      words.push(this.text_.substring(st, len));
-  }
-  return words;
+    var words = [];
+    var len = this.text_.length;
+    var regexp = goog.userAgent.GECKO ? /[\s\.]+/g : /[\s-\.]+/g;
+    var breaks = this.text_.match(regexp);
+    var st = 0;
+    if (breaks)
+        for (var i = 0; i < breaks.length; i++) {
+            var b = breaks[i];
+            var ibreak = this.text_.indexOf(b, st);
+            var wlen = ibreak + b.length;
+            words.push(this.text_.substring(st, wlen));
+            st = wlen;
+    }
+    if (st != len) {
+        words.push(this.text_.substring(st, len));
+    }
+    return words;
 };
 
 /**
@@ -437,7 +432,10 @@ lime.Label.prototype.calcWordsArray = function() {
  * @return {Array.<string>} Lines of text.
  */
 lime.Label.prototype.wrapText = function(context, width) {
-    var lines = [], line = '', words = this.words_, metrics;
+    var lines = [],
+        line = '',
+        words = this.words_,
+        metrics;
     for (var i = 0; i < words.length; i++) {
         var breaks = 0;
         if (this.multiline_) {
@@ -448,15 +446,13 @@ lime.Label.prototype.wrapText = function(context, width) {
         }
         if (line == '') {
             line = words[i];
-        }
-        else {
+        } else {
             metrics = context.measureText(goog.string.trim(line + words[i]));
             if (metrics.width > width) {
                 lines.push(goog.string.trim(line));
                 //breaks--
                 line = words[i];
-            }
-            else {
+            } else {
                 line += words[i];
             }
         }
@@ -470,12 +466,12 @@ lime.Label.prototype.wrapText = function(context, width) {
 };
 
 /** @inheritDoc */
-lime.Label.prototype.update = function(){
+lime.Label.prototype.update = function() {
 
-    if(this.getDirty() & lime.Dirty.CONTENT)
+    if (this.getDirty() & lime.Dirty.CONTENT)
         delete this.lastDrawnWidth_;
 
-    lime.Node.prototype.update.apply(this,arguments);
+    lime.Node.prototype.update.apply(this, arguments);
 };
 
 
@@ -490,15 +486,16 @@ lime.Renderer.DOM.LABEL.draw = function(el) {
     if (this.dirty_ & lime.Dirty.CONTENT) {
         if (this.getMultiline()) {
             el.innerHTML = goog.string.htmlEscape(this.text_).replace(/\n/g, '<br/>')
-        }
-        else goog.dom.setTextContent(el, this.text_);
+        } else goog.dom.setTextContent(el, this.text_);
     }
     if (this.dirty_ & lime.Dirty.FONT) {
         style['lineHeight'] = this.getLineHeight();
-        style['padding'] = goog.array.map(this.padding_,function(p){return p * this.getRelativeQuality();},this).join('px ') + 'px';
+        style['padding'] = goog.array.map(this.padding_, function(p) {
+            return p * this.getRelativeQuality();
+        }, this).join('px ') + 'px';
         style['color'] = this.getFontColor();
         style['fontFamily'] = this.getFontFamily();
-        style['fontSize'] = this.getFontSize()*this.getRelativeQuality() + 'px';
+        style['fontSize'] = this.getFontSize() * this.getRelativeQuality() + 'px';
         style['fontWeight'] = this.getFontWeight();
         style['textAlign'] = this.getAlign();
         style['font-style'] = this.getStyle();
@@ -523,41 +520,39 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
         dowrap = 1;
     }
 
-    var stroke = this.stroke_?this.stroke_.width_:0;
+    var stroke = this.stroke_ ? this.stroke_.width_ : 0;
 
     context.save();
     var align = this.getAlign();
     if (align == 'left') {
-        context.translate(frame.left + this.padding_[3]+stroke,
-            frame.top + this.padding_[0]+stroke);
-    }
-    else if (align == 'right') {
-        context.translate(frame.right - this.padding_[1]-stroke,
-            frame.top + this.padding_[0]+stroke);
-    }
-    else if (align == 'center') {
+        context.translate(frame.left + this.padding_[3] + stroke,
+            frame.top + this.padding_[0] + stroke);
+    } else if (align == 'right') {
+        context.translate(frame.right - this.padding_[1] - stroke,
+            frame.top + this.padding_[0] + stroke);
+    } else if (align == 'center') {
         context.translate(
-            (frame.left + this.padding_[3] +
-                frame.right - this.padding_[1]) * .5,
-            frame.top + this.padding_[0]+stroke);
+        (frame.left + this.padding_[3] +
+            frame.right - this.padding_[1]) * .5,
+            frame.top + this.padding_[0] + stroke);
     }
 
     var lh = this.getLineHeight();
 
     context.fillStyle = this.getFontColor();
-    context.font = this.getStyle() + ' '+ this.getFontWeight() + ' ' + this.getFontSize() +
+    context.font = this.getStyle() + ' ' + this.getFontWeight() + ' ' + this.getFontSize() +
         'px/' + lh + ' ' + this.getFontFamily();
     context.textAlign = align;
     context.textBaseline = 'top';
 
-    if(this.hasShadow_()){
+    if (this.hasShadow_()) {
         context.shadowColor = this.getShadowColor();
         context.shadowOffsetX = this.getShadowOffset().x;
         context.shadowOffsetY = this.getShadowOffset().y;
         context.shadowBlur = this.getShadowBlur();
     }
 
-    if(dowrap || width!=this.lastDrawnWidth_){
+    if (dowrap || width != this.lastDrawnWidth_) {
         this.lines_ = this.wrapText(context, width - 2 * stroke);
         this.lastDrawnWidth_ = width;
     }
@@ -565,7 +560,7 @@ lime.Renderer.CANVAS.LABEL.draw = function(context) {
     if (this.lines_) {
         var lhpx = lh * this.getFontSize(),
             offsetY = (goog.isDef(this.getShadowBlur()) ? Math.abs(this.getShadowBlur()) : 0) +
-                      (goog.isDef(this.getShadowOffset()) ? Math.abs(this.getShadowOffset().y) / 2 : 0),
+                (goog.isDef(this.getShadowOffset()) ? Math.abs(this.getShadowOffset().y) / 2 : 0),
             offsetX = 0;
         lhpx = goog.userAgent.WEBKIT ? Math.floor(lhpx) : Math.round(lhpx);
         for (var i = 0; i < this.lines_.length; i++) {

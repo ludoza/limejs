@@ -74,9 +74,12 @@ lime.animation.ColorTo.prototype.makeTargetProp = function(target) {
             break;
     }
 
-    return {start: oldrgb,
-         delta: [this.rgba_[0] - oldrgb[0], this.rgba_[1] - oldrgb[1],
-            this.rgba_[2] - oldrgb[2], this.rgba_[3] - oldrgb[3]]};
+    return {
+        start: oldrgb,
+        delta: [this.rgba_[0] - oldrgb[0], this.rgba_[1] - oldrgb[1],
+            this.rgba_[2] - oldrgb[2], this.rgba_[3] - oldrgb[3]
+        ]
+    };
 };
 
 /** @inheritDoc */

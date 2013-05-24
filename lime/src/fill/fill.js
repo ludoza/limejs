@@ -9,7 +9,7 @@ goog.require('goog.events.EventTarget');
  */
 lime.fill.Fill = function() {
     goog.base(this);
-    
+
 };
 goog.inherits(lime.fill.Fill, goog.events.EventTarget);
 
@@ -30,11 +30,10 @@ lime.fill.Fill.prototype.initForSprite = goog.nullFunction;
 lime.fill.parse = function(inp) {
     if (inp[0] instanceof lime.fill.Fill) return inp[0];
 
-    if(!goog.isArray(inp)) inp = goog.array.toArray(arguments);
+    if (!goog.isArray(inp)) inp = goog.array.toArray(arguments);
     if (inp.length > 2) {
         return new lime.fill.Color(inp);
-    }
-    else if (goog.isString(inp[0]) && (inp[0].substring(0, 4) == 'rgb(' ||
+    } else if (goog.isString(inp[0]) && (inp[0].substring(0, 4) == 'rgb(' ||
         inp[0].substring(0, 5) == 'rgba(' || inp[0].substring(0, 1) == '#')) {
         return new lime.fill.Color(inp[0]);
     }
@@ -57,4 +56,3 @@ lime.fill.Fill.prototype.setDOMStyle = goog.nullFunction;
  * @param {lime.Node=} shape The shape to draw in.
  */
 lime.fill.Fill.prototype.setCanvasStyle = goog.nullFunction;
-

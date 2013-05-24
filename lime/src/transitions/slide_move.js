@@ -39,10 +39,10 @@ goog.inherits(lime.transitions.SlideIn, lime.transitions.Transition);
  * @enum {number}
  */
 lime.transitions.SlideIn.Mode = {
-  LEFT: 0,
-  UP: 1,
-  RIGHT: 2,
-  DOWN: 4
+    LEFT: 0,
+    UP: 1,
+    RIGHT: 2,
+    DOWN: 4
 };
 
 /** @inheritDoc */
@@ -54,27 +54,27 @@ lime.transitions.SlideIn.prototype.start = function() {
         case lime.transitions.SlideIn.Mode.LEFT:
             this.incoming_.setPosition(-size.width, 0);
             delta.x = size.width;
-        break;
+            break;
 
         case lime.transitions.SlideIn.Mode.UP:
             this.incoming_.setPosition(0, -size.height);
             delta.y = size.height;
-        break;
+            break;
 
         case lime.transitions.SlideIn.Mode.RIGHT:
             this.incoming_.setPosition(size.width, 0);
             delta.x = -size.width;
-        break;
+            break;
 
         case lime.transitions.SlideIn.Mode.DOWN:
             this.incoming_.setPosition(0, size.height);
             delta.y = -size.height;
-        break;
+            break;
     }
     this.incoming_.setHidden(false);
 
     var move = new lime.animation.MoveBy(delta).
-            setDuration(this.getDuration());
+    setDuration(this.getDuration());
 
     if (this.outgoing_ && !this.movein_) move.addTarget(this.outgoing_);
 
@@ -191,7 +191,3 @@ lime.transitions.MoveInDown = function(outgoing, incoming) {
     goog.base(this, outgoing, incoming, true);
 };
 goog.inherits(lime.transitions.MoveInDown, lime.transitions.SlideInDown);
-
-
-
-

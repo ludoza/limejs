@@ -50,8 +50,7 @@ lime.customNodes.CoverLens.prototype.update = function() {
 
     if (arguments[0]) {
         this.center = new goog.math.Coordinate(
-            dsize.width / 2, dsize.height / 2
-        );
+            dsize.width / 2, dsize.height / 2);
 
         size = this.size_ = goog.style.getSize(
             this.director.baseElement.parentNode);
@@ -84,16 +83,18 @@ lime.customNodes.CoverLens.prototype.drawInRect = function(box) {
 
     var ctx = this.context;
 
-//    ctx.clearRect(box.left,box.top,w,h);
-     // set up gradient
+    //    ctx.clearRect(box.left,box.top,w,h);
+    // set up gradient
     var grad = ctx.createRadialGradient(
         box.left + w - this.offset.x, box.top + h - this.offset.y,
         this.innerRadius,
         box.left + w - this.offset.x, box.top + h - this.offset.y,
-         this.outerRadius
-    );
+        this.outerRadius);
 
-    var stops = {0: 'rgba(0,0,0,0)', 1: 'rgba(0,0,0,' + this.outerAlpha + ')'};
+    var stops = {
+        0: 'rgba(0,0,0,0)',
+        1: 'rgba(0,0,0,' + this.outerAlpha + ')'
+    };
 
     for (var position in stops) {
         var color = stops[position];

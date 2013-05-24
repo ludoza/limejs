@@ -33,7 +33,7 @@ lime.GlossyButton.prototype.makeState_ = function(txt) {
     var state = new lime.RoundedRect();
     state.inner = new lime.RoundedRect();
     state.label = new lime.Label(txt).setAlign('center').
-        setFontFamily('"Trebuchet MS"').setFontColor('#010101').setFontSize(17);
+    setFontFamily('"Trebuchet MS"').setFontColor('#010101').setFontSize(17);
 
     state.appendChild(state.inner);
     state.inner.appendChild(state.label);
@@ -56,7 +56,7 @@ lime.GlossyButton.prototype.setColor = function(clr) {
         grad.addColorStop(.52, c);
         grad.addColorStop(1, c);
         s.inner.setFill(grad);
-    },this);
+    }, this);
     return this;
 };
 
@@ -86,15 +86,15 @@ lime.GlossyButton.prototype.setFontSize = function(size) {
 /** @inheritDoc */
 lime.GlossyButton.prototype.setSize = function(value, opt_height) {
     if (this.upstate) {
-    this.upstate.setSize.apply(this.upstate, arguments);
-    var size = this.upstate.getSize();
-    goog.array.forEach([this.upstate, this.downstate], function(s) {
-        s.setSize(size);
-        var innerSize = size.clone();
-        innerSize.width -= this.borderWidth;
-        innerSize.height -= this.borderWidth;
-        s.inner.setSize(innerSize);
-    },this);
+        this.upstate.setSize.apply(this.upstate, arguments);
+        var size = this.upstate.getSize();
+        goog.array.forEach([this.upstate, this.downstate], function(s) {
+            s.setSize(size);
+            var innerSize = size.clone();
+            innerSize.width -= this.borderWidth;
+            innerSize.height -= this.borderWidth;
+            s.inner.setSize(innerSize);
+        }, this);
     }
     return this;
 };

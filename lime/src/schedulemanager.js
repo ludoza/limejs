@@ -11,7 +11,7 @@ goog.require('lime');
  * @this {lime.scheduleManager}
  * @constructor
  */
-lime.scheduleManager = new (function() {
+lime.scheduleManager = new(function() {
 
     /**
      * Array of registered functions
@@ -71,8 +71,7 @@ lime.scheduleManager.Task.prototype.step_ = function(dt) {
     if (!this.functionStack_.length) return;
     if (this.delta > dt) {
         this.delta -= dt;
-    }
-    else {
+    } else {
         var delta = this.maxdelta + dt - this.delta;
         this.delta = this.maxdelta - (dt - this.delta);
         if (this.delta < 0) this.delta = 0;
@@ -81,7 +80,7 @@ lime.scheduleManager.Task.prototype.step_ = function(dt) {
         while (--i >= 0) {
             f = this.functionStack_[i];
             if (f && f[0] && goog.isFunction(f[1]))
-            (f[1]).call(f[2], delta);
+                (f[1]).call(f[2], delta);
         }
         if (this.limit != -1) {
             this.limit--;
@@ -96,10 +95,10 @@ lime.scheduleManager.taskStack_.push(new lime.scheduleManager.Task(0));
 
 (function() {
     var vendors = ['webkit', 'moz'];
-    for(var x = 0; x < vendors.length && !goog.global.requestAnimationFrame; ++x) {
-        goog.global.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+    for (var x = 0; x < vendors.length && !goog.global.requestAnimationFrame; ++x) {
+        goog.global.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
         goog.global.cancelAnimationFrame =
-          goog.global[vendors[x]+'CancelAnimationFrame'] || goog.global[vendors[x]+'CancelRequestAnimationFrame'];
+            goog.global[vendors[x] + 'CancelAnimationFrame'] || goog.global[vendors[x] + 'CancelRequestAnimationFrame'];
     }
 }());
 
@@ -109,7 +108,7 @@ lime.scheduleManager.taskStack_.push(new lime.scheduleManager.Task(0));
  * Exposed here so it could be disabled if needed.
  * @type {boolean}
  */
-lime.scheduleManager.USE_ANIMATION_FRAME = !!goog.global.requestAnimationFrame;
+lime.scheduleManager.USE_ANIMATION_FRAME = !! goog.global.requestAnimationFrame;
 
 /**
  * Returns maximum fire rate in ms. If you need FPS then use 1000/x
@@ -130,11 +129,11 @@ lime.scheduleManager.getDisplayRate = function() {
  * @param {number} value New display rate.
  */
 lime.scheduleManager.setDisplayRate = function(value) {
-     this.displayRate_ = value;
-     if (this.active_) {
-         lime.scheduleManager.disable_();
-         lime.scheduleManager.activate_();
-     }
+    this.displayRate_ = value;
+    if (this.active_) {
+        lime.scheduleManager.disable_();
+        lime.scheduleManager.activate_();
+    }
 };
 
 /**
@@ -174,12 +173,12 @@ lime.scheduleManager.unschedule = function(f, context) {
             }
         }
         if (functionStack_.length == 0 && j != 0) {
-           goog.array.remove(this.taskStack_, task);
+            goog.array.remove(this.taskStack_, task);
         }
     }
     // if no more functions: stop timers
     if (this.taskStack_.length == 1 &&
-            this.taskStack_[0].functionStack_.length == 0) {
+        this.taskStack_[0].functionStack_.length == 0) {
         lime.scheduleManager.disable_();
     }
 };
@@ -194,19 +193,17 @@ lime.scheduleManager.activate_ = function() {
 
     this.lastRunTime_ = goog.now();
 
-    if(lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {
+    if (lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {
         // old mozilla
-        if(goog.global['mozRequestAnimationFrame'] && goog.userAgent.VERSION < 11) {
+        if (goog.global['mozRequestAnimationFrame'] && goog.userAgent.VERSION < 11) {
             goog.global['mozRequestAnimationFrame']();
-            this.beforePaintHandlerBinded_ = goog.bind(lime.scheduleManager.beforePaintHandler_,this);
-            goog.global.addEventListener('MozBeforePaint',this.beforePaintHandlerBinded_, false);
-        }
-        else {
-            this.animationFrameHandlerBinded_ = goog.bind(lime.scheduleManager.animationFrameHandler_,this);
+            this.beforePaintHandlerBinded_ = goog.bind(lime.scheduleManager.beforePaintHandler_, this);
+            goog.global.addEventListener('MozBeforePaint', this.beforePaintHandlerBinded_, false);
+        } else {
+            this.animationFrameHandlerBinded_ = goog.bind(lime.scheduleManager.animationFrameHandler_, this);
             goog.global.requestAnimationFrame(this.animationFrameHandlerBinded_);
         }
-    }
-    else {
+    } else {
         this.intervalID_ = setInterval(goog.bind(lime.scheduleManager.stepTimer_, this),
             lime.scheduleManager.getDisplayRate());
     }
@@ -223,16 +220,14 @@ lime.scheduleManager.activate_ = function() {
 lime.scheduleManager.disable_ = function() {
     if (!this.active_) return;
 
-    if(lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {
+    if (lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {
         // old mozilla
-        if(goog.global['mozRequestAnimationFrame'] && goog.userAgent.VERSION < 11) {
-            goog.global.removeEventListener('MozBeforePaint',this.beforePaintHandlerBinded_, false);
-        }
-        else {
+        if (goog.global['mozRequestAnimationFrame'] && goog.userAgent.VERSION < 11) {
+            goog.global.removeEventListener('MozBeforePaint', this.beforePaintHandlerBinded_, false);
+        } else {
             goog.global.cancelAnimationFrame(this.animationFrameHandlerBinded_);
         }
-    }
-    else {
+    } else {
         clearInterval(this.intervalID_);
     }
     this.active_ = false;
@@ -243,13 +238,12 @@ lime.scheduleManager.disable_ = function() {
  * @this {lime.scheduleManager}
  * @private
  */
-lime.scheduleManager.animationFrameHandler_ = function(time){
+lime.scheduleManager.animationFrameHandler_ = function(time) {
     var performance = goog.global['performance'],
         now;
     if (performance && (now = performance['now'] || performance['webkitNow'])) {
         time = performance['timing']['navigationStart'] + now.call(performance);
-    }
-    else if (!time) {
+    } else if (!time) {
         time = goog.now();
     }
     var delta = time - this.lastRunTime_;
@@ -266,7 +260,7 @@ lime.scheduleManager.animationFrameHandler_ = function(time){
  * @this {lime.scheduleManager}
  * @private
  */
-lime.scheduleManager.beforePaintHandler_ = function(event){
+lime.scheduleManager.beforePaintHandler_ = function(event) {
     var delta = event.timeStamp - this.lastRunTime_;
     lime.scheduleManager.dispatch_(delta);
     this.lastRunTime_ = event.timeStamp;
@@ -293,24 +287,22 @@ lime.scheduleManager.stepTimer_ = function() {
  * @param {number} delta Milliseconds since last run.
  * @private
  */
-lime.scheduleManager.dispatch_ = function(delta){
+lime.scheduleManager.dispatch_ = function(delta) {
 
 
     var stack = this.taskStack_.slice()
     var i = stack.length;
     while (--i >= 0) stack[i].step_(delta);
     //hack to deal with FF4 CSS transformation issue https://bugzilla.mozilla.org/show_bug.cgi?id=637597
-    if(lime.transformSet_ == 1 && (/Firefox\/18./).test(goog.userAgent.getUserAgentString()) &&
-       !lime.FF4_USE_HW_ACCELERATION){
-        if(lime.scheduleManager.odd_){
+    if (lime.transformSet_ == 1 && (/Firefox\/18./).test(goog.userAgent.getUserAgentString()) && !lime.FF4_USE_HW_ACCELERATION) {
+        if (lime.scheduleManager.odd_) {
             document.body.style['MozTransform'] = '';
-            lime.scheduleManager.odd_=0;
-        }
-        else {
+            lime.scheduleManager.odd_ = 0;
+        } else {
             document.body.style['MozTransform'] = 'scale(1,1)';
-            lime.scheduleManager.odd_=1;
+            lime.scheduleManager.odd_ = 1;
         }
-        lime.transformSet_=0;
+        lime.transformSet_ = 0;
     }
 };
 
@@ -322,7 +314,7 @@ lime.scheduleManager.dispatch_ = function(delta){
  */
 lime.scheduleManager.changeDirectorActivity = function(director, value) {
     var t, context, f, d, i,
-    j = this.taskStack_.length;
+        j = this.taskStack_.length;
     while (--j >= 0) {
 
         t = this.taskStack_[j];
@@ -359,7 +351,7 @@ lime.scheduleManager.callAfter = function(f, context, delay) {
  * @this {lime.scheduleManager}
  */
 lime.scheduleManager.scheduleWithDelay = function(f, context,
-        delay, opt_limit) {
+    delay, opt_limit) {
     var task = new lime.scheduleManager.Task(delay, opt_limit);
     lime.scheduleManager.schedule(f, context, task);
 };

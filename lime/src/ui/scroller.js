@@ -15,7 +15,7 @@ lime.ui.Scroller = function() {
     this.setSize(100, 100);
 
     this.clipper = new lime.Sprite().setFill('#c00').setSize(100, 100).
-        setAutoResize(lime.AutoResize.ALL);
+    setAutoResize(lime.AutoResize.ALL);
     this.appendChild(this.clipper);
     this.setMask(this.clipper);
 
@@ -57,8 +57,8 @@ lime.ui.Scroller.FRICTION = .95;
  * @enum number
  */
 lime.ui.Scroller.Direction = {
-  HORIZONTAL: 0,
-  VERTICAL: 1
+    HORIZONTAL: 0,
+    VERTICAL: 1
 };
 
 /**
@@ -121,7 +121,7 @@ lime.ui.Scroller.prototype.setAnchorPoint = function() {
  */
 lime.ui.Scroller.prototype.appendChild = function() {
     if (this.moving_) return this.moving_.appendChild.apply(
-        this.moving_, arguments);
+            this.moving_, arguments);
     return lime.Node.prototype.appendChild.apply(this, arguments);
 };
 
@@ -131,7 +131,7 @@ lime.ui.Scroller.prototype.appendChild = function() {
  */
 lime.ui.Scroller.prototype.removeChild = function() {
     if (this.moving_) return this.moving_.removeChild.apply(
-        this.moving_, arguments);
+            this.moving_, arguments);
     return lime.Node.prototype.removeChild.apply(this, arguments);
 };
 
@@ -149,8 +149,7 @@ lime.ui.Scroller.prototype.measureLimits = function() {
         this.LOW = -measure.left;
         this.HIGH = Math.min(max - measure.right, -measure.left);
         var diff = (measure.right - measure.left) - max;
-    }
-    else {
+    } else {
         this.downx = this.moving_.getPosition().x;
         max = this.getSize().height;
 
@@ -181,18 +180,14 @@ lime.ui.Scroller.prototype.scrollTo = function(offset, opt_duration) {
     if (this.getDirection() == lime.ui.Scroller.Direction.HORIZONTAL) {
         pos.x = this.HIGH - offset;
         if (pos.x < this.LOW) pos.x = this.LOW;
-    }
-    else {
+    } else {
         pos.y = this.HIGH - offset;
         if (pos.y < this.LOW) pos.y = this.LOW;
     }
 
     if (duration) {
-        this.moving_.runAction(new lime.animation.MoveTo(pos.x, pos.y).
-            setDuration(duration).enableOptimizations().
-            setEasing(lime.animation.getEasingFunction(.19, .6, .35, .97)));
-    }
-    else this.moving_.setPosition(pos);
+        this.moving_.runAction(new lime.animation.MoveTo(pos.x, pos.y).setDuration(duration).enableOptimizations().setEasing(lime.animation.getEasingFunction(.19, .6, .35, .97)));
+    } else this.moving_.setPosition(pos);
 };
 
 /**
@@ -212,8 +207,7 @@ lime.ui.Scroller.prototype.downHandler_ = function(e) {
 
     if (this.getDirection() == lime.ui.Scroller.Direction.HORIZONTAL) {
         this.oldvalue = this.posvalue = this.moving_.getPosition().x;
-    }
-    else {
+    } else {
         this.oldvalue = this.posvalue = this.moving_.getPosition().y;
     }
 
@@ -260,13 +254,14 @@ lime.ui.Scroller.prototype.cancelEvents = function() {
  * @param {lime.events.Event} e Event.
  */
 lime.ui.Scroller.prototype.moveHandler_ = function(e) {
-    var pos = e.position.clone(), dir = this.getDirection(), activeval;
+    var pos = e.position.clone(),
+        dir = this.getDirection(),
+        activeval;
     if (dir == lime.ui.Scroller.Direction.HORIZONTAL) {
         pos.x -= this.downx;
         pos.y = this.downy;
         activeval = pos.x;
-    }
-    else {
+    } else {
         pos.x = this.downx;
         pos.y -= this.downy;
         activeval = pos.y;
@@ -290,8 +285,7 @@ lime.ui.Scroller.prototype.moveHandler_ = function(e) {
 
     if (dir == lime.ui.Scroller.Direction.HORIZONTAL) {
         pos.x = activeval;
-    }
-    else {
+    } else {
         pos.y = activeval;
     }
 
@@ -306,14 +300,15 @@ lime.ui.Scroller.prototype.moveHandler_ = function(e) {
  * @param {lime.events.Event} e Event.
  */
 lime.ui.Scroller.prototype.upHandler_ = function(e) {
-    var pos = e.position.clone(), dir = this.getDirection(), activeval;
+    var pos = e.position.clone(),
+        dir = this.getDirection(),
+        activeval;
 
     if (dir == lime.ui.Scroller.Direction.HORIZONTAL) {
         pos.x -= this.downx;
         pos.y = this.downy;
         activeval = pos.x;
-    }
-    else {
+    } else {
         pos.x = this.downx;
         pos.y -= this.downy;
         activeval = pos.y;
@@ -321,7 +316,7 @@ lime.ui.Scroller.prototype.upHandler_ = function(e) {
 
     lime.scheduleManager.unschedule(this.captureVelocity_, this);
     var k = Math.log(0.5 / Math.abs(this.v)) /
-            Math.log(lime.ui.Scroller.FRICTION),
+        Math.log(lime.ui.Scroller.FRICTION),
         duration = k / 30,
         endpos = (Math.abs(this.v) *
             (Math.pow(lime.ui.Scroller.FRICTION, k) - 1)) /
@@ -358,15 +353,12 @@ lime.ui.Scroller.prototype.upHandler_ = function(e) {
 
     if (dir == lime.ui.Scroller.Direction.HORIZONTAL) {
         pos.x = activeval;
-    }
-    else {
+    } else {
         pos.y = activeval;
     }
 
     if (Math.abs(duration) < 10) {
-         this.moving_.runAction(new lime.animation.MoveTo(pos.x, pos.y).
-            setDuration(duration).enableOptimizations().
-            setEasing(lime.animation.getEasingFunction(.19, .6, .35, .97)));
+        this.moving_.runAction(new lime.animation.MoveTo(pos.x, pos.y).setDuration(duration).enableOptimizations().setEasing(lime.animation.getEasingFunction(.19, .6, .35, .97)));
     }
 
 

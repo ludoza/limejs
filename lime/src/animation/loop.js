@@ -22,7 +22,7 @@ lime.animation.Loop = function(action) {
     this.setLimit(0);
 
     this.timesRun_ = 0;
-    
+
     this.playing_ = 0;
 
     this.setDuration(action.duration_);
@@ -66,7 +66,9 @@ lime.animation.Loop.prototype.setLimit = function(value) {
 lime.animation.Loop.prototype.play = function() {
     this.action_.play();
     this.playing_ = 1;
-    this.dispatchEvent({type: lime.animation.Event.START});
+    this.dispatchEvent({
+        type: lime.animation.Event.START
+    });
 };
 
 /**
@@ -76,7 +78,9 @@ lime.animation.Loop.prototype.play = function() {
 lime.animation.Loop.prototype.stop = function() {
     this.playing_ = 0;
     this.action_.stop();
-    this.dispatchEvent({type: lime.animation.Event.STOP});
+    this.dispatchEvent({
+        type: lime.animation.Event.STOP
+    });
 
 };
 

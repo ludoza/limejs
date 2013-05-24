@@ -25,12 +25,11 @@ lime.events.EventDispatcher.prototype.register = function(node, eventType) {
         this.handlers[eventType].sorted = true;
         //base element switch here because safari fires touchend on
         //dom tree changes otherwise
-        goog.events.listen(eventType.substring(0, 5) == 'touch' && node!=this.director ?
+        goog.events.listen(eventType.substring(0, 5) == 'touch' && node != this.director ?
             document : (eventType.substring(0, 3) == 'key' ?
             window : this.director.domElement.parentNode), eventType,
             this, false, this);
-    }
-    else {
+    } else {
         if (!goog.array.contains(this.handlers[eventType], node)) {
             this.handlers[eventType].push(node);
             this.handlers[eventType].sorted = false;
@@ -45,12 +44,12 @@ lime.events.EventDispatcher.prototype.register = function(node, eventType) {
  */
 lime.events.EventDispatcher.prototype.release = function(node, eventType) {
     if (goog.isDef(this.handlers[eventType])) {
-         goog.array.remove(this.handlers[eventType], node);
-         if (!this.handlers[eventType].length) {
-             goog.events.unlisten(this.director.domElement.parentNode,
-                 eventType, this, false, this);
+        goog.array.remove(this.handlers[eventType], node);
+        if (!this.handlers[eventType].length) {
+            goog.events.unlisten(this.director.domElement.parentNode,
+                eventType, this, false, this);
             delete this.handlers[eventType];
-         }
+        }
     }
 };
 
@@ -58,10 +57,10 @@ lime.events.EventDispatcher.prototype.release = function(node, eventType) {
  * Update order of handler nodes. Called on tree changes.
  * @param {lime.Node} node Node that has changed.
  */
-lime.events.EventDispatcher.prototype.updateDispatchOrder = function(node){
-    for(var eventType in this.handlers){
+lime.events.EventDispatcher.prototype.updateDispatchOrder = function(node) {
+    for (var eventType in this.handlers) {
         var handlers = this.handlers[eventType];
-        if(goog.array.contains(handlers,node)){
+        if (goog.array.contains(handlers, node)) {
             handlers.sorted = false;
         }
     }
@@ -75,7 +74,7 @@ lime.events.EventDispatcher.prototype.updateDispatchOrder = function(node){
  * @param {function(lime.events.Event)} handler Function to call.
  */
 lime.events.EventDispatcher.prototype.swallow = function(e, type, handler) {
-   /*
+    /*
    // don't remember why this check was needed
    if (e.type != 'mousedown' && e.type != 'touchstart' &&
         e.type != 'touchmove' && e.type != 'keydown') return;*/
@@ -101,84 +100,83 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
         this.handlers[e.type].sorted = true;
     }
 
-    var handlers = this.handlers[e.type].slice(), didhandle = false;
+    var handlers = this.handlers[e.type].slice(),
+        didhandle = false;
 
-    var touchIndex = 0, doBreak = 0;
+    var touchIndex = 0,
+        doBreak = 0;
 
     while (!doBreak) {
 
-    var ee = new lime.events.Event(this);
-    ee.type = e.type;
-    ee.event = e;
+        var ee = new lime.events.Event(this);
+        ee.type = e.type;
+        ee.event = e;
 
-    if (e.type.substring(0, 5) == 'touch') {
-        var touch = e.getBrowserEvent().changedTouches[touchIndex];
-        ee.screenPosition = new goog.math.Coordinate(touch.pageX, touch.pageY);
-        ee.identifier = touch.identifier;
-        touchIndex++;
+        if (e.type.substring(0, 5) == 'touch') {
+            var touch = e.getBrowserEvent().changedTouches[touchIndex];
+            ee.screenPosition = new goog.math.Coordinate(touch.pageX, touch.pageY);
+            ee.identifier = touch.identifier;
+            touchIndex++;
 
-        if (touchIndex >= e.getBrowserEvent().changedTouches.length) {
+            if (touchIndex >= e.getBrowserEvent().changedTouches.length) {
+                doBreak = 1;
+            }
+        } else {
+            ee.screenPosition = new goog.math.Coordinate(
+                e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft,
+                e.clientY + document.body.scrollTop + document.documentElement.scrollTop);
             doBreak = 1;
         }
-    }
-    else {
-        ee.screenPosition = new goog.math.Coordinate(
-            e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft,
-            e.clientY + document.body.scrollTop + document.documentElement.scrollTop
-        );
-        doBreak = 1;
-    }
 
-    if (goog.isDef(this.swallows[ee.identifier])) {
-        var s = this.swallows[ee.identifier];
+        if (goog.isDef(this.swallows[ee.identifier])) {
+            var s = this.swallows[ee.identifier];
 
-        for (var i = 0; i < s.length; i++) {
-            if (s[i][1] == e.type || (goog.isArray(s[i][1]) &&
+            for (var i = 0; i < s.length; i++) {
+                if (s[i][1] == e.type || (goog.isArray(s[i][1]) &&
                     goog.array.contains(s[i][1], e.type))) {
 
-                var handler = s[i][0];
-                ee.targetObject = handler;
-                ee.position = handler.screenToLocal(ee.screenPosition);
-                s[i][2].call(handler, ee);
-                didhandle = true;
+                    var handler = s[i][0];
+                    ee.targetObject = handler;
+                    ee.position = handler.screenToLocal(ee.screenPosition);
+                    s[i][2].call(handler, ee);
+                    didhandle = true;
+                }
             }
-        }
-        //handler.dispatchEvent(ee);
+            //handler.dispatchEvent(ee);
 
-        if (e.type == 'touchend' || e.type == 'touchcancel' ||
-            e.type == 'mouseup' || e.type == 'keyup') {
-            delete ee.targetObject;
-            ee.release();
-        }
-    }
-    else {
-        for (var i = 0; i < handlers.length; i++) {
+            if (e.type == 'touchend' || e.type == 'touchcancel' ||
+                e.type == 'mouseup' || e.type == 'keyup') {
+                delete ee.targetObject;
+                ee.release();
+            }
+        } else {
+            for (var i = 0; i < handlers.length; i++) {
 
-            var handler = handlers[i];
+                var handler = handlers[i];
 
-            if (this.director.getCurrentScene() != handler.getScene() &&
-                handler != this.director) continue;
+                if (this.director.getCurrentScene() != handler.getScene() &&
+                    handler != this.director) continue;
 
-            if (handler.getHidden() || !handler.inTree_) continue;
-
-            ee.targetObject = handler;
-
-            if (handler.hitTest(ee) || e.type.substring(0, 3) == 'key') {
+                if (handler.getHidden() || !handler.inTree_) continue;
 
                 ee.targetObject = handler;
-                handler.dispatchEvent(ee);
-                didhandle = true;
 
-                if (ee.event.propagationStopped_) break;
+                if (handler.hitTest(ee) || e.type.substring(0, 3) == 'key') {
+
+                    ee.targetObject = handler;
+                    handler.dispatchEvent(ee);
+                    didhandle = true;
+
+                    if (ee.event.propagationStopped_) break;
+                }
+
             }
 
         }
-
-    }
 
     }
 
     if (didhandle)
-    e.preventDefault();
+        e.preventDefault();
 
 };

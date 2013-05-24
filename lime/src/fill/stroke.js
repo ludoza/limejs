@@ -3,12 +3,12 @@ goog.provide('lime.fill.Stroke');
 goog.require('lime.fill.Fill');
 
 /**
-* Stroke
-* @param {(number|Array.<*>)=} opt_width Stroke width.
-* @param {*=} opt_color Stroke color.
-* @constructor
-* @extends lime.fill.Fill
-*/
+ * Stroke
+ * @param {(number|Array.<*>)=} opt_width Stroke width.
+ * @param {*=} opt_color Stroke color.
+ * @constructor
+ * @extends lime.fill.Fill
+ */
 lime.fill.Stroke = function(opt_width, opt_color) {
     lime.fill.Fill.call(this);
 
@@ -31,7 +31,7 @@ lime.fill.Stroke.prototype.id = 'stroke';
 
 /** @inheritDoc */
 lime.fill.Stroke.prototype.setDOMStyle = function(domEl) {
-    domEl.style['border'] = this.width_+'px solid '+this.color_.str;
+    domEl.style['border'] = this.width_ + 'px solid ' + this.color_.str;
 };
 
 /** @inheritDoc */
@@ -44,7 +44,7 @@ lime.fill.Stroke.prototype.setCanvasStyle = function(context) {
  * Return stroke width.
  * @return {number} Stroke width.
  */
-lime.fill.Stroke.prototype.getWidth = function(){
+lime.fill.Stroke.prototype.getWidth = function() {
     return this.width_;
 };
 
@@ -53,7 +53,7 @@ lime.fill.Stroke.prototype.getWidth = function(){
  * @param {number} width New value.
  * @return {lime.fill.Stroke} Stroke object itself.
  */
-lime.fill.Stroke.prototype.setWidth = function(width){
+lime.fill.Stroke.prototype.setWidth = function(width) {
     this.width_ = width;
     return this;
 };
@@ -62,7 +62,7 @@ lime.fill.Stroke.prototype.setWidth = function(width){
  * Return current stroke color.
  * @return {lime.fill.Color} Color.
  */
-lime.fill.Stroke.prototype.getColor = function(){
+lime.fill.Stroke.prototype.getColor = function() {
     return this.color_;
 };
 
@@ -71,16 +71,15 @@ lime.fill.Stroke.prototype.getColor = function(){
  * @param {*} color New color.
  * @return {lime.fill.Stroke} Stroke object itself.
  */
-lime.fill.Stroke.prototype.setColor = function(color){
+lime.fill.Stroke.prototype.setColor = function(color) {
     var params = goog.array.toArray(arguments);
 
-    if(params[0] instanceof lime.fill.Color){
+    if (params[0] instanceof lime.fill.Color) {
         this.color_ = params[0];
-    }
-    else {
+    } else {
         this.color_ = new lime.fill.Color('#000');
-        if(params.length)
-        this.color_.setColor.apply(this.color_,params);
+        if (params.length)
+            this.color_.setColor.apply(this.color_, params);
     }
     return this;
 };

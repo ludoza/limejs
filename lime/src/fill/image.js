@@ -19,36 +19,33 @@ lime.fill.Image = function(img) {
     }
     else */
 
-    if(img && goog.isFunction(img.data)){
+    if (img && goog.isFunction(img.data)) {
         img = img.data();
     }
 
     if (goog.isString(img)) {
         this.url_ = img;
-        if(this.url_.length>50)
+        if (this.url_.length > 50)
             this.url_ = this.url_.substr(-50);
-        if(lime.fill.Image.loadedImages_[this.url_]){
+        if (lime.fill.Image.loadedImages_[this.url_]) {
             this.image_ = lime.fill.Image.loadedImages_[this.url_];
-        }
-        else {
+        } else {
             this.image_ = new Image();
             this.image_.src = img;
         }
-    }
-    else {
+    } else {
         this.url_ = img.src;
-        if(this.url_.length>50)
+        if (this.url_.length > 50)
             this.url_ = this.url_.substr(-50);
-        if(lime.fill.Image.loadedImages_[this.url_]){
+        if (lime.fill.Image.loadedImages_[this.url_]) {
             this.image_ = lime.fill.Image.loadedImages_[this.url_];
-        }
-        else {
+        } else {
             this.image_ = img;
         }
 
     }
 
-    if (!this.isLoaded()){
+    if (!this.isLoaded()) {
         this.addLoadHandler_();
     }
 
@@ -73,37 +70,37 @@ lime.fill.Image.prototype.id = 'image';
 /**
  * @inheritDoc
  */
-lime.fill.Image.prototype.initForSprite = function(sprite){
-    var size = sprite.getSize(),that = this;
-    if(!size.width && !size.height){
-        if(!this.isLoaded()){
+lime.fill.Image.prototype.initForSprite = function(sprite) {
+    var size = sprite.getSize(),
+        that = this;
+    if (!size.width && !size.height) {
+        if (!this.isLoaded()) {
 
-        goog.events.listen(this,goog.events.EventType.LOAD,function(){
-            var size = this.getSize();
-            if(!size.width && !size.height){
-                this.setSize(that.image_.width,that.image_.height);
-            }
-        },false,sprite);
+            goog.events.listen(this, goog.events.EventType.LOAD, function() {
+                var size = this.getSize();
+                if (!size.width && !size.height) {
+                    this.setSize(that.image_.width, that.image_.height);
+                }
+            }, false, sprite);
 
-        }
-        else {
+        } else {
 
-        sprite.setSize(this.image_.width,this.image_.height);
+            sprite.setSize(this.image_.width, this.image_.height);
 
         }
     }
 
-    if(!this.isLoaded()){
-        goog.events.listen(this,goog.events.EventType.LOAD,function(){
+    if (!this.isLoaded()) {
+        goog.events.listen(this, goog.events.EventType.LOAD, function() {
             sprite.setDirty(lime.Dirty.CONTENT);
-        },false,this);
+        }, false, this);
     }
 };
 
 /**
  * @private
  */
-lime.fill.Image.prototype.addLoadHandler_ = function(){
+lime.fill.Image.prototype.addLoadHandler_ = function() {
     goog.events.listen(this.image_, goog.events.EventType.LOAD,
         this.imageLoadedHandler_, false, this);
 }
@@ -121,7 +118,7 @@ lime.fill.Image.prototype.imageLoadedHandler_ = function(e) {
  * Return core DOM Image element for the fill.
  * @return {HTMLImageElement} Image element.
  */
-lime.fill.Image.prototype.getImageElement = function(){
+lime.fill.Image.prototype.getImageElement = function() {
     return this.image_;
 };
 
@@ -129,7 +126,7 @@ lime.fill.Image.prototype.getImageElement = function(){
  * Return true if image object has been loaded from network.
  * @return {boolean} If image has been loaded.
  */
-lime.fill.Image.prototype.isLoaded = function(){
+lime.fill.Image.prototype.isLoaded = function() {
     return !!(this.image_ && this.image_.width && this.image_.height);
 }
 
@@ -140,9 +137,9 @@ lime.fill.Image.prototype.isLoaded = function(){
  * @param {(boolean|number)=} opt_perc If size is relative factor from original.
  * @return {lime.fill.Image} object itself.
  */
-lime.fill.Image.prototype.setSize = function(size,opt_perc){
-    if(goog.isNumber(size)){
-        size = new goog.math.Size(arguments[0],arguments[1]);
+lime.fill.Image.prototype.setSize = function(size, opt_perc) {
+    if (goog.isNumber(size)) {
+        size = new goog.math.Size(arguments[0], arguments[1]);
         opt_perc = arguments[2] || false;
     }
     this.size_ = size;
@@ -156,9 +153,9 @@ lime.fill.Image.prototype.setSize = function(size,opt_perc){
  * @param {boolean=} opt_perc If offset is relative factor from size.
  * @return {lime.fill.Image} object itself.
  */
-lime.fill.Image.prototype.setOffset = function(offset,opt_perc){
-    if(goog.isNumber(offset)){
-        offset = new goog.math.Coordinate(arguments[0],arguments[1]);
+lime.fill.Image.prototype.setOffset = function(offset, opt_perc) {
+    if (goog.isNumber(offset)) {
+        offset = new goog.math.Coordinate(arguments[0], arguments[1]);
         opt_perc = arguments[2] || false;
     }
     this.offset_ = offset;
@@ -166,28 +163,26 @@ lime.fill.Image.prototype.setOffset = function(offset,opt_perc){
     return this;
 }
 
-lime.fill.Image.prototype.getPixelSizeAndOffset = function(shape){
+lime.fill.Image.prototype.getPixelSizeAndOffset = function(shape) {
     var size = shape.getSize().clone();
-    if(this.size_){
-       if(this.size_perc_){
-           size.width*=this.size_.width;
-           size.height*=this.size_.height;
-       }
-       else {
-           size = this.size_;
-       }
-    }
-    var offset = new goog.math.Coordinate(0,0);
-    if(this.offset_){
-        if(this.offset_perc_){
-            offset.x=size.width*this.offset_.x;
-            offset.y=size.height*this.offset_.y;
+    if (this.size_) {
+        if (this.size_perc_) {
+            size.width *= this.size_.width;
+            size.height *= this.size_.height;
+        } else {
+            size = this.size_;
         }
-        else {
+    }
+    var offset = new goog.math.Coordinate(0, 0);
+    if (this.offset_) {
+        if (this.offset_perc_) {
+            offset.x = size.width * this.offset_.x;
+            offset.y = size.height * this.offset_.y;
+        } else {
             offset = this.offset_;
         }
     }
-    return [size,offset];
+    return [size, offset];
 }
 
 
@@ -195,37 +190,44 @@ lime.fill.Image.prototype.getPixelSizeAndOffset = function(shape){
  * Common functionality so it could be reused on Frame
  * @protected
  */
-lime.fill.Image.prototype.setDOMBackgroundProp_ = function(domEl,shape){
-    var so = this.getPixelSizeAndOffset(shape),size=so[0],offset=so[1],q = shape.getRelativeQuality();
-    domEl.style[lime.style.getCSSproperty('BackgroundSize')] = size.width*q+'px '+size.height*q+'px';
-    var stroke =  shape.stroke_?shape.stroke_.width_:0;
-    domEl.style['backgroundPosition'] = (offset.x*q-stroke)+'px '+(offset.y*q-stroke)+'px';
+lime.fill.Image.prototype.setDOMBackgroundProp_ = function(domEl, shape) {
+    var so = this.getPixelSizeAndOffset(shape),
+        size = so[0],
+        offset = so[1],
+        q = shape.getRelativeQuality();
+    domEl.style[lime.style.getCSSproperty('BackgroundSize')] = size.width * q + 'px ' + size.height * q + 'px';
+    var stroke = shape.stroke_ ? shape.stroke_.width_ : 0;
+    domEl.style['backgroundPosition'] = (offset.x * q - stroke) + 'px ' + (offset.y * q - stroke) + 'px';
     //domEl.style['backgroundRepeat'] = 'no-repeat';
     if (this.qualityRenderer)
-    domEl.style['imageRendering'] = 'optimizeQuality';
+        domEl.style['imageRendering'] = 'optimizeQuality';
 }
 
 /** @inheritDoc */
-lime.fill.Image.prototype.setDOMStyle = function(domEl,shape) {
+lime.fill.Image.prototype.setDOMStyle = function(domEl, shape) {
     domEl.style['background'] = 'url(' + this.image_.src + ')';
-    this.setDOMBackgroundProp_(domEl,shape);
+    this.setDOMBackgroundProp_(domEl, shape);
 };
 
-lime.fill.Image.prototype.setCanvasStyle = function(context,shape) {
-    var size = shape.getSize(),frame = shape.getFrame();
+lime.fill.Image.prototype.setCanvasStyle = function(context, shape) {
+    var size = shape.getSize(),
+        frame = shape.getFrame();
     if (!size.width || !size.height) return;
     try {
         var img = this.getImageElement();
-        var so = this.getPixelSizeAndOffset(shape),s=so[0],offset=so[1];
+        var so = this.getPixelSizeAndOffset(shape),
+            s = so[0],
+            offset = so[1];
         /* todo: No idea if drawimage() with loops is faster or if the
            pattern object needs to be cached. Needs to be tested! */
-        var ptrn = context.createPattern(img,'repeat');
-        var aspx = s.width/img.width, aspy =s.height/img.height;
+        var ptrn = context.createPattern(img, 'repeat');
+        var aspx = s.width / img.width,
+            aspy = s.height / img.height;
         context.save();
-        context.translate(frame.left+offset.x,frame.top+offset.y);
-        context.scale(aspx,aspy);
+        context.translate(frame.left + offset.x, frame.top + offset.y);
+        context.scale(aspx, aspy);
         context.fillStyle = ptrn;
-        context.fillRect(-offset.x/aspx,-offset.y/aspy,size.width/aspx, size.height/aspy);
+        context.fillRect(-offset.x / aspx, -offset.y / aspy, size.width / aspx, size.height / aspy);
         context.restore();
-    }catch(e){}
+    } catch (e) {}
 };

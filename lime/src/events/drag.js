@@ -14,7 +14,7 @@ goog.require('lime.animation.MoveTo');
  * @extends goog.events.EventTarget
  */
 lime.events.Drag = function(event, opt_snapToCenter, opt_bounds,
-        opt_targetObject) {
+    opt_targetObject) {
 
     goog.base(this);
 
@@ -142,8 +142,8 @@ lime.events.Drag.prototype.moveHandler_ = function(e) {
     var results = [];
     for (var i = 0; i < this.dropTargets_.length; i++) {
         var loc = this.dropTargets_[i];
-        if(goog.isFunction(loc.confirmTargetActive)){
-            if(!loc.confirmTargetActive(this.target)){
+        if (goog.isFunction(loc.confirmTargetActive)) {
+            if (!loc.confirmTargetActive(this.target)) {
                 continue;
             }
         }
@@ -153,21 +153,23 @@ lime.events.Drag.prototype.moveHandler_ = function(e) {
         var br = loc.localToNode(new goog.math.Coordinate(
             dropFrame.right, dropFrame.bottom), this.target);
         var droprect = goog.math.Rect.createFromBox(
-            new goog.math.Box(Math.min(tl.y, br.y), Math.max(tl.x, br.x), Math.max(tl.y,br.y), Math.min(br.x,tl.x)));
+            new goog.math.Box(Math.min(tl.y, br.y), Math.max(tl.x, br.x), Math.max(tl.y, br.y), Math.min(br.x, tl.x)));
         var intersection = goog.math.Rect.intersection(currect, droprect);
 
         if (intersection) {
             results.push([intersection.width * intersection.height /
-                (droprect.width * droprect.height), i]);
+                    (droprect.width * droprect.height), i]);
         }
     }
 
     if (results.length) {
-        results = results.sort(function(a, b) {return b[0] - a[0];});
+        results = results.sort(function(a, b) {
+            return b[0] - a[0];
+        });
         sel = results[0][1];
-   }
+    }
 
-   if (sel != this.dropIndex_) {
+    if (sel != this.dropIndex_) {
         if (this.dropIndex_ != -1) {
             if (goog.isFunction(this.dropTargets_[this.dropIndex_].hideDropHighlight)) {
                 this.dropTargets_[this.dropIndex_].hideDropHighlight();
@@ -217,8 +219,7 @@ lime.events.Drag.prototype.releaseHandler_ = function(e) {
                     ev.moveEndedCallback, false, this.target);
             }
         }
-    }
-    else {
+    } else {
         this.dispatchEvent(new goog.events.Event(
             lime.events.Drag.Event.CANCEL));
     }
@@ -236,4 +237,3 @@ lime.events.Drag.prototype.releaseHandler_ = function(e) {
 lime.events.Drag.prototype.addDropTarget = function(drop) {
     this.dropTargets_.push(drop);
 };
-

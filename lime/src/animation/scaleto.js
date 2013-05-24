@@ -18,11 +18,9 @@ lime.animation.ScaleTo = function(scale, opt_height) {
 
     if (arguments.length == 1 && goog.isNumber(scale)) {
         this.scale_ = new goog.math.Vec2(scale, scale);
-    }
-    else if (arguments.length == 2) {
+    } else if (arguments.length == 2) {
         this.scale_ = new goog.math.Vec2(arguments[0], arguments[1]);
-    }
-    else this.scale_ = scale;
+    } else this.scale_ = scale;
 
 
 };
@@ -40,7 +38,7 @@ lime.animation.ScaleTo.prototype.scope = 'scale';
 lime.animation.ScaleTo.prototype.makeTargetProp = function(target) {
     var scale = target.getScale(),
         delta = new goog.math.Vec2(this.scale_.x - scale.x,
-                                  this.scale_.y - scale.y);
+            this.scale_.y - scale.y);
 
     if (this.useTransitions()) {
         target.addTransition(lime.Transition.SCALE,
@@ -49,8 +47,10 @@ lime.animation.ScaleTo.prototype.makeTargetProp = function(target) {
         target.setDirty(lime.Dirty.SCALE);
     }
 
-    return {startScale: scale,
-            delta: delta};
+    return {
+        startScale: scale,
+        delta: delta
+    };
 };
 
 /**
@@ -63,8 +63,7 @@ lime.animation.ScaleTo.prototype.update = function(t, target) {
 
     target.setScale(
         prop.startScale.x + prop.delta.x * t,
-        prop.startScale.y + prop.delta.y * t
-    );
+        prop.startScale.y + prop.delta.y * t);
 };
 
 /**
@@ -77,4 +76,3 @@ lime.animation.ScaleTo.prototype.clearTransition = function(target) {
         target.setDirty(lime.Dirty.SCALE);
     }
 };
-

@@ -2,9 +2,9 @@ goog.provide('lime.DirtyObject');
 
 
 /**
-* Dirty object (requires updates)
-* @interface
-*/
+ * Dirty object (requires updates)
+ * @interface
+ */
 lime.DirtyObject = function() {};
 
 /**

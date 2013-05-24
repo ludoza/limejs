@@ -32,11 +32,13 @@ lime.animation.RotateTo.prototype.makeTargetProp = function(target) {
     if (this.useTransitions()) {
         target.addTransition(lime.Transition.ROTATION,
             this.angle_,
-            this.duration_, this.getEasing()
-        );
+            this.duration_, this.getEasing());
         target.setDirty(lime.Dirty.POSITION);
     }
-    return {startRot: rot, delta: this.angle_ - rot };
+    return {
+        startRot: rot,
+        delta: this.angle_ - rot
+    };
 };
 
 /**

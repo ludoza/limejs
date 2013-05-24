@@ -127,12 +127,10 @@ lime.animation.KeyframeAnimation.prototype.addFrame = function(frame) {
 
     if (fill.id == 'image' && !fill.isLoaded()) {
         goog.events.listen(fill, goog.events.EventType.LOAD,
-                this.frameLoadedHandler_, false, this);
-    }
-    else if (fill.id == 'frame' && !frame.isProcessed()) {
+            this.frameLoadedHandler_, false, this);
+    } else if (fill.id == 'frame' && !frame.isProcessed()) {
         goog.events.listen(fill, 'processed', this.frameLoadedHandler_, false, this);
-    }
-    else {
+    } else {
         this.numFramesLoaded_++;
     }
     this.frames_.push(fill);
@@ -154,15 +152,15 @@ lime.animation.KeyframeAnimation.prototype.frameLoadedHandler_ = function() {
  */
 lime.animation.KeyframeAnimation.prototype.play = function() {
 
-   this.lastChangeTime_ = 0;
+    this.lastChangeTime_ = 0;
 
-   lime.animation.Animation.prototype.play.call(this);
+    lime.animation.Animation.prototype.play.call(this);
 };
 
 /**
  * @inheritDoc
  */
-lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
+lime.animation.KeyframeAnimation.prototype.updateAll = function(t, targets) {
     var dt = this.dt_,
         delay_msec = Math.round(this.delay * 1000),
         nextImage = null,
@@ -179,10 +177,10 @@ lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
     if (this.lastChangeTime_ > delay_msec) {
         if (nextFrame < this.frames_.length) {
             validframe = true;
-        }else if (looping && nextFrame >= this.frames_.length) {
+        } else if (looping && nextFrame >= this.frames_.length) {
             validframe = true;
             nextFrame = 0;
-        }else {
+        } else {
             validframe = false;
         }
         if (validframe) {
@@ -211,10 +209,10 @@ lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
                 }
                 else {
                     */
-                    while (--i >= 0) {
-                        this.targets[i].setFill(nextImage);
+                while (--i >= 0) {
+                    this.targets[i].setFill(nextImage);
 
-                    }
+                }
                 //}
             }
 
@@ -227,7 +225,7 @@ lime.animation.KeyframeAnimation.prototype.updateAll = function(t,targets) {
 
     if (!looping) {
         return nextFrame / this.frames_.length;
-    }else {
+    } else {
         return 0;
     }
 };

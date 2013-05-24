@@ -37,8 +37,10 @@ lime.Circle.prototype.supportedRenderers = [
  */
 lime.Circle.prototype.hitTest = function(e) {
     var coord = this.screenToLocal(e.screenPosition);
-    var s = this.size_, ap = this.anchorPoint_,
-        a = s.width * .5, b = s.height * .5,
+    var s = this.size_,
+        ap = this.anchorPoint_,
+        a = s.width * .5,
+        b = s.height * .5,
         x = coord.x - s.width * (.5 - ap.x),
         y = coord.y - s.height * (.5 - ap.y);
 
@@ -59,8 +61,8 @@ lime.Renderer.DOM.CIRCLE.draw = function(el) {
     lime.Renderer.DOM.SPRITE.draw.call(this, el);
 
     lime.style.setBorderRadius(el, size.width * .5, size.height * .5);
-  //  el.style['-webkit-border-radius'] = el.style['MozBorderRadius'] =
-  //      size.width*.5+'px / '+size.height*.5+'px';
+    //  el.style['-webkit-border-radius'] = el.style['MozBorderRadius'] =
+    //      size.width*.5+'px / '+size.height*.5+'px';
 
 };
 
@@ -69,15 +71,17 @@ lime.Renderer.DOM.CIRCLE.draw = function(el) {
  * @this {lime.Circle}
  */
 lime.Renderer.CANVAS.CIRCLE.draw = function(context) {
-   // console.log('draw');
-    var size = this.getSize(), fill = this.fill_,ap = this.getAnchorPoint();
+    // console.log('draw');
+    var size = this.getSize(),
+        fill = this.fill_,
+        ap = this.getAnchorPoint();
     var frame = this.getFrame();
     var cx = (frame.right - frame.left) * .5;
     var cy = (frame.bottom - frame.top) * .5;
     context.save();
     context.save();
     context.scale(cx, cy);
-    context.translate(1-2*ap.x,1-2*ap.y);
+    context.translate(1 - 2 * ap.x, 1 - 2 * ap.y);
     context.beginPath();
     context.arc(0, 0, 1, 0, 2 * Math.PI, false);
     context.closePath();
@@ -85,11 +89,11 @@ lime.Renderer.CANVAS.CIRCLE.draw = function(context) {
     context.clip();
 
     lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
-    
-    if(this.stroke_){
-        context.lineWidth*=2;
+
+    if (this.stroke_) {
+        context.lineWidth *= 2;
         context.stroke();
     }
-    
+
     context.restore();
 };

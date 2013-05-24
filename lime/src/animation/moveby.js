@@ -55,19 +55,21 @@ lime.animation.MoveBy.prototype.makeTargetProp = function(target) {
             this.duration_, this.getEasing());
         target.setDirty(lime.Dirty.POSITION);
     }
-    return {startpos: target.getPosition()};
+    return {
+        startpos: target.getPosition()
+    };
 };
 
 /**
  * Calculate animations duration based on its speed.
  * @private
  */
-lime.animation.MoveBy.prototype.calcDurationFromSpeed_ = function(){
-    if(!this.speed_) return;
-    
+lime.animation.MoveBy.prototype.calcDurationFromSpeed_ = function() {
+    if (!this.speed_) return;
+
     this.setDuration(this.speed_ * goog.math.Coordinate.distance(
         this.delta_, new goog.math.Coordinate(0, 0)) / 100);
-            
+
     this.speedCalcDone_ = 1;
 }
 
@@ -81,8 +83,7 @@ lime.animation.MoveBy.prototype.update = function(t, target) {
 
     target.setPosition(
         prop.startpos.x + this.delta_.x * t,
-        prop.startpos.y + this.delta_.y * t
-    );
+        prop.startpos.y + this.delta_.y * t);
 
 };
 

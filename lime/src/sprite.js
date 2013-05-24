@@ -75,7 +75,7 @@ lime.Sprite.prototype.setFill = function(fill, opt_g, opt_b, opt_a) {
  * Return Stroke object if one is set
  * @return {lime.fill.Stroke} Stroke object.
  */
-lime.Sprite.prototype.getStroke = function(){
+lime.Sprite.prototype.getStroke = function() {
     return this.stroke_;
 };
 
@@ -84,8 +84,8 @@ lime.Sprite.prototype.getStroke = function(){
  * @param {*} stroke Stroke object or width and (mixed type) Color.
  * @return {lime.Sprite} object itself.
  */
-lime.Sprite.prototype.setStroke = function(stroke){
-    if(stroke && !(stroke instanceof lime.fill.Stroke)){
+lime.Sprite.prototype.setStroke = function(stroke) {
+    if (stroke && !(stroke instanceof lime.fill.Stroke)) {
         stroke = new lime.fill.Stroke(goog.array.toArray(arguments));
     }
     this.stroke_ = stroke;
@@ -129,32 +129,33 @@ lime.Renderer.DOM.SPRITE.draw = function(el) {
  * @this {lime.Sprite}
  */
 lime.Renderer.CANVAS.SPRITE.draw = function(context) {
-    var size = this.getSize(), fill = this.fill_, stroke = this.stroke_;
+    var size = this.getSize(),
+        fill = this.fill_,
+        stroke = this.stroke_;
 
     if (!fill && !stroke) return;
-    
+
     var frame = this.getFrame();
-    
-    
-    if(fill){
+
+
+    if (fill) {
         fill.setCanvasStyle(context, this);
-    
-        if(fill.id != 'image' && fill.id!='frame'){
-            context.fillRect(frame.left,frame.top,
+
+        if (fill.id != 'image' && fill.id != 'frame') {
+            context.fillRect(frame.left, frame.top,
                 size.width, size.height);
         }
     }
-    
-    
-    if(stroke){
-        stroke.setCanvasStyle(context,this);
-        
-        if(this.id=='sprite' || this.id=='label'){
-        var lw = stroke.width_/2;
-        context.strokeRect(frame.left+lw,frame.top+lw,
-            size.width-2*lw, size.height-2*lw);
+
+
+    if (stroke) {
+        stroke.setCanvasStyle(context, this);
+
+        if (this.id == 'sprite' || this.id == 'label') {
+            var lw = stroke.width_ / 2;
+            context.strokeRect(frame.left + lw, frame.top + lw,
+                size.width - 2 * lw, size.height - 2 * lw);
         }
     }
 
 };
-

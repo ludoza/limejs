@@ -17,7 +17,7 @@ lime.transitions.Transition = function(outgoing, incoming) {
 
     this.finished_ = false;
 };
-goog.inherits(lime.transitions.Transition,goog.events.EventTarget);
+goog.inherits(lime.transitions.Transition, goog.events.EventTarget);
 
 /**
  * Returns the animation duration in seconds.
@@ -45,7 +45,7 @@ lime.transitions.Transition.prototype.setDuration = function(value) {
  * @return {lime.transitions.Transition} object itself.
  */
 lime.transitions.Transition.prototype.setFinishCallback = function(value) {
-    if(goog.DEBUG && console && console.warn){
+    if (goog.DEBUG && console && console.warn) {
         console.warn('Transition.prototype.setFinishCallback() is deprecated. Use event listeners.');
     }
     return this;

@@ -17,15 +17,15 @@ lime.Renderer.DOM = new lime.Renderer();
  * @this {lime.Node}
  */
 lime.Renderer.DOM.updateLayout = function() {
-    var j = 0, el;
+    var j = 0,
+        el;
     for (var i = 0, child; child = this.children_[i]; i++) {
         el = child instanceof lime.Node ? child.rootElement : child;
 
         if (el == this.domElement.childNodes[j]) {
             j++;
             continue;
-        }
-        else {
+        } else {
             if (goog.dom.contains(this.containerElement, el)) {
                 goog.dom.removeNode(el);
             }
@@ -34,7 +34,7 @@ lime.Renderer.DOM.updateLayout = function() {
         }
     }
 
-   /* var lastIndex = this.containerElement.childNodes.length - 1;
+    /* var lastIndex = this.containerElement.childNodes.length - 1;
     while (lastIndex >= j) {
         goog.dom.removeNode(this.containerElement.childNodes[lastIndex]);
         lastIndex--;
@@ -47,10 +47,10 @@ lime.Renderer.DOM.updateLayout = function() {
  */
 lime.Renderer.DOM.drawSizePosition = function() {
     var size = this.getSize(),
-       quality = this.getQuality(),
-       position = this.getPosition(),
-       rquality = this.relativeQuality_ || 1,
-       enable3D = this.getCSS3DTransformsAllowed();
+        quality = this.getQuality(),
+        position = this.getPosition(),
+        rquality = this.relativeQuality_ || 1,
+        enable3D = this.getCSS3DTransformsAllowed();
 
     if (this.transitionsActive_[lime.Transition.POSITION]) {
         position = this.transitionsActive_[lime.Transition.POSITION];
@@ -80,18 +80,18 @@ lime.Renderer.DOM.drawSizePosition = function() {
 
     var so = this.stroke_ ? this.stroke_.width_ : 0;
 
-    if (((ax-so) != 0 || (ay-so) != 0) && this.domElement == this.containerElement &&
-            this.children_.length) {
+    if (((ax - so) != 0 || (ay - so) != 0) && this.domElement == this.containerElement &&
+        this.children_.length) {
         lime.Renderer.DOM.makeContainer.call(this);
     }
 
 
     if (this.domElement != this.containerElement) {
         if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION])
-        lime.style.setTransform(this.containerElement,
+            lime.style.setTransform(this.containerElement,
                 new lime.style.Transform()
-                    .set3DAllowed(enable3D)
-                    .translate(ax-so, ay-so));
+                .set3DAllowed(enable3D)
+                .translate(ax - so, ay - so));
     }
 
     if (this.mask_ != this.activeMask_) {
@@ -121,10 +121,10 @@ lime.Renderer.DOM.drawSizePosition = function() {
     }
 
     transform.translate(px, py).scale(realScale.x, realScale.y).
-        rotate(rotation);
+    rotate(rotation);
 
     if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]) {
-       //     console.log('transform',this.transition_position_set_,this.transition_position_);
+        //     console.log('transform',this.transition_position_set_,this.transition_position_);
         lime.style.setTransform(this.domElement, transform);
     }
 
@@ -153,8 +153,8 @@ lime.Renderer.DOM.update = function() {
         this.domElement.style['display'] = this.hidden_ ? 'none' : 'block';
     }
 
-    if(!this.maskTarget_)
-    this.renderer.draw.call(this, this.domElement);
+    if (!this.maskTarget_)
+        this.renderer.draw.call(this, this.domElement);
 
 };
 
@@ -212,7 +212,7 @@ lime.Renderer.DOM.calculateMaskPosition = function() {
     }
 
     if (this.renderer.getType() == lime.Renderer.DOM) {
-       this.domElement.style['display'] = 'none';
+        this.domElement.style['display'] = 'none';
     }
 
     this.mPos = target.parentToLocal(tl.clone());
@@ -221,7 +221,7 @@ lime.Renderer.DOM.calculateMaskPosition = function() {
     this.mX = cos * tl.x - sin * tl.y;
     this.mY = cos * tl.y + sin * tl.x;
     this.mRot = rot;
-/*
+    /*
     target.setDirty(lime.Dirty.POSITION);
     target.update();
 */
@@ -252,8 +252,8 @@ lime.Renderer.DOM.makeContainer = function() {
     var fragment = document.createDocumentFragment(),
         child;
     while ((child = this.domElement.firstChild)) {
-       this.domElement.removeChild(child);
-       fragment.appendChild(child);
+        this.domElement.removeChild(child);
+        fragment.appendChild(child);
     }
     this.containerElement.appendChild(fragment);
     this.domElement.appendChild(this.containerElement);
@@ -283,7 +283,7 @@ lime.Renderer.DOM.addMask = function() {
         this.rootElement = goog.dom.createDom('div');
         this.rootElement.style.cssText = 'position:absolute;overflow:hidden;';
         //todo: combine into css class
-        lime.style.setTransformOrigin(this.rootElement,0,0);
+        lime.style.setTransformOrigin(this.rootElement, 0, 0);
         goog.dom.replaceNode(this.rootElement, this.domElement);
         this.rootElement.appendChild(this.domElement);
     }

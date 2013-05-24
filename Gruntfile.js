@@ -4,7 +4,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 	jsbeautifier : {
-	  files : ["src/**/*.js"]
+	  files : ["lime/src/**/*.js"]
 	}
   });
 

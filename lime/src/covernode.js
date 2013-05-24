@@ -55,8 +55,7 @@ lime.CoverNode.prototype.update = function() {
     // some action has set update area limits?
     if (this.updateRect_) {
         this.setNeedsRedrawInRect(this.updateRect_);
-    }
-    else {
+    } else {
         this.setNeedsRedraw();
     }
 };
@@ -68,8 +67,7 @@ lime.CoverNode.prototype.setNeedsRedraw = function() {
 
     var box = new goog.math.Box(
         0, this.baseElement.width / this.getQuality(),
-        this.baseElement.height / this.getQuality(), 0
-    );
+        this.baseElement.height / this.getQuality(), 0);
     this.setNeedsRedrawInRect(this.director.getBounds(box));
 
 };
@@ -101,4 +99,3 @@ lime.CoverNode.prototype.setNeedsRedrawInRect = function(box) {
  * @param {goog.math.Box} box Draw area.
  */
 lime.CoverNode.prototype.drawInRect = goog.abstractMethod;
-

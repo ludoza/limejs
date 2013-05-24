@@ -22,8 +22,7 @@ lime.animation.Spawn = function(one) {
 
         this.one = act.shift();
         this.two = new lime.animation.Spawn(act);
-    }
-    else {
+    } else {
         this.one = act[0];
         this.two = act[1];
     }
@@ -37,8 +36,7 @@ lime.animation.Spawn = function(one) {
     if (d1 > d2) {
         this.two = new lime.animation.Sequence(this.two,
             delay.setDuration(d1 - d2));
-    }
-    else if (d1 < d2) {
+    } else if (d1 < d2) {
         this.one = new lime.animation.Sequence(this.one,
             delay.setDuration(d2 - d1));
     }
@@ -69,7 +67,7 @@ lime.animation.Spawn.prototype.updateAll = function(t, targets) {
     }
     this.one.updateAll(t, targets);
     this.two.updateAll(t, targets);
-    
+
     return t;
 };
 

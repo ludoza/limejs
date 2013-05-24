@@ -25,7 +25,7 @@ lime.transitions.Dissolve.prototype.start = function() {
         if (this.outgoing_) {
             this.outgoing_.setOpacity(1);
         }
-    },false, this);
+    }, false, this);
 
     if (this.outgoing_)
         this.outgoing_.runAction(hide);
@@ -38,6 +38,3 @@ lime.transitions.Dissolve.prototype.start = function() {
 
 
 };
-
-
-

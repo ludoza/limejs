@@ -7,11 +7,11 @@ goog.require('goog.color.alpha');
 goog.require('lime.fill.Fill');
 
 /**
-* Color fill
-* @param {*} clr Color value.
-* @constructor
-* @extends lime.fill.Fill
-*/
+ * Color fill
+ * @param {*} clr Color value.
+ * @constructor
+ * @extends lime.fill.Fill
+ */
 lime.fill.Color = function(clr) {
     lime.fill.Fill.call(this);
 
@@ -29,9 +29,9 @@ goog.inherits(lime.fill.Color, lime.fill.Fill);
 lime.fill.Color.prototype.id = 'color';
 
 /**
-* Gets color as RGBA array.
-* @return {null|Array.<number>} RGBA array.
-*/
+ * Gets color as RGBA array.
+ * @return {null|Array.<number>} RGBA array.
+ */
 lime.fill.Color.prototype.getRgba = function() {
     var out = null;
 
@@ -92,10 +92,10 @@ lime.fill.Color.prototype.addSaturation = function(value) {
 };
 
 /**
-* Set color value of the object. Accepts raw RGB(A) values and strings.
-* @param {*} clr New color value.
-* @return {lime.fill.Color} object itself.
-*/
+ * Set color value of the object. Accepts raw RGB(A) values and strings.
+ * @param {*} clr New color value.
+ * @return {lime.fill.Color} object itself.
+ */
 lime.fill.Color.prototype.setColor = function(clr) {
     var color = clr;
 
@@ -117,8 +117,8 @@ lime.fill.Color.prototype.setColor = function(clr) {
     }
 
     this.str = this.a == 1 ?
-    'rgb(' + this.r + ',' + this.g + ',' + this.b + ')' :
-    'rgba(' + this.r + ',' + this.g + ',' + this.b + ',' + this.a + ')';
+        'rgb(' + this.r + ',' + this.g + ',' + this.b + ')' :
+        'rgba(' + this.r + ',' + this.g + ',' + this.b + ',' + this.a + ')';
     return this;
 };
 
@@ -155,8 +155,6 @@ lime.fill.Color.prototype.clone = function() {
 lime.fill.Color.prototype.equals = function(a) {
     return a && a instanceof lime.fill.Color && (
         this.str === a.str || (
-            a.r !== undefined && a.r === this.r && a.g === this.g &&
-            a.b === this.b && r.a === this.a
-        ) || goog.array.equals(this.getRgba(), a.getRgba())
-    );
+        a.r !== undefined && a.r === this.r && a.g === this.g &&
+        a.b === this.b && r.a === this.a) || goog.array.equals(this.getRgba(), a.getRgba()));
 };

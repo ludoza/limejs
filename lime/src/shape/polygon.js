@@ -61,10 +61,9 @@ lime.Polygon.prototype.addPoints = function(points) {
 
     if (points[0] instanceof goog.math.Coordinate) {
         goog.array.forEach(points, function(p) {
-           this.addPoint(p);
-        },this);
-    }
-    else {
+            this.addPoint(p);
+        }, this);
+    } else {
         for (var i = 1; i < points.length; i += 2) {
             this.addPoint(new goog.math.Coordinate(points[i - 1], points[i]));
         }
@@ -81,8 +80,7 @@ lime.Polygon.prototype.addPoint = function(coord) {
     if (!this.points_.length) {
         this.minX = this.maxX = coord.x;
         this.minY = this.maxY = coord.y;
-    }
-    else {
+    } else {
         this.minX = Math.min(coord.x, this.minX);
         this.minY = Math.min(coord.y, this.minY);
         this.maxX = Math.max(coord.x, this.maxX);
@@ -101,8 +99,7 @@ lime.Polygon.prototype.getSize = function() {
 /** @inheritDoc */
 lime.Polygon.prototype.getAnchorPoint = function() {
     var size = this.getSize();
-    return new goog.math.Vec2(
-        -this.minX / size.width, -this.minY / size.height);
+    return new goog.math.Vec2(-this.minX / size.width, -this.minY / size.height);
 };
 
 /**
@@ -120,9 +117,9 @@ lime.Polygon.prototype.hitTest = function(e) {
         for (i = 0, j = plen - 1; i < plen; j = i++) {
             if (((p[i].y > coord.y) != (p[j].y > coord.y)) &&
                 (coord.x < (p[j].x - p[i].x) * (coord.y - p[i].y) /
-                    (p[j].y - p[i].y) + p[i].x)) {
-                    inPoly = !inPoly;
-                }
+                (p[j].y - p[i].y) + p[i].x)) {
+                inPoly = !inPoly;
+            }
         }
     }
 
@@ -136,38 +133,39 @@ lime.Polygon.prototype.hitTest = function(e) {
 lime.Renderer.CANVAS.POLYGON.draw = function(context) {
 
 
-    var size = this.getSize(), fill = this.fill_;
+    var size = this.getSize(),
+        fill = this.fill_;
 
     var pt = this.getPoints();
-    
+
 
     if (pt.length > 2) {
 
-       context.save();
-       context.beginPath();
-       context.moveTo(pt[0].x, pt[0].y);
+        context.save();
+        context.beginPath();
+        context.moveTo(pt[0].x, pt[0].y);
 
-       for (var i = 1; i < pt.length; i++) {
-           context.lineTo(pt[i].x, pt[i].y);
+        for (var i = 1; i < pt.length; i++) {
+            context.lineTo(pt[i].x, pt[i].y);
 
-       }
+        }
 
-       context.closePath();
-       if(fill)
-       context.fillStyle = fill.str;
-
-
-       context.clip();
+        context.closePath();
+        if (fill)
+            context.fillStyle = fill.str;
 
 
+        context.clip();
 
-    lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
-    
-    if(this.stroke_){
-        context.lineWidth*=2;
-        context.stroke();
-    }
-    
-    context.restore();
+
+
+        lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
+
+        if (this.stroke_) {
+            context.lineWidth *= 2;
+            context.stroke();
+        }
+
+        context.restore();
     }
 };

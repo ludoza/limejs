@@ -23,7 +23,7 @@ lime.events.Event = function(dispatcher) {
 lime.events.Event.prototype.swallow = function(type, handler, opt_deny_shared) {
     type = goog.isArray(type) ? type : [type];
     for (var i = 0; i < type.length; i++)
-    this.dispatcher_.swallow(this, type[i], handler);
+        this.dispatcher_.swallow(this, type[i], handler);
 
     if (opt_deny_shared) {
         this.event.stopPropagation();
@@ -44,16 +44,15 @@ lime.events.Event.prototype.release = function(opt_type) {
     var s2 = goog.array.filter(s, function(swallow) {
         if (!goog.isDef(e.targetObject) || (swallow[0] == e.targetObject &&
             (!limit_type || goog.array.contains(type, swallow[1])))) {
-           goog.events.unlisten(swallow[0], swallow[1], swallow[2]);
-           return false;
+            goog.events.unlisten(swallow[0], swallow[1], swallow[2]);
+            return false;
         }
         return true;
     });
 
     if (s2.length) {
         this.dispatcher_.swallows[this.identifier] = s2;
-    }
-    else {
+    } else {
         delete this.dispatcher_.swallows[this.identifier];
     }
 };
@@ -66,7 +65,7 @@ lime.events.Event.prototype.release = function(opt_type) {
  * @return {lime.events.Drag} New Drag object.
  */
 lime.events.Event.prototype.startDrag = function(snapToCenter, box,
-        opt_targetObject) {
+    opt_targetObject) {
     return new lime.events.Drag(this, snapToCenter, box, opt_targetObject);
 };
 

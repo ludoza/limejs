@@ -60,16 +60,16 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 
 
     if (goog.userAgent.WEBKIT && goog.userAgent.MOBILE) {
-    //todo: Not pretty solution. Cover layers may not be needed at all.
-    this.coverElementBelow = document.createElement('div');
-    goog.dom.classes.add(this.coverElementBelow,
-        goog.getCssName('lime-cover-below'));
-    goog.dom.insertSiblingBefore(this.coverElementBelow, this.domElement);
+        //todo: Not pretty solution. Cover layers may not be needed at all.
+        this.coverElementBelow = document.createElement('div');
+        goog.dom.classes.add(this.coverElementBelow,
+            goog.getCssName('lime-cover-below'));
+        goog.dom.insertSiblingBefore(this.coverElementBelow, this.domElement);
 
-    this.coverElementAbove = document.createElement('div');
-    goog.dom.classes.add(this.coverElementAbove,
-        goog.getCssName('lime-cover-above'));
-    goog.dom.insertSiblingAfter(this.coverElementAbove, this.domElement);
+        this.coverElementAbove = document.createElement('div');
+        goog.dom.classes.add(this.coverElementAbove,
+            goog.getCssName('lime-cover-above'));
+        goog.dom.insertSiblingAfter(this.coverElementAbove, this.domElement);
     }
 
     if (parentElement.style['position'] != 'absolute') {
@@ -90,14 +90,15 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 
         meta.content = content;
         document.getElementsByTagName('head').item(0).appendChild(meta);
-        
-        
+
+
         //todo: look for a less hacky solution
-        if(goog.userAgent.MOBILE && !goog.global['navigator'].standalone){
+        if (goog.userAgent.MOBILE && !goog.global['navigator'].standalone) {
             var that = this;
-            setTimeout(
-                function(){window.scrollTo(0, 0);that.invalidateSize_()}
-            ,100);
+            setTimeout(function() {
+                window.scrollTo(0, 0);
+                that.invalidateSize_()
+            }, 100);
         }
     }
 
@@ -105,8 +106,7 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 
     this.setSize(new goog.math.Size(
         width = arguments[1] || parentSize.width || lime.Director.DEFAULT_WIDTH,
-        arguments[2] || parentSize.height * width / parentSize.width || lime.Director.DEFAULT_HEIGHT
-    ));
+        arguments[2] || parentSize.height * width / parentSize.width || lime.Director.DEFAULT_HEIGHT));
 
     // --define goog.debug=false
     this.setDisplayFPS(goog.DEBUG);
@@ -125,19 +125,19 @@ lime.Director = function(parentElement, opt_width, opt_height) {
 
     this.eventDispatcher = new lime.events.EventDispatcher(this);
 
-    goog.events.listen(this, ['touchmove','touchstart'],
-        function(e) {e.event.preventDefault();}, false, this);
+    goog.events.listen(this, ['touchmove', 'touchstart'], function(e) {
+        e.event.preventDefault();
+    }, false, this);
 
     // todo: check if all those are really neccessary as Event code
     // is much more mature now
-    goog.events.listen(this, ['mouseup', 'touchend', 'mouseout', 'touchcancel'],
-        function() {},false);
+    goog.events.listen(this, ['mouseup', 'touchend', 'mouseout', 'touchcancel'], function() {}, false);
 
 
     this.invalidateSize_();
-    
-    if(goog.DEBUG){
-        goog.events.listen(goog.global,'keyup',this.keyUpHandler_,false,this);
+
+    if (goog.DEBUG) {
+        goog.events.listen(goog.global, 'keyup', this.keyUpHandler_, false, this);
     }
 
 };
@@ -189,8 +189,7 @@ lime.Director.prototype.setPaused = function(value) {
         var pauseClass = this.pauseClassFactory || lime.helper.PauseScene;
         this.pauseScene = new pauseClass();
         this.pushScene(this.pauseScene);
-    }
-    else if (this.pauseScene) {
+    } else if (this.pauseScene) {
         this.popScene();
         delete this.pauseScene;
     }
@@ -214,8 +213,7 @@ lime.Director.prototype.isDisplayFPS = function() {
 lime.Director.prototype.setDisplayFPS = function(value) {
     if (this.displayFPS_ && !value) {
         goog.dom.removeNode(this.fpsElement_);
-    }
-    else if (!this.displayFPS_ && value) {
+    } else if (!this.displayFPS_ && value) {
         this.frames_ = 0;
         this.accumDt_ = 0;
 
@@ -240,7 +238,7 @@ lime.Director.prototype.getCurrentScene = function() {
 
 /** @inheritDoc */
 lime.Director.prototype.getDirector = function() {
-     return this;
+    return this;
 };
 
 /** @inheritDoc */
@@ -276,7 +274,7 @@ lime.Director.prototype.step_ = function(delta) {
  * @param {number=} opt_duration Duration of transition.
  */
 lime.Director.prototype.replaceScene = function(scene, opt_transition,
-        opt_duration) {
+    opt_duration) {
 
     scene.setSize(this.getSize().clone());
 
@@ -298,21 +296,21 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
     this.sceneStack_.length = 0;
 
     this.sceneStack_.push(scene);
-    scene.domElement.style['display']='none';
+    scene.domElement.style['display'] = 'none';
     this.domElement.appendChild(scene.domElement);
     scene.parent_ = this;
     scene.wasAddedToTree();
 
     var transition = new transitionclass(outgoing, scene);
-        
-    goog.events.listenOnce(transition,'end',function() {
-            var i = removelist.length;
-            while (--i >= 0) {
-                goog.dom.removeNode(removelist[i]);
-            }
-            removelist.length = 0;
-            
-        },false,this);
+
+    goog.events.listenOnce(transition, 'end', function() {
+        var i = removelist.length;
+        while (--i >= 0) {
+            goog.dom.removeNode(removelist[i]);
+        }
+        removelist.length = 0;
+
+    }, false, this);
 
     if (goog.isDef(opt_duration)) {
         transition.setDuration(opt_duration);
@@ -325,7 +323,7 @@ lime.Director.prototype.replaceScene = function(scene, opt_transition,
 
 /** @inheritDoc */
 lime.Director.prototype.updateLayout = function() {
-   // debugger;
+    // debugger;
     this.dirty_ &= ~lime.Dirty.LAYOUT;
 };
 
@@ -369,11 +367,11 @@ lime.Director.prototype.pushScene = function(scene, opt_transition, opt_duration
  * @return Transition object if opt_transition is defined
  */
 lime.Director.prototype.popScene = function(opt_transition, opt_duration) {
-    var transition, 
-      outgoing = this.getCurrentScene();
-      
+    var transition,
+        outgoing = this.getCurrentScene();
+
     if (goog.isNull(outgoing)) return;
-    
+
     var popOutgoing = function() {
         outgoing.wasRemovedFromTree();
         outgoing.parent_ = null;
@@ -384,7 +382,7 @@ lime.Director.prototype.popScene = function(opt_transition, opt_duration) {
     // Transitions require an existing incoming scene
     if (goog.isDef(opt_transition) && (this.sceneStack_.length > 1)) {
         transition = new opt_transition(outgoing, this.sceneStack_[this.sceneStack_.length - 2]);
-      
+
         if (goog.isDef(opt_duration)) {
             transition.setDuration(opt_duration);
         }
@@ -409,18 +407,15 @@ lime.Director.prototype.addCover = function(cover, opt_addAboveDirector) {
     if (goog.userAgent.WEBKIT && goog.userAgent.MOBILE) {
         if (opt_addAboveDirector) {
             this.coverElementAbove.appendChild(cover.domElement);
-        }
-        else {
+        } else {
             this.coverElementBelow.appendChild(cover.domElement);
         }
 
-    }
-    else {
+    } else {
         if (opt_addAboveDirector) {
-             goog.dom.insertSiblingAfter(cover.domElement, this.domElement);
-        }
-        else {
-             goog.dom.insertSiblingBefore(cover.domElement, this.domElement);
+            goog.dom.insertSiblingAfter(cover.domElement, this.domElement);
+        } else {
+            goog.dom.insertSiblingBefore(cover.domElement, this.domElement);
         }
     }
     cover.director = this;
@@ -450,8 +445,7 @@ lime.Director.prototype.getBounds = function(box) {
         box.top - position.y / scale.y,
         box.right - position.x / scale.x,
         box.bottom - position.y / scale.y,
-        box.left - position.x / scale.x
-    );
+        box.left - position.x / scale.x);
 };
 
 /**
@@ -517,20 +511,19 @@ lime.Director.prototype.invalidateSize_ = function() {
 
     if (stageSize.aspectRatio() < realSize.aspectRatio()) {
         this.setPosition(0, (stageSize.height - realSize.height) / 2);
-    }
-    else {
+    } else {
         this.setPosition((stageSize.width - realSize.width) / 2, 0);
     }
 
     this.updateDomOffset_();
-    
+
     // overflow hidden is for hiding away unused edges of document
     // height addition is because scroll(0,0) doesn't work any more if the
     // document has no edge @tonis todo:look for less hacky solution(iframe?).
-    if(goog.userAgent.MOBILE && this.domElement.parentNode==document.body){
-        if(this.overflowStyle_) goog.style.uninstallStyles(this.overflowStyle_);
+    if (goog.userAgent.MOBILE && this.domElement.parentNode == document.body) {
+        if (this.overflowStyle_) goog.style.uninstallStyles(this.overflowStyle_);
         this.overflowStyle_ = goog.style.installStyles(
-            'html{height:'+(stageSize.height+120)+'px;overflow:hidden;}');
+            'html{height:' + (stageSize.height + 120) + 'px;overflow:hidden;}');
     }
 
 };
@@ -557,11 +550,11 @@ lime.Director.prototype.makeMobileWebAppCapable = function() {
     }
 
     var ios = (/(ipod|iphone|ipad)/i).test(navigator.userAgent);
-    if (ios && !window.navigator.standalone && COMPILED && !visited && this.domElement.parentNode==document.body) {
+    if (ios && !window.navigator.standalone && COMPILED && !visited && this.domElement.parentNode == document.body) {
         alert('Please install this page as a web app by ' +
             'clicking Share + Add to home screen.');
         if (goog.isDef(localStorage)) {
-           localStorage.setItem('_lime_visited', true);
+            localStorage.setItem('_lime_visited', true);
         }
     }
 
@@ -578,19 +571,18 @@ lime.Director.prototype.updateDomOffset_ = function() {
 /**
  * @private
  */
-lime.Director.prototype.keyUpHandler_ = function(e){
-   if(e.altKey && String.fromCharCode(e.keyCode).toLowerCase()=='d'){
-       if(this.debugModeOn_){
-           goog.style.uninstallStyles(this.debugModeOn_);
-           this.debugModeOn_ = null;
-       }
-       else {
-           this.debugModeOn_ = goog.style.installStyles('.lime-scene div,.lime-scene img,'+
-            '.lime-scene canvas{border: 1px solid #c00;}');
-       }
-       e.stopPropagation();
-       e.preventDefault();
-   }
+lime.Director.prototype.keyUpHandler_ = function(e) {
+    if (e.altKey && String.fromCharCode(e.keyCode).toLowerCase() == 'd') {
+        if (this.debugModeOn_) {
+            goog.style.uninstallStyles(this.debugModeOn_);
+            this.debugModeOn_ = null;
+        } else {
+            this.debugModeOn_ = goog.style.installStyles('.lime-scene div,.lime-scene img,' +
+                '.lime-scene canvas{border: 1px solid #c00;}');
+        }
+        e.stopPropagation();
+        e.preventDefault();
+    }
 }
 
 /**
@@ -598,6 +590,6 @@ lime.Director.prototype.keyUpHandler_ = function(e){
  */
 lime.Director.prototype.hitTest = function(e) {
     if (e && e.screenPosition)
-    e.position = this.screenToLocal(e.screenPosition);
+        e.position = this.screenToLocal(e.screenPosition);
     return true;
 };
