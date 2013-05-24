@@ -6,4 +6,5 @@ bin/external/*
 bin/projects
 .DS_Store
 node_modules/*
+doc/*
 
