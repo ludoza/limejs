@@ -15,7 +15,7 @@
  */
 
 /**
- * @fileoverview
+ *
  * Utility functions and classes for Soy.
  *
  * <p>

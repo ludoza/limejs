@@ -8,7 +8,7 @@ goog.require('lime.animation.Animation');
 /**
  * Sequence of animations that are run after each other.
  * Also accepts more than two animations
- * @param {...(lime.animation.Animation|!Array.<lime.animation.Animation>)} one First animation.
+ * @param {...lime.animation.Animation|...Array.<lime.animation.Animation>} one First animation.
  * @constructor
  * @extends lime.animation.Animation
  */

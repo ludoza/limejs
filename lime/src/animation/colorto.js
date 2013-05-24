@@ -6,7 +6,7 @@ goog.require('lime.animation.Animation');
 
 /**
  * Animation for changing element's fillcolor value
- * @param {mixed...} args Color definition.
+ * @param {...mixed} args Color definition.
  * @constructor
  * @extends lime.animation.Animation
  */
