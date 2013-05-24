@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Index</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Index</h1>
+    
+    
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>LimeJS</h1>
+
+<h2>Getting started:</h2>
+
+<h3>Mac OS X and Linux users:</h3>
+
+<ul><li>Requirements: Python 2.6+, Git, SVN</li><li>Clone the git repo (you have probably already done that):
+git clone git://github.com/digitalfruit/limejs.git</li><li>bin/lime.py --help</li><li>bin/lime.py init</li><li>bin/lime.py create helloworld</li></ul>
+
+<hr/>
+
+<ul><li>open ./helloworld/helloworld.html in the browser</li><li>study/tweak the source</li></ul>
+
+<hr/>
+
+<ul><li>programming guide is at lime/guide/ or <a href="http://www.limejs.com/">http://www.limejs.com/</a></li><li>demos are available at lime/demos/</li><li>unit tests are at lime/tests/</li><li>documentation is at <a href="http://limejs.digitalfruit.ee/docs/">http://limejs.digitalfruit.ee/docs/</a></li></ul>
+
+<h3>Windows users:</h3>
+
+<p>If you consider yourself advanced user and know how to use Git/Python you are probably better off reading through Mac/Linux guide and choosing your best alternative tools/methods yourself. If not then follow this step-by-step route.</p>
+
+<ol><li>Download and install Git client from <a href="http://code.google.com/p/msysgit/downloads/list">http://code.google.com/p/msysgit/downloads/list</a> (if not already installed). While installing select &quot;Run Git from the Windows Command Prompt&quot;.</li><li>Clone lime git repo or download zip package from <a href="https://github.com/digitalfruit/limejs/zipball/master">https://github.com/digitalfruit/limejs/zipball/master</a></li><li>Extract the contents to suitable place on your hard drive. Next examples will use c:\ as the base path.</li><li>If you don&#39;t have python download and install it from <a href="http://www.python.org/download/">http://www.python.org/download/</a></li><li>Launch Command Prompt (or PowerShell)</li><li><p>Check if you have python installed on your global path by running:
+python --version</p><p>If this returned error you have to add it to your global path or use full path to binaries in next steps.</p><p>To add python to your global path:</p><ol><li>Open Control Panel -&gt; System and Security -&gt; System -&gt; Advanced system settings</li><li>Under Advanced tab select Environment Variables...</li><li>Under system variables find variable named Path.</li><li>Select it and click Edit.</li><li>Append semicolon and path to the folder you installed python to the value.
+For example &quot;;C:\Python27\&quot;</li><li>Press OK and OK</li><li>Restart Command Prompt</li><li>Try if it works now</li></ol></li><li><p>Move to lime base folder
+cd c:\lime</p></li><li><p>python bin/lime.py --help</p></li><li>In similar pattern continue from Mac/Linux tutorial from step 3</li></ol>
+
+<h2>Browser support:</h2>
+
+<ul><li><em>Current:</em> Chrome, Safari 5, Firefox 3.6+, Opera, IE9, Mobile Safari</li><li><em>Soon:</em> Android, Blackberry Playbook</li><li><em>Maybe:</em> WebOS</li></ul>
+
+<h2>Links:</h2>
+
+<p>Closure Library: <a href="http://closure-library.googlecode.com/svn/docs/index.html">http://closure-library.googlecode.com/svn/docs/index.html</a></p>
+
+<p>Closure Compiler: <a href="http://code.google.com/closure/compiler/docs/overview.html">http://code.google.com/closure/compiler/docs/overview.html</a></p>
+
+<p>Closure Templates: <a href="http://code.google.com/closure/templates/docs/helloworld_js.html">http://code.google.com/closure/templates/docs/helloworld_js.html</a></p>
+
+<p>Box2D: <a href="http://www.box2dflash.org/docs/2.0.2/reference/">http://www.box2dflash.org/docs/2.0.2/reference/</a></p>
+
+<p>Canvas 2D API spec: <a href="http://dev.w3.org/html5/2dcontext/">http://dev.w3.org/html5/2dcontext/</a></p>
+
+<p>WebGL spec: <a href="https://cvs.khronos.org/svn/repos/registry/trunk/public/webgl/doc/spec/WebGL-spec.html">https://cvs.khronos.org/svn/repos/registry/trunk/public/webgl/doc/spec/WebGL-spec.html</a></p>
+
+<p>Closure book: <a href="http://www.amazon.com/Closure-Definitive-Guide-Michael-Bolin/dp/1449381871/">http://www.amazon.com/Closure-Definitive-Guide-Michael-Bolin/dp/1449381871/</a>
+<a href="http://books.google.com/books?id=p7uyWPcVGZsC&amp;&amp;pg=PP1">http://books.google.com/books?id=p7uyWPcVGZsC&amp;&amp;pg=PP1</a></p>
+
+<p>Closure video from Google I/O 2010:
+<a href="http://www.youtube.com/watch?v=yp_9q3tgDnQ">http://www.youtube.com/watch?v=yp_9q3tgDnQ</a></p>
+
+<h3>Known issues:</h3>
+
+<ul><li>lime.py build problems when directories contain spaces</li><li>...add your issues to the github page</li></ul>
+
+<h3>Browser issues:</h3>
+
+<ul><li>Firefox 4 animation flickery <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=637597">https://bugzilla.mozilla.org/show_bug.cgi?id=637597</a></li><li>IE10, Opera 11 don&#39;t use CSS gradients but fallback to Canvas.</li><li>WebOS 1.4 Masking issue(appears on Roundball)</li></ul>
+
+<h3>Missing/broken:</h3>
+
+<ul><li>Custom WebGL context</li><li>Sprite fill</li><li>Web-app installing tutorial</li><li>Unit tests(partial)</li><li>Some basic fallback for non supported browsers</li></ul>
+
+<h3>Future:</h3>
+
+<ul><li>Strokes</li><li>More shapes</li><li>Box2D basic integration</li><li>Different shape masks</li><li>More transitions</li><li>Better audio support</li><li>Local cache support</li><li>Other mobile platforms support(Android,WebOS,Playbook)</li><li>Data support(endtable?)</li><li>Radial Gradients</li><li>Resources loading</li><li>Preloader</li><li>WebGL Renderer</li><li>Dev console</li><li>Tiles</li><li>Scrollers</li><li>Menus</li><li>UI controls</li><li>Video support</li><li>Markup with templates</li><li>Integration with MoRe</li></ul></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="lime.animation.actionManager.html">actionManager</a></li><li><a href="lime.animation.Animation.html">Animation</a></li><li><a href="lime.animation.ColorTo.html">ColorTo</a></li><li><a href="lime.animation.Delay.html">Delay</a></li><li><a href="lime.animation.FadeTo.html">FadeTo</a></li><li><a href="lime.animation.KeyframeAnimation.html">KeyframeAnimation</a></li><li><a href="lime.animation.Loop.html">Loop</a></li><li><a href="lime.animation.MoveBy.html">MoveBy</a></li><li><a href="lime.animation.MoveTo.html">MoveTo</a></li><li><a href="lime.animation.Resize.html">Resize</a></li><li><a href="lime.animation.RotateBy.html">RotateBy</a></li><li><a href="lime.animation.RotateTo.html">RotateTo</a></li><li><a href="lime.animation.ScaleBy.html">ScaleBy</a></li><li><a href="lime.animation.ScaleTo.html">ScaleTo</a></li><li><a href="lime.animation.Sequence.html">Sequence</a></li><li><a href="lime.animation.Spawn.html">Spawn</a></li><li><a href="lime.audio.Audio.html">Audio</a></li><li><a href="lime.audio.AudioMap.html">AudioMap</a></li><li><a href="lime.Button.html">Button</a></li><li><a href="lime.CanvasContext.html">CanvasContext</a></li><li><a href="lime.Circle.html">Circle</a></li><li><a href="lime.CoverNode.html">CoverNode</a></li><li><a href="lime.Director.html">Director</a></li><li><a href="lime.events.Drag.html">Drag</a></li><li><a href="lime.events.Event.html">Event</a></li><li><a href="lime.events.EventDispatcher.html">EventDispatcher</a></li><li><a href="lime.fill.Color.html">Color</a></li><li><a href="lime.fill.Fill.html">Fill</a></li><li><a href="lime.fill.Frame.html">Frame</a></li><li><a href="lime.fill.Image.html">Image</a></li><li><a href="lime.fill.LinearGradient.html">LinearGradient</a></li><li><a href="lime.fill.Stroke.html">Stroke</a></li><li><a href="lime.GlossyButton.html">GlossyButton</a></li><li><a href="lime.helper.PauseScene.html">PauseScene</a></li><li><a href="lime.Label.html">Label</a></li><li><a href="lime.Layer.html">Layer</a></li><li><a href="lime.Node.html">Node</a></li><li><a href="lime.Polygon.html">Polygon</a></li><li><a href="lime.Renderer.html">Renderer</a></li><li><a href="lime.RoundedRect.html">RoundedRect</a></li><li><a href="lime.Scene.html">Scene</a></li><li><a href="lime.scheduleManager.html">scheduleManager</a></li><li><a href="lime.scheduleManager.Task.html">Task</a></li><li><a href="lime.Sprite.html">Sprite</a></li><li><a href="lime.SpriteSheet.html">SpriteSheet</a></li><li><a href="lime.style.Transform.html">Transform</a></li><li><a href="lime.transitions.Dissolve.html">Dissolve</a></li><li><a href="lime.transitions.MoveInDown.html">MoveInDown</a></li><li><a href="lime.transitions.MoveInLeft.html">MoveInLeft</a></li><li><a href="lime.transitions.MoveInRight.html">MoveInRight</a></li><li><a href="lime.transitions.MoveInUp.html">MoveInUp</a></li><li><a href="lime.transitions.SlideIn.html">SlideIn</a></li><li><a href="lime.transitions.SlideInDown.html">SlideInDown</a></li><li><a href="lime.transitions.SlideInRight.html">SlideInRight</a></li><li><a href="lime.transitions.SlideInUp.html">SlideInUp</a></li><li><a href="lime.transitions.Transition.html">Transition</a></li><li><a href="lime.ui.Container.html">Container</a></li><li><a href="lime.ui.Scroller.html">Scroller</a></li><li><a href="soy.$$augmentMap-TempCtor.html">TempCtor</a></li><li><a href="soy.StringBuilder.html">StringBuilder</a></li><li><a href="soydata.$$makeSanitizedContentFactory_-InstantiableCtor.html">InstantiableCtor</a></li><li><a href="soydata.SanitizedCss.html">SanitizedCss</a></li><li><a href="soydata.SanitizedHtml.html">SanitizedHtml</a></li><li><a href="soydata.SanitizedHtmlAttribute.html">SanitizedHtmlAttribute</a></li><li><a href="soydata.SanitizedJs.html">SanitizedJs</a></li><li><a href="soydata.SanitizedJsStrChars.html">SanitizedJsStrChars</a></li><li><a href="soydata.SanitizedUri.html">SanitizedUri</a></li><li><a href="soydata.UnsanitizedText.html">UnsanitizedText</a></li></ul><h3>Global</h3><ul><li><a href="global.html#active_">active_</a></li><li><a href="global.html#displayRate_">displayRate_</a></li><li><a href="global.html#intervalID_">intervalID_</a></li><li><a href="global.html#lastRunTime_">lastRunTime_</a></li><li><a href="global.html#taskStack_">taskStack_</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri May 24 2013 21:01:46 GMT+0200 (SAST)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>

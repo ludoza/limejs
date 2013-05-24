@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: events/drag.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: events/drag.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>goog.provide('lime.events.Drag');
+
+goog.require('goog.events.EventTarget');
+goog.require('lime.animation.MoveTo');
+
+
+/**
+ * Object representing Drag interaction.
+ * @constructor
+ * @param {lime.events.Event} event Event that started dragging.
+ * @param {boolean=} opt_snapToCenter If dragging relates to center position.
+ * @param {goog.math.Box=} opt_bounds Drag area limit.
+ * @param {lime.Node=} opt_targetObject Different target object.
+ * @extends goog.events.EventTarget
+ */
+lime.events.Drag = function(event, opt_snapToCenter, opt_bounds,
+    opt_targetObject) {
+
+    goog.base(this);
+
+    this.target = opt_targetObject || event.targetObject;
+
+    /** @type {Array.&lt;lime.Node>} */
+    this.dropTargets_ = [];
+    this.dropIndex_ = -1;
+
+    this.x = 0;
+    this.y = 0;
+
+    if (!opt_snapToCenter) {
+        var centerpos = this.target.localToScreen(
+            new goog.math.Coordinate(0, 0));
+        this.x = event.screenPosition.x - centerpos.x;
+        this.y = event.screenPosition.y - centerpos.y;
+    }
+
+    event.swallow(['touchmove', 'mousemove'],
+        goog.bind(this.moveHandler_, this));
+    event.swallow(['touchend', 'touchcancel', 'mouseup'],
+        goog.bind(this.releaseHandler_, this));
+
+    this.setBounds(opt_bounds || null);
+
+    this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.START));
+
+};
+goog.inherits(lime.events.Drag, goog.events.EventTarget);
+
+/**
+ * Enum for dragging related events
+ * @enum {string}
+ */
+lime.events.Drag.Event = {
+    START: 'start',
+    END: 'end',
+    MOVE: 'move',
+    CHANGE: 'change',
+    DROP: 'drop',
+    CANCEL: 'cancel'
+};
+
+/**
+ * @inheritDoc
+ */
+lime.events.Drag.prototype.disposeInternal = function() {
+    goog.base(this, 'disposeInternal');
+    this.event_ = null;
+    this.target = null;
+    this.dropTargets_ = null;
+};
+
+/**
+ * Return the area limit.
+ * @return {goog.math.Box} Bounding box.
+ */
+lime.events.Drag.prototype.getBounds = function() {
+    return this.bounds_;
+};
+
+/**
+ * Set new limitation area.
+ * @param {goog.math.Box} bounds Bounding box.
+ */
+lime.events.Drag.prototype.setBounds = function(bounds) {
+    this.bounds_ = bounds;
+};
+
+/**
+ * Handle move events.
+ * @private
+ * @param {lime.events.Event} e Event.
+ */
+lime.events.Drag.prototype.moveHandler_ = function(e) {
+    var pos = e.screenPosition.clone();
+
+    pos.x -= this.x;
+    pos.y -= this.y;
+    pos = this.target.getParent().screenToLocal(pos);
+
+    var box = this.getBounds();
+
+    if (goog.isDefAndNotNull(box)) {
+        //todo: this can be optimized
+
+        /*
+        //thinking again testing with bounding box may be actually wrong
+        var s = obj.size_, a = obj.anchorPoint_,p = this.position_;
+        var rr = new goog.math.Rect(
+                    p.x-s.width*a.x,
+                    p.y-s.height*a.y ,
+                    size.width, size.height
+                );
+
+
+        if(rr.left&lt;box.left) rr.left=box.left;
+        if(rr.top&lt;box.top) rr.top=box.top;
+
+        if(rr.left+s.width>box.right) bb.left=box.right-s.width;
+        if(rr.top+s.height>box.bottom) bb.top=box.bottom-s.height;
+
+        pos.x = rr.left+s.width*a.x;
+        pos.y = rr.top+s.height*a.y;
+        */
+
+        //point version
+        if (pos.x &lt; box.left) pos.x = box.left;
+        else if (pos.x > box.right) pos.x = box.right;
+
+        if (pos.y &lt; box.top) pos.y = box.top;
+        else if (pos.y > box.bottom) pos.y = box.bottom;
+
+
+    }
+
+
+    this.target.setPosition(pos);
+
+    this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.MOVE));
+
+    var sel = -1;
+    var currect = goog.math.Rect.createFromBox(this.target.getFrame());
+    var results = [];
+    for (var i = 0; i &lt; this.dropTargets_.length; i++) {
+        var loc = this.dropTargets_[i];
+        if (goog.isFunction(loc.confirmTargetActive)) {
+            if (!loc.confirmTargetActive(this.target)) {
+                continue;
+            }
+        }
+        var dropFrame = loc.getFrame();
+        var tl = loc.localToNode(new goog.math.Coordinate(
+            dropFrame.left, dropFrame.top), this.target);
+        var br = loc.localToNode(new goog.math.Coordinate(
+            dropFrame.right, dropFrame.bottom), this.target);
+        var droprect = goog.math.Rect.createFromBox(
+            new goog.math.Box(Math.min(tl.y, br.y), Math.max(tl.x, br.x), Math.max(tl.y, br.y), Math.min(br.x, tl.x)));
+        var intersection = goog.math.Rect.intersection(currect, droprect);
+
+        if (intersection) {
+            results.push([intersection.width * intersection.height /
+                    (droprect.width * droprect.height), i]);
+        }
+    }
+
+    if (results.length) {
+        results = results.sort(function(a, b) {
+            return b[0] - a[0];
+        });
+        sel = results[0][1];
+    }
+
+    if (sel != this.dropIndex_) {
+        if (this.dropIndex_ != -1) {
+            if (goog.isFunction(this.dropTargets_[this.dropIndex_].hideDropHighlight)) {
+                this.dropTargets_[this.dropIndex_].hideDropHighlight();
+            }
+        }
+        this.dropIndex_ = sel;
+        if (this.dropIndex_ != -1) {
+            if (goog.isFunction(
+                this.dropTargets_[this.dropIndex_].showDropHighlight)) {
+                this.dropTargets_[this.dropIndex_].showDropHighlight();
+            }
+        }
+
+        var ev = new goog.events.Event(lime.events.Drag.Event.CHANGE);
+        ev.activeDropTarget = this.dropIndex_ != -1 ?
+            this.dropTargets_[this.dropIndex_] : null;
+        this.dispatchEvent(ev);
+
+    }
+
+
+
+};
+
+/**
+ * Handle release events.
+ * @private
+ * @param {lime.events.Event} e Event.
+ */
+lime.events.Drag.prototype.releaseHandler_ = function(e) {
+
+    if (this.dropIndex_ != -1) {
+        var ev = new goog.events.Event(lime.events.Drag.Event.DROP);
+        ev.activeDropTarget = this.dropTargets_[this.dropIndex_];
+        if (goog.isFunction(ev.activeDropTarget.showDropHighlight)) {
+            ev.activeDropTarget.hideDropHighlight();
+        }
+        this.dispatchEvent(ev);
+        if (!ev.propagationStopped_) {
+            var pos = ev.activeDropTarget.getParent().localToNode(
+                ev.activeDropTarget.getPosition(), this.target.getParent());
+            var move = new lime.animation.MoveTo(pos)
+                .setDuration(.5).enableOptimizations();
+            this.target.runAction(move);
+            if (goog.isFunction(ev.moveEndedCallback)) {
+                goog.events.listen(move, lime.animation.Event.STOP,
+                    ev.moveEndedCallback, false, this.target);
+            }
+        }
+    } else {
+        this.dispatchEvent(new goog.events.Event(
+            lime.events.Drag.Event.CANCEL));
+    }
+
+    this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.END));
+
+    lime.scheduleManager.callAfter(this.dispose, this, 100);
+
+};
+
+/**
+ * Add another node as drop target.
+ * @param {lime.Node} drop Drop target node.
+ */
+lime.events.Drag.prototype.addDropTarget = function(drop) {
+    this.dropTargets_.push(drop);
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="lime.animation.actionManager.html">actionManager</a></li><li><a href="lime.animation.Animation.html">Animation</a></li><li><a href="lime.animation.ColorTo.html">ColorTo</a></li><li><a href="lime.animation.Delay.html">Delay</a></li><li><a href="lime.animation.FadeTo.html">FadeTo</a></li><li><a href="lime.animation.KeyframeAnimation.html">KeyframeAnimation</a></li><li><a href="lime.animation.Loop.html">Loop</a></li><li><a href="lime.animation.MoveBy.html">MoveBy</a></li><li><a href="lime.animation.MoveTo.html">MoveTo</a></li><li><a href="lime.animation.Resize.html">Resize</a></li><li><a href="lime.animation.RotateBy.html">RotateBy</a></li><li><a href="lime.animation.RotateTo.html">RotateTo</a></li><li><a href="lime.animation.ScaleBy.html">ScaleBy</a></li><li><a href="lime.animation.ScaleTo.html">ScaleTo</a></li><li><a href="lime.animation.Sequence.html">Sequence</a></li><li><a href="lime.animation.Spawn.html">Spawn</a></li><li><a href="lime.audio.Audio.html">Audio</a></li><li><a href="lime.audio.AudioMap.html">AudioMap</a></li><li><a href="lime.Button.html">Button</a></li><li><a href="lime.CanvasContext.html">CanvasContext</a></li><li><a href="lime.Circle.html">Circle</a></li><li><a href="lime.CoverNode.html">CoverNode</a></li><li><a href="lime.Director.html">Director</a></li><li><a href="lime.events.Drag.html">Drag</a></li><li><a href="lime.events.Event.html">Event</a></li><li><a href="lime.events.EventDispatcher.html">EventDispatcher</a></li><li><a href="lime.fill.Color.html">Color</a></li><li><a href="lime.fill.Fill.html">Fill</a></li><li><a href="lime.fill.Frame.html">Frame</a></li><li><a href="lime.fill.Image.html">Image</a></li><li><a href="lime.fill.LinearGradient.html">LinearGradient</a></li><li><a href="lime.fill.Stroke.html">Stroke</a></li><li><a href="lime.GlossyButton.html">GlossyButton</a></li><li><a href="lime.helper.PauseScene.html">PauseScene</a></li><li><a href="lime.Label.html">Label</a></li><li><a href="lime.Layer.html">Layer</a></li><li><a href="lime.Node.html">Node</a></li><li><a href="lime.Polygon.html">Polygon</a></li><li><a href="lime.Renderer.html">Renderer</a></li><li><a href="lime.RoundedRect.html">RoundedRect</a></li><li><a href="lime.Scene.html">Scene</a></li><li><a href="lime.scheduleManager.html">scheduleManager</a></li><li><a href="lime.scheduleManager.Task.html">Task</a></li><li><a href="lime.Sprite.html">Sprite</a></li><li><a href="lime.SpriteSheet.html">SpriteSheet</a></li><li><a href="lime.style.Transform.html">Transform</a></li><li><a href="lime.transitions.Dissolve.html">Dissolve</a></li><li><a href="lime.transitions.MoveInDown.html">MoveInDown</a></li><li><a href="lime.transitions.MoveInLeft.html">MoveInLeft</a></li><li><a href="lime.transitions.MoveInRight.html">MoveInRight</a></li><li><a href="lime.transitions.MoveInUp.html">MoveInUp</a></li><li><a href="lime.transitions.SlideIn.html">SlideIn</a></li><li><a href="lime.transitions.SlideInDown.html">SlideInDown</a></li><li><a href="lime.transitions.SlideInRight.html">SlideInRight</a></li><li><a href="lime.transitions.SlideInUp.html">SlideInUp</a></li><li><a href="lime.transitions.Transition.html">Transition</a></li><li><a href="lime.ui.Container.html">Container</a></li><li><a href="lime.ui.Scroller.html">Scroller</a></li><li><a href="soy.$$augmentMap-TempCtor.html">TempCtor</a></li><li><a href="soy.StringBuilder.html">StringBuilder</a></li><li><a href="soydata.$$makeSanitizedContentFactory_-InstantiableCtor.html">InstantiableCtor</a></li><li><a href="soydata.SanitizedCss.html">SanitizedCss</a></li><li><a href="soydata.SanitizedHtml.html">SanitizedHtml</a></li><li><a href="soydata.SanitizedHtmlAttribute.html">SanitizedHtmlAttribute</a></li><li><a href="soydata.SanitizedJs.html">SanitizedJs</a></li><li><a href="soydata.SanitizedJsStrChars.html">SanitizedJsStrChars</a></li><li><a href="soydata.SanitizedUri.html">SanitizedUri</a></li><li><a href="soydata.UnsanitizedText.html">UnsanitizedText</a></li></ul><h3>Global</h3><ul><li><a href="global.html#active_">active_</a></li><li><a href="global.html#displayRate_">displayRate_</a></li><li><a href="global.html#intervalID_">intervalID_</a></li><li><a href="global.html#lastRunTime_">lastRunTime_</a></li><li><a href="global.html#taskStack_">taskStack_</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri May 24 2013 21:01:46 GMT+0200 (SAST)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: audio/audio.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: audio/audio.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>goog.provide('lime.audio.Audio');
+
+goog.require('goog.events');
+goog.require('goog.events.EventTarget');
+goog.require('lime.userAgent');
+
+/**
+ * Audio stream object
+ * @constructor
+ * @param {string} filePath Path to audio file.
+ */
+lime.audio.Audio = function(filePath) {
+    goog.events.EventTarget.call(this);
+
+    if (filePath && goog.isFunction(filePath.data)) {
+        filePath = filePath.data();
+    }
+
+    /**
+     * @type bBoolean}
+     * @private
+     */
+    this.loaded_ = false;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.playing_ = false;
+
+    if (goog.userAgent.GECKO && (/\.mp3$/).test(filePath)) {
+        filePath = filePath.replace(/\.mp3$/, '.ogg');
+    }
+
+    if (lime.audio.AudioContext) {
+        this.volume_ = 1;
+        this.prepareContext_();
+        this.loadBuffer(filePath, goog.bind(this.bufferLoadedHandler_, this));
+    } else {
+        /**
+         * Internal audio element
+         * @type {audio}
+         */
+        this.baseElement = document.createElement('audio');
+        this.baseElement['preload'] = true;
+        this.baseElement['loop'] = false;
+        this.baseElement.src = filePath;
+        this.baseElement.load();
+        this.baseElement.addEventListener('ended', goog.bind(this.onEnded_, this));
+        this.loadInterval = setInterval(goog.bind(this.loadHandler_, this), 10);
+
+        this.loaded_ = false;
+    }
+};
+goog.inherits(lime.audio.Audio, goog.events.EventTarget);
+
+lime.audio.AudioContext = goog.global['AudioContext'] || goog.global['webkitAudioContext'];
+lime.audio._buffers = {};
+
+lime.audio.supportsMultiChannel = lime.audio.AudioContext || !(lime.userAgent.IOS || lime.userAgent.WINPHONE);
+
+lime.audio.Audio.prototype.prepareContext_ = function() {
+    if (lime.audio.context) return;
+    var context = lime.audio.context = new lime.audio.AudioContext();
+    var gain = lime.audio.masterGain = context['createGainNode']();
+    gain['connect'](context['destination']);
+};
+
+lime.audio.Audio.prototype.loadBuffer = function(path, cb) {
+    var buffers = lime.audio._buffers;
+    if (buffers[path] && buffers[path].buffer) {
+        cb(buffers[path].buffer, path);
+    } else if (buffers[path]) {
+        buffers[path].push(cb);
+    } else {
+        buffers[path] = [cb];
+        var req = new XMLHttpRequest();
+        req.open('GET', path, true);
+        req.responseType = 'arraybuffer';
+        req.onload = function() {
+            lime.audio.context['decodeAudioData'](req.response, function(buffer) {
+                if (!buffer) {
+                    return console.error('Error decoding file:', path);
+                }
+                var cbArray = buffers[path];
+                buffers[path] = {
+                    buffer: buffer
+                };
+                for (var i = 0; i &lt; cbArray.length; i++) {
+                    cbArray[i](buffer, path);
+                }
+            }, function(e) {
+                console.error('Error decoding file', e);
+            });
+        };
+        req.onerror = function() {
+            console.error('XHR error loading file:', path);
+        };
+        req.send();
+    }
+};
+
+lime.audio.Audio.prototype.bufferLoadedHandler_ = function(buffer, path) {
+    this.buffer = buffer;
+    this.loaded_ = true;
+    var ev = new goog.events.Event('loaded');
+    ev.event = null;
+    this.dispatchEvent(ev);
+    if (this.autoplay_) {
+        this.play.apply(this, this.autoplay_);
+    }
+};
+
+lime.audio.Audio.prototype.onEnded_ = function(e) {
+    this.playing_ = false;
+    var ev = new goog.events.Event('ended');
+    ev.event = e;
+    this.dispatchEvent(ev);
+    this.playPosition_ = 0;
+    var delay = lime.audio.AudioContext ? this.playTime_ + this.buffer.duration - this.playPositionCache - 0.05 : 0;
+    if (this.next_) {
+        for (var i = 0; i &lt; this.next_.length; i++) {
+            this.next_[i][0].play(this.next_[i][1], delay);
+        }
+    } else if (ev.returnValue_ !== false && this.loop_) {
+        this.play(this.loop_, delay);
+    }
+}
+
+/**
+ * Handle loading the audio file. Event handlers seem to fail
+ * on lot of browsers.
+ * @private
+ */
+lime.audio.Audio.prototype.loadHandler_ = function() {
+    if (this.baseElement['readyState'] > 2) {
+        this.bufferLoadedHandler_();
+        clearTimeout(this.loadInterval);
+    }
+    if (this.baseElement['error']) clearTimeout(this.loadInterval);
+
+    if (lime.userAgent.IOS && this.baseElement['readyState'] == 0) {
+        //ios hack do not work any more after 4.2.1 updates
+        // no good solutions that i know
+        this.bufferLoadedHandler_();
+        clearTimeout(this.loadInterval);
+        // this means that ios audio anly works if called from user action
+    }
+};
+
+/**
+ * Returns true if audio file has been loaded
+ * @return {boolean} Audio has been loaded.
+ */
+lime.audio.Audio.prototype.isLoaded = function() {
+    return this.loaded_;
+};
+
+/**
+ * Returns true if audio file is playing
+ * @return {boolean} Audio is playing.
+ */
+lime.audio.Audio.prototype.isPlaying = function() {
+    return this.playing_;
+};
+
+/**
+ * Start playing the audio
+ * @param {number=} opt_loop Loop the sound.
+ */
+lime.audio.Audio.prototype.play = function(opt_loop) {
+    if (!this.isLoaded()) {
+        this.autoplay_ = goog.array.toArray(arguments);
+    }
+    if (this.isLoaded() && !this.isPlaying() && !lime.audio.getMute()) {
+        if (lime.audio.AudioContext) {
+            if (this.source && this.source['playbackState'] == this.source['FINISHED_STATE']) {
+                this.playPosition_ = 0;
+            }
+            this.source = lime.audio.context['createBufferSource']();
+            this.source.buffer = this.buffer;
+            this.gain = lime.audio.context['createGainNode']();
+            this.gain['connect'](lime.audio.masterGain);
+            this.gain['gain']['value'] = this.volume_;
+            this.source['connect'](this.gain);
+
+            this.playTime_ = lime.audio.context['currentTime'];
+            var delay = arguments[1] || 0
+
+            if (this.playPosition_ > 0) {
+                this.source['noteGrainOn'](delay, this.playPosition_, this.buffer.duration - this.playPosition_);
+            } else {
+                this.source['noteOn'](delay);
+            }
+            this.playPositionCache = this.playPosition_;
+            this.endTimeout_ = setTimeout(goog.bind(this.onEnded_, this), (this.buffer.duration - (this.playPosition_ || 0)) * 1000 - 150);
+        } else {
+            this.baseElement.play();
+        }
+        this.playing_ = true;
+        this.loop_ = !! opt_loop;
+        if (lime.audio._playQueue.indexOf(this) == -1) {
+            lime.audio._playQueue.push(this);
+        }
+    }
+};
+
+/**
+ * Stop playing the audio
+ */
+lime.audio.Audio.prototype.stop = function() {
+    if (!this.isLoaded()) {
+        this.autoplay_ = null;
+    }
+    if (this.isPlaying()) {
+        if (lime.audio.AudioContext) {
+            clearTimeout(this.endTimeout_);
+            this.playPosition_ = lime.audio.context.currentTime - this.playTime_ + (this.playPosition_ || 0);
+            if (this.playPosition_ > this.buffer.duration) {
+                this.playPosition_ = 0;
+            }
+            this.source['noteOff'](0);
+            this.gain['disconnect'](lime.audio.masterGain);
+            this.source = null;
+        } else {
+            this.baseElement.pause();
+        }
+        this.playing_ = false;
+    }
+};
+
+lime.audio._isMute = false;
+lime.audio._playQueue = [];
+
+lime.audio.getMute = function() {
+    return lime.audio._isMute;
+};
+
+lime.audio.setMute = function(bool) {
+    if (bool && !lime.audio._isMute) {
+        for (var i = 0; i &lt; lime.audio._playQueue.length; i++) {
+            lime.audio._playQueue[i].stop();
+        }
+        lime.audio._playQueue = [];
+    }
+    lime.audio._isMute = bool;
+};
+
+lime.audio.Audio.prototype.setVolume = function(value) {
+    if (lime.audio.AudioContext) {
+        this.volume_ = value;
+        if (this.gain) this.gain['gain']['value'] = value;
+    } else {
+        this.baseElement.volume = value;
+    }
+};
+lime.audio.Audio.prototype.getVolume = function() {
+    if (lime.audio.AudioContext) {
+        return this.volume_;
+    } else {
+        return this.baseElement.volume;
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="lime.animation.actionManager.html">actionManager</a></li><li><a href="lime.animation.Animation.html">Animation</a></li><li><a href="lime.animation.ColorTo.html">ColorTo</a></li><li><a href="lime.animation.Delay.html">Delay</a></li><li><a href="lime.animation.FadeTo.html">FadeTo</a></li><li><a href="lime.animation.KeyframeAnimation.html">KeyframeAnimation</a></li><li><a href="lime.animation.Loop.html">Loop</a></li><li><a href="lime.animation.MoveBy.html">MoveBy</a></li><li><a href="lime.animation.MoveTo.html">MoveTo</a></li><li><a href="lime.animation.Resize.html">Resize</a></li><li><a href="lime.animation.RotateBy.html">RotateBy</a></li><li><a href="lime.animation.RotateTo.html">RotateTo</a></li><li><a href="lime.animation.ScaleBy.html">ScaleBy</a></li><li><a href="lime.animation.ScaleTo.html">ScaleTo</a></li><li><a href="lime.animation.Sequence.html">Sequence</a></li><li><a href="lime.animation.Spawn.html">Spawn</a></li><li><a href="lime.audio.Audio.html">Audio</a></li><li><a href="lime.audio.AudioMap.html">AudioMap</a></li><li><a href="lime.Button.html">Button</a></li><li><a href="lime.CanvasContext.html">CanvasContext</a></li><li><a href="lime.Circle.html">Circle</a></li><li><a href="lime.CoverNode.html">CoverNode</a></li><li><a href="lime.Director.html">Director</a></li><li><a href="lime.events.Drag.html">Drag</a></li><li><a href="lime.events.Event.html">Event</a></li><li><a href="lime.events.EventDispatcher.html">EventDispatcher</a></li><li><a href="lime.fill.Color.html">Color</a></li><li><a href="lime.fill.Fill.html">Fill</a></li><li><a href="lime.fill.Frame.html">Frame</a></li><li><a href="lime.fill.Image.html">Image</a></li><li><a href="lime.fill.LinearGradient.html">LinearGradient</a></li><li><a href="lime.fill.Stroke.html">Stroke</a></li><li><a href="lime.GlossyButton.html">GlossyButton</a></li><li><a href="lime.helper.PauseScene.html">PauseScene</a></li><li><a href="lime.Label.html">Label</a></li><li><a href="lime.Layer.html">Layer</a></li><li><a href="lime.Node.html">Node</a></li><li><a href="lime.Polygon.html">Polygon</a></li><li><a href="lime.Renderer.html">Renderer</a></li><li><a href="lime.RoundedRect.html">RoundedRect</a></li><li><a href="lime.Scene.html">Scene</a></li><li><a href="lime.scheduleManager.html">scheduleManager</a></li><li><a href="lime.scheduleManager.Task.html">Task</a></li><li><a href="lime.Sprite.html">Sprite</a></li><li><a href="lime.SpriteSheet.html">SpriteSheet</a></li><li><a href="lime.style.Transform.html">Transform</a></li><li><a href="lime.transitions.Dissolve.html">Dissolve</a></li><li><a href="lime.transitions.MoveInDown.html">MoveInDown</a></li><li><a href="lime.transitions.MoveInLeft.html">MoveInLeft</a></li><li><a href="lime.transitions.MoveInRight.html">MoveInRight</a></li><li><a href="lime.transitions.MoveInUp.html">MoveInUp</a></li><li><a href="lime.transitions.SlideIn.html">SlideIn</a></li><li><a href="lime.transitions.SlideInDown.html">SlideInDown</a></li><li><a href="lime.transitions.SlideInRight.html">SlideInRight</a></li><li><a href="lime.transitions.SlideInUp.html">SlideInUp</a></li><li><a href="lime.transitions.Transition.html">Transition</a></li><li><a href="lime.ui.Container.html">Container</a></li><li><a href="lime.ui.Scroller.html">Scroller</a></li><li><a href="soy.$$augmentMap-TempCtor.html">TempCtor</a></li><li><a href="soy.StringBuilder.html">StringBuilder</a></li><li><a href="soydata.$$makeSanitizedContentFactory_-InstantiableCtor.html">InstantiableCtor</a></li><li><a href="soydata.SanitizedCss.html">SanitizedCss</a></li><li><a href="soydata.SanitizedHtml.html">SanitizedHtml</a></li><li><a href="soydata.SanitizedHtmlAttribute.html">SanitizedHtmlAttribute</a></li><li><a href="soydata.SanitizedJs.html">SanitizedJs</a></li><li><a href="soydata.SanitizedJsStrChars.html">SanitizedJsStrChars</a></li><li><a href="soydata.SanitizedUri.html">SanitizedUri</a></li><li><a href="soydata.UnsanitizedText.html">UnsanitizedText</a></li></ul><h3>Global</h3><ul><li><a href="global.html#active_">active_</a></li><li><a href="global.html#displayRate_">displayRate_</a></li><li><a href="global.html#intervalID_">intervalID_</a></li><li><a href="global.html#lastRunTime_">lastRunTime_</a></li><li><a href="global.html#taskStack_">taskStack_</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri May 24 2013 21:01:46 GMT+0200 (SAST)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>

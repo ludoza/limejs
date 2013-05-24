@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lime.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: lime.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>goog.provide('lime');
+
+goog.require('goog.style');
+goog.require('lime.css');
+goog.require('lime.userAgent');
+
+(function() {
+
+    var dirtyObjectQueue = [
+        [],
+        []
+    ];
+    var dirtyObjectQueueNext = [
+        [],
+        []
+    ];
+
+    /**
+     * Add object to Dirty objects queue (waiting for redraw)
+     * @param {lime.DirtyObject} obj Object that needs to be updated.
+     * @param {number=} opt_pass Pass number.
+     * @param {boolean=} opt_nextframe Register for next frame.
+     */
+    lime.setObjectDirty = function(obj, opt_pass, opt_nextframe) {
+        var queue = opt_nextframe ? dirtyObjectQueueNext : dirtyObjectQueue;
+        var pass = opt_pass || 0;
+        goog.array.insert(queue[pass], obj);
+    };
+
+    /**
+     * Remove object from Dirty obejcts queue
+     * @param {lime.DirtyObject} obj Object that needs to be updated.
+     * @param {number=} opt_pass Pass number.
+     * @param {boolean=} opt_nextframe Register for next frame.
+     */
+    lime.clearObjectDirty = function(obj, opt_pass, opt_nextframe) {
+        /*
+    //todo: enable and test
+    var queue = opt_nextframe ? dirtyObjectQueueNext : dirtyObjectQueue;
+    var pass = opt_pass || 0;
+    goog.array.remove(queue[pass], obj);*/
+    };
+
+    /**
+     * Call update on all elements waiting to be invalidated
+     */
+    lime.updateDirtyObjects = function() {
+        var ob;
+        for (var i = 0; i &lt; 2; i++) {
+            while (dirtyObjectQueue[i].length) {
+                ob = dirtyObjectQueue[i][0];
+                ob.update(i);
+                ob.dirty_ = 0;
+                if (ob == dirtyObjectQueue[i][0]) dirtyObjectQueue[i].shift();
+            }
+            dirtyObjectQueue[i] = [];
+        }
+        /*
+    if (dirtyObjectQueue.length != 2 && !dirtyObjectQueue[0].length &&
+        !dirtyObjectQueue[1].length)
+    console.log(dirtyObjectQueue);
+    for (var i = 0; i &lt; 2; i++) {
+        for (var j = 0; i &lt; dirtyObjectQueue[i].length; i++) {
+
+       }
+   }*/
+        //dirtyObjectQueue=dirtyObjectQueueNext;
+        dirtyObjectQueueNext = [
+            [],
+            []
+        ];
+    };
+
+})();
+
+/**
+ * Enum for Dirty states.
+ * @enum {number}
+ */
+lime.Dirty = {
+    POSITION: 1,
+    SCALE: 2,
+    CONTENT: 4,
+    FONT: 8,
+    ALPHA: 16,
+    VISIBILITY: 32,
+    LAYOUT: 64,
+    ROTATION: 128,
+    ALL: 7 // POSITION | SCALE
+};
+
+/**
+ * Enum for AutoResize values
+ * @enum {number}
+ */
+lime.AutoResize = {
+    NONE: 0,
+    LEFT: 1,
+    WIDTH: 2,
+    RIGHT: 4,
+    TOP: 8,
+    HEIGHT: 16,
+    BOTTOM: 32,
+    ALL: 63
+};
+
+/**
+ * Enum for Transtion properties
+ * @enum {number}
+ */
+lime.Transition = {
+    POSITION: 1,
+    SCALE: 2,
+    SIZE: 3,
+    ROTATION: 4,
+    OPACITY: 5
+};
+
+
+goog.style.installStyles(lime.css.css(null, null));
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="lime.animation.actionManager.html">actionManager</a></li><li><a href="lime.animation.Animation.html">Animation</a></li><li><a href="lime.animation.ColorTo.html">ColorTo</a></li><li><a href="lime.animation.Delay.html">Delay</a></li><li><a href="lime.animation.FadeTo.html">FadeTo</a></li><li><a href="lime.animation.KeyframeAnimation.html">KeyframeAnimation</a></li><li><a href="lime.animation.Loop.html">Loop</a></li><li><a href="lime.animation.MoveBy.html">MoveBy</a></li><li><a href="lime.animation.MoveTo.html">MoveTo</a></li><li><a href="lime.animation.Resize.html">Resize</a></li><li><a href="lime.animation.RotateBy.html">RotateBy</a></li><li><a href="lime.animation.RotateTo.html">RotateTo</a></li><li><a href="lime.animation.ScaleBy.html">ScaleBy</a></li><li><a href="lime.animation.ScaleTo.html">ScaleTo</a></li><li><a href="lime.animation.Sequence.html">Sequence</a></li><li><a href="lime.animation.Spawn.html">Spawn</a></li><li><a href="lime.audio.Audio.html">Audio</a></li><li><a href="lime.audio.AudioMap.html">AudioMap</a></li><li><a href="lime.Button.html">Button</a></li><li><a href="lime.CanvasContext.html">CanvasContext</a></li><li><a href="lime.Circle.html">Circle</a></li><li><a href="lime.CoverNode.html">CoverNode</a></li><li><a href="lime.Director.html">Director</a></li><li><a href="lime.events.Drag.html">Drag</a></li><li><a href="lime.events.Event.html">Event</a></li><li><a href="lime.events.EventDispatcher.html">EventDispatcher</a></li><li><a href="lime.fill.Color.html">Color</a></li><li><a href="lime.fill.Fill.html">Fill</a></li><li><a href="lime.fill.Frame.html">Frame</a></li><li><a href="lime.fill.Image.html">Image</a></li><li><a href="lime.fill.LinearGradient.html">LinearGradient</a></li><li><a href="lime.fill.Stroke.html">Stroke</a></li><li><a href="lime.GlossyButton.html">GlossyButton</a></li><li><a href="lime.helper.PauseScene.html">PauseScene</a></li><li><a href="lime.Label.html">Label</a></li><li><a href="lime.Layer.html">Layer</a></li><li><a href="lime.Node.html">Node</a></li><li><a href="lime.Polygon.html">Polygon</a></li><li><a href="lime.Renderer.html">Renderer</a></li><li><a href="lime.RoundedRect.html">RoundedRect</a></li><li><a href="lime.Scene.html">Scene</a></li><li><a href="lime.scheduleManager.html">scheduleManager</a></li><li><a href="lime.scheduleManager.Task.html">Task</a></li><li><a href="lime.Sprite.html">Sprite</a></li><li><a href="lime.SpriteSheet.html">SpriteSheet</a></li><li><a href="lime.style.Transform.html">Transform</a></li><li><a href="lime.transitions.Dissolve.html">Dissolve</a></li><li><a href="lime.transitions.MoveInDown.html">MoveInDown</a></li><li><a href="lime.transitions.MoveInLeft.html">MoveInLeft</a></li><li><a href="lime.transitions.MoveInRight.html">MoveInRight</a></li><li><a href="lime.transitions.MoveInUp.html">MoveInUp</a></li><li><a href="lime.transitions.SlideIn.html">SlideIn</a></li><li><a href="lime.transitions.SlideInDown.html">SlideInDown</a></li><li><a href="lime.transitions.SlideInRight.html">SlideInRight</a></li><li><a href="lime.transitions.SlideInUp.html">SlideInUp</a></li><li><a href="lime.transitions.Transition.html">Transition</a></li><li><a href="lime.ui.Container.html">Container</a></li><li><a href="lime.ui.Scroller.html">Scroller</a></li><li><a href="soy.$$augmentMap-TempCtor.html">TempCtor</a></li><li><a href="soy.StringBuilder.html">StringBuilder</a></li><li><a href="soydata.$$makeSanitizedContentFactory_-InstantiableCtor.html">InstantiableCtor</a></li><li><a href="soydata.SanitizedCss.html">SanitizedCss</a></li><li><a href="soydata.SanitizedHtml.html">SanitizedHtml</a></li><li><a href="soydata.SanitizedHtmlAttribute.html">SanitizedHtmlAttribute</a></li><li><a href="soydata.SanitizedJs.html">SanitizedJs</a></li><li><a href="soydata.SanitizedJsStrChars.html">SanitizedJsStrChars</a></li><li><a href="soydata.SanitizedUri.html">SanitizedUri</a></li><li><a href="soydata.UnsanitizedText.html">UnsanitizedText</a></li></ul><h3>Global</h3><ul><li><a href="global.html#active_">active_</a></li><li><a href="global.html#displayRate_">displayRate_</a></li><li><a href="global.html#intervalID_">intervalID_</a></li><li><a href="global.html#lastRunTime_">lastRunTime_</a></li><li><a href="global.html#taskStack_">taskStack_</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri May 24 2013 21:01:46 GMT+0200 (SAST)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>
