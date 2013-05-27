@@ -11,6 +11,7 @@
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+	<link type="text/css" rel="stylesheet" href="styles/sour.css">
 </head>
 
 <body>
@@ -24,20 +25,20 @@
 
 
 <section>
-    
+	
 <header>
-    <h2>
-    ScaleBy
-    </h2>
-    
+	<h2>
+	ScaleBy
+	</h2>
+	
 </header>  
 
 <article>
-    <div class="container-overview">
-    
-    
-    
-        
+	<div class="container-overview">
+	
+	
+	
+		
 <dt>
     <h4 class="name" id="ScaleBy"><span class="type-signature"></span>new ScaleBy<span class="signature">(factor)</span><span class="type-signature"></span></h4>
     
@@ -150,30 +151,52 @@ Also accepts one or two numbers
     
 </dd>
 
-    
-    </div>
-    
-    
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li><a href="lime.animation.Animation.html">lime.animation.Animation</a></li>
-        </ul>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
-            
+	
+	</div>
+	
+	
+	<div class="doc_summary">
+		<a name="summary"></a>
+		<h3 class="subsection-title summary">Summary</h3>
+
+		<div class="doc_group"><a name="summary_properties"></a>
+<h5>Members - instance</h5>
+
+<dl>
+    <dt class="private augmented even"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#isPlaying_">isPlaying_</a></span><span class="type-sig"><span class="type-signature"> :boolean</span></span></dt><dd class="private augmented even">Animation is playing?<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#isPlaying_.html#isPlaying_"><img src="media/images/extended.png"></a></div></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#scope">scope</a></span><span class="type-sig"><span class="type-signature"></span></span></dt><dd class="  odd"></dd><dt class="protected augmented even"><span class="type-attr"><span class="type-signature">&lt;protected> </span></span><span class="type-name"><a href="#targets">targets</a></span><span class="type-sig"><span class="type-signature"> :Array.&lt;<a href="lime.Node.html">lime.Node</a>></span></span></dt><dd class="protected augmented even">Array of active target nodes<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#targets.html#targets"><img src="media/images/extended.png"></a></div></dd>
+</dl></div><div class="doc_group"><a name="summary_methods"></a>
+<h5>Methods - instance</h5>
+
+<dl>
+    <dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#addTarget">addTarget</a></span><span class="type-sig"><span class="signature">(target)</span><span class="type-signature"> &rarr; {<a href="lime.animation.Animation.html">lime.animation.Animation</a>}</span></span></dt><dd class=" augmented even">Add target node to animation<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#addTarget.html#addTarget"><img src="media/images/extended.png"></a></div></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#clearTransition">clearTransition</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  odd"></dd><dt class="protected augmented even"><span class="type-attr"><span class="type-signature">&lt;protected> </span></span><span class="type-name"><a href="#cloneParam">cloneParam</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="protected augmented even">Clone animation parmaters from another animation<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#cloneParam.html#cloneParam"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#enableOptimizations">enableOptimizations</a></span><span class="type-sig"><span class="signature">(<span class="optional">opt_value</span>)</span><span class="type-signature"> &rarr; {<a href="lime.animation.Animation.html">lime.animation.Animation</a>}</span></span></dt><dd class=" augmented odd">Enable CSS3 transitions to make animation. Usually performes better
+but is limited to single parallel transform action.<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#enableOptimizations.html#enableOptimizations"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getDirector">getDirector</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Director.html">lime.Director</a>}</span></span></dt><dd class=" augmented even">Get the director related to the animation targets.<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#getDirector.html#getDirector"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getDuration">getDuration</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented odd">Return duration of the animation in seconds<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#getDuration.html#getDuration"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getEasing">getEasing</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {lime.animation.EasingFunction}</span></span></dt><dd class=" augmented even">Return current easing function<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#getEasing.html#getEasing"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getTargetProp">getTargetProp</a></span><span class="type-sig"><span class="signature">(target)</span><span class="type-signature"> &rarr; {Object}</span></span></dt><dd class=" augmented odd">Get properties object for target.<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#getTargetProp.html#getTargetProp"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#initTarget">initTarget</a></span><span class="type-sig"><span class="signature">(target)</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Initalize the aniamtion for a target<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#initTarget.html#initTarget"><img src="media/images/extended.png"></a></div></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#makeTargetProp">makeTargetProp</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  odd"></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#play">play</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Start playing the animation<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#play.html#play"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#removeTarget">removeTarget</a></span><span class="type-sig"><span class="signature">(target)</span><span class="type-signature"> &rarr; {<a href="lime.animation.Animation.html">lime.animation.Animation</a>}</span></span></dt><dd class=" augmented odd">Remove target node from animation<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#removeTarget.html#removeTarget"><img src="media/images/extended.png"></a></div></dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#reverse">reverse</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  even"></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setDuration">setDuration</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.animation.Animation.html">lime.animation.Animation</a>}</span></span></dt><dd class=" augmented odd">Set the duration of the animation in seconds<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#setDuration.html#setDuration"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setEasing">setEasing</a></span><span class="type-sig"><span class="signature">(ease)</span><span class="type-signature"> &rarr; {<a href="lime.animation.Animation.html">lime.animation.Animation</a>}</span></span></dt><dd class=" augmented even">Set easing function for current animation<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#setEasing.html#setEasing"><img src="media/images/extended.png"></a></div></dd><dt class="private augmented odd"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#step_">step_</a></span><span class="type-sig"><span class="signature">(dt)</span><span class="type-signature"></span></span></dt><dd class="private augmented odd">Iterate time for animation<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#step_.html#step_"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#stop">stop</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Stop playing the animstion<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#stop.html#stop"><img src="media/images/extended.png"></a></div></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#update">update</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  odd"></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#updateAll">updateAll</a></span><span class="type-sig"><span class="signature">(t, targets)</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented even">Update all targets to new values.<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#updateAll.html#updateAll"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#useTransitions">useTransitions</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span></dt><dd class=" augmented odd">Returns true if CSS transitions are used to make the animation.
+Performes better on iOS devices.<div class="type-augmented" title="Extended from lime.animation.Animation"><a href="lime.animation.Animation#useTransitions.html#useTransitions"><img src="media/images/extended.png"></a></div></dd>
+</dl>
+</div>
+	</div>
+	
+	
+	
+		<h3 class="subsection-title">Extends</h3>
+		
+		<ul>
+			<li><a href="lime.animation.Animation.html">lime.animation.Animation</a></li>
+		</ul>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		<h3 class="subsection-title">Members</h3>
+		
+		<dl>
+			
 <dt>
     <h4 class="name" id="isPlaying_"><span class="type-signature">&lt;private> </span>isPlaying_<span class="type-signature"> :boolean</span></h4>
     
@@ -229,8 +252,8 @@ Also accepts one or two numbers
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="scope"><span class="type-signature"></span>scope<span class="type-signature"></span></h4>
     
@@ -277,8 +300,8 @@ Also accepts one or two numbers
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="targets"><span class="type-signature">&lt;protected> </span>targets<span class="type-signature"> :Array.&lt;<a href="lime.Node.html">lime.Node</a>></span></h4>
     
@@ -334,14 +357,14 @@ Also accepts one or two numbers
     
 </dd>
 
-        </dl>
-    
-    
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
-            
+		</dl>
+	
+	
+	
+		<h3 class="subsection-title">Methods</h3>
+		
+		<dl>
+			
 <dt>
     <h4 class="name" id="addTarget"><span class="type-signature"></span>addTarget<span class="signature">(target)</span><span class="type-signature"> &rarr; {<a href="lime.animation.Animation.html">lime.animation.Animation</a>}</span></h4>
     
@@ -480,8 +503,8 @@ Also accepts one or two numbers
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="clearTransition"><span class="type-signature"></span>clearTransition<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -548,8 +571,8 @@ Also accepts one or two numbers
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="cloneParam"><span class="type-signature">&lt;protected> </span>cloneParam<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -618,8 +641,8 @@ Also accepts one or two numbers
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="enableOptimizations"><span class="type-signature"></span>enableOptimizations<span class="signature">(<span class="optional">opt_value</span>)</span><span class="type-signature"> &rarr; {<a href="lime.animation.Animation.html">lime.animation.Animation</a>}</span></h4>
     
@@ -771,8 +794,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getDirector"><span class="type-signature"></span>getDirector<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Director.html">lime.Director</a>}</span></h4>
     
@@ -863,8 +886,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getDuration"><span class="type-signature"></span>getDuration<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
     
@@ -955,8 +978,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getEasing"><span class="type-signature"></span>getEasing<span class="signature">()</span><span class="type-signature"> &rarr; {lime.animation.EasingFunction}</span></h4>
     
@@ -1047,8 +1070,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getTargetProp"><span class="type-signature"></span>getTargetProp<span class="signature">(target)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
@@ -1187,8 +1210,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="initTarget"><span class="type-signature"></span>initTarget<span class="signature">(target)</span><span class="type-signature"></span></h4>
     
@@ -1305,8 +1328,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="makeTargetProp"><span class="type-signature"></span>makeTargetProp<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -1373,8 +1396,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="play"><span class="type-signature"></span>play<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -1443,8 +1466,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="removeTarget"><span class="type-signature"></span>removeTarget<span class="signature">(target)</span><span class="type-signature"> &rarr; {<a href="lime.animation.Animation.html">lime.animation.Animation</a>}</span></h4>
     
@@ -1583,8 +1606,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="reverse"><span class="type-signature"></span>reverse<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -1651,8 +1674,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setDuration"><span class="type-signature"></span>setDuration<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.animation.Animation.html">lime.animation.Animation</a>}</span></h4>
     
@@ -1791,8 +1814,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setEasing"><span class="type-signature"></span>setEasing<span class="signature">(ease)</span><span class="type-signature"> &rarr; {<a href="lime.animation.Animation.html">lime.animation.Animation</a>}</span></h4>
     
@@ -1931,8 +1954,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="step_"><span class="type-signature">&lt;private> </span>step_<span class="signature">(dt)</span><span class="type-signature"></span></h4>
     
@@ -2071,8 +2094,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="stop"><span class="type-signature"></span>stop<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -2141,8 +2164,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -2209,8 +2232,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="updateAll"><span class="type-signature"></span>updateAll<span class="signature">(t, targets)</span><span class="type-signature"> &rarr; {number}</span></h4>
     
@@ -2372,8 +2395,8 @@ but is limited to single parallel transform action.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="useTransitions"><span class="type-signature"></span>useTransitions<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
@@ -2465,12 +2488,12 @@ Performes better on iOS devices.
     
 </dd>
 
-        </dl>
-    
-    
-    
-    
-    
+		</dl>
+	
+	
+	
+	
+	
 </article>
 
 </section>  
@@ -2487,7 +2510,7 @@ Performes better on iOS devices.
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri May 24 2013 21:01:50 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:08 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -11,6 +11,7 @@
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+	<link type="text/css" rel="stylesheet" href="styles/sour.css">
 </head>
 
 <body>
@@ -24,20 +25,20 @@
 
 
 <section>
-    
+	
 <header>
-    <h2>
-    Director
-    </h2>
-    
+	<h2>
+	Director
+	</h2>
+	
 </header>  
 
 <article>
-    <div class="container-overview">
-    
-    
-    
-        
+	<div class="container-overview">
+	
+	
+	
+		
 <dt>
     <h4 class="name" id="Director"><span class="type-signature"></span>new Director<span class="signature">(parentElement, <span class="optional">opt_width</span>, <span class="optional">opt_height</span>)</span><span class="type-signature"></span></h4>
     
@@ -225,30 +226,76 @@
     
 </dd>
 
-    
-    </div>
-    
-    
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li><a href="lime.Node.html">lime.Node</a></li>
-        </ul>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
-            
+	
+	</div>
+	
+	
+	<div class="doc_summary">
+		<a name="summary"></a>
+		<h3 class="subsection-title summary">Summary</h3>
+
+		<div class="doc_group"><a name="summary_properties"></a>
+<h5>Members - instance</h5>
+
+<dl>
+    <dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#allow3DCSSTransform_">allow3DCSSTransform_</a></span><span class="type-sig"><span class="type-signature"> :boolean</span></span></dt><dd class=" augmented even">Allow translate3d and other css optimizations<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#allow3DCSSTransform_.html#allow3DCSSTransform_"><img src="media/images/extended.png"></a></div></dd><dt class="private  odd"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#coverStack_">coverStack_</a></span><span class="type-sig"><span class="type-signature"> :Array.&lt;<a href="lime.CoverNode.html">lime.CoverNode</a>></span></span></dt><dd class="private  odd">Array of CoverNode instances.</dd><dt class="private augmented even"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#customEvent_">customEvent_</a></span><span class="type-sig"><span class="type-signature"> :boolean</span></span></dt><dd class="private augmented even"><div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#customEvent_.html#customEvent_"><img src="media/images/extended.png"></a></div></dd><dt class="private augmented odd"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#eventHandlers_">eventHandlers_</a></span><span class="type-sig"><span class="type-signature"> :Object</span></span></dt><dd class="private augmented odd">Hash of active event handlers<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#eventHandlers_.html#eventHandlers_"><img src="media/images/extended.png"></a></div></dd><dt class="private  even"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#sceneStack_">sceneStack_</a></span><span class="type-sig"><span class="type-signature"> :Array.&lt;<a href="lime.Scene.html">lime.Scene</a>></span></span></dt><dd class="private  even">Array of Scene instances. Last one is the active scene.</dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#supportedRenderers">supportedRenderers</a></span><span class="type-sig"><span class="type-signature"> :Array.&lt;<a href="lime.Renderer.html">lime.Renderer</a>></span></span></dt><dd class=" augmented odd">Supported renderers for Node<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#supportedRenderers.html#supportedRenderers"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#transitionsAdd_">transitionsAdd_</a></span><span class="type-sig"><span class="type-signature"></span></span></dt><dd class=" augmented even">type {Object.<number, number>}<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#transitionsAdd_.html#transitionsAdd_"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#transitionsClear_">transitionsClear_</a></span><span class="type-sig"><span class="type-signature"></span></span></dt><dd class=" augmented odd">type {Object.<number, number>}<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#transitionsClear_.html#transitionsClear_"><img src="media/images/extended.png"></a></div></dd>
+</dl></div><div class="doc_group"><a name="summary_properties_static"></a>
+<h5>Members - static</h5>
+
+<dl>
+    <dt class="  even"><span class="type-attr"><span class="type-signature">&lt;static, constant> </span></span><span class="type-name"><a href="#DEFAULT_HEIGHT">DEFAULT_HEIGHT</a></span><span class="type-sig"><span class="type-signature"> :number</span></span></dt><dd class="  even">Default height of the Director</dd><dt class="  odd"><span class="type-attr"><span class="type-signature">&lt;static, constant> </span></span><span class="type-name"><a href="#DEFAULT_WIDTH">DEFAULT_WIDTH</a></span><span class="type-sig"><span class="type-signature"> :number</span></span></dt><dd class="  odd">Default width of the Director</dd><dt class="  even"><span class="type-attr"><span class="type-signature">&lt;static, constant> </span></span><span class="type-name"><a href="#FPS_INTERVAL">FPS_INTERVAL</a></span><span class="type-sig"><span class="type-signature"> :number</span></span></dt><dd class="  even">Milliseconds between recalculating FPS value</dd>
+</dl></div><div class="doc_group"><a name="summary_methods"></a>
+<h5>Methods - instance</h5>
+
+<dl>
+    <dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#addCover">addCover</a></span><span class="type-sig"><span class="signature">(cover, opt_addAboveDirector)</span><span class="type-signature"></span></span></dt><dd class="  even">Add CoverNode object to the viewport</dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#addEventListener">addEventListener</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented odd"><div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#addEventListener.html#addEventListener"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#addTransition">addTransition</a></span><span class="type-sig"><span class="signature">(property, value, duration, ease)</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Register transition property. Use through animations.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#addTransition.html#addTransition"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#appendChild">appendChild</a></span><span class="type-sig"><span class="signature">(child, <span class="optional">opt_pos</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Append element to the end of childrens array<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#appendChild.html#appendChild"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#calcRelativeQuality">calcRelativeQuality</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Calculates relative quality change from the
+parent objects quality<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#calcRelativeQuality.html#calcRelativeQuality"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#clearTransition">clearTransition</a></span><span class="type-sig"><span class="signature">(property)</span><span class="type-signature"></span></span></dt><dd class=" augmented odd">Clear previously set transition<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#clearTransition.html#clearTransition"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#createDomElement">createDomElement</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Create DOM element to render the node<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#createDomElement.html#createDomElement"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getAnchorPoint">getAnchorPoint</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Vec2}</span></span></dt><dd class=" augmented odd">Returns anchor point for the element.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getAnchorPoint.html#getAnchorPoint"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getAutoResize">getAutoResize</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented even">Returns autoresize rules bitmask.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getAutoResize.html#getAutoResize"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getBoundingBox">getBoundingBox</a></span><span class="type-sig"><span class="signature">(opt_frame)</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span></dt><dd class=" augmented odd">Returns bounding box for element in parents coordinate space.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getBoundingBox.html#getBoundingBox"><img src="media/images/extended.png"></a></div></dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getBounds">getBounds</a></span><span class="type-sig"><span class="signature">(box)</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span></dt><dd class="  even">Return bounds of director,</dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getChildAt">getChildAt</a></span><span class="type-sig"><span class="signature">(index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>|Element|null}</span></span></dt><dd class=" augmented odd">Return the child at defined index.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getChildAt.html#getChildAt"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getChildIndex">getChildIndex</a></span><span class="type-sig"><span class="signature">(child)</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented even">Return the index position of a child.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getChildIndex.html#getChildIndex"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getCSS3DTransformsAllowed">getCSS3DTransformsAllowed</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span></dt><dd class=" augmented odd">Returns css 3d transforms flag<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getCSS3DTransformsAllowed.html#getCSS3DTransformsAllowed"><img src="media/images/extended.png"></a></div></dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getCurrentScene">getCurrentScene</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Scene.html">lime.Scene</a>}</span></span></dt><dd class="  even">Get current active scene</dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getDeepestDomElement">getDeepestDomElement</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {Element}</span></span></dt><dd class=" augmented odd">Return deepest element in DOM tree that is used
+for drawing the Node.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getDeepestDomElement.html#getDeepestDomElement"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getDeepestParentWithDom">getDeepestParentWithDom</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Return deepest parent node that requires DOM element
+for drawing on screen.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getDeepestParentWithDom.html#getDeepestParentWithDom"><img src="media/images/extended.png"></a></div></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getDirector">getDirector</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  odd"></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getDirty">getDirty</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented even">Return a bitmask of dirty values that need to be updated before next drawing
+The bitmask parts are values of lime.Dirty enum<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getDirty.html#getDirty"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getFrame">getFrame</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span></dt><dd class=" augmented odd">Returns a bounding box for the element in its own coordinate space<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getFrame.html#getFrame"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getHidden">getHidden</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span></dt><dd class=" augmented even">Returns true if element currently not visible<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getHidden.html#getHidden"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getMask">getMask</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Returns element used as a mask for current element<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getMask.html#getMask"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getNumberOfChildren">getNumberOfChildren</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented even">Return number of childnodes current element has.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getNumberOfChildren.html#getNumberOfChildren"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getOpacity">getOpacity</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented odd">Returns the opacity value of the Node. 0.0=100% trasparent, 1.0=100% opaque<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getOpacity.html#getOpacity"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getParent">getParent</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Return the parent object. Returns null in not in tree<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getParent.html#getParent"><img src="media/images/extended.png"></a></div></dd><dt class="private augmented odd"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#getParentStack_">getParentStack_</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;<a href="lime.Node.html">lime.Node</a>>}</span></span></dt><dd class="private augmented odd">Return array of parent nodes until scene object<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getParentStack_.html#getParentStack_"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getPosition">getPosition</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span></dt><dd class=" augmented even">Returns element's position coordinate<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getPosition.html#getPosition"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getQuality">getQuality</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented odd">Returns elements quality value.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getQuality.html#getQuality"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getRelativeQuality">getRelativeQuality</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented even">Return cumulative quality value relative to screen full quality.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getRelativeQuality.html#getRelativeQuality"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getRotation">getRotation</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented odd">Returns rotation angle for element in degrees<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getRotation.html#getRotation"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getScale">getScale</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Vec2}</span></span></dt><dd class=" augmented even">Returns scale vector for the element. 1,1 means no scale.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getScale.html#getScale"><img src="media/images/extended.png"></a></div></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getScene">getScene</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  odd"></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getSize">getSize</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Size.html">goog.math.Size</a>}</span></span></dt><dd class=" augmented even">Returns elements dimension<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#getSize.html#getSize"><img src="media/images/extended.png"></a></div></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#hitTest">hitTest</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  odd"></dd><dt class="private  even"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#invalidateSize_">invalidateSize_</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="private  even">Update dimensions based on viewport dimension changes</dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#isDisplayFPS">isDisplayFPS</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span></dt><dd class="  odd">Returns true if FPS counter is displayed</dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#isPaused">isPaused</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span></dt><dd class="  even">Returns true if director is paused? On paused state
+the update timer doesn't fire.</dd><dt class="private  odd"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#keyUpHandler_">keyUpHandler_</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="private  odd"></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#localToNode">localToNode</a></span><span class="type-sig"><span class="signature">(coord, node)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span></dt><dd class=" augmented even">Convert coordinate in node space to other nodes coordinate space<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#localToNode.html#localToNode"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#localToParent">localToParent</a></span><span class="type-sig"><span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span></dt><dd class=" augmented odd">Convert coordinate from current node space to
+parent node space<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#localToParent.html#localToParent"><img src="media/images/extended.png"></a></div></dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#localToScreen">localToScreen</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  even"></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#makeMobileWebAppCapable">makeMobileWebAppCapable</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  odd">Add support for adding game to Springboard as a
+web application on iOS devices</dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#measureContents">measureContents</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span></dt><dd class=" augmented even">Return box containing current element and all its children<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#measureContents.html#measureContents"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#needsDomElement">needsDomElement</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span></dt><dd class=" augmented odd">Does node require DOM element for drawing?<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#needsDomElement.html#needsDomElement"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#parentToLocal">parentToLocal</a></span><span class="type-sig"><span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span></dt><dd class=" augmented even">Covert coordinate form parent node space to
+current node space<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#parentToLocal.html#parentToLocal"><img src="media/images/extended.png"></a></div></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#popScene">popScene</a></span><span class="type-sig"><span class="signature">(<span class="optional">opt_transition</span>, <span class="optional">opt_duration</span>)</span><span class="type-signature"></span></span></dt><dd class="  odd">Remove current scene from the stack</dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#pushScene">pushScene</a></span><span class="type-sig"><span class="signature">(scene, <span class="optional">opt_transition</span>, <span class="optional">opt_duration</span>)</span><span class="type-signature"></span></span></dt><dd class="  even">Push scene to the top of scene stack</dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#removeAllChildren">removeAllChildren</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Removes all children of a node.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#removeAllChildren.html#removeAllChildren"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#removeChild">removeChild</a></span><span class="type-sig"><span class="signature">(child)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Remove element from the childrens array<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#removeChild.html#removeChild"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#removeChildAt">removeChildAt</a></span><span class="type-sig"><span class="signature">(index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Remove element at a given index from the childrens array<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#removeChildAt.html#removeChildAt"><img src="media/images/extended.png"></a></div></dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#removeCover">removeCover</a></span><span class="type-sig"><span class="signature">(cover)</span><span class="type-signature"></span></span></dt><dd class="  even">Remove CoverNode object from the viewport</dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#removeDomElement">removeDomElement</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented odd">Remove DOM element connected to teh node<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#removeDomElement.html#removeDomElement"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#removeEventListener">removeEventListener</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented even"><div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#removeEventListener.html#removeEventListener"><img src="media/images/extended.png"></a></div></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#replaceScene">replaceScene</a></span><span class="type-sig"><span class="signature">(scene, <span class="optional">opt_transition</span>, <span class="optional">opt_duration</span>)</span><span class="type-signature"></span></span></dt><dd class="  odd">Replace current scene with new scene</dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#runAction">runAction</a></span><span class="type-sig"><span class="signature">(action)</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Add Node to action targets list and start the animation<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#runAction.html#runAction"><img src="media/images/extended.png"></a></div></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#screenToLocal">screenToLocal</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  odd"></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setAllow3DCSSTransforms">setAllow3DCSSTransforms</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Sets css 3d transforms rule (for DOM renderer).
+XXX: This hack is required to fix a mobile Safari rendering bug.
+It should only be used on nodes that are affected by the bug!
+3D acceleration in css transforms is enabled by default and applied
+for iOS and Playbook.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#setAllow3DCSSTransforms.html#setAllow3DCSSTransforms"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setAnchorPoint">setAnchorPoint</a></span><span class="type-sig"><span class="signature">(value, <span class="optional">opt_y</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Sets elements anchor point to new value. Anchor point is used
+when positioning the element to position coordinate. [0,0] means
+top left corner, [1,1] bottom right, [.5,.5] means that element
+is position by the center. You can also pass in 2 numbers.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#setAnchorPoint.html#setAnchorPoint"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setAutoResize">setAutoResize</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Sets new autoresixe rules. NOT IMPLEMENTED!<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#setAutoResize.html#setAutoResize"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setChildIndex">setChildIndex</a></span><span class="type-sig"><span class="signature">(child, index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Move a child to another index in the childrens array.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#setChildIndex.html#setChildIndex"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setDirty">setDirty</a></span><span class="type-sig"><span class="signature">(value, <span class="optional">opt_pass</span>, <span class="optional">opt_nextframe</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Sets a dirty value true. This means that object needs that
+kind of updates before next draw.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#setDirty.html#setDirty"><img src="media/images/extended.png"></a></div></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setDisplayFPS">setDisplayFPS</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Director.html">lime.Director</a>}</span></span></dt><dd class="  odd">Show or hide FPS counter</dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setHidden">setHidden</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Sets if element is visible or not<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#setHidden.html#setHidden"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setMask">setMask</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Sets element as a mask for current element<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#setMask.html#setMask"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setOpacity">setOpacity</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Sets the opacity value of the Node object<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#setOpacity.html#setOpacity"><img src="media/images/extended.png"></a></div></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setPaused">setPaused</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Director.html">lime.Director</a>}</span></span></dt><dd class="  odd">Pauses or resumes the director</dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setPosition">setPosition</a></span><span class="type-sig"><span class="signature">(value, <span class="optional">opt_y</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Sets new position for element. Also accepts 2 numbers(x and y value)<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#setPosition.html#setPosition"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setQuality">setQuality</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Sets quality value used while drawing. Not all rendermodes can draw
+more effectively on lower quality. 1.0 full quality, 0.5 half quality.
+Setting this walue larger than 1.0 almost never does anything good.<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#setQuality.html#setQuality"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setRenderer">setRenderer</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Set renderer for the node. Renderer defines what lower
+level technology will be used for drawing node on screen<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#setRenderer.html#setRenderer"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setRotation">setRotation</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Rotates element to specific angle in degrees<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#setRotation.html#setRotation"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setScale">setScale</a></span><span class="type-sig"><span class="signature">(value, <span class="optional">opt_y</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Sets new scale vector for element. This function also accepts
+2 numbers or 1 number that would be coverted to vector before use<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#setScale.html#setScale"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setSize">setSize</a></span><span class="type-sig"><span class="signature">(value, <span class="optional">opt_height</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Sets dimensions for element. This funciton also
+accepts 2 numbers: width,height<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#setSize.html#setSize"><img src="media/images/extended.png"></a></div></dd><dt class="private  even"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#step_">step_</a></span><span class="type-sig"><span class="signature">(delta)</span><span class="type-signature"></span></span></dt><dd class="private  even">Timeline function.</dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#update">update</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  odd"></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#updateDomElement">updateDomElement</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Update DOM element connected to the node<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#updateDomElement.html#updateDomElement"><img src="media/images/extended.png"></a></div></dd><dt class="private  odd"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#updateDomOffset_">updateDomOffset_</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="private  odd">Updates the cached value of directors parentelement position in the viewport</dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#updateLayout">updateLayout</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  even"></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#wasAddedToTree">wasAddedToTree</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented odd">Handle adding Node to the DOM tree<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#wasAddedToTree.html#wasAddedToTree"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#wasRemovedFromTree">wasRemovedFromTree</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Handle removing Node from DOM tree<div class="type-augmented" title="Extended from lime.Node"><a href="lime.Node#wasRemovedFromTree.html#wasRemovedFromTree"><img src="media/images/extended.png"></a></div></dd>
+</dl>
+</div>
+	</div>
+	
+	
+	
+		<h3 class="subsection-title">Extends</h3>
+		
+		<ul>
+			<li><a href="lime.Node.html">lime.Node</a></li>
+		</ul>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		<h3 class="subsection-title">Members</h3>
+		
+		<dl>
+			
 <dt>
     <h4 class="name" id="DEFAULT_HEIGHT"><span class="type-signature">&lt;static, constant> </span>DEFAULT_HEIGHT<span class="type-signature"> :number</span></h4>
     
@@ -299,8 +346,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="DEFAULT_WIDTH"><span class="type-signature">&lt;static, constant> </span>DEFAULT_WIDTH<span class="type-signature"> :number</span></h4>
     
@@ -351,8 +398,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="FPS_INTERVAL"><span class="type-signature">&lt;static, constant> </span>FPS_INTERVAL<span class="type-signature"> :number</span></h4>
     
@@ -403,8 +450,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="allow3DCSSTransform_"><span class="type-signature"></span>allow3DCSSTransform_<span class="type-signature"> :boolean</span></h4>
     
@@ -460,8 +507,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="coverStack_"><span class="type-signature">&lt;private> </span>coverStack_<span class="type-signature"> :Array.&lt;<a href="lime.CoverNode.html">lime.CoverNode</a>></span></h4>
     
@@ -512,8 +559,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="customEvent_"><span class="type-signature">&lt;private> </span>customEvent_<span class="type-signature"> :boolean</span></h4>
     
@@ -565,8 +612,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="eventHandlers_"><span class="type-signature">&lt;private> </span>eventHandlers_<span class="type-signature"> :Object</span></h4>
     
@@ -622,8 +669,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="sceneStack_"><span class="type-signature">&lt;private> </span>sceneStack_<span class="type-signature"> :Array.&lt;<a href="lime.Scene.html">lime.Scene</a>></span></h4>
     
@@ -674,8 +721,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="supportedRenderers"><span class="type-signature"></span>supportedRenderers<span class="type-signature"> :Array.&lt;<a href="lime.Renderer.html">lime.Renderer</a>></span></h4>
     
@@ -731,8 +778,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="transitionsAdd_"><span class="type-signature"></span>transitionsAdd_<span class="type-signature"></span></h4>
     
@@ -788,8 +835,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="transitionsClear_"><span class="type-signature"></span>transitionsClear_<span class="type-signature"></span></h4>
     
@@ -845,14 +892,14 @@
     
 </dd>
 
-        </dl>
-    
-    
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
-            
+		</dl>
+	
+	
+	
+		<h3 class="subsection-title">Methods</h3>
+		
+		<dl>
+			
 <dt>
     <h4 class="name" id="addCover"><span class="type-signature"></span>addCover<span class="signature">(cover, opt_addAboveDirector)</span><span class="type-signature"></span></h4>
     
@@ -966,7 +1013,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 405
+        <a href="director.js.html">director.js</a>, line 406
     </li></ul></dd>
     
     
@@ -987,8 +1034,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="addEventListener"><span class="type-signature"></span>addEventListener<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -1053,8 +1100,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="addTransition"><span class="type-signature"></span>addTransition<span class="signature">(property, value, duration, ease)</span><span class="type-signature"></span></h4>
     
@@ -1240,8 +1287,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="appendChild"><span class="type-signature"></span>appendChild<span class="signature">(child, <span class="optional">opt_pos</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -1429,8 +1476,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="calcRelativeQuality"><span class="type-signature"></span>calcRelativeQuality<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -1500,8 +1547,8 @@ parent objects quality
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="clearTransition"><span class="type-signature"></span>clearTransition<span class="signature">(property)</span><span class="type-signature"></span></h4>
     
@@ -1618,8 +1665,8 @@ parent objects quality
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="createDomElement"><span class="type-signature"></span>createDomElement<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -1688,8 +1735,8 @@ parent objects quality
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getAnchorPoint"><span class="type-signature"></span>getAnchorPoint<span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Vec2}</span></h4>
     
@@ -1780,8 +1827,8 @@ parent objects quality
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getAutoResize"><span class="type-signature"></span>getAutoResize<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
     
@@ -1872,8 +1919,8 @@ parent objects quality
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getBoundingBox"><span class="type-signature"></span>getBoundingBox<span class="signature">(opt_frame)</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></h4>
     
@@ -2012,8 +2059,8 @@ parent objects quality
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getBounds"><span class="type-signature"></span>getBounds<span class="signature">(box)</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></h4>
     
@@ -2104,7 +2151,7 @@ parent objects quality
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 440
+        <a href="director.js.html">director.js</a>, line 441
     </li></ul></dd>
     
     
@@ -2147,8 +2194,8 @@ parent objects quality
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getChildAt"><span class="type-signature"></span>getChildAt<span class="signature">(index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>|Element|null}</span></h4>
     
@@ -2293,8 +2340,8 @@ parent objects quality
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getChildIndex"><span class="type-signature"></span>getChildIndex<span class="signature">(child)</span><span class="type-signature"> &rarr; {number}</span></h4>
     
@@ -2436,8 +2483,8 @@ parent objects quality
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getCSS3DTransformsAllowed"><span class="type-signature"></span>getCSS3DTransformsAllowed<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
@@ -2524,8 +2571,8 @@ parent objects quality
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getCurrentScene"><span class="type-signature"></span>getCurrentScene<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Scene.html">lime.Scene</a>}</span></h4>
     
@@ -2568,7 +2615,7 @@ parent objects quality
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 234
+        <a href="director.js.html">director.js</a>, line 235
     </li></ul></dd>
     
     
@@ -2611,8 +2658,8 @@ parent objects quality
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getDeepestDomElement"><span class="type-signature"></span>getDeepestDomElement<span class="signature">()</span><span class="type-signature"> &rarr; {Element}</span></h4>
     
@@ -2704,8 +2751,8 @@ for drawing the Node.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getDeepestParentWithDom"><span class="type-signature"></span>getDeepestParentWithDom<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -2797,8 +2844,8 @@ for drawing on screen.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getDirector"><span class="type-signature"></span>getDirector<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -2837,7 +2884,7 @@ for drawing on screen.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 240
+        <a href="director.js.html">director.js</a>, line 241
     </li></ul></dd>
     
     
@@ -2858,8 +2905,8 @@ for drawing on screen.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getDirty"><span class="type-signature"></span>getDirty<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
     
@@ -2951,8 +2998,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getFrame"><span class="type-signature"></span>getFrame<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></h4>
     
@@ -3043,8 +3090,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getHidden"><span class="type-signature"></span>getHidden<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
@@ -3135,8 +3182,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getMask"><span class="type-signature"></span>getMask<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -3227,8 +3274,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getNumberOfChildren"><span class="type-signature"></span>getNumberOfChildren<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
     
@@ -3319,8 +3366,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getOpacity"><span class="type-signature"></span>getOpacity<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
     
@@ -3411,8 +3458,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getParent"><span class="type-signature"></span>getParent<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -3503,8 +3550,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getParentStack_"><span class="type-signature">&lt;private> </span>getParentStack_<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;<a href="lime.Node.html">lime.Node</a>>}</span></h4>
     
@@ -3595,8 +3642,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getPosition"><span class="type-signature"></span>getPosition<span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></h4>
     
@@ -3687,8 +3734,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getQuality"><span class="type-signature"></span>getQuality<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
     
@@ -3779,8 +3826,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getRelativeQuality"><span class="type-signature"></span>getRelativeQuality<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
     
@@ -3871,8 +3918,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getRotation"><span class="type-signature"></span>getRotation<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
     
@@ -3963,8 +4010,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getScale"><span class="type-signature"></span>getScale<span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Vec2}</span></h4>
     
@@ -4055,8 +4102,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getScene"><span class="type-signature"></span>getScene<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -4095,7 +4142,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 245
+        <a href="director.js.html">director.js</a>, line 246
     </li></ul></dd>
     
     
@@ -4116,8 +4163,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="getSize"><span class="type-signature"></span>getSize<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Size.html">goog.math.Size</a>}</span></h4>
     
@@ -4208,8 +4255,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="hitTest"><span class="type-signature"></span>hitTest<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -4248,7 +4295,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 591
+        <a href="director.js.html">director.js</a>, line 592
     </li></ul></dd>
     
     
@@ -4269,8 +4316,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="invalidateSize_"><span class="type-signature">&lt;private> </span>invalidateSize_<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -4313,7 +4360,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 496
+        <a href="director.js.html">director.js</a>, line 497
     </li></ul></dd>
     
     
@@ -4334,8 +4381,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="isDisplayFPS"><span class="type-signature"></span>isDisplayFPS<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
@@ -4378,7 +4425,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 204
+        <a href="director.js.html">director.js</a>, line 205
     </li></ul></dd>
     
     
@@ -4421,8 +4468,8 @@ The bitmask parts are values of lime.Dirty enum
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="isPaused"><span class="type-signature"></span>isPaused<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
@@ -4509,8 +4556,8 @@ the update timer doesn't fire.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="keyUpHandler_"><span class="type-signature">&lt;private> </span>keyUpHandler_<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -4549,7 +4596,7 @@ the update timer doesn't fire.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 574
+        <a href="director.js.html">director.js</a>, line 575
     </li></ul></dd>
     
     
@@ -4570,8 +4617,8 @@ the update timer doesn't fire.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="localToNode"><span class="type-signature"></span>localToNode<span class="signature">(coord, node)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></h4>
     
@@ -4733,8 +4780,8 @@ the update timer doesn't fire.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="localToParent"><span class="type-signature"></span>localToParent<span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></h4>
     
@@ -4874,8 +4921,8 @@ parent node space
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="localToScreen"><span class="type-signature"></span>localToScreen<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -4914,7 +4961,7 @@ parent node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 467
+        <a href="director.js.html">director.js</a>, line 468
     </li></ul></dd>
     
     
@@ -4935,8 +4982,8 @@ parent node space
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="makeMobileWebAppCapable"><span class="type-signature"></span>makeMobileWebAppCapable<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -4980,7 +5027,7 @@ web application on iOS devices
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 535
+        <a href="director.js.html">director.js</a>, line 536
     </li></ul></dd>
     
     
@@ -5001,8 +5048,8 @@ web application on iOS devices
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="measureContents"><span class="type-signature"></span>measureContents<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></h4>
     
@@ -5093,8 +5140,8 @@ web application on iOS devices
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="needsDomElement"><span class="type-signature"></span>needsDomElement<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
@@ -5185,8 +5232,8 @@ web application on iOS devices
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="parentToLocal"><span class="type-signature"></span>parentToLocal<span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></h4>
     
@@ -5326,8 +5373,8 @@ current node space
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="popScene"><span class="type-signature"></span>popScene<span class="signature">(<span class="optional">opt_transition</span>, <span class="optional">opt_duration</span>)</span><span class="type-signature"></span></h4>
     
@@ -5463,7 +5510,7 @@ current node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 369
+        <a href="director.js.html">director.js</a>, line 370
     </li></ul></dd>
     
     
@@ -5494,8 +5541,8 @@ current node space
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="pushScene"><span class="type-signature"></span>pushScene<span class="signature">(scene, <span class="optional">opt_transition</span>, <span class="optional">opt_duration</span>)</span><span class="type-signature"></span></h4>
     
@@ -5662,7 +5709,7 @@ current node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 337
+        <a href="director.js.html">director.js</a>, line 338
     </li></ul></dd>
     
     
@@ -5693,8 +5740,8 @@ current node space
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="removeAllChildren"><span class="type-signature"></span>removeAllChildren<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -5785,8 +5832,8 @@ current node space
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="removeChild"><span class="type-signature"></span>removeChild<span class="signature">(child)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -5928,8 +5975,8 @@ current node space
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="removeChildAt"><span class="type-signature"></span>removeChildAt<span class="signature">(index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -6068,8 +6115,8 @@ current node space
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="removeCover"><span class="type-signature"></span>removeCover<span class="signature">(cover)</span><span class="type-signature"></span></h4>
     
@@ -6160,7 +6207,7 @@ current node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 429
+        <a href="director.js.html">director.js</a>, line 430
     </li></ul></dd>
     
     
@@ -6181,8 +6228,8 @@ current node space
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="removeDomElement"><span class="type-signature"></span>removeDomElement<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -6251,8 +6298,8 @@ current node space
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="removeEventListener"><span class="type-signature"></span>removeEventListener<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -6317,8 +6364,8 @@ current node space
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="replaceScene"><span class="type-signature"></span>replaceScene<span class="signature">(scene, <span class="optional">opt_transition</span>, <span class="optional">opt_duration</span>)</span><span class="type-signature"></span></h4>
     
@@ -6485,7 +6532,7 @@ current node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 276
+        <a href="director.js.html">director.js</a>, line 277
     </li></ul></dd>
     
     
@@ -6506,8 +6553,8 @@ current node space
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="runAction"><span class="type-signature"></span>runAction<span class="signature">(action)</span><span class="type-signature"></span></h4>
     
@@ -6624,8 +6671,8 @@ current node space
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="screenToLocal"><span class="type-signature"></span>screenToLocal<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -6664,7 +6711,7 @@ current node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 454
+        <a href="director.js.html">director.js</a>, line 455
     </li></ul></dd>
     
     
@@ -6685,8 +6732,8 @@ current node space
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setAllow3DCSSTransforms"><span class="type-signature"></span>setAllow3DCSSTransforms<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -6829,8 +6876,8 @@ for iOS and Playbook.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setAnchorPoint"><span class="type-signature"></span>setAnchorPoint<span class="signature">(value, <span class="optional">opt_y</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -7018,8 +7065,8 @@ is position by the center. You can also pass in 2 numbers.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setAutoResize"><span class="type-signature"></span>setAutoResize<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -7158,8 +7205,8 @@ is position by the center. You can also pass in 2 numbers.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setChildIndex"><span class="type-signature"></span>setChildIndex<span class="signature">(child, index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -7321,8 +7368,8 @@ is position by the center. You can also pass in 2 numbers.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setDirty"><span class="type-signature"></span>setDirty<span class="signature">(value, <span class="optional">opt_pass</span>, <span class="optional">opt_nextframe</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -7538,8 +7585,8 @@ kind of updates before next draw.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setDisplayFPS"><span class="type-signature"></span>setDisplayFPS<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Director.html">lime.Director</a>}</span></h4>
     
@@ -7630,7 +7677,7 @@ kind of updates before next draw.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 213
+        <a href="director.js.html">director.js</a>, line 214
     </li></ul></dd>
     
     
@@ -7673,8 +7720,8 @@ kind of updates before next draw.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setHidden"><span class="type-signature"></span>setHidden<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -7813,8 +7860,8 @@ kind of updates before next draw.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setMask"><span class="type-signature"></span>setMask<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -7953,8 +8000,8 @@ kind of updates before next draw.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setOpacity"><span class="type-signature"></span>setOpacity<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -8093,8 +8140,8 @@ kind of updates before next draw.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setPaused"><span class="type-signature"></span>setPaused<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Director.html">lime.Director</a>}</span></h4>
     
@@ -8228,8 +8275,8 @@ kind of updates before next draw.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setPosition"><span class="type-signature"></span>setPosition<span class="signature">(value, <span class="optional">opt_y</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -8414,8 +8461,8 @@ kind of updates before next draw.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setQuality"><span class="type-signature"></span>setQuality<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -8556,8 +8603,8 @@ Setting this walue larger than 1.0 almost never does anything good.
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setRenderer"><span class="type-signature"></span>setRenderer<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -8697,8 +8744,8 @@ level technology will be used for drawing node on screen
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setRotation"><span class="type-signature"></span>setRotation<span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -8837,8 +8884,8 @@ level technology will be used for drawing node on screen
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setScale"><span class="type-signature"></span>setScale<span class="signature">(value, <span class="optional">opt_y</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -9024,8 +9071,8 @@ level technology will be used for drawing node on screen
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="setSize"><span class="type-signature"></span>setSize<span class="signature">(value, <span class="optional">opt_height</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></h4>
     
@@ -9211,8 +9258,8 @@ accepts 2 numbers: width,height
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="step_"><span class="type-signature">&lt;private> </span>step_<span class="signature">(delta)</span><span class="type-signature"></span></h4>
     
@@ -9303,7 +9350,7 @@ accepts 2 numbers: width,height
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 254
+        <a href="director.js.html">director.js</a>, line 255
     </li></ul></dd>
     
     
@@ -9324,8 +9371,8 @@ accepts 2 numbers: width,height
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -9364,7 +9411,7 @@ accepts 2 numbers: width,height
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 482
+        <a href="director.js.html">director.js</a>, line 483
     </li></ul></dd>
     
     
@@ -9385,8 +9432,8 @@ accepts 2 numbers: width,height
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="updateDomElement"><span class="type-signature"></span>updateDomElement<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -9455,8 +9502,8 @@ accepts 2 numbers: width,height
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="updateDomOffset_"><span class="type-signature">&lt;private> </span>updateDomOffset_<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -9499,7 +9546,7 @@ accepts 2 numbers: width,height
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 567
+        <a href="director.js.html">director.js</a>, line 568
     </li></ul></dd>
     
     
@@ -9520,8 +9567,8 @@ accepts 2 numbers: width,height
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="updateLayout"><span class="type-signature"></span>updateLayout<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -9560,7 +9607,7 @@ accepts 2 numbers: width,height
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="director.js.html">director.js</a>, line 325
+        <a href="director.js.html">director.js</a>, line 326
     </li></ul></dd>
     
     
@@ -9581,8 +9628,8 @@ accepts 2 numbers: width,height
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="wasAddedToTree"><span class="type-signature"></span>wasAddedToTree<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -9651,8 +9698,8 @@ accepts 2 numbers: width,height
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="wasRemovedFromTree"><span class="type-signature"></span>wasRemovedFromTree<span class="signature">()</span><span class="type-signature"></span></h4>
     
@@ -9721,12 +9768,12 @@ accepts 2 numbers: width,height
     
 </dd>
 
-        </dl>
-    
-    
-    
-    
-    
+		</dl>
+	
+	
+	
+	
+	
 </article>
 
 </section>  
@@ -9743,7 +9790,7 @@ accepts 2 numbers: width,height
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri May 24 2013 21:01:54 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:15 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

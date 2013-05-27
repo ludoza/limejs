@@ -11,6 +11,7 @@
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+	<link type="text/css" rel="stylesheet" href="styles/sour.css">
 </head>
 
 <body>
@@ -24,22 +25,22 @@
 
 
 <section>
-    
+	
 <header>
-    <h2>
-    
-    </h2>
-    
+	<h2>
+	
+	</h2>
+	
 </header>  
 
 <article>
-    <div class="container-overview">
-    
-    
-    
-        
-        
-        
+	<div class="container-overview">
+	
+	
+	
+		
+		
+		
 <dl class="details">
     
         
@@ -68,26 +69,81 @@
     
 </dl>
 
-        
-        
-    
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
-            
+		
+		
+	
+	</div>
+	
+	
+	<div class="doc_summary">
+		<a name="summary"></a>
+		<h3 class="subsection-title summary">Summary</h3>
+
+		<div class="doc_group"><a name="summary_classes"></a><h5>Classes</h5>
+<dl>
+	<dt class="even"><span class="type-name"><a href="lime.animation.actionManager.html">actionManager</a></span></dt><dd class="even">ActionManager. Doesn't let animations that modify same parameters
+run together on same targets.</dd><dt class="odd"><span class="type-name"><a href="lime.animation.Animation.html">Animation</a></span></dt><dd class="odd">General object for running animations on nodes</dd><dt class="even"><span class="type-name"><a href="lime.animation.ColorTo.html">ColorTo</a></span></dt><dd class="even">Animation for changing element's fillcolor value</dd><dt class="odd"><span class="type-name"><a href="lime.animation.Delay.html">Delay</a></span></dt><dd class="odd">No-op animation. Useful for making pauses on sequence animations.</dd><dt class="even"><span class="type-name"><a href="lime.animation.FadeTo.html">FadeTo</a></span></dt><dd class="even">Animation for changing elements opacity value</dd><dt class="odd"><span class="type-name"><a href="lime.animation.KeyframeAnimation.html">KeyframeAnimation</a></span></dt><dd class="odd">Keyframe Animation object.
+Keyframe Animation contains images that are changed on targets.
+Similar to GIF effect.</dd><dt class="even"><span class="type-name"><a href="lime.animation.Loop.html">Loop</a></span></dt><dd class="even">Loop animation again after it has finished</dd><dt class="odd"><span class="type-name"><a href="lime.animation.MoveBy.html">MoveBy</a></span></dt><dd class="odd">Move elemenet by offset
+Also accepts two numbers (x and y)</dd><dt class="even"><span class="type-name"><a href="lime.animation.MoveTo.html">MoveTo</a></span></dt><dd class="even">Move element to specific position
+Also accepts two numbers (x and y)</dd><dt class="odd"><span class="type-name"><a href="lime.animation.Resize.html">Resize</a></span></dt><dd class="odd">Resize element</dd><dt class="even"><span class="type-name"><a href="lime.animation.RotateBy.html">RotateBy</a></span></dt><dd class="even">Rotate by given angle in degrees</dd><dt class="odd"><span class="type-name"><a href="lime.animation.RotateTo.html">RotateTo</a></span></dt><dd class="odd">Rotate to given angle in degrees</dd><dt class="even"><span class="type-name"><a href="lime.animation.ScaleBy.html">ScaleBy</a></span></dt><dd class="even">Scale by a factor
+Also accepts one or two numbers</dd><dt class="odd"><span class="type-name"><a href="lime.animation.ScaleTo.html">ScaleTo</a></span></dt><dd class="odd">Scale to a given factor
+Also accepts one or two numbers</dd><dt class="even"><span class="type-name"><a href="lime.animation.Sequence.html">Sequence</a></span></dt><dd class="even">Sequence of animations that are run after each other.
+Also accepts more than two animations</dd><dt class="odd"><span class="type-name"><a href="lime.animation.Spawn.html">Spawn</a></span></dt><dd class="odd">Animations that are run parallel with each other.
+Also accepts more than two animations</dd><dt class="even"><span class="type-name"><a href="lime.audio.Audio.html">Audio</a></span></dt><dd class="even">Audio stream object</dd><dt class="odd"><span class="type-name"><a href="lime.audio.AudioMap.html">AudioMap</a></span></dt><dd class="odd">AudioMap object</dd><dt class="even"><span class="type-name"><a href="lime.Button.html">Button</a></span></dt><dd class="even">Simple button element</dd><dt class="odd"><span class="type-name"><a href="lime.CanvasContext.html">CanvasContext</a></span></dt><dd class="odd">Custom Canvas context</dd><dt class="even"><span class="type-name"><a href="lime.Circle.html">Circle</a></span></dt><dd class="even">Circle or ellipse shaped tectured object</dd><dt class="odd"><span class="type-name"><a href="lime.CoverNode.html">CoverNode</a></span></dt><dd class="odd">Object that covers whole viewport area and lives outside the scene.</dd><dt class="even"><span class="type-name"><a href="lime.Director.html">Director</a></span></dt><dd class="even">Director object. Base object for every game.</dd><dt class="odd"><span class="type-name"><a href="lime.events.Drag.html">Drag</a></span></dt><dd class="odd">Object representing Drag interaction.</dd><dt class="even"><span class="type-name"><a href="lime.events.Event.html">Event</a></span></dt><dd class="even">Dfkit Event object</dd><dt class="odd"><span class="type-name"><a href="lime.events.EventDispatcher.html">EventDispatcher</a></span></dt><dd class="odd">EventDispatcher object. Deals with event handlers</dd><dt class="even"><span class="type-name"><a href="lime.fill.Color.html">Color</a></span></dt><dd class="even">Color fill</dd><dt class="odd"><span class="type-name"><a href="lime.fill.Fill.html">Fill</a></span></dt><dd class="odd">Abstract class for adding textures to sprites</dd><dt class="even"><span class="type-name"><a href="lime.fill.Frame.html">Frame</a></span></dt><dd class="even">Image fill.</dd><dt class="odd"><span class="type-name"><a href="lime.fill.Image.html">Image</a></span></dt><dd class="odd">Image fill.</dd><dt class="even"><span class="type-name"><a href="lime.fill.LinearGradient.html">LinearGradient</a></span></dt><dd class="even">Linear gradient fill.</dd><dt class="odd"><span class="type-name"><a href="lime.fill.Stroke.html">Stroke</a></span></dt><dd class="odd">Stroke</dd><dt class="even"><span class="type-name"><a href="lime.GlossyButton.html">GlossyButton</a></span></dt><dd class="even">Glossy button. Rounded button with some predefined style.
+Use lime.Button for lower level control.</dd><dt class="odd"><span class="type-name"><a href="lime.helper.PauseScene.html">PauseScene</a></span></dt><dd class="odd">PauseScene. This scene appears when director is paused.</dd><dt class="even"><span class="type-name"><a href="lime.Label.html">Label</a></span></dt><dd class="even">Display object for text</dd><dt class="odd"><span class="type-name"><a href="lime.Layer.html">Layer</a></span></dt><dd class="odd">Layer object. This object has no visible body itself but
+acts as a container for other objects. Setting position/scale etc
+changes position/scale of all of its children</dd><dt class="even"><span class="type-name"><a href="lime.Node.html">Node</a></span></dt><dd class="even">Node. Abstract drawable object in lime.</dd><dt class="odd"><span class="type-name"><a href="lime.Polygon.html">Polygon</a></span></dt><dd class="odd">Polygon shaped textured object</dd><dt class="even"><span class="type-name"><a href="lime.Renderer.html">Renderer</a></span></dt><dd class="even">Renderer logic object. This object defines lower level
+technologies that are used to draw Node instaces on screen.</dd><dt class="odd"><span class="type-name"><a href="lime.RoundedRect.html">RoundedRect</a></span></dt><dd class="odd">Rounded rectangle</dd><dt class="even"><span class="type-name"><a href="lime.Scene.html">Scene</a></span></dt><dd class="even">Scene object</dd><dt class="odd"><span class="type-name"><a href="lime.scheduleManager.html">scheduleManager</a></span></dt><dd class="odd">Unified timer provider class
+Don't create instances of this class. Used the shared instance.</dd><dt class="even"><span class="type-name"><a href="lime.scheduleManager.Task.html">Task</a></span></dt><dd class="even">Scheduled task</dd><dt class="odd"><span class="type-name"><a href="lime.Sprite.html">Sprite</a></span></dt><dd class="odd">Rectangural textured object</dd><dt class="even"><span class="type-name"><a href="lime.SpriteSheet.html">SpriteSheet</a></span></dt><dd class="even"><a href="http://www.limejs.com/2011/02/21/introducing-sprite-sheets">Sprite Sheets</a> allows you to gather your image 
+assets to the same image file and define frames that contains the needed keyframe animations, 
+<a href="http://www.limejs.com/2011/02/27/new-formats-for-spritesheets">multiple formats</a> are supported.</dd><dt class="odd"><span class="type-name"><a href="lime.style.Transform.html">Transform</a></span></dt><dd class="odd">Object representing CSS Transform.</dd><dt class="even"><span class="type-name"><a href="lime.transitions.Dissolve.html">Dissolve</a></span></dt><dd class="even">Dissolve transition</dd><dt class="odd"><span class="type-name"><a href="lime.transitions.MoveInDown.html">MoveInDown</a></span></dt><dd class="odd"></dd><dt class="even"><span class="type-name"><a href="lime.transitions.MoveInLeft.html">MoveInLeft</a></span></dt><dd class="even">Move-In transition. Difference form slide-in is that outgoing scene
+does not move.</dd><dt class="odd"><span class="type-name"><a href="lime.transitions.MoveInRight.html">MoveInRight</a></span></dt><dd class="odd"></dd><dt class="even"><span class="type-name"><a href="lime.transitions.MoveInUp.html">MoveInUp</a></span></dt><dd class="even"></dd><dt class="odd"><span class="type-name"><a href="lime.transitions.SlideIn.html">SlideIn</a></span></dt><dd class="odd">Slide-In transition.</dd><dt class="even"><span class="type-name"><a href="lime.transitions.SlideInDown.html">SlideInDown</a></span></dt><dd class="even"></dd><dt class="odd"><span class="type-name"><a href="lime.transitions.SlideInRight.html">SlideInRight</a></span></dt><dd class="odd"></dd><dt class="even"><span class="type-name"><a href="lime.transitions.SlideInUp.html">SlideInUp</a></span></dt><dd class="even"></dd><dt class="odd"><span class="type-name"><a href="lime.transitions.Transition.html">Transition</a></span></dt><dd class="odd">Animation for switching active scenes</dd><dt class="even"><span class="type-name"><a href="lime.ui.Container.html">Container</a></span></dt><dd class="even"></dd><dt class="odd"><span class="type-name"><a href="lime.ui.Scroller.html">Scroller</a></span></dt><dd class="odd"></dd><dt class="even"><span class="type-name"><a href="soy.$$augmentMap-TempCtor.html">TempCtor</a></span></dt><dd class="even"></dd><dt class="odd"><span class="type-name"><a href="soy.StringBuilder.html">StringBuilder</a></span></dt><dd class="odd">Utility class to facilitate much faster string concatenation in IE,
+using Array.join() rather than the '+' operator. For other browsers
+we simply use the '+' operator.</dd><dt class="even"><span class="type-name"><a href="soydata.$$makeSanitizedContentFactory_-InstantiableCtor.html">InstantiableCtor</a></span></dt><dd class="even"></dd><dt class="odd"><span class="type-name"><a href="soydata.SanitizedCss.html">SanitizedCss</a></span></dt><dd class="odd">Content of type soydata.SanitizedContentKind.CSS.
+
+The content is non-attacker-exploitable CSS, such as {@code color:#c3d9ff}.</dd><dt class="even"><span class="type-name"><a href="soydata.SanitizedHtml.html">SanitizedHtml</a></span></dt><dd class="even">Content of type soydata.SanitizedContentKind.HTML.
+
+The content is a string of HTML that can safely be embedded in a PCDATA
+context in your app.  If you would be surprised to find that an HTML
+sanitizer produced {@code s} (e.g.  it runs code or fetches bad URLs) and
+you wouldn't write a template that produces {@code s} on security or privacy
+grounds, then don't pass {@code s} here.</dd><dt class="odd"><span class="type-name"><a href="soydata.SanitizedHtmlAttribute.html">SanitizedHtmlAttribute</a></span></dt><dd class="odd">Content of type soydata.SanitizedContentKind.ATTRIBUTES.
+
+The content should be safely embeddable within an open tag, such as a
+key="value" pair.</dd><dt class="even"><span class="type-name"><a href="soydata.SanitizedJs.html">SanitizedJs</a></span></dt><dd class="even">Content of type soydata.SanitizedContentKind.JS.
+
+The content is Javascript source that when evaluated does not execute any
+attacker-controlled scripts.</dd><dt class="odd"><span class="type-name"><a href="soydata.SanitizedJsStrChars.html">SanitizedJsStrChars</a></span></dt><dd class="odd">Content of type soydata.SanitizedContentKind.JS_STR_CHARS.
+
+The content can be safely inserted as part of a single- or double-quoted
+string without terminating the string.</dd><dt class="even"><span class="type-name"><a href="soydata.SanitizedUri.html">SanitizedUri</a></span></dt><dd class="even">Content of type soydata.SanitizedContentKind.URI.
+
+The content is a URI chunk that the caller knows is safe to emit in a
+template.</dd><dt class="odd"><span class="type-name"><a href="soydata.UnsanitizedText.html">UnsanitizedText</a></span></dt><dd class="odd">Unsanitized plain text string.
+
+While all strings are effectively safe to use as a plain text, there are no
+guarantees about safety in any other context such as HTML. This is
+sometimes used to mark that should never be used unescaped.</dd>
+</dl></div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		<h3 class="subsection-title">Members</h3>
+		
+		<dl>
+			
 <dt>
     <h4 class="name" id="active_"><span class="type-signature">&lt;private> </span>active_<span class="type-signature"> :boolean</span></h4>
     
@@ -138,8 +194,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="displayRate_"><span class="type-signature">&lt;private> </span>displayRate_<span class="type-signature"> :number</span></h4>
     
@@ -190,8 +246,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="intervalID_"><span class="type-signature">&lt;private> </span>intervalID_<span class="type-signature"> :number</span></h4>
     
@@ -242,8 +298,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="lastRunTime_"><span class="type-signature">&lt;private> </span>lastRunTime_<span class="type-signature"> :number</span></h4>
     
@@ -294,8 +350,8 @@
     
 </dd>
 
-        
-            
+		
+			
 <dt>
     <h4 class="name" id="taskStack_"><span class="type-signature">&lt;private> </span>taskStack_<span class="type-signature"> :Array.&lt;<a href="lime.scheduleManager.Task.html">lime.scheduleManager.Task</a>></span></h4>
     
@@ -346,14 +402,14 @@
     
 </dd>
 
-        </dl>
-    
-    
-    
-    
-    
-    
-    
+		</dl>
+	
+	
+	
+	
+	
+	
+	
 </article>
 
 </section>  
@@ -370,7 +426,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri May 24 2013 21:01:46 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

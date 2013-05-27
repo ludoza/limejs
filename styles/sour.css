@@ -1,0 +1,28 @@
+div.doc_summary {
+	margin-top: 2em;
+	margin-bottom: 2em;
+	clear: both;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ddd;
+	display: inline-block;
+}
+
+div.doc_group {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+div.doc_group h5 {
+	padding-left: 0.7em;
+}
+
+h3.summary {
+	border-bottom: 1px solid;
+	padding-bottom: 0.25em;
+	padding-left: 0.25em;
+	border-color: #ddd;
+}
+
