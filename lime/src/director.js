@@ -183,6 +183,7 @@ lime.Director.prototype.isPaused = function() {
  * @return {lime.Director} The director object itself.
  */
 lime.Director.prototype.setPaused = function(value) {
+	if (this.isPaused_ === value) return this;
     this.isPaused_ = value;
     lime.scheduleManager.changeDirectorActivity(this, !value);
     if (this.isPaused_) {
