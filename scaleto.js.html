@@ -26,85 +26,85 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.animation.ScaleTo');
-
-
-goog.require('goog.math.Vec2');
-goog.require('lime.Sprite');
-goog.require('lime.animation.Animation');
-
-/**
- * Scale to a given factor
- * Also accepts one or two numbers
- * @param {goog.math.Vec2|number} scale Target value.
- * @param {number=} opt_height Alternatively use width,height as parameter.
- * @constructor
- * @extends lime.animation.Animation
- */
-lime.animation.ScaleTo = function(scale, opt_height) {
-    lime.animation.Animation.call(this);
-
-    if (arguments.length == 1 && goog.isNumber(scale)) {
-        this.scale_ = new goog.math.Vec2(scale, scale);
-    } else if (arguments.length == 2) {
-        this.scale_ = new goog.math.Vec2(arguments[0], arguments[1]);
-    } else this.scale_ = scale;
-
-
-};
-goog.inherits(lime.animation.ScaleTo, lime.animation.Animation);
-
-/**
- * @inheritDoc
- */
-lime.animation.ScaleTo.prototype.scope = 'scale';
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#makeTargetProp
- */
-lime.animation.ScaleTo.prototype.makeTargetProp = function(target) {
-    var scale = target.getScale(),
-        delta = new goog.math.Vec2(this.scale_.x - scale.x,
-            this.scale_.y - scale.y);
-
-    if (this.useTransitions()) {
-        target.addTransition(lime.Transition.SCALE,
-            new goog.math.Vec2(scale.x + delta.x, scale.y + delta.y),
-            this.duration_, this.getEasing());
-        target.setDirty(lime.Dirty.SCALE);
-    }
-
-    return {
-        startScale: scale,
-        delta: delta
-    };
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#update
- */
-lime.animation.ScaleTo.prototype.update = function(t, target) {
-    if (this.status_ == 0) return;
-    var prop = this.getTargetProp(target);
-
-    target.setScale(
-        prop.startScale.x + prop.delta.x * t,
-        prop.startScale.y + prop.delta.y * t);
-};
-
-/**
- * Clear transistion when animation is stoped.
- * @param {lime.Node} target The target to clear transistion for.
- */
-lime.animation.ScaleTo.prototype.clearTransition = function(target) {
-    if (this.useTransitions()) {
-        target.clearTransition(lime.Transition.SCALE);
-        target.setDirty(lime.Dirty.SCALE);
-    }
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.animation.ScaleTo');<a name="line2"></a>
+<a name="line3"></a>
+<a name="line4"></a>
+goog.require('goog.math.Vec2');<a name="line5"></a>
+goog.require('lime.Sprite');<a name="line6"></a>
+goog.require('lime.animation.Animation');<a name="line7"></a>
+<a name="line8"></a>
+/**<a name="line9"></a>
+ * Scale to a given factor<a name="line10"></a>
+ * Also accepts one or two numbers<a name="line11"></a>
+ * @param {goog.math.Vec2|number} scale Target value.<a name="line12"></a>
+ * @param {number=} opt_height Alternatively use width,height as parameter.<a name="line13"></a>
+ * @constructor<a name="line14"></a>
+ * @extends lime.animation.Animation<a name="line15"></a>
+ */<a name="line16"></a>
+lime.animation.ScaleTo = function(scale, opt_height) {<a name="line17"></a>
+    lime.animation.Animation.call(this);<a name="line18"></a>
+<a name="line19"></a>
+    if (arguments.length == 1 && goog.isNumber(scale)) {<a name="line20"></a>
+        this.scale_ = new goog.math.Vec2(scale, scale);<a name="line21"></a>
+    } else if (arguments.length == 2) {<a name="line22"></a>
+        this.scale_ = new goog.math.Vec2(arguments[0], arguments[1]);<a name="line23"></a>
+    } else this.scale_ = scale;<a name="line24"></a>
+<a name="line25"></a>
+<a name="line26"></a>
+};<a name="line27"></a>
+goog.inherits(lime.animation.ScaleTo, lime.animation.Animation);<a name="line28"></a>
+<a name="line29"></a>
+/**<a name="line30"></a>
+ * @inheritDoc<a name="line31"></a>
+ */<a name="line32"></a>
+lime.animation.ScaleTo.prototype.scope = 'scale';<a name="line33"></a>
+<a name="line34"></a>
+/**<a name="line35"></a>
+ * @inheritDoc<a name="line36"></a>
+ * @see lime.animation.Animation#makeTargetProp<a name="line37"></a>
+ */<a name="line38"></a>
+lime.animation.ScaleTo.prototype.makeTargetProp = function(target) {<a name="line39"></a>
+    var scale = target.getScale(),<a name="line40"></a>
+        delta = new goog.math.Vec2(this.scale_.x - scale.x,<a name="line41"></a>
+            this.scale_.y - scale.y);<a name="line42"></a>
+<a name="line43"></a>
+    if (this.useTransitions()) {<a name="line44"></a>
+        target.addTransition(lime.Transition.SCALE,<a name="line45"></a>
+            new goog.math.Vec2(scale.x + delta.x, scale.y + delta.y),<a name="line46"></a>
+            this.duration_, this.getEasing());<a name="line47"></a>
+        target.setDirty(lime.Dirty.SCALE);<a name="line48"></a>
+    }<a name="line49"></a>
+<a name="line50"></a>
+    return {<a name="line51"></a>
+        startScale: scale,<a name="line52"></a>
+        delta: delta<a name="line53"></a>
+    };<a name="line54"></a>
+};<a name="line55"></a>
+<a name="line56"></a>
+/**<a name="line57"></a>
+ * @inheritDoc<a name="line58"></a>
+ * @see lime.animation.Animation#update<a name="line59"></a>
+ */<a name="line60"></a>
+lime.animation.ScaleTo.prototype.update = function(t, target) {<a name="line61"></a>
+    if (this.status_ == 0) return;<a name="line62"></a>
+    var prop = this.getTargetProp(target);<a name="line63"></a>
+<a name="line64"></a>
+    target.setScale(<a name="line65"></a>
+        prop.startScale.x + prop.delta.x * t,<a name="line66"></a>
+        prop.startScale.y + prop.delta.y * t);<a name="line67"></a>
+};<a name="line68"></a>
+<a name="line69"></a>
+/**<a name="line70"></a>
+ * Clear transistion when animation is stoped.<a name="line71"></a>
+ * @param {lime.Node} target The target to clear transistion for.<a name="line72"></a>
+ */<a name="line73"></a>
+lime.animation.ScaleTo.prototype.clearTransition = function(target) {<a name="line74"></a>
+    if (this.useTransitions()) {<a name="line75"></a>
+        target.clearTransition(lime.Transition.SCALE);<a name="line76"></a>
+        target.setDirty(lime.Dirty.SCALE);<a name="line77"></a>
+    }<a name="line78"></a>
+};<a name="line79"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -120,7 +120,7 @@ lime.animation.ScaleTo.prototype.clearTransition = function(target) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -28,7 +28,7 @@
 	
 <header>
 	<h2>
-	EventDispatcher
+	lime.events.EventDispatcher
 	</h2>
 	
 </header>  
@@ -40,7 +40,7 @@
 	
 		
 <dt>
-    <h4 class="name" id="EventDispatcher"><span class="type-signature"></span>new EventDispatcher<span class="signature">(director)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="EventDispatcher"><span class="type-signature"></span>new lime.events.EventDispatcher<span class="signature">(director)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -129,7 +129,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="eventdispatcher.js.html">events/eventdispatcher.js</a>, line 10
+        <a href="events/eventdispatcher.js.html#line10">events/eventdispatcher.js</a>, line 10
     </li></ul></dd>
     
     
@@ -154,17 +154,80 @@
 	</div>
 	
 	
-	<div class="doc_summary">
+	<div class="summary">
 		<a name="summary"></a>
-		<h3 class="subsection-title summary">Summary</h3>
+		<h3 class="subsection-title">Summary</h3>
 
 		<div class="doc_group"><a name="summary_methods"></a>
-<h5>Methods - instance</h5>
-
 <dl>
-    <dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#handleEvent">handleEvent</a></span><span class="type-sig"><span class="signature">(e)</span><span class="type-signature"></span></span></dt><dd class="  even">Handle DOM event</dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#register">register</a></span><span class="type-sig"><span class="signature">(node, eventType)</span><span class="type-signature"></span></span></dt><dd class="  odd">Register the event listener for node</dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#release">release</a></span><span class="type-sig"><span class="signature">(node, eventType)</span><span class="type-signature"></span></span></dt><dd class="  even">Release the event listener for node</dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#swallow">swallow</a></span><span class="type-sig"><span class="signature">(e, type, handler)</span><span class="type-signature"></span></span></dt><dd class="  odd">Setup swallow rule for an event. Swallow means that next events from
-same interaction will go straight to the handler</dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#updateDispatchOrder">updateDispatchOrder</a></span><span class="type-sig"><span class="signature">(node)</span><span class="type-signature"></span></span></dt><dd class="  even">Update order of handler nodes. Called on tree changes.</dd>
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Methods</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#handleEvent"><code class="name">handleEvent</code></a><span class="type-signature"><span class="signature">(e)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Handle DOM event</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#register"><code class="name">register</code></a><span class="type-signature"><span class="signature">(node, eventType)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Register the event listener for node</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#release"><code class="name">release</code></a><span class="type-signature"><span class="signature">(node, eventType)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Release the event listener for node</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#swallow"><code class="name">swallow</code></a><span class="type-signature"><span class="signature">(e, type, handler)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Setup swallow rule for an event. Swallow means that next events from
+same interaction will go straight to the handler</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#updateDispatchOrder"><code class="name">updateDispatchOrder</code></a><span class="type-signature"><span class="signature">(node)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Update order of handler nodes. Called on tree changes.</div>
+						
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
 </dl>
+
 </div>
 	</div>
 	
@@ -276,7 +339,7 @@ same interaction will go straight to the handler</dd><dt class="  even"><span cl
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="eventdispatcher.js.html">events/eventdispatcher.js</a>, line 94
+        <a href="events/eventdispatcher.js.html#line94">events/eventdispatcher.js</a>, line 94
     </li></ul></dd>
     
     
@@ -412,7 +475,7 @@ same interaction will go straight to the handler</dd><dt class="  even"><span cl
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="eventdispatcher.js.html">events/eventdispatcher.js</a>, line 22
+        <a href="events/eventdispatcher.js.html#line22">events/eventdispatcher.js</a>, line 22
     </li></ul></dd>
     
     
@@ -548,7 +611,7 @@ same interaction will go straight to the handler</dd><dt class="  even"><span cl
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="eventdispatcher.js.html">events/eventdispatcher.js</a>, line 45
+        <a href="events/eventdispatcher.js.html#line45">events/eventdispatcher.js</a>, line 45
     </li></ul></dd>
     
     
@@ -708,7 +771,7 @@ same interaction will go straight to the handler
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="eventdispatcher.js.html">events/eventdispatcher.js</a>, line 76
+        <a href="events/eventdispatcher.js.html#line76">events/eventdispatcher.js</a>, line 76
     </li></ul></dd>
     
     
@@ -821,7 +884,7 @@ same interaction will go straight to the handler
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="eventdispatcher.js.html">events/eventdispatcher.js</a>, line 60
+        <a href="events/eventdispatcher.js.html#line60">events/eventdispatcher.js</a>, line 60
     </li></ul></dd>
     
     
@@ -864,7 +927,7 @@ same interaction will go straight to the handler
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:16 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:38 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -28,7 +28,7 @@
 	
 <header>
 	<h2>
-	Color
+	lime.fill.Color
 	</h2>
 	
 </header>  
@@ -40,7 +40,7 @@
 	
 		
 <dt>
-    <h4 class="name" id="Color"><span class="type-signature"></span>new Color<span class="signature">(clr)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Color"><span class="type-signature"></span>new lime.fill.Color<span class="signature">(clr)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -129,7 +129,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="color.js.html">fill/color.js</a>, line 15
+        <a href="fill/color.js.html#line15">fill/color.js</a>, line 15
     </li></ul></dd>
     
     
@@ -154,23 +154,163 @@
 	</div>
 	
 	
-	<div class="doc_summary">
+	<div class="summary">
 		<a name="summary"></a>
-		<h3 class="subsection-title summary">Summary</h3>
+		<h3 class="subsection-title">Summary</h3>
 
 		<div class="doc_group"><a name="summary_properties"></a>
-<h5>Members - instance</h5>
-
 <dl>
-    <dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#id">id</a></span><span class="type-sig"><span class="type-signature"> :string</span></span></dt><dd class="  even">Common name for color objects</dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#initForSprite">initForSprite</a></span><span class="type-sig"><span class="type-signature"></span></span></dt><dd class=" augmented odd">Initialize connection between fill and a sprite.
-No drawing is performed here but common setup is done.<div class="type-augmented" title="Extended from lime.fill.Fill"><a href="lime.fill.Fill#initForSprite.html#initForSprite"><img src="media/images/extended.png"></a></div></dd>
-</dl></div><div class="doc_group"><a name="summary_methods"></a>
-<h5>Methods - instance</h5>
-
-<dl>
-    <dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#addBrightness">addBrightness</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.fill.Color.html">lime.fill.Color</a>}</span></span></dt><dd class="  even">Make color lighter</dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#addSaturation">addSaturation</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.fill.Color.html">lime.fill.Color</a>}</span></span></dt><dd class="  odd">Make color more saturated</dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#clone">clone</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.fill.Color.html">lime.fill.Color</a>}</span></span></dt><dd class="  even">Clone the color</dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#equals">equals</a></span><span class="type-sig"><span class="signature">(a)</span><span class="type-signature"> &rarr; {boolean}</span></span></dt><dd class="  odd">Compares a {lime.fill.Color} to the calling {lime.fill.Color}
-instance for equality of RGBa values.</dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getRgba">getRgba</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {null|Array.&lt;number>}</span></span></dt><dd class="  even">Gets color as RGBA array.</dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#modifyColor">modifyColor</a></span><span class="type-sig"><span class="signature">(mode, value)</span><span class="type-signature"> &rarr; {<a href="lime.fill.Color.html">lime.fill.Color</a>}</span></span></dt><dd class="  odd">Modify color value</dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setCanvasStyle">setCanvasStyle</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  even"></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setColor">setColor</a></span><span class="type-sig"><span class="signature">(clr)</span><span class="type-signature"> &rarr; {<a href="lime.fill.Color.html">lime.fill.Color</a>}</span></span></dt><dd class="  odd">Set color value of the object. Accepts raw RGB(A) values and strings.</dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setDOMStyle">setDOMStyle</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  even"></dd>
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Members</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#id"><code class="name">id</code></a><span class="type-signature"><span class="type-signature"> :string</span></span>
+						<div class="summary-description"> Common name for color objects</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#initForSprite"><code class="name">initForSprite</code></a><span class="type-signature"><span class="type-signature"></span></span>
+						<div class="summary-description"> Initialize connection between fill and a sprite.
+No drawing is performed here but common setup is done.</div>
+						
+						<span class="small">Inherits from <a href="lime.fill.Fill.html#initForSprite">lime.fill.Fill</a></span>
+						
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
 </dl>
+
+</div><div class="doc_group"><a name="summary_methods"></a>
+<dl>
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Methods</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#addBrightness"><code class="name">addBrightness</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.fill.Color.html">lime.fill.Color</a>}</span></span>
+						<div class="summary-description"> Make color lighter</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#addSaturation"><code class="name">addSaturation</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.fill.Color.html">lime.fill.Color</a>}</span></span>
+						<div class="summary-description"> Make color more saturated</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#clone"><code class="name">clone</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.fill.Color.html">lime.fill.Color</a>}</span></span>
+						<div class="summary-description"> Clone the color</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#equals"><code class="name">equals</code></a><span class="type-signature"><span class="signature">(a)</span><span class="type-signature"> &rarr; {boolean}</span></span>
+						<div class="summary-description"> Compares a {lime.fill.Color} to the calling {lime.fill.Color}
+instance for equality of RGBa values.</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getRgba"><code class="name">getRgba</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {null|Array.&lt;number>}</span></span>
+						<div class="summary-description"> Gets color as RGBA array.</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#modifyColor"><code class="name">modifyColor</code></a><span class="type-signature"><span class="signature">(mode, value)</span><span class="type-signature"> &rarr; {<a href="lime.fill.Color.html">lime.fill.Color</a>}</span></span>
+						<div class="summary-description"> Modify color value</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setCanvasStyle"><code class="name">setCanvasStyle</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> </div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setColor"><code class="name">setColor</code></a><span class="type-signature"><span class="signature">(clr)</span><span class="type-signature"> &rarr; {<a href="lime.fill.Color.html">lime.fill.Color</a>}</span></span>
+						<div class="summary-description"> Set color value of the object. Accepts raw RGB(A) values and strings.</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setDOMStyle"><code class="name">setDOMStyle</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> </div>
+						
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
+</dl>
+
 </div>
 	</div>
 	
@@ -231,7 +371,7 @@ instance for equality of RGBa values.</dd><dt class="  even"><span class="type-a
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="color.js.html">fill/color.js</a>, line 29
+        <a href="fill/color.js.html#line29">fill/color.js</a>, line 29
     </li></ul></dd>
     
     
@@ -245,7 +385,6 @@ instance for equality of RGBa values.</dd><dt class="  even"><span class="type-a
     
     
 </dd>
-
 		
 			
 <dt>
@@ -289,7 +428,7 @@ No drawing is performed here but common setup is done.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fill.js.html">fill/fill.js</a>, line 21
+        <a href="fill/fill.js.html#line21">fill/fill.js</a>, line 21
     </li></ul></dd>
     
     
@@ -303,7 +442,6 @@ No drawing is performed here but common setup is done.
     
     
 </dd>
-
 		</dl>
 	
 	
@@ -402,7 +540,7 @@ No drawing is performed here but common setup is done.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="color.js.html">fill/color.js</a>, line 58
+        <a href="fill/color.js.html#line58">fill/color.js</a>, line 58
     </li></ul></dd>
     
     
@@ -537,7 +675,7 @@ No drawing is performed here but common setup is done.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="color.js.html">fill/color.js</a>, line 90
+        <a href="fill/color.js.html#line90">fill/color.js</a>, line 90
     </li></ul></dd>
     
     
@@ -624,7 +762,7 @@ No drawing is performed here but common setup is done.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="color.js.html">fill/color.js</a>, line 139
+        <a href="fill/color.js.html#line139">fill/color.js</a>, line 139
     </li></ul></dd>
     
     
@@ -760,7 +898,7 @@ instance for equality of RGBa values.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="color.js.html">fill/color.js</a>, line 155
+        <a href="fill/color.js.html#line155">fill/color.js</a>, line 155
     </li></ul></dd>
     
     
@@ -847,7 +985,7 @@ instance for equality of RGBa values.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="color.js.html">fill/color.js</a>, line 35
+        <a href="fill/color.js.html#line35">fill/color.js</a>, line 35
     </li></ul></dd>
     
     
@@ -1008,7 +1146,7 @@ instance for equality of RGBa values.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="color.js.html">fill/color.js</a>, line 68
+        <a href="fill/color.js.html#line68">fill/color.js</a>, line 68
     </li></ul></dd>
     
     
@@ -1091,7 +1229,7 @@ instance for equality of RGBa values.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="color.js.html">fill/color.js</a>, line 131
+        <a href="fill/color.js.html#line131">fill/color.js</a>, line 131
     </li></ul></dd>
     
     
@@ -1204,7 +1342,7 @@ instance for equality of RGBa values.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="color.js.html">fill/color.js</a>, line 99
+        <a href="fill/color.js.html#line99">fill/color.js</a>, line 99
     </li></ul></dd>
     
     
@@ -1287,7 +1425,7 @@ instance for equality of RGBa values.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="color.js.html">fill/color.js</a>, line 126
+        <a href="fill/color.js.html#line126">fill/color.js</a>, line 126
     </li></ul></dd>
     
     
@@ -1330,7 +1468,7 @@ instance for equality of RGBa values.
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:17 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:38 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

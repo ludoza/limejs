@@ -26,178 +26,178 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.Polygon');
-goog.provide('lime.Renderer.CANVAS.POLYGON');
-
-
-goog.require('goog.array');
-goog.require('goog.math.Coordinate');
-goog.require('lime.Renderer.CANVAS.SPRITE');
-goog.require('lime.Sprite');
-
-/**
- * Polygon shaped textured object
- * @param {Array.&lt;goog.math.Coodinate>} points Polygon points.
- * @constructor
- * @extends lime.Sprite
- */
-lime.Polygon = function(points) {
-    lime.Sprite.call(this);
-
-    this.setPoints.apply(this, arguments);
-};
-goog.inherits(lime.Polygon, lime.Sprite);
-
-/**
- * Common name for polygon objects
- * @type {string}
- */
-lime.Polygon.prototype.id = 'polygon';
-
-/** @inheritDoc */
-lime.Polygon.prototype.supportedRenderers = [
-    lime.Renderer.CANVAS.SPRITE.makeSubRenderer(lime.Renderer.CANVAS.POLYGON)
-];
-
-/**
- * Returns array of points that define the polygon
- * @return {Array.&lt;goog.math.Coordinate>} Array of polygon points.
- */
-lime.Polygon.prototype.getPoints = function() {
-    return this.points_;
-};
-
-/**
- * Sets points that define the polygon. Also accepts floats.
- * @param {Array.&lt;goog.math.Coodinate>} points Polygon points.
- * @return {lime.Polygon} object itself.
- */
-lime.Polygon.prototype.setPoints = function(points) {
-    this.points_ = [];
-    this.addPoints.apply(this, arguments);
-    return this;
-};
-
-/**
- * Adds points to current polygon points. Also accepts floats.
- * @param {Array.&lt;goog.math.Coodinate>} points Polygon points.
- * @return {lime.Polygon} object itself.
- */
-lime.Polygon.prototype.addPoints = function(points) {
-    var points = goog.array.toArray(arguments);
-    if (!points.length) return;
-
-    if (points[0] instanceof goog.math.Coordinate) {
-        goog.array.forEach(points, function(p) {
-            this.addPoint(p);
-        }, this);
-    } else {
-        for (var i = 1; i &lt; points.length; i += 2) {
-            this.addPoint(new goog.math.Coordinate(points[i - 1], points[i]));
-        }
-    }
-    return this;
-};
-
-/**
- * Adds a point to current polygon points.
- * @param {goog.math.Coordinate} coord Point to add.
- * @return {lime.Polygon} object itself.
- */
-lime.Polygon.prototype.addPoint = function(coord) {
-    if (!this.points_.length) {
-        this.minX = this.maxX = coord.x;
-        this.minY = this.maxY = coord.y;
-    } else {
-        this.minX = Math.min(coord.x, this.minX);
-        this.minY = Math.min(coord.y, this.minY);
-        this.maxX = Math.max(coord.x, this.maxX);
-        this.maxY = Math.max(coord.y, this.maxY);
-    }
-
-    this.points_.push(coord);
-    return this;
-};
-
-/** @inheritDoc */
-lime.Polygon.prototype.getSize = function() {
-    return new goog.math.Size(this.maxX - this.minX, this.maxY - this.minY);
-};
-
-/** @inheritDoc */
-lime.Polygon.prototype.getAnchorPoint = function() {
-    var size = this.getSize();
-    return new goog.math.Vec2(-this.minX / size.width, -this.minY / size.height);
-};
-
-/**
- * @inheritDoc
- */
-lime.Polygon.prototype.hitTest = function(e) {
-    var p = this.getPoints(),
-        plen = p.length,
-        coord = this.screenToLocal(e.screenPosition),
-        inPoly = false;
-
-    if (plen > 2) {
-        var i, j, c = 0;
-
-        for (i = 0, j = plen - 1; i &lt; plen; j = i++) {
-            if (((p[i].y > coord.y) != (p[j].y > coord.y)) &&
-                (coord.x &lt; (p[j].x - p[i].x) * (coord.y - p[i].y) /
-                (p[j].y - p[i].y) + p[i].x)) {
-                inPoly = !inPoly;
-            }
-        }
-    }
-
-    return inPoly;
-};
-
-/**
- * @inheritDoc
- * @this {lime.Polygon}
- */
-lime.Renderer.CANVAS.POLYGON.draw = function(context) {
-
-
-    var size = this.getSize(),
-        fill = this.fill_;
-
-    var pt = this.getPoints();
-
-
-    if (pt.length > 2) {
-
-        context.save();
-        context.beginPath();
-        context.moveTo(pt[0].x, pt[0].y);
-
-        for (var i = 1; i &lt; pt.length; i++) {
-            context.lineTo(pt[i].x, pt[i].y);
-
-        }
-
-        context.closePath();
-        if (fill)
-            context.fillStyle = fill.str;
-
-
-        context.clip();
-
-
-
-        lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
-
-        if (this.stroke_) {
-            context.lineWidth *= 2;
-            context.stroke();
-        }
-
-        context.restore();
-    }
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.Polygon');<a name="line2"></a>
+goog.provide('lime.Renderer.CANVAS.POLYGON');<a name="line3"></a>
+<a name="line4"></a>
+<a name="line5"></a>
+goog.require('goog.array');<a name="line6"></a>
+goog.require('goog.math.Coordinate');<a name="line7"></a>
+goog.require('lime.Renderer.CANVAS.SPRITE');<a name="line8"></a>
+goog.require('lime.Sprite');<a name="line9"></a>
+<a name="line10"></a>
+/**<a name="line11"></a>
+ * Polygon shaped textured object<a name="line12"></a>
+ * @param {Array.&lt;goog.math.Coodinate>} points Polygon points.<a name="line13"></a>
+ * @constructor<a name="line14"></a>
+ * @extends lime.Sprite<a name="line15"></a>
+ */<a name="line16"></a>
+lime.Polygon = function(points) {<a name="line17"></a>
+    lime.Sprite.call(this);<a name="line18"></a>
+<a name="line19"></a>
+    this.setPoints.apply(this, arguments);<a name="line20"></a>
+};<a name="line21"></a>
+goog.inherits(lime.Polygon, lime.Sprite);<a name="line22"></a>
+<a name="line23"></a>
+/**<a name="line24"></a>
+ * Common name for polygon objects<a name="line25"></a>
+ * @type {string}<a name="line26"></a>
+ */<a name="line27"></a>
+lime.Polygon.prototype.id = 'polygon';<a name="line28"></a>
+<a name="line29"></a>
+/** @inheritDoc */<a name="line30"></a>
+lime.Polygon.prototype.supportedRenderers = [<a name="line31"></a>
+    lime.Renderer.CANVAS.SPRITE.makeSubRenderer(lime.Renderer.CANVAS.POLYGON)<a name="line32"></a>
+];<a name="line33"></a>
+<a name="line34"></a>
+/**<a name="line35"></a>
+ * Returns array of points that define the polygon<a name="line36"></a>
+ * @return {Array.&lt;goog.math.Coordinate>} Array of polygon points.<a name="line37"></a>
+ */<a name="line38"></a>
+lime.Polygon.prototype.getPoints = function() {<a name="line39"></a>
+    return this.points_;<a name="line40"></a>
+};<a name="line41"></a>
+<a name="line42"></a>
+/**<a name="line43"></a>
+ * Sets points that define the polygon. Also accepts floats.<a name="line44"></a>
+ * @param {Array.&lt;goog.math.Coodinate>} points Polygon points.<a name="line45"></a>
+ * @return {lime.Polygon} object itself.<a name="line46"></a>
+ */<a name="line47"></a>
+lime.Polygon.prototype.setPoints = function(points) {<a name="line48"></a>
+    this.points_ = [];<a name="line49"></a>
+    this.addPoints.apply(this, arguments);<a name="line50"></a>
+    return this;<a name="line51"></a>
+};<a name="line52"></a>
+<a name="line53"></a>
+/**<a name="line54"></a>
+ * Adds points to current polygon points. Also accepts floats.<a name="line55"></a>
+ * @param {Array.&lt;goog.math.Coodinate>} points Polygon points.<a name="line56"></a>
+ * @return {lime.Polygon} object itself.<a name="line57"></a>
+ */<a name="line58"></a>
+lime.Polygon.prototype.addPoints = function(points) {<a name="line59"></a>
+    var points = goog.array.toArray(arguments);<a name="line60"></a>
+    if (!points.length) return;<a name="line61"></a>
+<a name="line62"></a>
+    if (points[0] instanceof goog.math.Coordinate) {<a name="line63"></a>
+        goog.array.forEach(points, function(p) {<a name="line64"></a>
+            this.addPoint(p);<a name="line65"></a>
+        }, this);<a name="line66"></a>
+    } else {<a name="line67"></a>
+        for (var i = 1; i &lt; points.length; i += 2) {<a name="line68"></a>
+            this.addPoint(new goog.math.Coordinate(points[i - 1], points[i]));<a name="line69"></a>
+        }<a name="line70"></a>
+    }<a name="line71"></a>
+    return this;<a name="line72"></a>
+};<a name="line73"></a>
+<a name="line74"></a>
+/**<a name="line75"></a>
+ * Adds a point to current polygon points.<a name="line76"></a>
+ * @param {goog.math.Coordinate} coord Point to add.<a name="line77"></a>
+ * @return {lime.Polygon} object itself.<a name="line78"></a>
+ */<a name="line79"></a>
+lime.Polygon.prototype.addPoint = function(coord) {<a name="line80"></a>
+    if (!this.points_.length) {<a name="line81"></a>
+        this.minX = this.maxX = coord.x;<a name="line82"></a>
+        this.minY = this.maxY = coord.y;<a name="line83"></a>
+    } else {<a name="line84"></a>
+        this.minX = Math.min(coord.x, this.minX);<a name="line85"></a>
+        this.minY = Math.min(coord.y, this.minY);<a name="line86"></a>
+        this.maxX = Math.max(coord.x, this.maxX);<a name="line87"></a>
+        this.maxY = Math.max(coord.y, this.maxY);<a name="line88"></a>
+    }<a name="line89"></a>
+<a name="line90"></a>
+    this.points_.push(coord);<a name="line91"></a>
+    return this;<a name="line92"></a>
+};<a name="line93"></a>
+<a name="line94"></a>
+/** @inheritDoc */<a name="line95"></a>
+lime.Polygon.prototype.getSize = function() {<a name="line96"></a>
+    return new goog.math.Size(this.maxX - this.minX, this.maxY - this.minY);<a name="line97"></a>
+};<a name="line98"></a>
+<a name="line99"></a>
+/** @inheritDoc */<a name="line100"></a>
+lime.Polygon.prototype.getAnchorPoint = function() {<a name="line101"></a>
+    var size = this.getSize();<a name="line102"></a>
+    return new goog.math.Vec2(-this.minX / size.width, -this.minY / size.height);<a name="line103"></a>
+};<a name="line104"></a>
+<a name="line105"></a>
+/**<a name="line106"></a>
+ * @inheritDoc<a name="line107"></a>
+ */<a name="line108"></a>
+lime.Polygon.prototype.hitTest = function(e) {<a name="line109"></a>
+    var p = this.getPoints(),<a name="line110"></a>
+        plen = p.length,<a name="line111"></a>
+        coord = this.screenToLocal(e.screenPosition),<a name="line112"></a>
+        inPoly = false;<a name="line113"></a>
+<a name="line114"></a>
+    if (plen > 2) {<a name="line115"></a>
+        var i, j, c = 0;<a name="line116"></a>
+<a name="line117"></a>
+        for (i = 0, j = plen - 1; i &lt; plen; j = i++) {<a name="line118"></a>
+            if (((p[i].y > coord.y) != (p[j].y > coord.y)) &&<a name="line119"></a>
+                (coord.x &lt; (p[j].x - p[i].x) * (coord.y - p[i].y) /<a name="line120"></a>
+                (p[j].y - p[i].y) + p[i].x)) {<a name="line121"></a>
+                inPoly = !inPoly;<a name="line122"></a>
+            }<a name="line123"></a>
+        }<a name="line124"></a>
+    }<a name="line125"></a>
+<a name="line126"></a>
+    return inPoly;<a name="line127"></a>
+};<a name="line128"></a>
+<a name="line129"></a>
+/**<a name="line130"></a>
+ * @inheritDoc<a name="line131"></a>
+ * @this {lime.Polygon}<a name="line132"></a>
+ */<a name="line133"></a>
+lime.Renderer.CANVAS.POLYGON.draw = function(context) {<a name="line134"></a>
+<a name="line135"></a>
+<a name="line136"></a>
+    var size = this.getSize(),<a name="line137"></a>
+        fill = this.fill_;<a name="line138"></a>
+<a name="line139"></a>
+    var pt = this.getPoints();<a name="line140"></a>
+<a name="line141"></a>
+<a name="line142"></a>
+    if (pt.length > 2) {<a name="line143"></a>
+<a name="line144"></a>
+        context.save();<a name="line145"></a>
+        context.beginPath();<a name="line146"></a>
+        context.moveTo(pt[0].x, pt[0].y);<a name="line147"></a>
+<a name="line148"></a>
+        for (var i = 1; i &lt; pt.length; i++) {<a name="line149"></a>
+            context.lineTo(pt[i].x, pt[i].y);<a name="line150"></a>
+<a name="line151"></a>
+        }<a name="line152"></a>
+<a name="line153"></a>
+        context.closePath();<a name="line154"></a>
+        if (fill)<a name="line155"></a>
+            context.fillStyle = fill.str;<a name="line156"></a>
+<a name="line157"></a>
+<a name="line158"></a>
+        context.clip();<a name="line159"></a>
+<a name="line160"></a>
+<a name="line161"></a>
+<a name="line162"></a>
+        lime.Renderer.CANVAS.SPRITE.draw.call(this, context);<a name="line163"></a>
+<a name="line164"></a>
+        if (this.stroke_) {<a name="line165"></a>
+            context.lineWidth *= 2;<a name="line166"></a>
+            context.stroke();<a name="line167"></a>
+        }<a name="line168"></a>
+<a name="line169"></a>
+        context.restore();<a name="line170"></a>
+    }<a name="line171"></a>
+};<a name="line172"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -213,7 +213,7 @@ lime.Renderer.CANVAS.POLYGON.draw = function(context) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

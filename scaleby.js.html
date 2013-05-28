@@ -26,96 +26,96 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.animation.ScaleBy');
-
-
-goog.require('goog.math.Vec2');
-goog.require('lime.Sprite');
-goog.require('lime.animation.Animation');
-
-/**
- * Scale by a factor
- * Also accepts one or two numbers
- * @param {goog.math.Vec2} factor Factor to scale.
- * @constructor
- * @extends lime.animation.Animation
- */
-lime.animation.ScaleBy = function(factor) {
-    lime.animation.Animation.call(this);
-
-    if (arguments.length == 1 && goog.isNumber(factor)) {
-        this.factor_ = new goog.math.Vec2(factor, factor);
-    } else if (arguments.length == 2) {
-        this.factor_ = new goog.math.Vec2(arguments[0], arguments[1]);
-    } else this.factor_ = factor;
-
-
-};
-goog.inherits(lime.animation.ScaleBy, lime.animation.Animation);
-
-/**
- * @inheritDoc
- */
-lime.animation.ScaleBy.prototype.scope = 'scale';
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#makeTargetProp
- */
-lime.animation.ScaleBy.prototype.makeTargetProp = function(target) {
-    var scale = target.getScale(),
-        delta = new goog.math.Vec2(scale.x * this.factor_.x - scale.x,
-            scale.y * this.factor_.y - scale.y);
-
-    if (this.useTransitions()) {
-        target.addTransition(lime.Transition.SCALE,
-            new goog.math.Vec2(scale.x + delta.x, scale.y + delta.y),
-            this.duration_, this.getEasing());
-        target.setDirty(lime.Dirty.SCALE);
-    }
-
-    return {
-        startScale: scale,
-        delta: delta
-    };
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#update
- */
-lime.animation.ScaleBy.prototype.update = function(t, target) {
-    if (this.status_ == 0) return;
-    var prop = this.getTargetProp(target);
-
-    target.setScale(
-        prop.startScale.x + prop.delta.x * t,
-        prop.startScale.y + prop.delta.y * t);
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#clearTransition
- */
-lime.animation.ScaleBy.prototype.clearTransition = function(target) {
-    if (this.useTransitions()) {
-        target.clearTransition(lime.Transition.SCALE);
-        target.setDirty(lime.Dirty.SCALE);
-    }
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#reverse
- */
-lime.animation.ScaleBy.prototype.reverse = function() {
-    var f = this.factor_.clone();
-    f.x = 1 / f.x;
-    f.y = 1 / f.y;
-
-    return new lime.animation.ScaleBy(f).cloneParam(this);
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.animation.ScaleBy');<a name="line2"></a>
+<a name="line3"></a>
+<a name="line4"></a>
+goog.require('goog.math.Vec2');<a name="line5"></a>
+goog.require('lime.Sprite');<a name="line6"></a>
+goog.require('lime.animation.Animation');<a name="line7"></a>
+<a name="line8"></a>
+/**<a name="line9"></a>
+ * Scale by a factor<a name="line10"></a>
+ * Also accepts one or two numbers<a name="line11"></a>
+ * @param {goog.math.Vec2} factor Factor to scale.<a name="line12"></a>
+ * @constructor<a name="line13"></a>
+ * @extends lime.animation.Animation<a name="line14"></a>
+ */<a name="line15"></a>
+lime.animation.ScaleBy = function(factor) {<a name="line16"></a>
+    lime.animation.Animation.call(this);<a name="line17"></a>
+<a name="line18"></a>
+    if (arguments.length == 1 && goog.isNumber(factor)) {<a name="line19"></a>
+        this.factor_ = new goog.math.Vec2(factor, factor);<a name="line20"></a>
+    } else if (arguments.length == 2) {<a name="line21"></a>
+        this.factor_ = new goog.math.Vec2(arguments[0], arguments[1]);<a name="line22"></a>
+    } else this.factor_ = factor;<a name="line23"></a>
+<a name="line24"></a>
+<a name="line25"></a>
+};<a name="line26"></a>
+goog.inherits(lime.animation.ScaleBy, lime.animation.Animation);<a name="line27"></a>
+<a name="line28"></a>
+/**<a name="line29"></a>
+ * @inheritDoc<a name="line30"></a>
+ */<a name="line31"></a>
+lime.animation.ScaleBy.prototype.scope = 'scale';<a name="line32"></a>
+<a name="line33"></a>
+/**<a name="line34"></a>
+ * @inheritDoc<a name="line35"></a>
+ * @see lime.animation.Animation#makeTargetProp<a name="line36"></a>
+ */<a name="line37"></a>
+lime.animation.ScaleBy.prototype.makeTargetProp = function(target) {<a name="line38"></a>
+    var scale = target.getScale(),<a name="line39"></a>
+        delta = new goog.math.Vec2(scale.x * this.factor_.x - scale.x,<a name="line40"></a>
+            scale.y * this.factor_.y - scale.y);<a name="line41"></a>
+<a name="line42"></a>
+    if (this.useTransitions()) {<a name="line43"></a>
+        target.addTransition(lime.Transition.SCALE,<a name="line44"></a>
+            new goog.math.Vec2(scale.x + delta.x, scale.y + delta.y),<a name="line45"></a>
+            this.duration_, this.getEasing());<a name="line46"></a>
+        target.setDirty(lime.Dirty.SCALE);<a name="line47"></a>
+    }<a name="line48"></a>
+<a name="line49"></a>
+    return {<a name="line50"></a>
+        startScale: scale,<a name="line51"></a>
+        delta: delta<a name="line52"></a>
+    };<a name="line53"></a>
+};<a name="line54"></a>
+<a name="line55"></a>
+/**<a name="line56"></a>
+ * @inheritDoc<a name="line57"></a>
+ * @see lime.animation.Animation#update<a name="line58"></a>
+ */<a name="line59"></a>
+lime.animation.ScaleBy.prototype.update = function(t, target) {<a name="line60"></a>
+    if (this.status_ == 0) return;<a name="line61"></a>
+    var prop = this.getTargetProp(target);<a name="line62"></a>
+<a name="line63"></a>
+    target.setScale(<a name="line64"></a>
+        prop.startScale.x + prop.delta.x * t,<a name="line65"></a>
+        prop.startScale.y + prop.delta.y * t);<a name="line66"></a>
+};<a name="line67"></a>
+<a name="line68"></a>
+/**<a name="line69"></a>
+ * @inheritDoc<a name="line70"></a>
+ * @see lime.animation.Animation#clearTransition<a name="line71"></a>
+ */<a name="line72"></a>
+lime.animation.ScaleBy.prototype.clearTransition = function(target) {<a name="line73"></a>
+    if (this.useTransitions()) {<a name="line74"></a>
+        target.clearTransition(lime.Transition.SCALE);<a name="line75"></a>
+        target.setDirty(lime.Dirty.SCALE);<a name="line76"></a>
+    }<a name="line77"></a>
+};<a name="line78"></a>
+<a name="line79"></a>
+/**<a name="line80"></a>
+ * @inheritDoc<a name="line81"></a>
+ * @see lime.animation.Animation#reverse<a name="line82"></a>
+ */<a name="line83"></a>
+lime.animation.ScaleBy.prototype.reverse = function() {<a name="line84"></a>
+    var f = this.factor_.clone();<a name="line85"></a>
+    f.x = 1 / f.x;<a name="line86"></a>
+    f.y = 1 / f.y;<a name="line87"></a>
+<a name="line88"></a>
+    return new lime.animation.ScaleBy(f).cloneParam(this);<a name="line89"></a>
+};<a name="line90"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -131,7 +131,7 @@ lime.animation.ScaleBy.prototype.reverse = function() {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

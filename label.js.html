@@ -26,592 +26,592 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.Label');
-goog.provide('lime.Renderer.CANVAS.LABEL');
-goog.provide('lime.Renderer.DOM.LABEL');
-
-
-goog.require('lime.Renderer.CANVAS.SPRITE');
-goog.require('lime.Renderer.DOM.SPRITE');
-goog.require('lime.Sprite');
-goog.require('goog.style');
-
-/**
- * Display object for text
- * @param {string} txt Text contents of the label.
- * @constructor
- * @extends lime.Sprite
- */
-lime.Label = function(txt) {
-    lime.Sprite.call(this);
-
-    this.setMultiline(false);
-    this.setText(txt);
-
-    this.setFontFamily(lime.Label.defaultFont);
-    this.setFontSize(14);
-    this.setFontColor('#000');
-    this.setAlign('center');
-    this.setFontWeight('400');
-
-    this.setPadding(0);
-
-    this.setLineHeight(1.15);
-
-    this.setShadow(null);
-
-    this.setFill(255, 255, 255, 0);
-
-    this.setStyle("normal");
-
-};
-goog.inherits(lime.Label, lime.Sprite);
-
-/**
- * Common name for label objects
- * @type {string}
- */
-lime.Label.prototype.id = 'label';
-
-/**
- * Default Font name for labels
- * @type {string}
- */
-lime.Label.defaultFont = 'Arial';
-
-/** @inheritDoc */
-lime.Label.prototype.supportedRenderers = [
-    lime.Renderer.DOM.SPRITE.makeSubRenderer(lime.Renderer.DOM.LABEL),
-    lime.Renderer.CANVAS.SPRITE.makeSubRenderer(lime.Renderer.CANVAS.LABEL)
-];
-
-(function() {
-
-    var mContext;
-
-    /**
-     * Measure text contents of the label
-     * @return {goog.math.Size} size of the text.
-     */
-    lime.Label.prototype.measureText = function() {
-        if (!goog.isDef(mContext)) {
-            var cvs = document.createElement('canvas');
-            mContext = cvs.getContext('2d');
-        }
-
-        var lh = this.getLineHeight() * this.getFontSize();
-        if (this.getMultiline()) {
-            lh *= goog.string.trim(this.text_).split('\n').length
-        }
-        mContext.font = this.getStyle() + ' ' + this.getFontWeight() + ' ' + this.getFontSize() + 'px ' + this.getFontFamily();
-
-        var metrics = mContext.measureText(this.text_);
-        var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;
-
-        if (lime.userAgent.IOS5)
-            w += 1;
-
-        var stroke = this.stroke_ ? this.stroke_.width_ : 0;
-        return new goog.math.Size(
-            this.padding_[1] + this.padding_[3] + w + stroke * 2,
-            this.padding_[0] + this.padding_[2] + lh + stroke * 2);
-    };
-})();
-
-/** @inheritDoc */
-lime.Label.prototype.getSize = function() {
-    var size = lime.Node.prototype.getSize.call(this);
-    if (!size || (!size.width && !size.height)) {
-        return this.measureText();
-    }
-    return size;
-};
-
-/**
- * Returns label text as stirng
- * @return {string} Text contents.
- */
-lime.Label.prototype.getText = function() {
-    return this.text_;
-};
-
-/**
- * Set label text
- * @param {string} txt New text contents.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setText = function(txt) {
-    this.text_ = txt + '';
-    this.setDirty(lime.Dirty.CONTENT);
-    delete this.words_;
-    return this;
-};
-
-/**
- * Set label text
- * @param {string} txt New style contents.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setStyle = function(style) {
-    this.style_ = style;
-    this.setDirty(lime.Dirty.FONT);
-    return this;
-};
-
-
-/**
- * Returns the current font style
- * @return {string} Style name string.
- */
-lime.Label.prototype.getStyle = function() {
-    return this.style_;
-};
-
-
-/**
- * Returns font used to draw the label
- * @return {string} Font name string.
- */
-lime.Label.prototype.getFontFamily = function() {
-    return this.fontFamily_;
-};
-
-/**
- * Set font weight
- * @param {string} value New font weight value.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setFontWeight = function(value) {
-    this.fontWeight_ = value;
-    this.setDirty(lime.Dirty.FONT);
-    return this;
-};
-
-/**
- * Returns font used to draw the label
- * @return {string} Font name string.
- */
-lime.Label.prototype.getFontWeight = function() {
-    return this.fontWeight_;
-};
-
-/**
- * Set font name
- * @param {string} value New font family string.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setFontFamily = function(value) {
-    this.fontFamily_ = value;
-    this.setDirty(lime.Dirty.FONT);
-    return this;
-};
-
-/**
- * Returns font size in pixels
- * @return {number} Font size in px.
- */
-lime.Label.prototype.getFontSize = function() {
-    return this.fontSize_;
-};
-
-/**
- * Set the font size in pixels
- * @param {number} value New font size in px.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setFontSize = function(value) {
-    this.fontSize_ = value;
-    this.setDirty(lime.Dirty.FONT);
-    return this;
-};
-
-/**
- * Returns font color as string
- * @return {string} Font color.
- */
-lime.Label.prototype.getFontColor = function() {
-    return this.fontColor_;
-};
-
-/**
- * Sets the font color. Accepts #hex, rgb(), rgba() or plain color name.
- * @param {string} value New color.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setFontColor = function(value) {
-    this.fontColor_ = value;
-    this.setDirty(lime.Dirty.FONT);
-    return this;
-};
-
-/**
- * Return padding box around the text contents
- * @return {goog.math.Box} padding box.
- */
-lime.Label.prototype.getPadding = function() {
-    return this.padding_;
-};
-
-/**
- * Set new padding box around text contents.
- * @param {number} top Top padding.
- * @param {number=} opt_right Right padding.
- * @param {number=} opt_bottom Bottom padding.
- * @param {number=} opt_left Left padding.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setPadding = function(top, opt_right,
-    opt_bottom, opt_left) {
-
-    var val = [top, top, top, top];
-    if (goog.isDef(opt_right)) {
-        val[1] = val[3] = opt_right;
-    }
-    if (goog.isDef(opt_bottom)) {
-        val[2] = opt_bottom;
-    }
-    if (goog.isDef(opt_left)) {
-        val[3] = opt_left;
-    }
-    this.padding_ = val;
-
-    this.setDirty(lime.Dirty.FONT);
-    return this;
-};
-
-/**
- * Sets the line height used in multiline strings. Can be in pixels
- * or factor from font size.
- * @param {number} value Line height.
- * @param {boolean=} opt_absolute If height is in pixels.
- */
-lime.Label.prototype.setLineHeight = function(value, opt_absolute) {
-    this.lineHeightAbsolute_ = opt_absolute || false;
-    this.lineHeight_ = value;
-    return this;
-};
-
-/**
- * Return line height as a factor from font size
- * @return {number} Line height.
- */
-lime.Label.prototype.getLineHeight = function() {
-    var shadowExtra = Math.abs(this.getShadowOffset().y) + this.shadowBlur_ * 2;
-    return this.lineHeightAbsolute_ ?
-        (this.lineHeight_ + shadowExtra) / this.getFontSize() : this.lineHeight_ + shadowExtra / this.getFontSize();
-};
-
-/**
- * Returns alignment value
- * @return {string} Alignement.
- */
-lime.Label.prototype.getAlign = function() {
-    return this.align_;
-};
-
-/**
- * Sets label alignment. Accepts normal strings as left,center,right
- * @param {string} value New alignment value.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setAlign = function(value) {
-    this.align_ = value;
-    this.setDirty(lime.Dirty.FONT);
-    return this;
-};
-
-lime.Label.prototype.getMultiline = function() {
-    return this.multiline_;
-}
-
-lime.Label.prototype.setMultiline = function(bool) {
-    this.multiline_ = bool;
-    this.setDirty(lime.Dirty.CONTENT);
-    return this;
-};
-
-/**
- * Shorthand for adding shadow to a label. Calling setShadow(null) removes the shadow.
- * @param {?string} color Shadow color.
- * @param {number=} opt_blur Shadow blur radius.
- * @param {(number|goog.math.Vec2)=} opt_offsetX Shadow offset in X axis, or offset Vec2.
- * @param {number=} opt_offsetY Shadow offset in Y axis.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setShadow = function(color, opt_blur, opt_offsetX, opt_offsetY) {
-    // provide method to reset the shadow
-    if (arguments.length == 1 && goog.isNull(color)) {
-        this.setShadowColor('#ccc'); //default color
-        this.setShadowBlur(0);
-        this.setShadowOffset(0, 0);
-    } else if (arguments.length == 2) {
-        this.setShadowColor( /** @type {!string}*/ (color));
-        this.setShadowBlur( /** @type {!number} */ (opt_blur));
-        this.setShadowOffset(new goog.math.Vec2(0, 0));
-    } else if (arguments.length == 3) {
-        this.setShadowColor( /** @type {!string}*/ (color));
-        this.setShadowBlur( /** @type {!number} */ (opt_blur));
-        this.setShadowOffset( /** @type {!goog.math.Vec2} */ (opt_offsetX));
-    } else {
-        this.setShadowColor( /** @type {!string}*/ (color));
-        this.setShadowBlur( /** @type {!number} */ (opt_blur));
-        this.setShadowOffset( /** @type {!(number|goog.math.Vec2)} */ (opt_offsetX), opt_offsetY);
-    }
-    this.setDirty(lime.Dirty.FONT);
-    return this;
-};
-
-/**
- * Returns true if the label has a shadow.
- * @private
- */
-lime.Label.prototype.hasShadow_ = function() {
-    return this.shadowBlur_ || this.shadowOffset_.x || this.shadowOffset_.y;
-};
-
-/**
- * Returns shadow color
- * @return {string} shadow color.
- */
-lime.Label.prototype.getShadowColor = function() {
-    return this.shadowColor_;
-};
-
-/**
- * Returns shadow offset in px.
- * @return {goog.math.Vec2} shadow offset in px.
- */
-lime.Label.prototype.getShadowOffset = function() {
-    return this.shadowOffset_;
-};
-
-/**
- * Set the shadow color.
- * @param {string} color The shadow color.
- */
-lime.Label.prototype.setShadowColor = function(color) {
-    this.shadowColor_ = color;
-    return this;
-};
-
-/**
- * Set the shadow blur radius.
- * @param {number} radius The shadow blur radius.
- */
-lime.Label.prototype.setShadowBlur = function(radius) {
-    this.shadowBlur_ = radius;
-    return this;
-};
-
-/**
- * Sets label shadow offset in px.
- * @param {(goog.math.Vec2|number)} offset Shadow offset.
- * @param {number=} opt_offsetY Optionaly set offset using x,y.
- * @return {lime.Label} object itself.
- */
-lime.Label.prototype.setShadowOffset = function(offset, opt_offsetY) {
-    if (arguments.length == 2) {
-        this.shadowOffset_ = new goog.math.Vec2(arguments[0], arguments[1]);
-    } else {
-        this.shadowOffset_ = offset;
-    }
-    this.setDirty(lime.Dirty.FONT);
-    return this;
-};
-
-/**
- * Returns shadow blur radius in px.
- * @return {number} shadow blur radius in px.
- */
-lime.Label.prototype.getShadowBlur = function() {
-    return this.shadowBlur_;
-};
-
-/**
- *
- * Break text into array of line breakable words
- * @return {Array.&lt;string>} array of words.
- */
-lime.Label.prototype.calcWordsArray = function() {
-    var words = [];
-    var len = this.text_.length;
-    var regexp = goog.userAgent.GECKO ? /[\s\.]+/g : /[\s-\.]+/g;
-    var breaks = this.text_.match(regexp);
-    var st = 0;
-    if (breaks)
-        for (var i = 0; i &lt; breaks.length; i++) {
-            var b = breaks[i];
-            var ibreak = this.text_.indexOf(b, st);
-            var wlen = ibreak + b.length;
-            words.push(this.text_.substring(st, wlen));
-            st = wlen;
-    }
-    if (st != len) {
-        words.push(this.text_.substring(st, len));
-    }
-    return words;
-};
-
-/**
- * Wrap text on words array to lines based on current
- * font size and given maximum width.
- * @param {Object} context Canvas2DContext used to measure.
- * @param {number} width Maximum line width.
- * @return {Array.&lt;string>} Lines of text.
- */
-lime.Label.prototype.wrapText = function(context, width) {
-    var lines = [],
-        line = '',
-        words = this.words_,
-        metrics;
-    for (var i = 0; i &lt; words.length; i++) {
-        var breaks = 0;
-        if (this.multiline_) {
-            var matches = words[i].match(/\n/g)
-            if (matches) {
-                breaks = matches.length
-            }
-        }
-        if (line == '') {
-            line = words[i];
-        } else {
-            metrics = context.measureText(goog.string.trim(line + words[i]));
-            if (metrics.width > width) {
-                lines.push(goog.string.trim(line));
-                //breaks--
-                line = words[i];
-            } else {
-                line += words[i];
-            }
-        }
-        for (var j = 0; j &lt; breaks; j++) {
-            lines.push(goog.string.trim(line));
-            line = ''
-        }
-    }
-    lines.push(line);
-    return lines;
-};
-
-/** @inheritDoc */
-lime.Label.prototype.update = function() {
-
-    if (this.getDirty() & lime.Dirty.CONTENT)
-        delete this.lastDrawnWidth_;
-
-    lime.Node.prototype.update.apply(this, arguments);
-};
-
-
-/**
- * @inheritDoc
- * @this {lime.Label}
- */
-lime.Renderer.DOM.LABEL.draw = function(el) {
-    lime.Renderer.DOM.SPRITE.draw.call(this, el);
-
-    var style = el.style;
-    if (this.dirty_ & lime.Dirty.CONTENT) {
-        if (this.getMultiline()) {
-            el.innerHTML = goog.string.htmlEscape(this.text_).replace(/\n/g, '&lt;br/>')
-        } else goog.dom.setTextContent(el, this.text_);
-    }
-    if (this.dirty_ & lime.Dirty.FONT) {
-        style['lineHeight'] = this.getLineHeight();
-        style['padding'] = goog.array.map(this.padding_, function(p) {
-            return p * this.getRelativeQuality();
-        }, this).join('px ') + 'px';
-        style['color'] = this.getFontColor();
-        style['fontFamily'] = this.getFontFamily();
-        style['fontSize'] = this.getFontSize() * this.getRelativeQuality() + 'px';
-        style['fontWeight'] = this.getFontWeight();
-        style['textAlign'] = this.getAlign();
-        style['font-style'] = this.getStyle();
-        style['textShadow'] = this.hasShadow_() ? this.getShadowColor() + ' ' + this.getShadowOffset().x + 'px ' + this.getShadowOffset().y + 'px ' + this.getShadowBlur() + 'px' : '';
-    }
-};
-
-/**
- * @inheritDoc
- * @this {lime.Label}
- */
-lime.Renderer.CANVAS.LABEL.draw = function(context) {
-
-    lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
-
-    var frame = this.getFrame(),
-        width = -frame.left - this.padding_[3] + frame.right - this.padding_[1] + Math.abs(this.getShadowOffset().x) + Math.abs(this.getShadowBlur() * 2),
-        dowrap = 0;
-
-    if (!this.words_) {
-        this.words_ = this.calcWordsArray();
-        dowrap = 1;
-    }
-
-    var stroke = this.stroke_ ? this.stroke_.width_ : 0;
-
-    context.save();
-    var align = this.getAlign();
-    if (align == 'left') {
-        context.translate(frame.left + this.padding_[3] + stroke,
-            frame.top + this.padding_[0] + stroke);
-    } else if (align == 'right') {
-        context.translate(frame.right - this.padding_[1] - stroke,
-            frame.top + this.padding_[0] + stroke);
-    } else if (align == 'center') {
-        context.translate(
-        (frame.left + this.padding_[3] +
-            frame.right - this.padding_[1]) * .5,
-            frame.top + this.padding_[0] + stroke);
-    }
-
-    var lh = this.getLineHeight();
-
-    context.fillStyle = this.getFontColor();
-    context.font = this.getStyle() + ' ' + this.getFontWeight() + ' ' + this.getFontSize() +
-        'px/' + lh + ' ' + this.getFontFamily();
-    context.textAlign = align;
-    context.textBaseline = 'top';
-
-    if (this.hasShadow_()) {
-        context.shadowColor = this.getShadowColor();
-        context.shadowOffsetX = this.getShadowOffset().x;
-        context.shadowOffsetY = this.getShadowOffset().y;
-        context.shadowBlur = this.getShadowBlur();
-    }
-
-    if (dowrap || width != this.lastDrawnWidth_) {
-        this.lines_ = this.wrapText(context, width - 2 * stroke);
-        this.lastDrawnWidth_ = width;
-    }
-
-    if (this.lines_) {
-        var lhpx = lh * this.getFontSize(),
-            offsetY = (goog.isDef(this.getShadowBlur()) ? Math.abs(this.getShadowBlur()) : 0) +
-                (goog.isDef(this.getShadowOffset()) ? Math.abs(this.getShadowOffset().y) / 2 : 0),
-            offsetX = 0;
-        lhpx = goog.userAgent.WEBKIT ? Math.floor(lhpx) : Math.round(lhpx);
-        for (var i = 0; i &lt; this.lines_.length; i++) {
-            context.fillText(this.lines_[i], offsetX, lhpx * i + offsetY - 0.5);
-        }
-    }
-
-    context.restore();
-};
-
-/**
- * Helper function to install new font file so you can use
- * the font name as font-family.
- * @param {string} name Font name.
- * @param {string} fileurl Path to font file.
- * @param {string=} opt_format Font format.
- */
-lime.Label.installFont = function(name, fileurl, opt_format) {
-    var format = opt_format || 'truetype';
-    goog.style.installStyles('@font-face{font-family: "' + name +
-        '";src: url(' + fileurl + ') format("' + format + '");})');
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.Label');<a name="line2"></a>
+goog.provide('lime.Renderer.CANVAS.LABEL');<a name="line3"></a>
+goog.provide('lime.Renderer.DOM.LABEL');<a name="line4"></a>
+<a name="line5"></a>
+<a name="line6"></a>
+goog.require('lime.Renderer.CANVAS.SPRITE');<a name="line7"></a>
+goog.require('lime.Renderer.DOM.SPRITE');<a name="line8"></a>
+goog.require('lime.Sprite');<a name="line9"></a>
+goog.require('goog.style');<a name="line10"></a>
+<a name="line11"></a>
+/**<a name="line12"></a>
+ * Display object for text<a name="line13"></a>
+ * @param {string} txt Text contents of the label.<a name="line14"></a>
+ * @constructor<a name="line15"></a>
+ * @extends lime.Sprite<a name="line16"></a>
+ */<a name="line17"></a>
+lime.Label = function(txt) {<a name="line18"></a>
+    lime.Sprite.call(this);<a name="line19"></a>
+<a name="line20"></a>
+    this.setMultiline(false);<a name="line21"></a>
+    this.setText(txt);<a name="line22"></a>
+<a name="line23"></a>
+    this.setFontFamily(lime.Label.defaultFont);<a name="line24"></a>
+    this.setFontSize(14);<a name="line25"></a>
+    this.setFontColor('#000');<a name="line26"></a>
+    this.setAlign('center');<a name="line27"></a>
+    this.setFontWeight('400');<a name="line28"></a>
+<a name="line29"></a>
+    this.setPadding(0);<a name="line30"></a>
+<a name="line31"></a>
+    this.setLineHeight(1.15);<a name="line32"></a>
+<a name="line33"></a>
+    this.setShadow(null);<a name="line34"></a>
+<a name="line35"></a>
+    this.setFill(255, 255, 255, 0);<a name="line36"></a>
+<a name="line37"></a>
+    this.setStyle("normal");<a name="line38"></a>
+<a name="line39"></a>
+};<a name="line40"></a>
+goog.inherits(lime.Label, lime.Sprite);<a name="line41"></a>
+<a name="line42"></a>
+/**<a name="line43"></a>
+ * Common name for label objects<a name="line44"></a>
+ * @type {string}<a name="line45"></a>
+ */<a name="line46"></a>
+lime.Label.prototype.id = 'label';<a name="line47"></a>
+<a name="line48"></a>
+/**<a name="line49"></a>
+ * Default Font name for labels<a name="line50"></a>
+ * @type {string}<a name="line51"></a>
+ */<a name="line52"></a>
+lime.Label.defaultFont = 'Arial';<a name="line53"></a>
+<a name="line54"></a>
+/** @inheritDoc */<a name="line55"></a>
+lime.Label.prototype.supportedRenderers = [<a name="line56"></a>
+    lime.Renderer.DOM.SPRITE.makeSubRenderer(lime.Renderer.DOM.LABEL),<a name="line57"></a>
+    lime.Renderer.CANVAS.SPRITE.makeSubRenderer(lime.Renderer.CANVAS.LABEL)<a name="line58"></a>
+];<a name="line59"></a>
+<a name="line60"></a>
+(function() {<a name="line61"></a>
+<a name="line62"></a>
+    var mContext;<a name="line63"></a>
+<a name="line64"></a>
+    /**<a name="line65"></a>
+     * Measure text contents of the label<a name="line66"></a>
+     * @return {goog.math.Size} size of the text.<a name="line67"></a>
+     */<a name="line68"></a>
+    lime.Label.prototype.measureText = function() {<a name="line69"></a>
+        if (!goog.isDef(mContext)) {<a name="line70"></a>
+            var cvs = document.createElement('canvas');<a name="line71"></a>
+            mContext = cvs.getContext('2d');<a name="line72"></a>
+        }<a name="line73"></a>
+<a name="line74"></a>
+        var lh = this.getLineHeight() * this.getFontSize();<a name="line75"></a>
+        if (this.getMultiline()) {<a name="line76"></a>
+            lh *= goog.string.trim(this.text_).split('\n').length<a name="line77"></a>
+        }<a name="line78"></a>
+        mContext.font = this.getStyle() + ' ' + this.getFontWeight() + ' ' + this.getFontSize() + 'px ' + this.getFontFamily();<a name="line79"></a>
+<a name="line80"></a>
+        var metrics = mContext.measureText(this.text_);<a name="line81"></a>
+        var w = goog.userAgent.WEBKIT ? metrics.width : metrics.width + 1;<a name="line82"></a>
+<a name="line83"></a>
+        if (lime.userAgent.IOS5)<a name="line84"></a>
+            w += 1;<a name="line85"></a>
+<a name="line86"></a>
+        var stroke = this.stroke_ ? this.stroke_.width_ : 0;<a name="line87"></a>
+        return new goog.math.Size(<a name="line88"></a>
+            this.padding_[1] + this.padding_[3] + w + stroke * 2,<a name="line89"></a>
+            this.padding_[0] + this.padding_[2] + lh + stroke * 2);<a name="line90"></a>
+    };<a name="line91"></a>
+})();<a name="line92"></a>
+<a name="line93"></a>
+/** @inheritDoc */<a name="line94"></a>
+lime.Label.prototype.getSize = function() {<a name="line95"></a>
+    var size = lime.Node.prototype.getSize.call(this);<a name="line96"></a>
+    if (!size || (!size.width && !size.height)) {<a name="line97"></a>
+        return this.measureText();<a name="line98"></a>
+    }<a name="line99"></a>
+    return size;<a name="line100"></a>
+};<a name="line101"></a>
+<a name="line102"></a>
+/**<a name="line103"></a>
+ * Returns label text as stirng<a name="line104"></a>
+ * @return {string} Text contents.<a name="line105"></a>
+ */<a name="line106"></a>
+lime.Label.prototype.getText = function() {<a name="line107"></a>
+    return this.text_;<a name="line108"></a>
+};<a name="line109"></a>
+<a name="line110"></a>
+/**<a name="line111"></a>
+ * Set label text<a name="line112"></a>
+ * @param {string} txt New text contents.<a name="line113"></a>
+ * @return {lime.Label} object itself.<a name="line114"></a>
+ */<a name="line115"></a>
+lime.Label.prototype.setText = function(txt) {<a name="line116"></a>
+    this.text_ = txt + '';<a name="line117"></a>
+    this.setDirty(lime.Dirty.CONTENT);<a name="line118"></a>
+    delete this.words_;<a name="line119"></a>
+    return this;<a name="line120"></a>
+};<a name="line121"></a>
+<a name="line122"></a>
+/**<a name="line123"></a>
+ * Set label text<a name="line124"></a>
+ * @param {string} txt New style contents.<a name="line125"></a>
+ * @return {lime.Label} object itself.<a name="line126"></a>
+ */<a name="line127"></a>
+lime.Label.prototype.setStyle = function(style) {<a name="line128"></a>
+    this.style_ = style;<a name="line129"></a>
+    this.setDirty(lime.Dirty.FONT);<a name="line130"></a>
+    return this;<a name="line131"></a>
+};<a name="line132"></a>
+<a name="line133"></a>
+<a name="line134"></a>
+/**<a name="line135"></a>
+ * Returns the current font style<a name="line136"></a>
+ * @return {string} Style name string.<a name="line137"></a>
+ */<a name="line138"></a>
+lime.Label.prototype.getStyle = function() {<a name="line139"></a>
+    return this.style_;<a name="line140"></a>
+};<a name="line141"></a>
+<a name="line142"></a>
+<a name="line143"></a>
+/**<a name="line144"></a>
+ * Returns font used to draw the label<a name="line145"></a>
+ * @return {string} Font name string.<a name="line146"></a>
+ */<a name="line147"></a>
+lime.Label.prototype.getFontFamily = function() {<a name="line148"></a>
+    return this.fontFamily_;<a name="line149"></a>
+};<a name="line150"></a>
+<a name="line151"></a>
+/**<a name="line152"></a>
+ * Set font weight<a name="line153"></a>
+ * @param {string} value New font weight value.<a name="line154"></a>
+ * @return {lime.Label} object itself.<a name="line155"></a>
+ */<a name="line156"></a>
+lime.Label.prototype.setFontWeight = function(value) {<a name="line157"></a>
+    this.fontWeight_ = value;<a name="line158"></a>
+    this.setDirty(lime.Dirty.FONT);<a name="line159"></a>
+    return this;<a name="line160"></a>
+};<a name="line161"></a>
+<a name="line162"></a>
+/**<a name="line163"></a>
+ * Returns font used to draw the label<a name="line164"></a>
+ * @return {string} Font name string.<a name="line165"></a>
+ */<a name="line166"></a>
+lime.Label.prototype.getFontWeight = function() {<a name="line167"></a>
+    return this.fontWeight_;<a name="line168"></a>
+};<a name="line169"></a>
+<a name="line170"></a>
+/**<a name="line171"></a>
+ * Set font name<a name="line172"></a>
+ * @param {string} value New font family string.<a name="line173"></a>
+ * @return {lime.Label} object itself.<a name="line174"></a>
+ */<a name="line175"></a>
+lime.Label.prototype.setFontFamily = function(value) {<a name="line176"></a>
+    this.fontFamily_ = value;<a name="line177"></a>
+    this.setDirty(lime.Dirty.FONT);<a name="line178"></a>
+    return this;<a name="line179"></a>
+};<a name="line180"></a>
+<a name="line181"></a>
+/**<a name="line182"></a>
+ * Returns font size in pixels<a name="line183"></a>
+ * @return {number} Font size in px.<a name="line184"></a>
+ */<a name="line185"></a>
+lime.Label.prototype.getFontSize = function() {<a name="line186"></a>
+    return this.fontSize_;<a name="line187"></a>
+};<a name="line188"></a>
+<a name="line189"></a>
+/**<a name="line190"></a>
+ * Set the font size in pixels<a name="line191"></a>
+ * @param {number} value New font size in px.<a name="line192"></a>
+ * @return {lime.Label} object itself.<a name="line193"></a>
+ */<a name="line194"></a>
+lime.Label.prototype.setFontSize = function(value) {<a name="line195"></a>
+    this.fontSize_ = value;<a name="line196"></a>
+    this.setDirty(lime.Dirty.FONT);<a name="line197"></a>
+    return this;<a name="line198"></a>
+};<a name="line199"></a>
+<a name="line200"></a>
+/**<a name="line201"></a>
+ * Returns font color as string<a name="line202"></a>
+ * @return {string} Font color.<a name="line203"></a>
+ */<a name="line204"></a>
+lime.Label.prototype.getFontColor = function() {<a name="line205"></a>
+    return this.fontColor_;<a name="line206"></a>
+};<a name="line207"></a>
+<a name="line208"></a>
+/**<a name="line209"></a>
+ * Sets the font color. Accepts #hex, rgb(), rgba() or plain color name.<a name="line210"></a>
+ * @param {string} value New color.<a name="line211"></a>
+ * @return {lime.Label} object itself.<a name="line212"></a>
+ */<a name="line213"></a>
+lime.Label.prototype.setFontColor = function(value) {<a name="line214"></a>
+    this.fontColor_ = value;<a name="line215"></a>
+    this.setDirty(lime.Dirty.FONT);<a name="line216"></a>
+    return this;<a name="line217"></a>
+};<a name="line218"></a>
+<a name="line219"></a>
+/**<a name="line220"></a>
+ * Return padding box around the text contents<a name="line221"></a>
+ * @return {goog.math.Box} padding box.<a name="line222"></a>
+ */<a name="line223"></a>
+lime.Label.prototype.getPadding = function() {<a name="line224"></a>
+    return this.padding_;<a name="line225"></a>
+};<a name="line226"></a>
+<a name="line227"></a>
+/**<a name="line228"></a>
+ * Set new padding box around text contents.<a name="line229"></a>
+ * @param {number} top Top padding.<a name="line230"></a>
+ * @param {number=} opt_right Right padding.<a name="line231"></a>
+ * @param {number=} opt_bottom Bottom padding.<a name="line232"></a>
+ * @param {number=} opt_left Left padding.<a name="line233"></a>
+ * @return {lime.Label} object itself.<a name="line234"></a>
+ */<a name="line235"></a>
+lime.Label.prototype.setPadding = function(top, opt_right,<a name="line236"></a>
+    opt_bottom, opt_left) {<a name="line237"></a>
+<a name="line238"></a>
+    var val = [top, top, top, top];<a name="line239"></a>
+    if (goog.isDef(opt_right)) {<a name="line240"></a>
+        val[1] = val[3] = opt_right;<a name="line241"></a>
+    }<a name="line242"></a>
+    if (goog.isDef(opt_bottom)) {<a name="line243"></a>
+        val[2] = opt_bottom;<a name="line244"></a>
+    }<a name="line245"></a>
+    if (goog.isDef(opt_left)) {<a name="line246"></a>
+        val[3] = opt_left;<a name="line247"></a>
+    }<a name="line248"></a>
+    this.padding_ = val;<a name="line249"></a>
+<a name="line250"></a>
+    this.setDirty(lime.Dirty.FONT);<a name="line251"></a>
+    return this;<a name="line252"></a>
+};<a name="line253"></a>
+<a name="line254"></a>
+/**<a name="line255"></a>
+ * Sets the line height used in multiline strings. Can be in pixels<a name="line256"></a>
+ * or factor from font size.<a name="line257"></a>
+ * @param {number} value Line height.<a name="line258"></a>
+ * @param {boolean=} opt_absolute If height is in pixels.<a name="line259"></a>
+ */<a name="line260"></a>
+lime.Label.prototype.setLineHeight = function(value, opt_absolute) {<a name="line261"></a>
+    this.lineHeightAbsolute_ = opt_absolute || false;<a name="line262"></a>
+    this.lineHeight_ = value;<a name="line263"></a>
+    return this;<a name="line264"></a>
+};<a name="line265"></a>
+<a name="line266"></a>
+/**<a name="line267"></a>
+ * Return line height as a factor from font size<a name="line268"></a>
+ * @return {number} Line height.<a name="line269"></a>
+ */<a name="line270"></a>
+lime.Label.prototype.getLineHeight = function() {<a name="line271"></a>
+    var shadowExtra = Math.abs(this.getShadowOffset().y) + this.shadowBlur_ * 2;<a name="line272"></a>
+    return this.lineHeightAbsolute_ ?<a name="line273"></a>
+        (this.lineHeight_ + shadowExtra) / this.getFontSize() : this.lineHeight_ + shadowExtra / this.getFontSize();<a name="line274"></a>
+};<a name="line275"></a>
+<a name="line276"></a>
+/**<a name="line277"></a>
+ * Returns alignment value<a name="line278"></a>
+ * @return {string} Alignement.<a name="line279"></a>
+ */<a name="line280"></a>
+lime.Label.prototype.getAlign = function() {<a name="line281"></a>
+    return this.align_;<a name="line282"></a>
+};<a name="line283"></a>
+<a name="line284"></a>
+/**<a name="line285"></a>
+ * Sets label alignment. Accepts normal strings as left,center,right<a name="line286"></a>
+ * @param {string} value New alignment value.<a name="line287"></a>
+ * @return {lime.Label} object itself.<a name="line288"></a>
+ */<a name="line289"></a>
+lime.Label.prototype.setAlign = function(value) {<a name="line290"></a>
+    this.align_ = value;<a name="line291"></a>
+    this.setDirty(lime.Dirty.FONT);<a name="line292"></a>
+    return this;<a name="line293"></a>
+};<a name="line294"></a>
+<a name="line295"></a>
+lime.Label.prototype.getMultiline = function() {<a name="line296"></a>
+    return this.multiline_;<a name="line297"></a>
+}<a name="line298"></a>
+<a name="line299"></a>
+lime.Label.prototype.setMultiline = function(bool) {<a name="line300"></a>
+    this.multiline_ = bool;<a name="line301"></a>
+    this.setDirty(lime.Dirty.CONTENT);<a name="line302"></a>
+    return this;<a name="line303"></a>
+};<a name="line304"></a>
+<a name="line305"></a>
+/**<a name="line306"></a>
+ * Shorthand for adding shadow to a label. Calling setShadow(null) removes the shadow.<a name="line307"></a>
+ * @param {?string} color Shadow color.<a name="line308"></a>
+ * @param {number=} opt_blur Shadow blur radius.<a name="line309"></a>
+ * @param {(number|goog.math.Vec2)=} opt_offsetX Shadow offset in X axis, or offset Vec2.<a name="line310"></a>
+ * @param {number=} opt_offsetY Shadow offset in Y axis.<a name="line311"></a>
+ * @return {lime.Label} object itself.<a name="line312"></a>
+ */<a name="line313"></a>
+lime.Label.prototype.setShadow = function(color, opt_blur, opt_offsetX, opt_offsetY) {<a name="line314"></a>
+    // provide method to reset the shadow<a name="line315"></a>
+    if (arguments.length == 1 && goog.isNull(color)) {<a name="line316"></a>
+        this.setShadowColor('#ccc'); //default color<a name="line317"></a>
+        this.setShadowBlur(0);<a name="line318"></a>
+        this.setShadowOffset(0, 0);<a name="line319"></a>
+    } else if (arguments.length == 2) {<a name="line320"></a>
+        this.setShadowColor( /** @type {!string}*/ (color));<a name="line321"></a>
+        this.setShadowBlur( /** @type {!number} */ (opt_blur));<a name="line322"></a>
+        this.setShadowOffset(new goog.math.Vec2(0, 0));<a name="line323"></a>
+    } else if (arguments.length == 3) {<a name="line324"></a>
+        this.setShadowColor( /** @type {!string}*/ (color));<a name="line325"></a>
+        this.setShadowBlur( /** @type {!number} */ (opt_blur));<a name="line326"></a>
+        this.setShadowOffset( /** @type {!goog.math.Vec2} */ (opt_offsetX));<a name="line327"></a>
+    } else {<a name="line328"></a>
+        this.setShadowColor( /** @type {!string}*/ (color));<a name="line329"></a>
+        this.setShadowBlur( /** @type {!number} */ (opt_blur));<a name="line330"></a>
+        this.setShadowOffset( /** @type {!(number|goog.math.Vec2)} */ (opt_offsetX), opt_offsetY);<a name="line331"></a>
+    }<a name="line332"></a>
+    this.setDirty(lime.Dirty.FONT);<a name="line333"></a>
+    return this;<a name="line334"></a>
+};<a name="line335"></a>
+<a name="line336"></a>
+/**<a name="line337"></a>
+ * Returns true if the label has a shadow.<a name="line338"></a>
+ * @private<a name="line339"></a>
+ */<a name="line340"></a>
+lime.Label.prototype.hasShadow_ = function() {<a name="line341"></a>
+    return this.shadowBlur_ || this.shadowOffset_.x || this.shadowOffset_.y;<a name="line342"></a>
+};<a name="line343"></a>
+<a name="line344"></a>
+/**<a name="line345"></a>
+ * Returns shadow color<a name="line346"></a>
+ * @return {string} shadow color.<a name="line347"></a>
+ */<a name="line348"></a>
+lime.Label.prototype.getShadowColor = function() {<a name="line349"></a>
+    return this.shadowColor_;<a name="line350"></a>
+};<a name="line351"></a>
+<a name="line352"></a>
+/**<a name="line353"></a>
+ * Returns shadow offset in px.<a name="line354"></a>
+ * @return {goog.math.Vec2} shadow offset in px.<a name="line355"></a>
+ */<a name="line356"></a>
+lime.Label.prototype.getShadowOffset = function() {<a name="line357"></a>
+    return this.shadowOffset_;<a name="line358"></a>
+};<a name="line359"></a>
+<a name="line360"></a>
+/**<a name="line361"></a>
+ * Set the shadow color.<a name="line362"></a>
+ * @param {string} color The shadow color.<a name="line363"></a>
+ */<a name="line364"></a>
+lime.Label.prototype.setShadowColor = function(color) {<a name="line365"></a>
+    this.shadowColor_ = color;<a name="line366"></a>
+    return this;<a name="line367"></a>
+};<a name="line368"></a>
+<a name="line369"></a>
+/**<a name="line370"></a>
+ * Set the shadow blur radius.<a name="line371"></a>
+ * @param {number} radius The shadow blur radius.<a name="line372"></a>
+ */<a name="line373"></a>
+lime.Label.prototype.setShadowBlur = function(radius) {<a name="line374"></a>
+    this.shadowBlur_ = radius;<a name="line375"></a>
+    return this;<a name="line376"></a>
+};<a name="line377"></a>
+<a name="line378"></a>
+/**<a name="line379"></a>
+ * Sets label shadow offset in px.<a name="line380"></a>
+ * @param {(goog.math.Vec2|number)} offset Shadow offset.<a name="line381"></a>
+ * @param {number=} opt_offsetY Optionaly set offset using x,y.<a name="line382"></a>
+ * @return {lime.Label} object itself.<a name="line383"></a>
+ */<a name="line384"></a>
+lime.Label.prototype.setShadowOffset = function(offset, opt_offsetY) {<a name="line385"></a>
+    if (arguments.length == 2) {<a name="line386"></a>
+        this.shadowOffset_ = new goog.math.Vec2(arguments[0], arguments[1]);<a name="line387"></a>
+    } else {<a name="line388"></a>
+        this.shadowOffset_ = offset;<a name="line389"></a>
+    }<a name="line390"></a>
+    this.setDirty(lime.Dirty.FONT);<a name="line391"></a>
+    return this;<a name="line392"></a>
+};<a name="line393"></a>
+<a name="line394"></a>
+/**<a name="line395"></a>
+ * Returns shadow blur radius in px.<a name="line396"></a>
+ * @return {number} shadow blur radius in px.<a name="line397"></a>
+ */<a name="line398"></a>
+lime.Label.prototype.getShadowBlur = function() {<a name="line399"></a>
+    return this.shadowBlur_;<a name="line400"></a>
+};<a name="line401"></a>
+<a name="line402"></a>
+/**<a name="line403"></a>
+ *<a name="line404"></a>
+ * Break text into array of line breakable words<a name="line405"></a>
+ * @return {Array.&lt;string>} array of words.<a name="line406"></a>
+ */<a name="line407"></a>
+lime.Label.prototype.calcWordsArray = function() {<a name="line408"></a>
+    var words = [];<a name="line409"></a>
+    var len = this.text_.length;<a name="line410"></a>
+    var regexp = goog.userAgent.GECKO ? /[\s\.]+/g : /[\s-\.]+/g;<a name="line411"></a>
+    var breaks = this.text_.match(regexp);<a name="line412"></a>
+    var st = 0;<a name="line413"></a>
+    if (breaks)<a name="line414"></a>
+        for (var i = 0; i &lt; breaks.length; i++) {<a name="line415"></a>
+            var b = breaks[i];<a name="line416"></a>
+            var ibreak = this.text_.indexOf(b, st);<a name="line417"></a>
+            var wlen = ibreak + b.length;<a name="line418"></a>
+            words.push(this.text_.substring(st, wlen));<a name="line419"></a>
+            st = wlen;<a name="line420"></a>
+    }<a name="line421"></a>
+    if (st != len) {<a name="line422"></a>
+        words.push(this.text_.substring(st, len));<a name="line423"></a>
+    }<a name="line424"></a>
+    return words;<a name="line425"></a>
+};<a name="line426"></a>
+<a name="line427"></a>
+/**<a name="line428"></a>
+ * Wrap text on words array to lines based on current<a name="line429"></a>
+ * font size and given maximum width.<a name="line430"></a>
+ * @param {Object} context Canvas2DContext used to measure.<a name="line431"></a>
+ * @param {number} width Maximum line width.<a name="line432"></a>
+ * @return {Array.&lt;string>} Lines of text.<a name="line433"></a>
+ */<a name="line434"></a>
+lime.Label.prototype.wrapText = function(context, width) {<a name="line435"></a>
+    var lines = [],<a name="line436"></a>
+        line = '',<a name="line437"></a>
+        words = this.words_,<a name="line438"></a>
+        metrics;<a name="line439"></a>
+    for (var i = 0; i &lt; words.length; i++) {<a name="line440"></a>
+        var breaks = 0;<a name="line441"></a>
+        if (this.multiline_) {<a name="line442"></a>
+            var matches = words[i].match(/\n/g)<a name="line443"></a>
+            if (matches) {<a name="line444"></a>
+                breaks = matches.length<a name="line445"></a>
+            }<a name="line446"></a>
+        }<a name="line447"></a>
+        if (line == '') {<a name="line448"></a>
+            line = words[i];<a name="line449"></a>
+        } else {<a name="line450"></a>
+            metrics = context.measureText(goog.string.trim(line + words[i]));<a name="line451"></a>
+            if (metrics.width > width) {<a name="line452"></a>
+                lines.push(goog.string.trim(line));<a name="line453"></a>
+                //breaks--<a name="line454"></a>
+                line = words[i];<a name="line455"></a>
+            } else {<a name="line456"></a>
+                line += words[i];<a name="line457"></a>
+            }<a name="line458"></a>
+        }<a name="line459"></a>
+        for (var j = 0; j &lt; breaks; j++) {<a name="line460"></a>
+            lines.push(goog.string.trim(line));<a name="line461"></a>
+            line = ''<a name="line462"></a>
+        }<a name="line463"></a>
+    }<a name="line464"></a>
+    lines.push(line);<a name="line465"></a>
+    return lines;<a name="line466"></a>
+};<a name="line467"></a>
+<a name="line468"></a>
+/** @inheritDoc */<a name="line469"></a>
+lime.Label.prototype.update = function() {<a name="line470"></a>
+<a name="line471"></a>
+    if (this.getDirty() & lime.Dirty.CONTENT)<a name="line472"></a>
+        delete this.lastDrawnWidth_;<a name="line473"></a>
+<a name="line474"></a>
+    lime.Node.prototype.update.apply(this, arguments);<a name="line475"></a>
+};<a name="line476"></a>
+<a name="line477"></a>
+<a name="line478"></a>
+/**<a name="line479"></a>
+ * @inheritDoc<a name="line480"></a>
+ * @this {lime.Label}<a name="line481"></a>
+ */<a name="line482"></a>
+lime.Renderer.DOM.LABEL.draw = function(el) {<a name="line483"></a>
+    lime.Renderer.DOM.SPRITE.draw.call(this, el);<a name="line484"></a>
+<a name="line485"></a>
+    var style = el.style;<a name="line486"></a>
+    if (this.dirty_ & lime.Dirty.CONTENT) {<a name="line487"></a>
+        if (this.getMultiline()) {<a name="line488"></a>
+            el.innerHTML = goog.string.htmlEscape(this.text_).replace(/\n/g, '&lt;br/>')<a name="line489"></a>
+        } else goog.dom.setTextContent(el, this.text_);<a name="line490"></a>
+    }<a name="line491"></a>
+    if (this.dirty_ & lime.Dirty.FONT) {<a name="line492"></a>
+        style['lineHeight'] = this.getLineHeight();<a name="line493"></a>
+        style['padding'] = goog.array.map(this.padding_, function(p) {<a name="line494"></a>
+            return p * this.getRelativeQuality();<a name="line495"></a>
+        }, this).join('px ') + 'px';<a name="line496"></a>
+        style['color'] = this.getFontColor();<a name="line497"></a>
+        style['fontFamily'] = this.getFontFamily();<a name="line498"></a>
+        style['fontSize'] = this.getFontSize() * this.getRelativeQuality() + 'px';<a name="line499"></a>
+        style['fontWeight'] = this.getFontWeight();<a name="line500"></a>
+        style['textAlign'] = this.getAlign();<a name="line501"></a>
+        style['font-style'] = this.getStyle();<a name="line502"></a>
+        style['textShadow'] = this.hasShadow_() ? this.getShadowColor() + ' ' + this.getShadowOffset().x + 'px ' + this.getShadowOffset().y + 'px ' + this.getShadowBlur() + 'px' : '';<a name="line503"></a>
+    }<a name="line504"></a>
+};<a name="line505"></a>
+<a name="line506"></a>
+/**<a name="line507"></a>
+ * @inheritDoc<a name="line508"></a>
+ * @this {lime.Label}<a name="line509"></a>
+ */<a name="line510"></a>
+lime.Renderer.CANVAS.LABEL.draw = function(context) {<a name="line511"></a>
+<a name="line512"></a>
+    lime.Renderer.CANVAS.SPRITE.draw.call(this, context);<a name="line513"></a>
+<a name="line514"></a>
+    var frame = this.getFrame(),<a name="line515"></a>
+        width = -frame.left - this.padding_[3] + frame.right - this.padding_[1] + Math.abs(this.getShadowOffset().x) + Math.abs(this.getShadowBlur() * 2),<a name="line516"></a>
+        dowrap = 0;<a name="line517"></a>
+<a name="line518"></a>
+    if (!this.words_) {<a name="line519"></a>
+        this.words_ = this.calcWordsArray();<a name="line520"></a>
+        dowrap = 1;<a name="line521"></a>
+    }<a name="line522"></a>
+<a name="line523"></a>
+    var stroke = this.stroke_ ? this.stroke_.width_ : 0;<a name="line524"></a>
+<a name="line525"></a>
+    context.save();<a name="line526"></a>
+    var align = this.getAlign();<a name="line527"></a>
+    if (align == 'left') {<a name="line528"></a>
+        context.translate(frame.left + this.padding_[3] + stroke,<a name="line529"></a>
+            frame.top + this.padding_[0] + stroke);<a name="line530"></a>
+    } else if (align == 'right') {<a name="line531"></a>
+        context.translate(frame.right - this.padding_[1] - stroke,<a name="line532"></a>
+            frame.top + this.padding_[0] + stroke);<a name="line533"></a>
+    } else if (align == 'center') {<a name="line534"></a>
+        context.translate(<a name="line535"></a>
+        (frame.left + this.padding_[3] +<a name="line536"></a>
+            frame.right - this.padding_[1]) * .5,<a name="line537"></a>
+            frame.top + this.padding_[0] + stroke);<a name="line538"></a>
+    }<a name="line539"></a>
+<a name="line540"></a>
+    var lh = this.getLineHeight();<a name="line541"></a>
+<a name="line542"></a>
+    context.fillStyle = this.getFontColor();<a name="line543"></a>
+    context.font = this.getStyle() + ' ' + this.getFontWeight() + ' ' + this.getFontSize() +<a name="line544"></a>
+        'px/' + lh + ' ' + this.getFontFamily();<a name="line545"></a>
+    context.textAlign = align;<a name="line546"></a>
+    context.textBaseline = 'top';<a name="line547"></a>
+<a name="line548"></a>
+    if (this.hasShadow_()) {<a name="line549"></a>
+        context.shadowColor = this.getShadowColor();<a name="line550"></a>
+        context.shadowOffsetX = this.getShadowOffset().x;<a name="line551"></a>
+        context.shadowOffsetY = this.getShadowOffset().y;<a name="line552"></a>
+        context.shadowBlur = this.getShadowBlur();<a name="line553"></a>
+    }<a name="line554"></a>
+<a name="line555"></a>
+    if (dowrap || width != this.lastDrawnWidth_) {<a name="line556"></a>
+        this.lines_ = this.wrapText(context, width - 2 * stroke);<a name="line557"></a>
+        this.lastDrawnWidth_ = width;<a name="line558"></a>
+    }<a name="line559"></a>
+<a name="line560"></a>
+    if (this.lines_) {<a name="line561"></a>
+        var lhpx = lh * this.getFontSize(),<a name="line562"></a>
+            offsetY = (goog.isDef(this.getShadowBlur()) ? Math.abs(this.getShadowBlur()) : 0) +<a name="line563"></a>
+                (goog.isDef(this.getShadowOffset()) ? Math.abs(this.getShadowOffset().y) / 2 : 0),<a name="line564"></a>
+            offsetX = 0;<a name="line565"></a>
+        lhpx = goog.userAgent.WEBKIT ? Math.floor(lhpx) : Math.round(lhpx);<a name="line566"></a>
+        for (var i = 0; i &lt; this.lines_.length; i++) {<a name="line567"></a>
+            context.fillText(this.lines_[i], offsetX, lhpx * i + offsetY - 0.5);<a name="line568"></a>
+        }<a name="line569"></a>
+    }<a name="line570"></a>
+<a name="line571"></a>
+    context.restore();<a name="line572"></a>
+};<a name="line573"></a>
+<a name="line574"></a>
+/**<a name="line575"></a>
+ * Helper function to install new font file so you can use<a name="line576"></a>
+ * the font name as font-family.<a name="line577"></a>
+ * @param {string} name Font name.<a name="line578"></a>
+ * @param {string} fileurl Path to font file.<a name="line579"></a>
+ * @param {string=} opt_format Font format.<a name="line580"></a>
+ */<a name="line581"></a>
+lime.Label.installFont = function(name, fileurl, opt_format) {<a name="line582"></a>
+    var format = opt_format || 'truetype';<a name="line583"></a>
+    goog.style.installStyles('@font-face{font-family: "' + name +<a name="line584"></a>
+        '";src: url(' + fileurl + ') format("' + format + '");})');<a name="line585"></a>
+};<a name="line586"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -627,7 +627,7 @@ lime.Label.installFont = function(name, fileurl, opt_format) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -26,127 +26,127 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime');
-
-goog.require('goog.style');
-goog.require('lime.css');
-goog.require('lime.userAgent');
-
-(function() {
-
-    var dirtyObjectQueue = [
-        [],
-        []
-    ];
-    var dirtyObjectQueueNext = [
-        [],
-        []
-    ];
-
-    /**
-     * Add object to Dirty objects queue (waiting for redraw)
-     * @param {lime.DirtyObject} obj Object that needs to be updated.
-     * @param {number=} opt_pass Pass number.
-     * @param {boolean=} opt_nextframe Register for next frame.
-     */
-    lime.setObjectDirty = function(obj, opt_pass, opt_nextframe) {
-        var queue = opt_nextframe ? dirtyObjectQueueNext : dirtyObjectQueue;
-        var pass = opt_pass || 0;
-        goog.array.insert(queue[pass], obj);
-    };
-
-    /**
-     * Remove object from Dirty obejcts queue
-     * @param {lime.DirtyObject} obj Object that needs to be updated.
-     * @param {number=} opt_pass Pass number.
-     * @param {boolean=} opt_nextframe Register for next frame.
-     */
-    lime.clearObjectDirty = function(obj, opt_pass, opt_nextframe) {
-        /*
-    //todo: enable and test
-    var queue = opt_nextframe ? dirtyObjectQueueNext : dirtyObjectQueue;
-    var pass = opt_pass || 0;
-    goog.array.remove(queue[pass], obj);*/
-    };
-
-    /**
-     * Call update on all elements waiting to be invalidated
-     */
-    lime.updateDirtyObjects = function() {
-        var ob;
-        for (var i = 0; i &lt; 2; i++) {
-            while (dirtyObjectQueue[i].length) {
-                ob = dirtyObjectQueue[i][0];
-                ob.update(i);
-                ob.dirty_ = 0;
-                if (ob == dirtyObjectQueue[i][0]) dirtyObjectQueue[i].shift();
-            }
-            dirtyObjectQueue[i] = [];
-        }
-        /*
-    if (dirtyObjectQueue.length != 2 && !dirtyObjectQueue[0].length &&
-        !dirtyObjectQueue[1].length)
-    console.log(dirtyObjectQueue);
-    for (var i = 0; i &lt; 2; i++) {
-        for (var j = 0; i &lt; dirtyObjectQueue[i].length; i++) {
-
-       }
-   }*/
-        //dirtyObjectQueue=dirtyObjectQueueNext;
-        dirtyObjectQueueNext = [
-            [],
-            []
-        ];
-    };
-
-})();
-
-/**
- * Enum for Dirty states.
- * @enum {number}
- */
-lime.Dirty = {
-    POSITION: 1,
-    SCALE: 2,
-    CONTENT: 4,
-    FONT: 8,
-    ALPHA: 16,
-    VISIBILITY: 32,
-    LAYOUT: 64,
-    ROTATION: 128,
-    ALL: 7 // POSITION | SCALE
-};
-
-/**
- * Enum for AutoResize values
- * @enum {number}
- */
-lime.AutoResize = {
-    NONE: 0,
-    LEFT: 1,
-    WIDTH: 2,
-    RIGHT: 4,
-    TOP: 8,
-    HEIGHT: 16,
-    BOTTOM: 32,
-    ALL: 63
-};
-
-/**
- * Enum for Transtion properties
- * @enum {number}
- */
-lime.Transition = {
-    POSITION: 1,
-    SCALE: 2,
-    SIZE: 3,
-    ROTATION: 4,
-    OPACITY: 5
-};
-
-
-goog.style.installStyles(lime.css.css(null, null));
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime');<a name="line2"></a>
+<a name="line3"></a>
+goog.require('goog.style');<a name="line4"></a>
+goog.require('lime.css');<a name="line5"></a>
+goog.require('lime.userAgent');<a name="line6"></a>
+<a name="line7"></a>
+(function() {<a name="line8"></a>
+<a name="line9"></a>
+    var dirtyObjectQueue = [<a name="line10"></a>
+        [],<a name="line11"></a>
+        []<a name="line12"></a>
+    ];<a name="line13"></a>
+    var dirtyObjectQueueNext = [<a name="line14"></a>
+        [],<a name="line15"></a>
+        []<a name="line16"></a>
+    ];<a name="line17"></a>
+<a name="line18"></a>
+    /**<a name="line19"></a>
+     * Add object to Dirty objects queue (waiting for redraw)<a name="line20"></a>
+     * @param {lime.DirtyObject} obj Object that needs to be updated.<a name="line21"></a>
+     * @param {number=} opt_pass Pass number.<a name="line22"></a>
+     * @param {boolean=} opt_nextframe Register for next frame.<a name="line23"></a>
+     */<a name="line24"></a>
+    lime.setObjectDirty = function(obj, opt_pass, opt_nextframe) {<a name="line25"></a>
+        var queue = opt_nextframe ? dirtyObjectQueueNext : dirtyObjectQueue;<a name="line26"></a>
+        var pass = opt_pass || 0;<a name="line27"></a>
+        goog.array.insert(queue[pass], obj);<a name="line28"></a>
+    };<a name="line29"></a>
+<a name="line30"></a>
+    /**<a name="line31"></a>
+     * Remove object from Dirty obejcts queue<a name="line32"></a>
+     * @param {lime.DirtyObject} obj Object that needs to be updated.<a name="line33"></a>
+     * @param {number=} opt_pass Pass number.<a name="line34"></a>
+     * @param {boolean=} opt_nextframe Register for next frame.<a name="line35"></a>
+     */<a name="line36"></a>
+    lime.clearObjectDirty = function(obj, opt_pass, opt_nextframe) {<a name="line37"></a>
+        /*<a name="line38"></a>
+    //todo: enable and test<a name="line39"></a>
+    var queue = opt_nextframe ? dirtyObjectQueueNext : dirtyObjectQueue;<a name="line40"></a>
+    var pass = opt_pass || 0;<a name="line41"></a>
+    goog.array.remove(queue[pass], obj);*/<a name="line42"></a>
+    };<a name="line43"></a>
+<a name="line44"></a>
+    /**<a name="line45"></a>
+     * Call update on all elements waiting to be invalidated<a name="line46"></a>
+     */<a name="line47"></a>
+    lime.updateDirtyObjects = function() {<a name="line48"></a>
+        var ob;<a name="line49"></a>
+        for (var i = 0; i &lt; 2; i++) {<a name="line50"></a>
+            while (dirtyObjectQueue[i].length) {<a name="line51"></a>
+                ob = dirtyObjectQueue[i][0];<a name="line52"></a>
+                ob.update(i);<a name="line53"></a>
+                ob.dirty_ = 0;<a name="line54"></a>
+                if (ob == dirtyObjectQueue[i][0]) dirtyObjectQueue[i].shift();<a name="line55"></a>
+            }<a name="line56"></a>
+            dirtyObjectQueue[i] = [];<a name="line57"></a>
+        }<a name="line58"></a>
+        /*<a name="line59"></a>
+    if (dirtyObjectQueue.length != 2 && !dirtyObjectQueue[0].length &&<a name="line60"></a>
+        !dirtyObjectQueue[1].length)<a name="line61"></a>
+    console.log(dirtyObjectQueue);<a name="line62"></a>
+    for (var i = 0; i &lt; 2; i++) {<a name="line63"></a>
+        for (var j = 0; i &lt; dirtyObjectQueue[i].length; i++) {<a name="line64"></a>
+<a name="line65"></a>
+       }<a name="line66"></a>
+   }*/<a name="line67"></a>
+        //dirtyObjectQueue=dirtyObjectQueueNext;<a name="line68"></a>
+        dirtyObjectQueueNext = [<a name="line69"></a>
+            [],<a name="line70"></a>
+            []<a name="line71"></a>
+        ];<a name="line72"></a>
+    };<a name="line73"></a>
+<a name="line74"></a>
+})();<a name="line75"></a>
+<a name="line76"></a>
+/**<a name="line77"></a>
+ * Enum for Dirty states.<a name="line78"></a>
+ * @enum {number}<a name="line79"></a>
+ */<a name="line80"></a>
+lime.Dirty = {<a name="line81"></a>
+    POSITION: 1,<a name="line82"></a>
+    SCALE: 2,<a name="line83"></a>
+    CONTENT: 4,<a name="line84"></a>
+    FONT: 8,<a name="line85"></a>
+    ALPHA: 16,<a name="line86"></a>
+    VISIBILITY: 32,<a name="line87"></a>
+    LAYOUT: 64,<a name="line88"></a>
+    ROTATION: 128,<a name="line89"></a>
+    ALL: 7 // POSITION | SCALE<a name="line90"></a>
+};<a name="line91"></a>
+<a name="line92"></a>
+/**<a name="line93"></a>
+ * Enum for AutoResize values<a name="line94"></a>
+ * @enum {number}<a name="line95"></a>
+ */<a name="line96"></a>
+lime.AutoResize = {<a name="line97"></a>
+    NONE: 0,<a name="line98"></a>
+    LEFT: 1,<a name="line99"></a>
+    WIDTH: 2,<a name="line100"></a>
+    RIGHT: 4,<a name="line101"></a>
+    TOP: 8,<a name="line102"></a>
+    HEIGHT: 16,<a name="line103"></a>
+    BOTTOM: 32,<a name="line104"></a>
+    ALL: 63<a name="line105"></a>
+};<a name="line106"></a>
+<a name="line107"></a>
+/**<a name="line108"></a>
+ * Enum for Transtion properties<a name="line109"></a>
+ * @enum {number}<a name="line110"></a>
+ */<a name="line111"></a>
+lime.Transition = {<a name="line112"></a>
+    POSITION: 1,<a name="line113"></a>
+    SCALE: 2,<a name="line114"></a>
+    SIZE: 3,<a name="line115"></a>
+    ROTATION: 4,<a name="line116"></a>
+    OPACITY: 5<a name="line117"></a>
+};<a name="line118"></a>
+<a name="line119"></a>
+<a name="line120"></a>
+goog.style.installStyles(lime.css.css(null, null));<a name="line121"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -162,7 +162,7 @@ goog.style.installStyles(lime.css.css(null, null));
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

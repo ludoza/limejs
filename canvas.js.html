@@ -26,251 +26,251 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.Renderer.CANVAS');
-
-goog.require('goog.math.Box.size');
-goog.require('goog.math.Size.scaleVec2');
-goog.require('lime.Renderer');
-
-/**
- * Canvas renderer. This renders as canvas element or just
- * draws on parent context.
- * @const
- * @type {lime.Renderer}
- */
-lime.Renderer.CANVAS = new lime.Renderer();
-
-/**
- * Update the DOM tree relations of the element.
- * @this {lime.Node}
- */
-lime.Renderer.CANVAS.updateLayout = function() {};
-
-/**
- * Initalize canvas element and start the drawing process
- * @this {lime.Node}
- */
-lime.Renderer.CANVAS.drawCanvas = function() {
-    var quality = this.getQuality(),
-        bounds = this.measureContents(),
-        rquality = this.relativeQuality_ || 1,
-        ownquality = rquality / quality,
-        sizediff,
-        PADDING = 12;
-
-
-    if (!this.domElement) return;
-
-    if (this.boundsCache && this.boundsCache.contains(bounds) &&
-        (sizediff = this.boundsCache.size().area() / bounds.size().area()) &&
-        sizediff &lt; 1.6 && sizediff > 0.5) {
-        //use the cached canvas size
-        bounds = this.boundsCache;
-    } else {
-        if (this.staticCanvas != 1 && this.children_.length != 0) {
-            if (!(this instanceof lime.Scene)) {
-                bounds.expand(PADDING, PADDING, PADDING, PADDING);
-            }
-        }
-    }
-
-
-    //clip to director
-    /* var dir = this.getDirector();
-    if (this.rotation_ == 0 && dir) {
-    var fr = dir.getFrame();
-    var br = dir.localToNode(
-    new goog.math.Coordinate(fr.right, fr.bottom), this);
-    var tl = dir.localToNode(
-    new goog.math.Coordinate(fr.left, fr.top), this);
-    if (br.x &lt; bounds.right) {
-    bounds.right = br.x;
-    }
-    if (br.y &lt; bounds.bottom) {
-    bounds.bottom = br.y;
-    }
-    if (tl.x > bounds.left) {
-    bounds.left = tl.x;
-    }
-    if (tl.y > bounds.top) {
-    bounds.top = tl.y;
-    }
-    }*/
-
-    this.boundsCache = bounds; //save for later use
-
-    var bsize = bounds.size();
-    var pxsize = bsize.clone().scale(rquality).ceil();
-
-    if (this.domElement.width != pxsize.width ||
-        this.domElement.height != pxsize.height) {
-        this.domElement.width = pxsize.width;
-        this.domElement.height = pxsize.height;
-        this.redraw_ = 1;
-        //   console.log('redraw');
-    }
-
-
-
-    var realScale = this.getScale().clone();
-    if (this.transitionsActive_[lime.Transition.SCALE]) {
-        realScale = this.transitionsActive_[lime.Transition.SCALE];
-        //this.redraw_ = 1;
-    }
-    if (pxsize.width != 0) {
-        realScale.scale(bsize.width * ownquality / pxsize.width);
-    } else {
-        realScale.scale(1 / quality);
-    }
-
-
-    var fr = this.getFrame();
-    this.ax = (fr.left - bounds.left) * rquality;
-    this.ay = (fr.top - bounds.top) * rquality;
-
-
-    var ap_offset = this.getSize().clone().
-    scaleVec2(this.getAnchorPoint()).scale(rquality);
-
-    var pos = this.getPosition().clone();
-
-    if (this.transitionsActive_[lime.Transition.POSITION]) {
-        pos = this.transitionsActive_[lime.Transition.POSITION];
-        //this.redraw_ = 1;
-    }
-
-    pos.x *= ownquality;
-    pos.y *= ownquality;
-
-    pos.x -= ap_offset.width + this.ax;
-    pos.y -= ap_offset.height + this.ay;
-
-    lime.style.setTransformOrigin(this.domElement, (this.ax + ap_offset.width) / pxsize.width * 100, (this.ay + ap_offset.height) / pxsize.height * 100, true);
-
-    if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]) {
-
-        var rotation = -this.getRotation();
-        if (goog.isDef(this.transitionsActive_[lime.Transition.ROTATION])) {
-            rotation = -this.transitionsActive_[lime.Transition.ROTATION];
-        }
-        lime.style.setTransform(this.domElement,
-            new lime.style.Transform().setPrecision(.1).translate(pos.x, pos.y).scale(realScale.x, realScale.y).rotate(rotation));
-    }
-
-    if (this.redraw_) {
-        var context = this.domElement.getContext('2d');
-        rquality = this.relativeQuality_ || 1;
-
-        context.clearRect(0, 0, pxsize.width, pxsize.height);
-        context.save();
-        context.translate(this.ax, this.ay);
-        context.scale(rquality, rquality);
-
-
-        var size = this.getSize(),
-            anchor = this.getAnchorPoint();
-
-        context.translate(size.width * anchor.x, size.height * anchor.y);
-
-        this.renderer.drawCanvasObject.call(this, context);
-
-        context.restore();
-        this.redraw_ = 0;
-
-
-    }
-};
-
-/**
- * Update nodes dirty values and call draw after
- * @this {lime.Node}
- */
-lime.Renderer.CANVAS.update = function() {};
-
-
-/**
- * Draw single object to the canvas context
- * @param {Object} context Canvas2DContext where to draw.
- * @this {lime.Node}
- */
-lime.Renderer.CANVAS.drawCanvasObject = function(context) {
-
-    if (!this.inTree_) return;
-
-    if (this.mask_ != this.activeMask_) {
-        if (this.activeMask_) {
-            lime.Renderer.DOM.removeMask.call(this);
-        }
-
-        if (this.mask_) {
-            lime.Renderer.DOM.addMask.call(this);
-        }
-    }
-
-    // if element is mask the only update mask prop and return
-    if (this.maskTarget_) {
-        return;
-    }
-
-    if (this.hidden_ || this.opacity_ == 0 || this.isMask == 1) {
-        return;
-    }
-
-    if (this.opacity_ != 1) {
-        context.globalAlpha *= this.opacity_;
-    }
-
-    if (this.mask_) {
-        lime.Renderer.DOM.calculateMaskPosition.call(this.mask_);
-        var m = this.activeMask_,
-            scale = this.scale_;
-        context.save();
-        context.save();
-        context.translate(m.mPos.x, m.mPos.y);
-        context.rotate(-m.mRot);
-        if (this.needsDomElement) {
-            context.rotate(this.getRotation() * Math.PI / 180);
-        }
-        context.beginPath();
-        context.moveTo(0, 0);
-        context.lineTo(m.mWidth / scale.x, 0);
-        context.lineTo(m.mWidth / scale.x, m.mHeight / scale.y);
-        context.lineTo(0, m.mHeight / scale.y);
-        context.closePath();
-        context.restore();
-        context.clip();
-    }
-
-
-    var zero = new goog.math.Coordinate(0, 0);
-
-    this.renderer.draw.call(this, context);
-
-    for (var i = 0, child; child = this.children_[i]; i++) {
-        var pos = child.localToParent(zero).clone(),
-            rot = child.getRotation(),
-            scale = child.getScale();
-        context.save();
-        context.translate(pos.x, pos.y);
-        context.scale(scale.x, scale.y);
-
-        if (rot != 0) {
-            context.rotate(-rot * Math.PI / 180);
-        }
-        this.renderer.drawCanvasObject.call(child, context);
-        context.restore();
-
-    }
-
-    if (this.opacity_ != 1) {
-        context.globalAlpha /= this.opacity_;
-    }
-    if (this.activeMask_) {
-        context.restore();
-    }
-
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.Renderer.CANVAS');<a name="line2"></a>
+<a name="line3"></a>
+goog.require('goog.math.Box.size');<a name="line4"></a>
+goog.require('goog.math.Size.scaleVec2');<a name="line5"></a>
+goog.require('lime.Renderer');<a name="line6"></a>
+<a name="line7"></a>
+/**<a name="line8"></a>
+ * Canvas renderer. This renders as canvas element or just<a name="line9"></a>
+ * draws on parent context.<a name="line10"></a>
+ * @const<a name="line11"></a>
+ * @type {lime.Renderer}<a name="line12"></a>
+ */<a name="line13"></a>
+lime.Renderer.CANVAS = new lime.Renderer();<a name="line14"></a>
+<a name="line15"></a>
+/**<a name="line16"></a>
+ * Update the DOM tree relations of the element.<a name="line17"></a>
+ * @this {lime.Node}<a name="line18"></a>
+ */<a name="line19"></a>
+lime.Renderer.CANVAS.updateLayout = function() {};<a name="line20"></a>
+<a name="line21"></a>
+/**<a name="line22"></a>
+ * Initalize canvas element and start the drawing process<a name="line23"></a>
+ * @this {lime.Node}<a name="line24"></a>
+ */<a name="line25"></a>
+lime.Renderer.CANVAS.drawCanvas = function() {<a name="line26"></a>
+    var quality = this.getQuality(),<a name="line27"></a>
+        bounds = this.measureContents(),<a name="line28"></a>
+        rquality = this.relativeQuality_ || 1,<a name="line29"></a>
+        ownquality = rquality / quality,<a name="line30"></a>
+        sizediff,<a name="line31"></a>
+        PADDING = 12;<a name="line32"></a>
+<a name="line33"></a>
+<a name="line34"></a>
+    if (!this.domElement) return;<a name="line35"></a>
+<a name="line36"></a>
+    if (this.boundsCache && this.boundsCache.contains(bounds) &&<a name="line37"></a>
+        (sizediff = this.boundsCache.size().area() / bounds.size().area()) &&<a name="line38"></a>
+        sizediff &lt; 1.6 && sizediff > 0.5) {<a name="line39"></a>
+        //use the cached canvas size<a name="line40"></a>
+        bounds = this.boundsCache;<a name="line41"></a>
+    } else {<a name="line42"></a>
+        if (this.staticCanvas != 1 && this.children_.length != 0) {<a name="line43"></a>
+            if (!(this instanceof lime.Scene)) {<a name="line44"></a>
+                bounds.expand(PADDING, PADDING, PADDING, PADDING);<a name="line45"></a>
+            }<a name="line46"></a>
+        }<a name="line47"></a>
+    }<a name="line48"></a>
+<a name="line49"></a>
+<a name="line50"></a>
+    //clip to director<a name="line51"></a>
+    /* var dir = this.getDirector();<a name="line52"></a>
+    if (this.rotation_ == 0 && dir) {<a name="line53"></a>
+    var fr = dir.getFrame();<a name="line54"></a>
+    var br = dir.localToNode(<a name="line55"></a>
+    new goog.math.Coordinate(fr.right, fr.bottom), this);<a name="line56"></a>
+    var tl = dir.localToNode(<a name="line57"></a>
+    new goog.math.Coordinate(fr.left, fr.top), this);<a name="line58"></a>
+    if (br.x &lt; bounds.right) {<a name="line59"></a>
+    bounds.right = br.x;<a name="line60"></a>
+    }<a name="line61"></a>
+    if (br.y &lt; bounds.bottom) {<a name="line62"></a>
+    bounds.bottom = br.y;<a name="line63"></a>
+    }<a name="line64"></a>
+    if (tl.x > bounds.left) {<a name="line65"></a>
+    bounds.left = tl.x;<a name="line66"></a>
+    }<a name="line67"></a>
+    if (tl.y > bounds.top) {<a name="line68"></a>
+    bounds.top = tl.y;<a name="line69"></a>
+    }<a name="line70"></a>
+    }*/<a name="line71"></a>
+<a name="line72"></a>
+    this.boundsCache = bounds; //save for later use<a name="line73"></a>
+<a name="line74"></a>
+    var bsize = bounds.size();<a name="line75"></a>
+    var pxsize = bsize.clone().scale(rquality).ceil();<a name="line76"></a>
+<a name="line77"></a>
+    if (this.domElement.width != pxsize.width ||<a name="line78"></a>
+        this.domElement.height != pxsize.height) {<a name="line79"></a>
+        this.domElement.width = pxsize.width;<a name="line80"></a>
+        this.domElement.height = pxsize.height;<a name="line81"></a>
+        this.redraw_ = 1;<a name="line82"></a>
+        //   console.log('redraw');<a name="line83"></a>
+    }<a name="line84"></a>
+<a name="line85"></a>
+<a name="line86"></a>
+<a name="line87"></a>
+    var realScale = this.getScale().clone();<a name="line88"></a>
+    if (this.transitionsActive_[lime.Transition.SCALE]) {<a name="line89"></a>
+        realScale = this.transitionsActive_[lime.Transition.SCALE];<a name="line90"></a>
+        //this.redraw_ = 1;<a name="line91"></a>
+    }<a name="line92"></a>
+    if (pxsize.width != 0) {<a name="line93"></a>
+        realScale.scale(bsize.width * ownquality / pxsize.width);<a name="line94"></a>
+    } else {<a name="line95"></a>
+        realScale.scale(1 / quality);<a name="line96"></a>
+    }<a name="line97"></a>
+<a name="line98"></a>
+<a name="line99"></a>
+    var fr = this.getFrame();<a name="line100"></a>
+    this.ax = (fr.left - bounds.left) * rquality;<a name="line101"></a>
+    this.ay = (fr.top - bounds.top) * rquality;<a name="line102"></a>
+<a name="line103"></a>
+<a name="line104"></a>
+    var ap_offset = this.getSize().clone().<a name="line105"></a>
+    scaleVec2(this.getAnchorPoint()).scale(rquality);<a name="line106"></a>
+<a name="line107"></a>
+    var pos = this.getPosition().clone();<a name="line108"></a>
+<a name="line109"></a>
+    if (this.transitionsActive_[lime.Transition.POSITION]) {<a name="line110"></a>
+        pos = this.transitionsActive_[lime.Transition.POSITION];<a name="line111"></a>
+        //this.redraw_ = 1;<a name="line112"></a>
+    }<a name="line113"></a>
+<a name="line114"></a>
+    pos.x *= ownquality;<a name="line115"></a>
+    pos.y *= ownquality;<a name="line116"></a>
+<a name="line117"></a>
+    pos.x -= ap_offset.width + this.ax;<a name="line118"></a>
+    pos.y -= ap_offset.height + this.ay;<a name="line119"></a>
+<a name="line120"></a>
+    lime.style.setTransformOrigin(this.domElement, (this.ax + ap_offset.width) / pxsize.width * 100, (this.ay + ap_offset.height) / pxsize.height * 100, true);<a name="line121"></a>
+<a name="line122"></a>
+    if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]) {<a name="line123"></a>
+<a name="line124"></a>
+        var rotation = -this.getRotation();<a name="line125"></a>
+        if (goog.isDef(this.transitionsActive_[lime.Transition.ROTATION])) {<a name="line126"></a>
+            rotation = -this.transitionsActive_[lime.Transition.ROTATION];<a name="line127"></a>
+        }<a name="line128"></a>
+        lime.style.setTransform(this.domElement,<a name="line129"></a>
+            new lime.style.Transform().setPrecision(.1).translate(pos.x, pos.y).scale(realScale.x, realScale.y).rotate(rotation));<a name="line130"></a>
+    }<a name="line131"></a>
+<a name="line132"></a>
+    if (this.redraw_) {<a name="line133"></a>
+        var context = this.domElement.getContext('2d');<a name="line134"></a>
+        rquality = this.relativeQuality_ || 1;<a name="line135"></a>
+<a name="line136"></a>
+        context.clearRect(0, 0, pxsize.width, pxsize.height);<a name="line137"></a>
+        context.save();<a name="line138"></a>
+        context.translate(this.ax, this.ay);<a name="line139"></a>
+        context.scale(rquality, rquality);<a name="line140"></a>
+<a name="line141"></a>
+<a name="line142"></a>
+        var size = this.getSize(),<a name="line143"></a>
+            anchor = this.getAnchorPoint();<a name="line144"></a>
+<a name="line145"></a>
+        context.translate(size.width * anchor.x, size.height * anchor.y);<a name="line146"></a>
+<a name="line147"></a>
+        this.renderer.drawCanvasObject.call(this, context);<a name="line148"></a>
+<a name="line149"></a>
+        context.restore();<a name="line150"></a>
+        this.redraw_ = 0;<a name="line151"></a>
+<a name="line152"></a>
+<a name="line153"></a>
+    }<a name="line154"></a>
+};<a name="line155"></a>
+<a name="line156"></a>
+/**<a name="line157"></a>
+ * Update nodes dirty values and call draw after<a name="line158"></a>
+ * @this {lime.Node}<a name="line159"></a>
+ */<a name="line160"></a>
+lime.Renderer.CANVAS.update = function() {};<a name="line161"></a>
+<a name="line162"></a>
+<a name="line163"></a>
+/**<a name="line164"></a>
+ * Draw single object to the canvas context<a name="line165"></a>
+ * @param {Object} context Canvas2DContext where to draw.<a name="line166"></a>
+ * @this {lime.Node}<a name="line167"></a>
+ */<a name="line168"></a>
+lime.Renderer.CANVAS.drawCanvasObject = function(context) {<a name="line169"></a>
+<a name="line170"></a>
+    if (!this.inTree_) return;<a name="line171"></a>
+<a name="line172"></a>
+    if (this.mask_ != this.activeMask_) {<a name="line173"></a>
+        if (this.activeMask_) {<a name="line174"></a>
+            lime.Renderer.DOM.removeMask.call(this);<a name="line175"></a>
+        }<a name="line176"></a>
+<a name="line177"></a>
+        if (this.mask_) {<a name="line178"></a>
+            lime.Renderer.DOM.addMask.call(this);<a name="line179"></a>
+        }<a name="line180"></a>
+    }<a name="line181"></a>
+<a name="line182"></a>
+    // if element is mask the only update mask prop and return<a name="line183"></a>
+    if (this.maskTarget_) {<a name="line184"></a>
+        return;<a name="line185"></a>
+    }<a name="line186"></a>
+<a name="line187"></a>
+    if (this.hidden_ || this.opacity_ == 0 || this.isMask == 1) {<a name="line188"></a>
+        return;<a name="line189"></a>
+    }<a name="line190"></a>
+<a name="line191"></a>
+    if (this.opacity_ != 1) {<a name="line192"></a>
+        context.globalAlpha *= this.opacity_;<a name="line193"></a>
+    }<a name="line194"></a>
+<a name="line195"></a>
+    if (this.mask_) {<a name="line196"></a>
+        lime.Renderer.DOM.calculateMaskPosition.call(this.mask_);<a name="line197"></a>
+        var m = this.activeMask_,<a name="line198"></a>
+            scale = this.scale_;<a name="line199"></a>
+        context.save();<a name="line200"></a>
+        context.save();<a name="line201"></a>
+        context.translate(m.mPos.x, m.mPos.y);<a name="line202"></a>
+        context.rotate(-m.mRot);<a name="line203"></a>
+        if (this.needsDomElement) {<a name="line204"></a>
+            context.rotate(this.getRotation() * Math.PI / 180);<a name="line205"></a>
+        }<a name="line206"></a>
+        context.beginPath();<a name="line207"></a>
+        context.moveTo(0, 0);<a name="line208"></a>
+        context.lineTo(m.mWidth / scale.x, 0);<a name="line209"></a>
+        context.lineTo(m.mWidth / scale.x, m.mHeight / scale.y);<a name="line210"></a>
+        context.lineTo(0, m.mHeight / scale.y);<a name="line211"></a>
+        context.closePath();<a name="line212"></a>
+        context.restore();<a name="line213"></a>
+        context.clip();<a name="line214"></a>
+    }<a name="line215"></a>
+<a name="line216"></a>
+<a name="line217"></a>
+    var zero = new goog.math.Coordinate(0, 0);<a name="line218"></a>
+<a name="line219"></a>
+    this.renderer.draw.call(this, context);<a name="line220"></a>
+<a name="line221"></a>
+    for (var i = 0, child; child = this.children_[i]; i++) {<a name="line222"></a>
+        var pos = child.localToParent(zero).clone(),<a name="line223"></a>
+            rot = child.getRotation(),<a name="line224"></a>
+            scale = child.getScale();<a name="line225"></a>
+        context.save();<a name="line226"></a>
+        context.translate(pos.x, pos.y);<a name="line227"></a>
+        context.scale(scale.x, scale.y);<a name="line228"></a>
+<a name="line229"></a>
+        if (rot != 0) {<a name="line230"></a>
+            context.rotate(-rot * Math.PI / 180);<a name="line231"></a>
+        }<a name="line232"></a>
+        this.renderer.drawCanvasObject.call(child, context);<a name="line233"></a>
+        context.restore();<a name="line234"></a>
+<a name="line235"></a>
+    }<a name="line236"></a>
+<a name="line237"></a>
+    if (this.opacity_ != 1) {<a name="line238"></a>
+        context.globalAlpha /= this.opacity_;<a name="line239"></a>
+    }<a name="line240"></a>
+    if (this.activeMask_) {<a name="line241"></a>
+        context.restore();<a name="line242"></a>
+    }<a name="line243"></a>
+<a name="line244"></a>
+};<a name="line245"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -286,7 +286,7 @@ lime.Renderer.CANVAS.drawCanvasObject = function(context) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

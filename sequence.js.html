@@ -26,120 +26,120 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.animation.Sequence');
-
-
-goog.require('goog.math.Coordinate');
-goog.require('lime.Sprite');
-goog.require('lime.animation.Animation');
-
-/**
- * Sequence of animations that are run after each other.
- * Also accepts more than two animations
- * @param {...lime.animation.Animation|...Array.&lt;lime.animation.Animation>} one First animation.
- * @constructor
- * @extends lime.animation.Animation
- */
-lime.animation.Sequence = function(one) {
-
-    lime.animation.Animation.call(this);
-
-    var act = goog.array.toArray(arguments);
-    if (goog.isArray(one)) act = one;
-
-    if (act.length > 2) {
-
-        var first = act.shift();
-        this.actions = [first, new lime.animation.Sequence(act)];
-
-    } else {
-        this.actions = act;
-    }
-
-    this.setDuration(this.actions[0].duration_ + this.actions[1].duration_);
-
-};
-goog.inherits(lime.animation.Sequence, lime.animation.Animation);
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#initTarget
- */
-lime.animation.Sequence.prototype.initTarget = function(target) {
-    lime.animation.Animation.prototype.initTarget.call(this, target);
-
-    this.setDuration(this.actions[0].duration_ + this.actions[1].duration_);
-    this.split_ = this.actions[0].duration_ / this.duration_;
-    this.last_ = -1;
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#stop
- */
-lime.animation.Sequence.prototype.stop = function() {
-    if (this.last_ && this.last_ != -1) {
-        this.actions[this.last_].stop(this.targets);
-    }
-    lime.animation.Animation.prototype.stop.apply(this, arguments);
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#updateAll
- */
-lime.animation.Sequence.prototype.updateAll = function(t, targets) {
-    if (this.status_ == 0) return t;
-
-    var i = targets.length;
-    while (--i >= 0) {
-        this.getTargetProp(targets[i]);
-    }
-
-    var found = 0,
-        new_t = 0;
-
-    if (t >= this.split_) {
-        found = 1;
-        if (this.split_ == 1) new_t = 1;
-        else new_t = (t - this.split_) / (1 - this.split_);
-    } else {
-        found = 0;
-        if (this.split_ != 0) new_t = t / this.split_;
-        else new_t = 1;
-    }
-
-    if (this.last_ == -1 && found == 1) {
-        this.actions[0].status_ = 1;
-        //this.actions[0].initTarget(target);
-        this.actions[0].updateAll(1, targets);
-        this.actions[0].stop();
-    }
-
-    if (this.last_ != found) {
-        if (this.last_ != -1) {
-            this.actions[this.last_].updateAll(1, targets);
-            this.actions[this.last_].stop();
-        }
-        this.actions[found].status_ = 1;
-        //this.actions[found].initTarget(target);
-    }
-
-    this.actions[found].updateAll(new_t, targets);
-    this.last_ = found;
-
-    return t;
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#reverse
- */
-lime.animation.Sequence.prototype.reverse = function() {
-    return new lime.animation.Sequence(this.actions[1].reverse(),
-        this.actions[0].reverse());
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.animation.Sequence');<a name="line2"></a>
+<a name="line3"></a>
+<a name="line4"></a>
+goog.require('goog.math.Coordinate');<a name="line5"></a>
+goog.require('lime.Sprite');<a name="line6"></a>
+goog.require('lime.animation.Animation');<a name="line7"></a>
+<a name="line8"></a>
+/**<a name="line9"></a>
+ * Sequence of animations that are run after each other.<a name="line10"></a>
+ * Also accepts more than two animations<a name="line11"></a>
+ * @param {...lime.animation.Animation|...Array.&lt;lime.animation.Animation>} one First animation.<a name="line12"></a>
+ * @constructor<a name="line13"></a>
+ * @extends lime.animation.Animation<a name="line14"></a>
+ */<a name="line15"></a>
+lime.animation.Sequence = function(one) {<a name="line16"></a>
+<a name="line17"></a>
+    lime.animation.Animation.call(this);<a name="line18"></a>
+<a name="line19"></a>
+    var act = goog.array.toArray(arguments);<a name="line20"></a>
+    if (goog.isArray(one)) act = one;<a name="line21"></a>
+<a name="line22"></a>
+    if (act.length > 2) {<a name="line23"></a>
+<a name="line24"></a>
+        var first = act.shift();<a name="line25"></a>
+        this.actions = [first, new lime.animation.Sequence(act)];<a name="line26"></a>
+<a name="line27"></a>
+    } else {<a name="line28"></a>
+        this.actions = act;<a name="line29"></a>
+    }<a name="line30"></a>
+<a name="line31"></a>
+    this.setDuration(this.actions[0].duration_ + this.actions[1].duration_);<a name="line32"></a>
+<a name="line33"></a>
+};<a name="line34"></a>
+goog.inherits(lime.animation.Sequence, lime.animation.Animation);<a name="line35"></a>
+<a name="line36"></a>
+/**<a name="line37"></a>
+ * @inheritDoc<a name="line38"></a>
+ * @see lime.animation.Animation#initTarget<a name="line39"></a>
+ */<a name="line40"></a>
+lime.animation.Sequence.prototype.initTarget = function(target) {<a name="line41"></a>
+    lime.animation.Animation.prototype.initTarget.call(this, target);<a name="line42"></a>
+<a name="line43"></a>
+    this.setDuration(this.actions[0].duration_ + this.actions[1].duration_);<a name="line44"></a>
+    this.split_ = this.actions[0].duration_ / this.duration_;<a name="line45"></a>
+    this.last_ = -1;<a name="line46"></a>
+};<a name="line47"></a>
+<a name="line48"></a>
+/**<a name="line49"></a>
+ * @inheritDoc<a name="line50"></a>
+ * @see lime.animation.Animation#stop<a name="line51"></a>
+ */<a name="line52"></a>
+lime.animation.Sequence.prototype.stop = function() {<a name="line53"></a>
+    if (this.last_ && this.last_ != -1) {<a name="line54"></a>
+        this.actions[this.last_].stop(this.targets);<a name="line55"></a>
+    }<a name="line56"></a>
+    lime.animation.Animation.prototype.stop.apply(this, arguments);<a name="line57"></a>
+};<a name="line58"></a>
+<a name="line59"></a>
+/**<a name="line60"></a>
+ * @inheritDoc<a name="line61"></a>
+ * @see lime.animation.Animation#updateAll<a name="line62"></a>
+ */<a name="line63"></a>
+lime.animation.Sequence.prototype.updateAll = function(t, targets) {<a name="line64"></a>
+    if (this.status_ == 0) return t;<a name="line65"></a>
+<a name="line66"></a>
+    var i = targets.length;<a name="line67"></a>
+    while (--i >= 0) {<a name="line68"></a>
+        this.getTargetProp(targets[i]);<a name="line69"></a>
+    }<a name="line70"></a>
+<a name="line71"></a>
+    var found = 0,<a name="line72"></a>
+        new_t = 0;<a name="line73"></a>
+<a name="line74"></a>
+    if (t >= this.split_) {<a name="line75"></a>
+        found = 1;<a name="line76"></a>
+        if (this.split_ == 1) new_t = 1;<a name="line77"></a>
+        else new_t = (t - this.split_) / (1 - this.split_);<a name="line78"></a>
+    } else {<a name="line79"></a>
+        found = 0;<a name="line80"></a>
+        if (this.split_ != 0) new_t = t / this.split_;<a name="line81"></a>
+        else new_t = 1;<a name="line82"></a>
+    }<a name="line83"></a>
+<a name="line84"></a>
+    if (this.last_ == -1 && found == 1) {<a name="line85"></a>
+        this.actions[0].status_ = 1;<a name="line86"></a>
+        //this.actions[0].initTarget(target);<a name="line87"></a>
+        this.actions[0].updateAll(1, targets);<a name="line88"></a>
+        this.actions[0].stop();<a name="line89"></a>
+    }<a name="line90"></a>
+<a name="line91"></a>
+    if (this.last_ != found) {<a name="line92"></a>
+        if (this.last_ != -1) {<a name="line93"></a>
+            this.actions[this.last_].updateAll(1, targets);<a name="line94"></a>
+            this.actions[this.last_].stop();<a name="line95"></a>
+        }<a name="line96"></a>
+        this.actions[found].status_ = 1;<a name="line97"></a>
+        //this.actions[found].initTarget(target);<a name="line98"></a>
+    }<a name="line99"></a>
+<a name="line100"></a>
+    this.actions[found].updateAll(new_t, targets);<a name="line101"></a>
+    this.last_ = found;<a name="line102"></a>
+<a name="line103"></a>
+    return t;<a name="line104"></a>
+};<a name="line105"></a>
+<a name="line106"></a>
+/**<a name="line107"></a>
+ * @inheritDoc<a name="line108"></a>
+ * @see lime.animation.Animation#reverse<a name="line109"></a>
+ */<a name="line110"></a>
+lime.animation.Sequence.prototype.reverse = function() {<a name="line111"></a>
+    return new lime.animation.Sequence(this.actions[1].reverse(),<a name="line112"></a>
+        this.actions[0].reverse());<a name="line113"></a>
+};<a name="line114"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -155,7 +155,7 @@ lime.animation.Sequence.prototype.reverse = function() {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

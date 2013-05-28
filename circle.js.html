@@ -26,106 +26,106 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.Circle');
-goog.provide('lime.Renderer.CANVAS.CIRCLE');
-goog.provide('lime.Renderer.DOM.CIRCLE');
-
-
-goog.require('lime.Renderer.CANVAS.SPRITE');
-goog.require('lime.Renderer.DOM.SPRITE');
-goog.require('lime.Sprite');
-goog.require('lime.style');
-
-/**
- * Circle or ellipse shaped tectured object
- * @constructor
- * @extends lime.Sprite
- */
-lime.Circle = function() {
-    lime.Sprite.call(this);
-
-
-};
-goog.inherits(lime.Circle, lime.Sprite);
-
-/**
- * Common name for circle objects
- * @type {string}
- */
-lime.Circle.prototype.id = 'circle';
-
-/** @inheritDoc */
-lime.Circle.prototype.supportedRenderers = [
-    lime.Renderer.DOM.SPRITE.makeSubRenderer(lime.Renderer.DOM.CIRCLE),
-    lime.Renderer.CANVAS.SPRITE.makeSubRenderer(lime.Renderer.CANVAS.CIRCLE)
-];
-
-/**
- * @inheritDoc
- */
-lime.Circle.prototype.hitTest = function(e) {
-    var coord = this.screenToLocal(e.screenPosition);
-    var s = this.size_,
-        ap = this.anchorPoint_,
-        a = s.width * .5,
-        b = s.height * .5,
-        x = coord.x - s.width * (.5 - ap.x),
-        y = coord.y - s.height * (.5 - ap.y);
-
-    if ((x * x) / (a * a) + (y * y) / (b * b) &lt; 1) {
-        e.position = coord;
-        return true;
-    }
-    return false;
-};
-
-/**
- * @inheritDoc
- * @this {lime.Circle}
- */
-lime.Renderer.DOM.CIRCLE.draw = function(el) {
-    var size = this.getSize();
-
-    lime.Renderer.DOM.SPRITE.draw.call(this, el);
-
-    lime.style.setBorderRadius(el, size.width * .5, size.height * .5);
-    //  el.style['-webkit-border-radius'] = el.style['MozBorderRadius'] =
-    //      size.width*.5+'px / '+size.height*.5+'px';
-
-};
-
-/**
- * @inheritDoc
- * @this {lime.Circle}
- */
-lime.Renderer.CANVAS.CIRCLE.draw = function(context) {
-    // console.log('draw');
-    var size = this.getSize(),
-        fill = this.fill_,
-        ap = this.getAnchorPoint();
-    var frame = this.getFrame();
-    var cx = (frame.right - frame.left) * .5;
-    var cy = (frame.bottom - frame.top) * .5;
-    context.save();
-    context.save();
-    context.scale(cx, cy);
-    context.translate(1 - 2 * ap.x, 1 - 2 * ap.y);
-    context.beginPath();
-    context.arc(0, 0, 1, 0, 2 * Math.PI, false);
-    context.closePath();
-    context.restore();
-    context.clip();
-
-    lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
-
-    if (this.stroke_) {
-        context.lineWidth *= 2;
-        context.stroke();
-    }
-
-    context.restore();
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.Circle');<a name="line2"></a>
+goog.provide('lime.Renderer.CANVAS.CIRCLE');<a name="line3"></a>
+goog.provide('lime.Renderer.DOM.CIRCLE');<a name="line4"></a>
+<a name="line5"></a>
+<a name="line6"></a>
+goog.require('lime.Renderer.CANVAS.SPRITE');<a name="line7"></a>
+goog.require('lime.Renderer.DOM.SPRITE');<a name="line8"></a>
+goog.require('lime.Sprite');<a name="line9"></a>
+goog.require('lime.style');<a name="line10"></a>
+<a name="line11"></a>
+/**<a name="line12"></a>
+ * Circle or ellipse shaped tectured object<a name="line13"></a>
+ * @constructor<a name="line14"></a>
+ * @extends lime.Sprite<a name="line15"></a>
+ */<a name="line16"></a>
+lime.Circle = function() {<a name="line17"></a>
+    lime.Sprite.call(this);<a name="line18"></a>
+<a name="line19"></a>
+<a name="line20"></a>
+};<a name="line21"></a>
+goog.inherits(lime.Circle, lime.Sprite);<a name="line22"></a>
+<a name="line23"></a>
+/**<a name="line24"></a>
+ * Common name for circle objects<a name="line25"></a>
+ * @type {string}<a name="line26"></a>
+ */<a name="line27"></a>
+lime.Circle.prototype.id = 'circle';<a name="line28"></a>
+<a name="line29"></a>
+/** @inheritDoc */<a name="line30"></a>
+lime.Circle.prototype.supportedRenderers = [<a name="line31"></a>
+    lime.Renderer.DOM.SPRITE.makeSubRenderer(lime.Renderer.DOM.CIRCLE),<a name="line32"></a>
+    lime.Renderer.CANVAS.SPRITE.makeSubRenderer(lime.Renderer.CANVAS.CIRCLE)<a name="line33"></a>
+];<a name="line34"></a>
+<a name="line35"></a>
+/**<a name="line36"></a>
+ * @inheritDoc<a name="line37"></a>
+ */<a name="line38"></a>
+lime.Circle.prototype.hitTest = function(e) {<a name="line39"></a>
+    var coord = this.screenToLocal(e.screenPosition);<a name="line40"></a>
+    var s = this.size_,<a name="line41"></a>
+        ap = this.anchorPoint_,<a name="line42"></a>
+        a = s.width * .5,<a name="line43"></a>
+        b = s.height * .5,<a name="line44"></a>
+        x = coord.x - s.width * (.5 - ap.x),<a name="line45"></a>
+        y = coord.y - s.height * (.5 - ap.y);<a name="line46"></a>
+<a name="line47"></a>
+    if ((x * x) / (a * a) + (y * y) / (b * b) &lt; 1) {<a name="line48"></a>
+        e.position = coord;<a name="line49"></a>
+        return true;<a name="line50"></a>
+    }<a name="line51"></a>
+    return false;<a name="line52"></a>
+};<a name="line53"></a>
+<a name="line54"></a>
+/**<a name="line55"></a>
+ * @inheritDoc<a name="line56"></a>
+ * @this {lime.Circle}<a name="line57"></a>
+ */<a name="line58"></a>
+lime.Renderer.DOM.CIRCLE.draw = function(el) {<a name="line59"></a>
+    var size = this.getSize();<a name="line60"></a>
+<a name="line61"></a>
+    lime.Renderer.DOM.SPRITE.draw.call(this, el);<a name="line62"></a>
+<a name="line63"></a>
+    lime.style.setBorderRadius(el, size.width * .5, size.height * .5);<a name="line64"></a>
+    //  el.style['-webkit-border-radius'] = el.style['MozBorderRadius'] =<a name="line65"></a>
+    //      size.width*.5+'px / '+size.height*.5+'px';<a name="line66"></a>
+<a name="line67"></a>
+};<a name="line68"></a>
+<a name="line69"></a>
+/**<a name="line70"></a>
+ * @inheritDoc<a name="line71"></a>
+ * @this {lime.Circle}<a name="line72"></a>
+ */<a name="line73"></a>
+lime.Renderer.CANVAS.CIRCLE.draw = function(context) {<a name="line74"></a>
+    // console.log('draw');<a name="line75"></a>
+    var size = this.getSize(),<a name="line76"></a>
+        fill = this.fill_,<a name="line77"></a>
+        ap = this.getAnchorPoint();<a name="line78"></a>
+    var frame = this.getFrame();<a name="line79"></a>
+    var cx = (frame.right - frame.left) * .5;<a name="line80"></a>
+    var cy = (frame.bottom - frame.top) * .5;<a name="line81"></a>
+    context.save();<a name="line82"></a>
+    context.save();<a name="line83"></a>
+    context.scale(cx, cy);<a name="line84"></a>
+    context.translate(1 - 2 * ap.x, 1 - 2 * ap.y);<a name="line85"></a>
+    context.beginPath();<a name="line86"></a>
+    context.arc(0, 0, 1, 0, 2 * Math.PI, false);<a name="line87"></a>
+    context.closePath();<a name="line88"></a>
+    context.restore();<a name="line89"></a>
+    context.clip();<a name="line90"></a>
+<a name="line91"></a>
+    lime.Renderer.CANVAS.SPRITE.draw.call(this, context);<a name="line92"></a>
+<a name="line93"></a>
+    if (this.stroke_) {<a name="line94"></a>
+        context.lineWidth *= 2;<a name="line95"></a>
+        context.stroke();<a name="line96"></a>
+    }<a name="line97"></a>
+<a name="line98"></a>
+    context.restore();<a name="line99"></a>
+};<a name="line100"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -141,7 +141,7 @@ lime.Renderer.CANVAS.CIRCLE.draw = function(context) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -26,108 +26,108 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>// Fix: bad naming. CoverNode is meaningless
-goog.provide('lime.CoverNode');
-
-
-goog.require('goog.dom');
-goog.require('goog.dom.classes');
-goog.require('goog.math.Box');
-goog.require('goog.style');
-goog.require('lime.Node');
-
-
-/**
- * Object that covers whole viewport area and lives outside the scene.
- * @constructor
- * @extends lime.Node
- */
-lime.CoverNode = function() {
-    lime.Node.call(this);
-
-    // Switch to canvas element
-    var oldElement = this.baseElement;
-    this.baseElement = document.createElement('canvas');
-    goog.dom.replaceNode(this.baseElement, oldElement);
-
-    /**
-     * Canvas drawing context
-     * @type {Object}
-     */
-    this.context = this.baseElement.getContext('2d');
-
-    // add extra className
-    goog.dom.classes.add(this.baseElement, goog.getCssName('lime-cover'));
-
-};
-goog.inherits(lime.CoverNode, lime.Node);
-
-
-/**
- * Invalidate object size & position
- */
-lime.CoverNode.prototype.update = function() {
-    if (!this.director) return;
-
-    var size = goog.style.getSize(this.director.baseElement.parentNode),
-        style = this.baseElement.style,
-        dscale = this.director.getScale(),
-        quality = this.getQuality();
-
-    style['width'] = size.width + 'px';
-    style['height'] = size.height + 'px';
-
-    this.baseElement.width = (size.width / dscale.x) * quality;
-    this.baseElement.height = (size.height / dscale.y) * quality;
-
-    // some action has set update area limits?
-    if (this.updateRect_) {
-        this.setNeedsRedrawInRect(this.updateRect_);
-    } else {
-        this.setNeedsRedraw();
-    }
-};
-
-/**
- * Tell CoverNode that it needs to redraw its contents if whole viewport
- */
-lime.CoverNode.prototype.setNeedsRedraw = function() {
-
-    var box = new goog.math.Box(
-        0, this.baseElement.width / this.getQuality(),
-        this.baseElement.height / this.getQuality(), 0);
-    this.setNeedsRedrawInRect(this.director.getBounds(box));
-
-};
-
-/**
- * Tell CoverNode that it needs to redraw its contents if
- * specific Box area
- * @param {goog.math.Box} box Box.
- */
-lime.CoverNode.prototype.setNeedsRedrawInRect = function(box) {
-    var dir = this.director,
-        quality = this.getQuality(),
-        scale = dir.getScale(),
-        position = dir.getPosition();
-
-    this.context.save();
-    this.context.scale(quality, quality);
-    this.context.translate(position.x / scale.x, position.y / scale.y);
-
-    // call abstract method
-    this.drawInRect(box);
-
-    this.context.restore();
-};
-
-
-/**
- * Draw the contents inside given area
- * @param {goog.math.Box} box Draw area.
- */
-lime.CoverNode.prototype.drawInRect = goog.abstractMethod;
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>// Fix: bad naming. CoverNode is meaningless<a name="line2"></a>
+goog.provide('lime.CoverNode');<a name="line3"></a>
+<a name="line4"></a>
+<a name="line5"></a>
+goog.require('goog.dom');<a name="line6"></a>
+goog.require('goog.dom.classes');<a name="line7"></a>
+goog.require('goog.math.Box');<a name="line8"></a>
+goog.require('goog.style');<a name="line9"></a>
+goog.require('lime.Node');<a name="line10"></a>
+<a name="line11"></a>
+<a name="line12"></a>
+/**<a name="line13"></a>
+ * Object that covers whole viewport area and lives outside the scene.<a name="line14"></a>
+ * @constructor<a name="line15"></a>
+ * @extends lime.Node<a name="line16"></a>
+ */<a name="line17"></a>
+lime.CoverNode = function() {<a name="line18"></a>
+    lime.Node.call(this);<a name="line19"></a>
+<a name="line20"></a>
+    // Switch to canvas element<a name="line21"></a>
+    var oldElement = this.baseElement;<a name="line22"></a>
+    this.baseElement = document.createElement('canvas');<a name="line23"></a>
+    goog.dom.replaceNode(this.baseElement, oldElement);<a name="line24"></a>
+<a name="line25"></a>
+    /**<a name="line26"></a>
+     * Canvas drawing context<a name="line27"></a>
+     * @type {Object}<a name="line28"></a>
+     */<a name="line29"></a>
+    this.context = this.baseElement.getContext('2d');<a name="line30"></a>
+<a name="line31"></a>
+    // add extra className<a name="line32"></a>
+    goog.dom.classes.add(this.baseElement, goog.getCssName('lime-cover'));<a name="line33"></a>
+<a name="line34"></a>
+};<a name="line35"></a>
+goog.inherits(lime.CoverNode, lime.Node);<a name="line36"></a>
+<a name="line37"></a>
+<a name="line38"></a>
+/**<a name="line39"></a>
+ * Invalidate object size & position<a name="line40"></a>
+ */<a name="line41"></a>
+lime.CoverNode.prototype.update = function() {<a name="line42"></a>
+    if (!this.director) return;<a name="line43"></a>
+<a name="line44"></a>
+    var size = goog.style.getSize(this.director.baseElement.parentNode),<a name="line45"></a>
+        style = this.baseElement.style,<a name="line46"></a>
+        dscale = this.director.getScale(),<a name="line47"></a>
+        quality = this.getQuality();<a name="line48"></a>
+<a name="line49"></a>
+    style['width'] = size.width + 'px';<a name="line50"></a>
+    style['height'] = size.height + 'px';<a name="line51"></a>
+<a name="line52"></a>
+    this.baseElement.width = (size.width / dscale.x) * quality;<a name="line53"></a>
+    this.baseElement.height = (size.height / dscale.y) * quality;<a name="line54"></a>
+<a name="line55"></a>
+    // some action has set update area limits?<a name="line56"></a>
+    if (this.updateRect_) {<a name="line57"></a>
+        this.setNeedsRedrawInRect(this.updateRect_);<a name="line58"></a>
+    } else {<a name="line59"></a>
+        this.setNeedsRedraw();<a name="line60"></a>
+    }<a name="line61"></a>
+};<a name="line62"></a>
+<a name="line63"></a>
+/**<a name="line64"></a>
+ * Tell CoverNode that it needs to redraw its contents if whole viewport<a name="line65"></a>
+ */<a name="line66"></a>
+lime.CoverNode.prototype.setNeedsRedraw = function() {<a name="line67"></a>
+<a name="line68"></a>
+    var box = new goog.math.Box(<a name="line69"></a>
+        0, this.baseElement.width / this.getQuality(),<a name="line70"></a>
+        this.baseElement.height / this.getQuality(), 0);<a name="line71"></a>
+    this.setNeedsRedrawInRect(this.director.getBounds(box));<a name="line72"></a>
+<a name="line73"></a>
+};<a name="line74"></a>
+<a name="line75"></a>
+/**<a name="line76"></a>
+ * Tell CoverNode that it needs to redraw its contents if<a name="line77"></a>
+ * specific Box area<a name="line78"></a>
+ * @param {goog.math.Box} box Box.<a name="line79"></a>
+ */<a name="line80"></a>
+lime.CoverNode.prototype.setNeedsRedrawInRect = function(box) {<a name="line81"></a>
+    var dir = this.director,<a name="line82"></a>
+        quality = this.getQuality(),<a name="line83"></a>
+        scale = dir.getScale(),<a name="line84"></a>
+        position = dir.getPosition();<a name="line85"></a>
+<a name="line86"></a>
+    this.context.save();<a name="line87"></a>
+    this.context.scale(quality, quality);<a name="line88"></a>
+    this.context.translate(position.x / scale.x, position.y / scale.y);<a name="line89"></a>
+<a name="line90"></a>
+    // call abstract method<a name="line91"></a>
+    this.drawInRect(box);<a name="line92"></a>
+<a name="line93"></a>
+    this.context.restore();<a name="line94"></a>
+};<a name="line95"></a>
+<a name="line96"></a>
+<a name="line97"></a>
+/**<a name="line98"></a>
+ * Draw the contents inside given area<a name="line99"></a>
+ * @param {goog.math.Box} box Draw area.<a name="line100"></a>
+ */<a name="line101"></a>
+lime.CoverNode.prototype.drawInRect = goog.abstractMethod;<a name="line102"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -143,7 +143,7 @@ lime.CoverNode.prototype.drawInRect = goog.abstractMethod;
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

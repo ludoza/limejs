@@ -26,246 +26,246 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.events.Drag');
-
-goog.require('goog.events.EventTarget');
-goog.require('lime.animation.MoveTo');
-
-
-/**
- * Object representing Drag interaction.
- * @constructor
- * @param {lime.events.Event} event Event that started dragging.
- * @param {boolean=} opt_snapToCenter If dragging relates to center position.
- * @param {goog.math.Box=} opt_bounds Drag area limit.
- * @param {lime.Node=} opt_targetObject Different target object.
- * @extends goog.events.EventTarget
- */
-lime.events.Drag = function(event, opt_snapToCenter, opt_bounds,
-    opt_targetObject) {
-
-    goog.base(this);
-
-    this.target = opt_targetObject || event.targetObject;
-
-    /** @type {Array.&lt;lime.Node>} */
-    this.dropTargets_ = [];
-    this.dropIndex_ = -1;
-
-    this.x = 0;
-    this.y = 0;
-
-    if (!opt_snapToCenter) {
-        var centerpos = this.target.localToScreen(
-            new goog.math.Coordinate(0, 0));
-        this.x = event.screenPosition.x - centerpos.x;
-        this.y = event.screenPosition.y - centerpos.y;
-    }
-
-    event.swallow(['touchmove', 'mousemove'],
-        goog.bind(this.moveHandler_, this));
-    event.swallow(['touchend', 'touchcancel', 'mouseup'],
-        goog.bind(this.releaseHandler_, this));
-
-    this.setBounds(opt_bounds || null);
-
-    this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.START));
-
-};
-goog.inherits(lime.events.Drag, goog.events.EventTarget);
-
-/**
- * Enum for dragging related events
- * @enum {string}
- */
-lime.events.Drag.Event = {
-    START: 'start',
-    END: 'end',
-    MOVE: 'move',
-    CHANGE: 'change',
-    DROP: 'drop',
-    CANCEL: 'cancel'
-};
-
-/**
- * @inheritDoc
- */
-lime.events.Drag.prototype.disposeInternal = function() {
-    goog.base(this, 'disposeInternal');
-    this.event_ = null;
-    this.target = null;
-    this.dropTargets_ = null;
-};
-
-/**
- * Return the area limit.
- * @return {goog.math.Box} Bounding box.
- */
-lime.events.Drag.prototype.getBounds = function() {
-    return this.bounds_;
-};
-
-/**
- * Set new limitation area.
- * @param {goog.math.Box} bounds Bounding box.
- */
-lime.events.Drag.prototype.setBounds = function(bounds) {
-    this.bounds_ = bounds;
-};
-
-/**
- * Handle move events.
- * @private
- * @param {lime.events.Event} e Event.
- */
-lime.events.Drag.prototype.moveHandler_ = function(e) {
-    var pos = e.screenPosition.clone();
-
-    pos.x -= this.x;
-    pos.y -= this.y;
-    pos = this.target.getParent().screenToLocal(pos);
-
-    var box = this.getBounds();
-
-    if (goog.isDefAndNotNull(box)) {
-        //todo: this can be optimized
-
-        /*
-        //thinking again testing with bounding box may be actually wrong
-        var s = obj.size_, a = obj.anchorPoint_,p = this.position_;
-        var rr = new goog.math.Rect(
-                    p.x-s.width*a.x,
-                    p.y-s.height*a.y ,
-                    size.width, size.height
-                );
-
-
-        if(rr.left&lt;box.left) rr.left=box.left;
-        if(rr.top&lt;box.top) rr.top=box.top;
-
-        if(rr.left+s.width>box.right) bb.left=box.right-s.width;
-        if(rr.top+s.height>box.bottom) bb.top=box.bottom-s.height;
-
-        pos.x = rr.left+s.width*a.x;
-        pos.y = rr.top+s.height*a.y;
-        */
-
-        //point version
-        if (pos.x &lt; box.left) pos.x = box.left;
-        else if (pos.x > box.right) pos.x = box.right;
-
-        if (pos.y &lt; box.top) pos.y = box.top;
-        else if (pos.y > box.bottom) pos.y = box.bottom;
-
-
-    }
-
-
-    this.target.setPosition(pos);
-
-    this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.MOVE));
-
-    var sel = -1;
-    var currect = goog.math.Rect.createFromBox(this.target.getFrame());
-    var results = [];
-    for (var i = 0; i &lt; this.dropTargets_.length; i++) {
-        var loc = this.dropTargets_[i];
-        if (goog.isFunction(loc.confirmTargetActive)) {
-            if (!loc.confirmTargetActive(this.target)) {
-                continue;
-            }
-        }
-        var dropFrame = loc.getFrame();
-        var tl = loc.localToNode(new goog.math.Coordinate(
-            dropFrame.left, dropFrame.top), this.target);
-        var br = loc.localToNode(new goog.math.Coordinate(
-            dropFrame.right, dropFrame.bottom), this.target);
-        var droprect = goog.math.Rect.createFromBox(
-            new goog.math.Box(Math.min(tl.y, br.y), Math.max(tl.x, br.x), Math.max(tl.y, br.y), Math.min(br.x, tl.x)));
-        var intersection = goog.math.Rect.intersection(currect, droprect);
-
-        if (intersection) {
-            results.push([intersection.width * intersection.height /
-                    (droprect.width * droprect.height), i]);
-        }
-    }
-
-    if (results.length) {
-        results = results.sort(function(a, b) {
-            return b[0] - a[0];
-        });
-        sel = results[0][1];
-    }
-
-    if (sel != this.dropIndex_) {
-        if (this.dropIndex_ != -1) {
-            if (goog.isFunction(this.dropTargets_[this.dropIndex_].hideDropHighlight)) {
-                this.dropTargets_[this.dropIndex_].hideDropHighlight();
-            }
-        }
-        this.dropIndex_ = sel;
-        if (this.dropIndex_ != -1) {
-            if (goog.isFunction(
-                this.dropTargets_[this.dropIndex_].showDropHighlight)) {
-                this.dropTargets_[this.dropIndex_].showDropHighlight();
-            }
-        }
-
-        var ev = new goog.events.Event(lime.events.Drag.Event.CHANGE);
-        ev.activeDropTarget = this.dropIndex_ != -1 ?
-            this.dropTargets_[this.dropIndex_] : null;
-        this.dispatchEvent(ev);
-
-    }
-
-
-
-};
-
-/**
- * Handle release events.
- * @private
- * @param {lime.events.Event} e Event.
- */
-lime.events.Drag.prototype.releaseHandler_ = function(e) {
-
-    if (this.dropIndex_ != -1) {
-        var ev = new goog.events.Event(lime.events.Drag.Event.DROP);
-        ev.activeDropTarget = this.dropTargets_[this.dropIndex_];
-        if (goog.isFunction(ev.activeDropTarget.showDropHighlight)) {
-            ev.activeDropTarget.hideDropHighlight();
-        }
-        this.dispatchEvent(ev);
-        if (!ev.propagationStopped_) {
-            var pos = ev.activeDropTarget.getParent().localToNode(
-                ev.activeDropTarget.getPosition(), this.target.getParent());
-            var move = new lime.animation.MoveTo(pos)
-                .setDuration(.5).enableOptimizations();
-            this.target.runAction(move);
-            if (goog.isFunction(ev.moveEndedCallback)) {
-                goog.events.listen(move, lime.animation.Event.STOP,
-                    ev.moveEndedCallback, false, this.target);
-            }
-        }
-    } else {
-        this.dispatchEvent(new goog.events.Event(
-            lime.events.Drag.Event.CANCEL));
-    }
-
-    this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.END));
-
-    lime.scheduleManager.callAfter(this.dispose, this, 100);
-
-};
-
-/**
- * Add another node as drop target.
- * @param {lime.Node} drop Drop target node.
- */
-lime.events.Drag.prototype.addDropTarget = function(drop) {
-    this.dropTargets_.push(drop);
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.events.Drag');<a name="line2"></a>
+<a name="line3"></a>
+goog.require('goog.events.EventTarget');<a name="line4"></a>
+goog.require('lime.animation.MoveTo');<a name="line5"></a>
+<a name="line6"></a>
+<a name="line7"></a>
+/**<a name="line8"></a>
+ * Object representing Drag interaction.<a name="line9"></a>
+ * @constructor<a name="line10"></a>
+ * @param {lime.events.Event} event Event that started dragging.<a name="line11"></a>
+ * @param {boolean=} opt_snapToCenter If dragging relates to center position.<a name="line12"></a>
+ * @param {goog.math.Box=} opt_bounds Drag area limit.<a name="line13"></a>
+ * @param {lime.Node=} opt_targetObject Different target object.<a name="line14"></a>
+ * @extends goog.events.EventTarget<a name="line15"></a>
+ */<a name="line16"></a>
+lime.events.Drag = function(event, opt_snapToCenter, opt_bounds,<a name="line17"></a>
+    opt_targetObject) {<a name="line18"></a>
+<a name="line19"></a>
+    goog.base(this);<a name="line20"></a>
+<a name="line21"></a>
+    this.target = opt_targetObject || event.targetObject;<a name="line22"></a>
+<a name="line23"></a>
+    /** @type {Array.&lt;lime.Node>} */<a name="line24"></a>
+    this.dropTargets_ = [];<a name="line25"></a>
+    this.dropIndex_ = -1;<a name="line26"></a>
+<a name="line27"></a>
+    this.x = 0;<a name="line28"></a>
+    this.y = 0;<a name="line29"></a>
+<a name="line30"></a>
+    if (!opt_snapToCenter) {<a name="line31"></a>
+        var centerpos = this.target.localToScreen(<a name="line32"></a>
+            new goog.math.Coordinate(0, 0));<a name="line33"></a>
+        this.x = event.screenPosition.x - centerpos.x;<a name="line34"></a>
+        this.y = event.screenPosition.y - centerpos.y;<a name="line35"></a>
+    }<a name="line36"></a>
+<a name="line37"></a>
+    event.swallow(['touchmove', 'mousemove'],<a name="line38"></a>
+        goog.bind(this.moveHandler_, this));<a name="line39"></a>
+    event.swallow(['touchend', 'touchcancel', 'mouseup'],<a name="line40"></a>
+        goog.bind(this.releaseHandler_, this));<a name="line41"></a>
+<a name="line42"></a>
+    this.setBounds(opt_bounds || null);<a name="line43"></a>
+<a name="line44"></a>
+    this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.START));<a name="line45"></a>
+<a name="line46"></a>
+};<a name="line47"></a>
+goog.inherits(lime.events.Drag, goog.events.EventTarget);<a name="line48"></a>
+<a name="line49"></a>
+/**<a name="line50"></a>
+ * Enum for dragging related events<a name="line51"></a>
+ * @enum {string}<a name="line52"></a>
+ */<a name="line53"></a>
+lime.events.Drag.Event = {<a name="line54"></a>
+    START: 'start',<a name="line55"></a>
+    END: 'end',<a name="line56"></a>
+    MOVE: 'move',<a name="line57"></a>
+    CHANGE: 'change',<a name="line58"></a>
+    DROP: 'drop',<a name="line59"></a>
+    CANCEL: 'cancel'<a name="line60"></a>
+};<a name="line61"></a>
+<a name="line62"></a>
+/**<a name="line63"></a>
+ * @inheritDoc<a name="line64"></a>
+ */<a name="line65"></a>
+lime.events.Drag.prototype.disposeInternal = function() {<a name="line66"></a>
+    goog.base(this, 'disposeInternal');<a name="line67"></a>
+    this.event_ = null;<a name="line68"></a>
+    this.target = null;<a name="line69"></a>
+    this.dropTargets_ = null;<a name="line70"></a>
+};<a name="line71"></a>
+<a name="line72"></a>
+/**<a name="line73"></a>
+ * Return the area limit.<a name="line74"></a>
+ * @return {goog.math.Box} Bounding box.<a name="line75"></a>
+ */<a name="line76"></a>
+lime.events.Drag.prototype.getBounds = function() {<a name="line77"></a>
+    return this.bounds_;<a name="line78"></a>
+};<a name="line79"></a>
+<a name="line80"></a>
+/**<a name="line81"></a>
+ * Set new limitation area.<a name="line82"></a>
+ * @param {goog.math.Box} bounds Bounding box.<a name="line83"></a>
+ */<a name="line84"></a>
+lime.events.Drag.prototype.setBounds = function(bounds) {<a name="line85"></a>
+    this.bounds_ = bounds;<a name="line86"></a>
+};<a name="line87"></a>
+<a name="line88"></a>
+/**<a name="line89"></a>
+ * Handle move events.<a name="line90"></a>
+ * @private<a name="line91"></a>
+ * @param {lime.events.Event} e Event.<a name="line92"></a>
+ */<a name="line93"></a>
+lime.events.Drag.prototype.moveHandler_ = function(e) {<a name="line94"></a>
+    var pos = e.screenPosition.clone();<a name="line95"></a>
+<a name="line96"></a>
+    pos.x -= this.x;<a name="line97"></a>
+    pos.y -= this.y;<a name="line98"></a>
+    pos = this.target.getParent().screenToLocal(pos);<a name="line99"></a>
+<a name="line100"></a>
+    var box = this.getBounds();<a name="line101"></a>
+<a name="line102"></a>
+    if (goog.isDefAndNotNull(box)) {<a name="line103"></a>
+        //todo: this can be optimized<a name="line104"></a>
+<a name="line105"></a>
+        /*<a name="line106"></a>
+        //thinking again testing with bounding box may be actually wrong<a name="line107"></a>
+        var s = obj.size_, a = obj.anchorPoint_,p = this.position_;<a name="line108"></a>
+        var rr = new goog.math.Rect(<a name="line109"></a>
+                    p.x-s.width*a.x,<a name="line110"></a>
+                    p.y-s.height*a.y ,<a name="line111"></a>
+                    size.width, size.height<a name="line112"></a>
+                );<a name="line113"></a>
+<a name="line114"></a>
+<a name="line115"></a>
+        if(rr.left&lt;box.left) rr.left=box.left;<a name="line116"></a>
+        if(rr.top&lt;box.top) rr.top=box.top;<a name="line117"></a>
+<a name="line118"></a>
+        if(rr.left+s.width>box.right) bb.left=box.right-s.width;<a name="line119"></a>
+        if(rr.top+s.height>box.bottom) bb.top=box.bottom-s.height;<a name="line120"></a>
+<a name="line121"></a>
+        pos.x = rr.left+s.width*a.x;<a name="line122"></a>
+        pos.y = rr.top+s.height*a.y;<a name="line123"></a>
+        */<a name="line124"></a>
+<a name="line125"></a>
+        //point version<a name="line126"></a>
+        if (pos.x &lt; box.left) pos.x = box.left;<a name="line127"></a>
+        else if (pos.x > box.right) pos.x = box.right;<a name="line128"></a>
+<a name="line129"></a>
+        if (pos.y &lt; box.top) pos.y = box.top;<a name="line130"></a>
+        else if (pos.y > box.bottom) pos.y = box.bottom;<a name="line131"></a>
+<a name="line132"></a>
+<a name="line133"></a>
+    }<a name="line134"></a>
+<a name="line135"></a>
+<a name="line136"></a>
+    this.target.setPosition(pos);<a name="line137"></a>
+<a name="line138"></a>
+    this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.MOVE));<a name="line139"></a>
+<a name="line140"></a>
+    var sel = -1;<a name="line141"></a>
+    var currect = goog.math.Rect.createFromBox(this.target.getFrame());<a name="line142"></a>
+    var results = [];<a name="line143"></a>
+    for (var i = 0; i &lt; this.dropTargets_.length; i++) {<a name="line144"></a>
+        var loc = this.dropTargets_[i];<a name="line145"></a>
+        if (goog.isFunction(loc.confirmTargetActive)) {<a name="line146"></a>
+            if (!loc.confirmTargetActive(this.target)) {<a name="line147"></a>
+                continue;<a name="line148"></a>
+            }<a name="line149"></a>
+        }<a name="line150"></a>
+        var dropFrame = loc.getFrame();<a name="line151"></a>
+        var tl = loc.localToNode(new goog.math.Coordinate(<a name="line152"></a>
+            dropFrame.left, dropFrame.top), this.target);<a name="line153"></a>
+        var br = loc.localToNode(new goog.math.Coordinate(<a name="line154"></a>
+            dropFrame.right, dropFrame.bottom), this.target);<a name="line155"></a>
+        var droprect = goog.math.Rect.createFromBox(<a name="line156"></a>
+            new goog.math.Box(Math.min(tl.y, br.y), Math.max(tl.x, br.x), Math.max(tl.y, br.y), Math.min(br.x, tl.x)));<a name="line157"></a>
+        var intersection = goog.math.Rect.intersection(currect, droprect);<a name="line158"></a>
+<a name="line159"></a>
+        if (intersection) {<a name="line160"></a>
+            results.push([intersection.width * intersection.height /<a name="line161"></a>
+                    (droprect.width * droprect.height), i]);<a name="line162"></a>
+        }<a name="line163"></a>
+    }<a name="line164"></a>
+<a name="line165"></a>
+    if (results.length) {<a name="line166"></a>
+        results = results.sort(function(a, b) {<a name="line167"></a>
+            return b[0] - a[0];<a name="line168"></a>
+        });<a name="line169"></a>
+        sel = results[0][1];<a name="line170"></a>
+    }<a name="line171"></a>
+<a name="line172"></a>
+    if (sel != this.dropIndex_) {<a name="line173"></a>
+        if (this.dropIndex_ != -1) {<a name="line174"></a>
+            if (goog.isFunction(this.dropTargets_[this.dropIndex_].hideDropHighlight)) {<a name="line175"></a>
+                this.dropTargets_[this.dropIndex_].hideDropHighlight();<a name="line176"></a>
+            }<a name="line177"></a>
+        }<a name="line178"></a>
+        this.dropIndex_ = sel;<a name="line179"></a>
+        if (this.dropIndex_ != -1) {<a name="line180"></a>
+            if (goog.isFunction(<a name="line181"></a>
+                this.dropTargets_[this.dropIndex_].showDropHighlight)) {<a name="line182"></a>
+                this.dropTargets_[this.dropIndex_].showDropHighlight();<a name="line183"></a>
+            }<a name="line184"></a>
+        }<a name="line185"></a>
+<a name="line186"></a>
+        var ev = new goog.events.Event(lime.events.Drag.Event.CHANGE);<a name="line187"></a>
+        ev.activeDropTarget = this.dropIndex_ != -1 ?<a name="line188"></a>
+            this.dropTargets_[this.dropIndex_] : null;<a name="line189"></a>
+        this.dispatchEvent(ev);<a name="line190"></a>
+<a name="line191"></a>
+    }<a name="line192"></a>
+<a name="line193"></a>
+<a name="line194"></a>
+<a name="line195"></a>
+};<a name="line196"></a>
+<a name="line197"></a>
+/**<a name="line198"></a>
+ * Handle release events.<a name="line199"></a>
+ * @private<a name="line200"></a>
+ * @param {lime.events.Event} e Event.<a name="line201"></a>
+ */<a name="line202"></a>
+lime.events.Drag.prototype.releaseHandler_ = function(e) {<a name="line203"></a>
+<a name="line204"></a>
+    if (this.dropIndex_ != -1) {<a name="line205"></a>
+        var ev = new goog.events.Event(lime.events.Drag.Event.DROP);<a name="line206"></a>
+        ev.activeDropTarget = this.dropTargets_[this.dropIndex_];<a name="line207"></a>
+        if (goog.isFunction(ev.activeDropTarget.showDropHighlight)) {<a name="line208"></a>
+            ev.activeDropTarget.hideDropHighlight();<a name="line209"></a>
+        }<a name="line210"></a>
+        this.dispatchEvent(ev);<a name="line211"></a>
+        if (!ev.propagationStopped_) {<a name="line212"></a>
+            var pos = ev.activeDropTarget.getParent().localToNode(<a name="line213"></a>
+                ev.activeDropTarget.getPosition(), this.target.getParent());<a name="line214"></a>
+            var move = new lime.animation.MoveTo(pos)<a name="line215"></a>
+                .setDuration(.5).enableOptimizations();<a name="line216"></a>
+            this.target.runAction(move);<a name="line217"></a>
+            if (goog.isFunction(ev.moveEndedCallback)) {<a name="line218"></a>
+                goog.events.listen(move, lime.animation.Event.STOP,<a name="line219"></a>
+                    ev.moveEndedCallback, false, this.target);<a name="line220"></a>
+            }<a name="line221"></a>
+        }<a name="line222"></a>
+    } else {<a name="line223"></a>
+        this.dispatchEvent(new goog.events.Event(<a name="line224"></a>
+            lime.events.Drag.Event.CANCEL));<a name="line225"></a>
+    }<a name="line226"></a>
+<a name="line227"></a>
+    this.dispatchEvent(new goog.events.Event(lime.events.Drag.Event.END));<a name="line228"></a>
+<a name="line229"></a>
+    lime.scheduleManager.callAfter(this.dispose, this, 100);<a name="line230"></a>
+<a name="line231"></a>
+};<a name="line232"></a>
+<a name="line233"></a>
+/**<a name="line234"></a>
+ * Add another node as drop target.<a name="line235"></a>
+ * @param {lime.Node} drop Drop target node.<a name="line236"></a>
+ */<a name="line237"></a>
+lime.events.Drag.prototype.addDropTarget = function(drop) {<a name="line238"></a>
+    this.dropTargets_.push(drop);<a name="line239"></a>
+};<a name="line240"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -281,7 +281,7 @@ lime.events.Drag.prototype.addDropTarget = function(drop) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

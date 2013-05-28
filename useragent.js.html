@@ -26,83 +26,83 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.userAgent');
-
-goog.require('goog.userAgent');
-
-
-(function() {
-
-
-    var ua = goog.userAgent.getUserAgentString();
-
-    /**
-     * Whether the user agent is running on iOS device
-     * @type boolean
-     */
-    lime.userAgent.IOS = goog.userAgent.WEBKIT && goog.userAgent.MOBILE &&
-        (/(ipod|iphone|ipad)/i).test(ua);
-
-    /**
-     * Whether the user agent is running iOS5
-     * @type boolean
-     */
-    lime.userAgent.IOS5 = lime.userAgent.IOS && goog.isFunction(Object['freeze']); // User-agent still shows 4.3 on beta
-
-
-    /**
-     * Whether the user agent is running on Android device
-     * @type boolean
-     */
-    lime.userAgent.ANDROID = goog.userAgent.WEBKIT && goog.userAgent.MOBILE &&
-        (/(android)/i).test(ua);
-
-
-    /**
-     * Whether the user agent is running on Windows Phone device
-     * @type boolean
-     */
-    lime.userAgent.WINPHONE = goog.userAgent.MOBILE && (/(iemobile)/i).test(ua);
-
-
-    /**
-     * Whether the user agent is running on iPad
-     * @type boolean
-     */
-    lime.userAgent.IPAD = lime.userAgent.IOS && (/(ipad)/i).test(ua);
-
-
-    /**
-     * Whether the user agent is running on iPhone 4
-     * @type boolean
-     */
-    lime.userAgent.IPHONE4 = lime.userAgent.IOS &&
-        goog.global['devicePixelRatio'] >= 2;
-
-
-    /**
-     * Whether the user agent is running on Blackberry Playbook
-     * @type boolean
-     */
-    lime.userAgent.PLAYBOOK = goog.userAgent.WEBKIT && (/playbook/i).test(ua);
-
-
-    /**
-     * Whether the user agent is running on Google Chrome/Chromium
-     * @type boolean
-     */
-    lime.userAgent.CHROME = goog.userAgent.WEBKIT && (/Chrome\//i).test(ua);
-
-
-    /**
-     * Whether the user agent is running on touch based device
-     * @type boolean
-     */
-    lime.userAgent.SUPPORTS_TOUCH = goog.isDef(document['ontouchmove']);
-
-
-})();
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.userAgent');<a name="line2"></a>
+<a name="line3"></a>
+goog.require('goog.userAgent');<a name="line4"></a>
+<a name="line5"></a>
+<a name="line6"></a>
+(function() {<a name="line7"></a>
+<a name="line8"></a>
+<a name="line9"></a>
+    var ua = goog.userAgent.getUserAgentString();<a name="line10"></a>
+<a name="line11"></a>
+    /**<a name="line12"></a>
+     * Whether the user agent is running on iOS device<a name="line13"></a>
+     * @type boolean<a name="line14"></a>
+     */<a name="line15"></a>
+    lime.userAgent.IOS = goog.userAgent.WEBKIT && goog.userAgent.MOBILE &&<a name="line16"></a>
+        (/(ipod|iphone|ipad)/i).test(ua);<a name="line17"></a>
+<a name="line18"></a>
+    /**<a name="line19"></a>
+     * Whether the user agent is running iOS5<a name="line20"></a>
+     * @type boolean<a name="line21"></a>
+     */<a name="line22"></a>
+    lime.userAgent.IOS5 = lime.userAgent.IOS && goog.isFunction(Object['freeze']); // User-agent still shows 4.3 on beta<a name="line23"></a>
+<a name="line24"></a>
+<a name="line25"></a>
+    /**<a name="line26"></a>
+     * Whether the user agent is running on Android device<a name="line27"></a>
+     * @type boolean<a name="line28"></a>
+     */<a name="line29"></a>
+    lime.userAgent.ANDROID = goog.userAgent.WEBKIT && goog.userAgent.MOBILE &&<a name="line30"></a>
+        (/(android)/i).test(ua);<a name="line31"></a>
+<a name="line32"></a>
+<a name="line33"></a>
+    /**<a name="line34"></a>
+     * Whether the user agent is running on Windows Phone device<a name="line35"></a>
+     * @type boolean<a name="line36"></a>
+     */<a name="line37"></a>
+    lime.userAgent.WINPHONE = goog.userAgent.MOBILE && (/(iemobile)/i).test(ua);<a name="line38"></a>
+<a name="line39"></a>
+<a name="line40"></a>
+    /**<a name="line41"></a>
+     * Whether the user agent is running on iPad<a name="line42"></a>
+     * @type boolean<a name="line43"></a>
+     */<a name="line44"></a>
+    lime.userAgent.IPAD = lime.userAgent.IOS && (/(ipad)/i).test(ua);<a name="line45"></a>
+<a name="line46"></a>
+<a name="line47"></a>
+    /**<a name="line48"></a>
+     * Whether the user agent is running on iPhone 4<a name="line49"></a>
+     * @type boolean<a name="line50"></a>
+     */<a name="line51"></a>
+    lime.userAgent.IPHONE4 = lime.userAgent.IOS &&<a name="line52"></a>
+        goog.global['devicePixelRatio'] >= 2;<a name="line53"></a>
+<a name="line54"></a>
+<a name="line55"></a>
+    /**<a name="line56"></a>
+     * Whether the user agent is running on Blackberry Playbook<a name="line57"></a>
+     * @type boolean<a name="line58"></a>
+     */<a name="line59"></a>
+    lime.userAgent.PLAYBOOK = goog.userAgent.WEBKIT && (/playbook/i).test(ua);<a name="line60"></a>
+<a name="line61"></a>
+<a name="line62"></a>
+    /**<a name="line63"></a>
+     * Whether the user agent is running on Google Chrome/Chromium<a name="line64"></a>
+     * @type boolean<a name="line65"></a>
+     */<a name="line66"></a>
+    lime.userAgent.CHROME = goog.userAgent.WEBKIT && (/Chrome\//i).test(ua);<a name="line67"></a>
+<a name="line68"></a>
+<a name="line69"></a>
+    /**<a name="line70"></a>
+     * Whether the user agent is running on touch based device<a name="line71"></a>
+     * @type boolean<a name="line72"></a>
+     */<a name="line73"></a>
+    lime.userAgent.SUPPORTS_TOUCH = goog.isDef(document['ontouchmove']);<a name="line74"></a>
+<a name="line75"></a>
+<a name="line76"></a>
+})();<a name="line77"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -118,7 +118,7 @@ goog.require('goog.userAgent');
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

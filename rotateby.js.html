@@ -26,77 +26,77 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.animation.RotateBy');
-
-
-goog.require('goog.math.Vec2');
-goog.require('lime.Sprite');
-goog.require('lime.animation.Animation');
-
-/**
- * Rotate by given angle in degrees
- * @constructor
- * @param {number} angle Angle to rotate.
- * @extends lime.animation.Animation
- */
-lime.animation.RotateBy = function(angle) {
-    lime.animation.Animation.call(this);
-
-    this.angle_ = angle;
-
-};
-goog.inherits(lime.animation.RotateBy, lime.animation.Animation);
-
-/**
- * @inheritDoc
- */
-lime.animation.RotateBy.prototype.scope = 'rotate';
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#makeTargetProp
- */
-lime.animation.RotateBy.prototype.makeTargetProp = function(target) {
-    if (this.useTransitions()) {
-        target.addTransition(lime.Transition.ROTATION,
-            target.getRotation() + this.angle_,
-            this.duration_, this.getEasing());
-        target.setDirty(lime.Dirty.POSITION);
-    }
-    return {
-        startRot: target.getRotation()
-    };
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#update
- */
-lime.animation.RotateBy.prototype.update = function(t, target) {
-    if (this.status_ == 0) return;
-    var prop = this.getTargetProp(target);
-    target.setRotation(prop.startRot + this.angle_ * t);
-};
-
-/**
- * Clear transistion when animation is stoped.
- * @param {lime.Node} target The target to clear transistion for.
- */
-lime.animation.RotateBy.prototype.clearTransition = function(target) {
-    if (this.useTransitions()) {
-        target.clearTransition(lime.Transition.ROTATION);
-        target.setDirty(lime.Dirty.POSITION);
-    }
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#reverse
- */
-lime.animation.RotateBy.prototype.reverse = function() {
-    return new lime.animation.RotateBy(-this.angle_).cloneParam(this);
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.animation.RotateBy');<a name="line2"></a>
+<a name="line3"></a>
+<a name="line4"></a>
+goog.require('goog.math.Vec2');<a name="line5"></a>
+goog.require('lime.Sprite');<a name="line6"></a>
+goog.require('lime.animation.Animation');<a name="line7"></a>
+<a name="line8"></a>
+/**<a name="line9"></a>
+ * Rotate by given angle in degrees<a name="line10"></a>
+ * @constructor<a name="line11"></a>
+ * @param {number} angle Angle to rotate.<a name="line12"></a>
+ * @extends lime.animation.Animation<a name="line13"></a>
+ */<a name="line14"></a>
+lime.animation.RotateBy = function(angle) {<a name="line15"></a>
+    lime.animation.Animation.call(this);<a name="line16"></a>
+<a name="line17"></a>
+    this.angle_ = angle;<a name="line18"></a>
+<a name="line19"></a>
+};<a name="line20"></a>
+goog.inherits(lime.animation.RotateBy, lime.animation.Animation);<a name="line21"></a>
+<a name="line22"></a>
+/**<a name="line23"></a>
+ * @inheritDoc<a name="line24"></a>
+ */<a name="line25"></a>
+lime.animation.RotateBy.prototype.scope = 'rotate';<a name="line26"></a>
+<a name="line27"></a>
+/**<a name="line28"></a>
+ * @inheritDoc<a name="line29"></a>
+ * @see lime.animation.Animation#makeTargetProp<a name="line30"></a>
+ */<a name="line31"></a>
+lime.animation.RotateBy.prototype.makeTargetProp = function(target) {<a name="line32"></a>
+    if (this.useTransitions()) {<a name="line33"></a>
+        target.addTransition(lime.Transition.ROTATION,<a name="line34"></a>
+            target.getRotation() + this.angle_,<a name="line35"></a>
+            this.duration_, this.getEasing());<a name="line36"></a>
+        target.setDirty(lime.Dirty.POSITION);<a name="line37"></a>
+    }<a name="line38"></a>
+    return {<a name="line39"></a>
+        startRot: target.getRotation()<a name="line40"></a>
+    };<a name="line41"></a>
+};<a name="line42"></a>
+<a name="line43"></a>
+/**<a name="line44"></a>
+ * @inheritDoc<a name="line45"></a>
+ * @see lime.animation.Animation#update<a name="line46"></a>
+ */<a name="line47"></a>
+lime.animation.RotateBy.prototype.update = function(t, target) {<a name="line48"></a>
+    if (this.status_ == 0) return;<a name="line49"></a>
+    var prop = this.getTargetProp(target);<a name="line50"></a>
+    target.setRotation(prop.startRot + this.angle_ * t);<a name="line51"></a>
+};<a name="line52"></a>
+<a name="line53"></a>
+/**<a name="line54"></a>
+ * Clear transistion when animation is stoped.<a name="line55"></a>
+ * @param {lime.Node} target The target to clear transistion for.<a name="line56"></a>
+ */<a name="line57"></a>
+lime.animation.RotateBy.prototype.clearTransition = function(target) {<a name="line58"></a>
+    if (this.useTransitions()) {<a name="line59"></a>
+        target.clearTransition(lime.Transition.ROTATION);<a name="line60"></a>
+        target.setDirty(lime.Dirty.POSITION);<a name="line61"></a>
+    }<a name="line62"></a>
+};<a name="line63"></a>
+<a name="line64"></a>
+/**<a name="line65"></a>
+ * @inheritDoc<a name="line66"></a>
+ * @see lime.animation.Animation#reverse<a name="line67"></a>
+ */<a name="line68"></a>
+lime.animation.RotateBy.prototype.reverse = function() {<a name="line69"></a>
+    return new lime.animation.RotateBy(-this.angle_).cloneParam(this);<a name="line70"></a>
+};<a name="line71"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -112,7 +112,7 @@ lime.animation.RotateBy.prototype.reverse = function() {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

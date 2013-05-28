@@ -26,189 +26,189 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.events.EventDispatcher');
-
-goog.require('lime.events.Event');
-
-/**
- * EventDispatcher object. Deals with event handlers
- * @param {lime.Director} director Director object.
- * @constructor
- */
-lime.events.EventDispatcher = function(director) {
-    this.director = director;
-    this.handlers = {};
-    this.swallows = {};
-
-};
-
-/**
- * Register the event listener for node
- * @param {lime.Node} node Node that responds to events.
- * @param {string} eventType type of event to listen.
- */
-lime.events.EventDispatcher.prototype.register = function(node, eventType) {
-    if (!goog.isDef(this.handlers[eventType])) {
-        this.handlers[eventType] = [node];
-        this.handlers[eventType].sorted = true;
-        //base element switch here because safari fires touchend on
-        //dom tree changes otherwise
-        goog.events.listen(eventType.substring(0, 5) == 'touch' && node != this.director ?
-            document : (eventType.substring(0, 3) == 'key' ?
-            window : this.director.domElement.parentNode), eventType,
-            this, false, this);
-    } else {
-        if (!goog.array.contains(this.handlers[eventType], node)) {
-            this.handlers[eventType].push(node);
-            this.handlers[eventType].sorted = false;
-        }
-    }
-};
-
-/**
- * Release the event listener for node
- * @param {lime.Node} node Node that responds to events.
- * @param {string} eventType type of event to release.
- */
-lime.events.EventDispatcher.prototype.release = function(node, eventType) {
-    if (goog.isDef(this.handlers[eventType])) {
-        goog.array.remove(this.handlers[eventType], node);
-        if (!this.handlers[eventType].length) {
-            goog.events.unlisten(this.director.domElement.parentNode,
-                eventType, this, false, this);
-            delete this.handlers[eventType];
-        }
-    }
-};
-
-/**
- * Update order of handler nodes. Called on tree changes.
- * @param {lime.Node} node Node that has changed.
- */
-lime.events.EventDispatcher.prototype.updateDispatchOrder = function(node) {
-    for (var eventType in this.handlers) {
-        var handlers = this.handlers[eventType];
-        if (goog.array.contains(handlers, node)) {
-            handlers.sorted = false;
-        }
-    }
-}
-
-/**
- * Setup swallow rule for an event. Swallow means that next events from
- * same interaction will go straight to the handler
- * @param {lime.events.Event} e Event.
- * @param {string} type Event type.
- * @param {function(lime.events.Event)} handler Function to call.
- */
-lime.events.EventDispatcher.prototype.swallow = function(e, type, handler) {
-    /*
-   // don't remember why this check was needed
-   if (e.type != 'mousedown' && e.type != 'touchstart' &&
-        e.type != 'touchmove' && e.type != 'keydown') return;*/
-    var id = e.identifier;
-    if (!goog.isDef(this.swallows[id])) {
-        this.swallows[id] = [];
-    }
-    this.swallows[id].push([e.targetObject, type, handler]);
-    //console.log('listen');
-    goog.events.listen(e.targetObject, type, goog.nullFunction);
-};
-
-/**
- * Handle DOM event
- * @param {Event} e Event.
- */
-lime.events.EventDispatcher.prototype.handleEvent = function(e) {
-
-    if (!goog.isDef(this.handlers[e.type])) return;
-
-    if (!this.handlers[e.type].sorted) {
-        this.handlers[e.type].sort(lime.Node.compareNode);
-        this.handlers[e.type].sorted = true;
-    }
-
-    var handlers = this.handlers[e.type].slice(),
-        didhandle = false;
-
-    var touchIndex = 0,
-        doBreak = 0;
-
-    while (!doBreak) {
-
-        var ee = new lime.events.Event(this);
-        ee.type = e.type;
-        ee.event = e;
-
-        if (e.type.substring(0, 5) == 'touch') {
-            var touch = e.getBrowserEvent().changedTouches[touchIndex];
-            ee.screenPosition = new goog.math.Coordinate(touch.pageX, touch.pageY);
-            ee.identifier = touch.identifier;
-            touchIndex++;
-
-            if (touchIndex >= e.getBrowserEvent().changedTouches.length) {
-                doBreak = 1;
-            }
-        } else {
-            ee.screenPosition = new goog.math.Coordinate(
-                e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft,
-                e.clientY + document.body.scrollTop + document.documentElement.scrollTop);
-            doBreak = 1;
-        }
-
-        if (goog.isDef(this.swallows[ee.identifier])) {
-            var s = this.swallows[ee.identifier];
-
-            for (var i = 0; i &lt; s.length; i++) {
-                if (s[i][1] == e.type || (goog.isArray(s[i][1]) &&
-                    goog.array.contains(s[i][1], e.type))) {
-
-                    var handler = s[i][0];
-                    ee.targetObject = handler;
-                    ee.position = handler.screenToLocal(ee.screenPosition);
-                    s[i][2].call(handler, ee);
-                    didhandle = true;
-                }
-            }
-            //handler.dispatchEvent(ee);
-
-            if (e.type == 'touchend' || e.type == 'touchcancel' ||
-                e.type == 'mouseup' || e.type == 'keyup') {
-                delete ee.targetObject;
-                ee.release();
-            }
-        } else {
-            for (var i = 0; i &lt; handlers.length; i++) {
-
-                var handler = handlers[i];
-
-                if (this.director.getCurrentScene() != handler.getScene() &&
-                    handler != this.director) continue;
-
-                if (handler.getHidden() || !handler.inTree_) continue;
-
-                ee.targetObject = handler;
-
-                if (handler.hitTest(ee) || e.type.substring(0, 3) == 'key') {
-
-                    ee.targetObject = handler;
-                    handler.dispatchEvent(ee);
-                    didhandle = true;
-
-                    if (ee.event.propagationStopped_) break;
-                }
-
-            }
-
-        }
-
-    }
-
-    if (didhandle)
-        e.preventDefault();
-
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.events.EventDispatcher');<a name="line2"></a>
+<a name="line3"></a>
+goog.require('lime.events.Event');<a name="line4"></a>
+<a name="line5"></a>
+/**<a name="line6"></a>
+ * EventDispatcher object. Deals with event handlers<a name="line7"></a>
+ * @param {lime.Director} director Director object.<a name="line8"></a>
+ * @constructor<a name="line9"></a>
+ */<a name="line10"></a>
+lime.events.EventDispatcher = function(director) {<a name="line11"></a>
+    this.director = director;<a name="line12"></a>
+    this.handlers = {};<a name="line13"></a>
+    this.swallows = {};<a name="line14"></a>
+<a name="line15"></a>
+};<a name="line16"></a>
+<a name="line17"></a>
+/**<a name="line18"></a>
+ * Register the event listener for node<a name="line19"></a>
+ * @param {lime.Node} node Node that responds to events.<a name="line20"></a>
+ * @param {string} eventType type of event to listen.<a name="line21"></a>
+ */<a name="line22"></a>
+lime.events.EventDispatcher.prototype.register = function(node, eventType) {<a name="line23"></a>
+    if (!goog.isDef(this.handlers[eventType])) {<a name="line24"></a>
+        this.handlers[eventType] = [node];<a name="line25"></a>
+        this.handlers[eventType].sorted = true;<a name="line26"></a>
+        //base element switch here because safari fires touchend on<a name="line27"></a>
+        //dom tree changes otherwise<a name="line28"></a>
+        goog.events.listen(eventType.substring(0, 5) == 'touch' && node != this.director ?<a name="line29"></a>
+            document : (eventType.substring(0, 3) == 'key' ?<a name="line30"></a>
+            window : this.director.domElement.parentNode), eventType,<a name="line31"></a>
+            this, false, this);<a name="line32"></a>
+    } else {<a name="line33"></a>
+        if (!goog.array.contains(this.handlers[eventType], node)) {<a name="line34"></a>
+            this.handlers[eventType].push(node);<a name="line35"></a>
+            this.handlers[eventType].sorted = false;<a name="line36"></a>
+        }<a name="line37"></a>
+    }<a name="line38"></a>
+};<a name="line39"></a>
+<a name="line40"></a>
+/**<a name="line41"></a>
+ * Release the event listener for node<a name="line42"></a>
+ * @param {lime.Node} node Node that responds to events.<a name="line43"></a>
+ * @param {string} eventType type of event to release.<a name="line44"></a>
+ */<a name="line45"></a>
+lime.events.EventDispatcher.prototype.release = function(node, eventType) {<a name="line46"></a>
+    if (goog.isDef(this.handlers[eventType])) {<a name="line47"></a>
+        goog.array.remove(this.handlers[eventType], node);<a name="line48"></a>
+        if (!this.handlers[eventType].length) {<a name="line49"></a>
+            goog.events.unlisten(this.director.domElement.parentNode,<a name="line50"></a>
+                eventType, this, false, this);<a name="line51"></a>
+            delete this.handlers[eventType];<a name="line52"></a>
+        }<a name="line53"></a>
+    }<a name="line54"></a>
+};<a name="line55"></a>
+<a name="line56"></a>
+/**<a name="line57"></a>
+ * Update order of handler nodes. Called on tree changes.<a name="line58"></a>
+ * @param {lime.Node} node Node that has changed.<a name="line59"></a>
+ */<a name="line60"></a>
+lime.events.EventDispatcher.prototype.updateDispatchOrder = function(node) {<a name="line61"></a>
+    for (var eventType in this.handlers) {<a name="line62"></a>
+        var handlers = this.handlers[eventType];<a name="line63"></a>
+        if (goog.array.contains(handlers, node)) {<a name="line64"></a>
+            handlers.sorted = false;<a name="line65"></a>
+        }<a name="line66"></a>
+    }<a name="line67"></a>
+}<a name="line68"></a>
+<a name="line69"></a>
+/**<a name="line70"></a>
+ * Setup swallow rule for an event. Swallow means that next events from<a name="line71"></a>
+ * same interaction will go straight to the handler<a name="line72"></a>
+ * @param {lime.events.Event} e Event.<a name="line73"></a>
+ * @param {string} type Event type.<a name="line74"></a>
+ * @param {function(lime.events.Event)} handler Function to call.<a name="line75"></a>
+ */<a name="line76"></a>
+lime.events.EventDispatcher.prototype.swallow = function(e, type, handler) {<a name="line77"></a>
+    /*<a name="line78"></a>
+   // don't remember why this check was needed<a name="line79"></a>
+   if (e.type != 'mousedown' && e.type != 'touchstart' &&<a name="line80"></a>
+        e.type != 'touchmove' && e.type != 'keydown') return;*/<a name="line81"></a>
+    var id = e.identifier;<a name="line82"></a>
+    if (!goog.isDef(this.swallows[id])) {<a name="line83"></a>
+        this.swallows[id] = [];<a name="line84"></a>
+    }<a name="line85"></a>
+    this.swallows[id].push([e.targetObject, type, handler]);<a name="line86"></a>
+    //console.log('listen');<a name="line87"></a>
+    goog.events.listen(e.targetObject, type, goog.nullFunction);<a name="line88"></a>
+};<a name="line89"></a>
+<a name="line90"></a>
+/**<a name="line91"></a>
+ * Handle DOM event<a name="line92"></a>
+ * @param {Event} e Event.<a name="line93"></a>
+ */<a name="line94"></a>
+lime.events.EventDispatcher.prototype.handleEvent = function(e) {<a name="line95"></a>
+<a name="line96"></a>
+    if (!goog.isDef(this.handlers[e.type])) return;<a name="line97"></a>
+<a name="line98"></a>
+    if (!this.handlers[e.type].sorted) {<a name="line99"></a>
+        this.handlers[e.type].sort(lime.Node.compareNode);<a name="line100"></a>
+        this.handlers[e.type].sorted = true;<a name="line101"></a>
+    }<a name="line102"></a>
+<a name="line103"></a>
+    var handlers = this.handlers[e.type].slice(),<a name="line104"></a>
+        didhandle = false;<a name="line105"></a>
+<a name="line106"></a>
+    var touchIndex = 0,<a name="line107"></a>
+        doBreak = 0;<a name="line108"></a>
+<a name="line109"></a>
+    while (!doBreak) {<a name="line110"></a>
+<a name="line111"></a>
+        var ee = new lime.events.Event(this);<a name="line112"></a>
+        ee.type = e.type;<a name="line113"></a>
+        ee.event = e;<a name="line114"></a>
+<a name="line115"></a>
+        if (e.type.substring(0, 5) == 'touch') {<a name="line116"></a>
+            var touch = e.getBrowserEvent().changedTouches[touchIndex];<a name="line117"></a>
+            ee.screenPosition = new goog.math.Coordinate(touch.pageX, touch.pageY);<a name="line118"></a>
+            ee.identifier = touch.identifier;<a name="line119"></a>
+            touchIndex++;<a name="line120"></a>
+<a name="line121"></a>
+            if (touchIndex >= e.getBrowserEvent().changedTouches.length) {<a name="line122"></a>
+                doBreak = 1;<a name="line123"></a>
+            }<a name="line124"></a>
+        } else {<a name="line125"></a>
+            ee.screenPosition = new goog.math.Coordinate(<a name="line126"></a>
+                e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft,<a name="line127"></a>
+                e.clientY + document.body.scrollTop + document.documentElement.scrollTop);<a name="line128"></a>
+            doBreak = 1;<a name="line129"></a>
+        }<a name="line130"></a>
+<a name="line131"></a>
+        if (goog.isDef(this.swallows[ee.identifier])) {<a name="line132"></a>
+            var s = this.swallows[ee.identifier];<a name="line133"></a>
+<a name="line134"></a>
+            for (var i = 0; i &lt; s.length; i++) {<a name="line135"></a>
+                if (s[i][1] == e.type || (goog.isArray(s[i][1]) &&<a name="line136"></a>
+                    goog.array.contains(s[i][1], e.type))) {<a name="line137"></a>
+<a name="line138"></a>
+                    var handler = s[i][0];<a name="line139"></a>
+                    ee.targetObject = handler;<a name="line140"></a>
+                    ee.position = handler.screenToLocal(ee.screenPosition);<a name="line141"></a>
+                    s[i][2].call(handler, ee);<a name="line142"></a>
+                    didhandle = true;<a name="line143"></a>
+                }<a name="line144"></a>
+            }<a name="line145"></a>
+            //handler.dispatchEvent(ee);<a name="line146"></a>
+<a name="line147"></a>
+            if (e.type == 'touchend' || e.type == 'touchcancel' ||<a name="line148"></a>
+                e.type == 'mouseup' || e.type == 'keyup') {<a name="line149"></a>
+                delete ee.targetObject;<a name="line150"></a>
+                ee.release();<a name="line151"></a>
+            }<a name="line152"></a>
+        } else {<a name="line153"></a>
+            for (var i = 0; i &lt; handlers.length; i++) {<a name="line154"></a>
+<a name="line155"></a>
+                var handler = handlers[i];<a name="line156"></a>
+<a name="line157"></a>
+                if (this.director.getCurrentScene() != handler.getScene() &&<a name="line158"></a>
+                    handler != this.director) continue;<a name="line159"></a>
+<a name="line160"></a>
+                if (handler.getHidden() || !handler.inTree_) continue;<a name="line161"></a>
+<a name="line162"></a>
+                ee.targetObject = handler;<a name="line163"></a>
+<a name="line164"></a>
+                if (handler.hitTest(ee) || e.type.substring(0, 3) == 'key') {<a name="line165"></a>
+<a name="line166"></a>
+                    ee.targetObject = handler;<a name="line167"></a>
+                    handler.dispatchEvent(ee);<a name="line168"></a>
+                    didhandle = true;<a name="line169"></a>
+<a name="line170"></a>
+                    if (ee.event.propagationStopped_) break;<a name="line171"></a>
+                }<a name="line172"></a>
+<a name="line173"></a>
+            }<a name="line174"></a>
+<a name="line175"></a>
+        }<a name="line176"></a>
+<a name="line177"></a>
+    }<a name="line178"></a>
+<a name="line179"></a>
+    if (didhandle)<a name="line180"></a>
+        e.preventDefault();<a name="line181"></a>
+<a name="line182"></a>
+};<a name="line183"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -224,7 +224,7 @@ lime.events.EventDispatcher.prototype.handleEvent = function(e) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

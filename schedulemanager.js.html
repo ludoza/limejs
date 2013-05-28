@@ -26,364 +26,364 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.scheduleManager');
-
-goog.require('goog.array');
-goog.require('goog.userAgent');
-goog.require('lime');
-
-
-/**
- * Unified timer provider class
- * Don't create instances of this class. Used the shared instance.
- * @this {lime.scheduleManager}
- * @constructor
- */
-lime.scheduleManager = new(function() {
-
-    /**
-     * Array of registered functions
-     * @type {Array.&lt;lime.scheduleManager.Task>}
-     * @private
-     */
-    this.taskStack_ = [];
-
-    /**
-     * ScheduleManager is active
-     * @type {boolean}
-     * @private
-     */
-    this.active_ = false;
-
-    /**
-     * Internal setInterval id
-     * @type {number}
-     * @private
-     */
-    this.intervalID_ = 0;
-
-    /**
-     * Maximum update rate in ms.
-     * @type {number}
-     * @private
-     */
-    this.displayRate_ = 1000 / 30;
-
-    /**
-     * Timer last fire timestamp
-     * @type {number}
-     * @private
-     */
-    this.lastRunTime_ = 0;
-
-})();
-
-/**
- * Scheduled task
- * @param {number} maxdelta Timer wait value after iteration.
- * @param {number=} opt_limit Number of calls.
- * @constructor
- */
-lime.scheduleManager.Task = function(maxdelta, opt_limit) {
-    this.delta = this.maxdelta = maxdelta;
-    this.limit = goog.isDef(opt_limit) ? opt_limit : -1;
-    this.functionStack_ = [];
-};
-
-/**
- * Handle iteration
- * @param {number} dt Delta time since last iteration.
- * @private
- */
-lime.scheduleManager.Task.prototype.step_ = function(dt) {
-    if (!this.functionStack_.length) return;
-    if (this.delta > dt) {
-        this.delta -= dt;
-    } else {
-        var delta = this.maxdelta + dt - this.delta;
-        this.delta = this.maxdelta - (dt - this.delta);
-        if (this.delta &lt; 0) this.delta = 0;
-        var f;
-        var i = this.functionStack_.length;
-        while (--i >= 0) {
-            f = this.functionStack_[i];
-            if (f && f[0] && goog.isFunction(f[1]))
-                (f[1]).call(f[2], delta);
-        }
-        if (this.limit != -1) {
-            this.limit--;
-            if (this.limit == 0) {
-                lime.scheduleManager.unschedule(f[1], f[2]);
-            }
-        }
-    }
-};
-
-lime.scheduleManager.taskStack_.push(new lime.scheduleManager.Task(0));
-
-(function() {
-    var vendors = ['webkit', 'moz'];
-    for (var x = 0; x &lt; vendors.length && !goog.global.requestAnimationFrame; ++x) {
-        goog.global.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-        goog.global.cancelAnimationFrame =
-            goog.global[vendors[x] + 'CancelAnimationFrame'] || goog.global[vendors[x] + 'CancelRequestAnimationFrame'];
-    }
-}());
-
-
-/**
- * Whether to use requestAnimationFrame instead of timer events
- * Exposed here so it could be disabled if needed.
- * @type {boolean}
- */
-lime.scheduleManager.USE_ANIMATION_FRAME = !! goog.global.requestAnimationFrame;
-
-/**
- * Returns maximum fire rate in ms. If you need FPS then use 1000/x
- * @this {lime.scheduleManager}
- * @return {number} Display rate.
- */
-lime.scheduleManager.getDisplayRate = function() {
-    //todo: bad name
-    return this.displayRate_;
-};
-
-/**
- * Sets maximum fire rate for the scheduler in ms.
- * If you have FPS then send 1000/x
- * Note that if animation frame methods are used browser chooses
- * max display rate and this value has no effect.
- * @this {lime.scheduleManager}
- * @param {number} value New display rate.
- */
-lime.scheduleManager.setDisplayRate = function(value) {
-    this.displayRate_ = value;
-    if (this.active_) {
-        lime.scheduleManager.disable_();
-        lime.scheduleManager.activate_();
-    }
-};
-
-/**
- * Schedule a function. Passed function will be called on every frame
- * with delta time from last run time
- * @this {lime.scheduleManager}
- * @param {function(number)} f Function to be called.
- * @param {Object} context The context used when calling function.
- * @param {lime.scheduleManager.Task=} opt_task Task object.
- */
-lime.scheduleManager.schedule = function(f, context, opt_task) {
-    var task = goog.isDef(opt_task) ? opt_task : this.taskStack_[0];
-    goog.array.insert(task.functionStack_, [1, f, context]);
-    goog.array.insert(this.taskStack_, task);
-    if (!this.active_) {
-        lime.scheduleManager.activate_();
-    }
-};
-
-/**
- * Unschedule a function. For functions that have be previously scheduled
- * @this {lime.scheduleManager}
- * @param {function(number)} f Function to be unscheduled.
- * @param {Object} context Context used when scheduling.
- */
-lime.scheduleManager.unschedule = function(f, context) {
-    var j = this.taskStack_.length;
-    while (--j >= 0) {
-        var task = this.taskStack_[j],
-            functionStack_ = task.functionStack_,
-            fi, i = functionStack_.length;
-        while (--i >= 0) {
-            fi = functionStack_[i];
-            if (fi[1] == f && fi[2] == context) {
-                goog.array.remove(functionStack_, fi);
-
-            }
-        }
-        if (functionStack_.length == 0 && j != 0) {
-            goog.array.remove(this.taskStack_, task);
-        }
-    }
-    // if no more functions: stop timers
-    if (this.taskStack_.length == 1 &&
-        this.taskStack_[0].functionStack_.length == 0) {
-        lime.scheduleManager.disable_();
-    }
-};
-
-/**
- * Start the internal timer functions
- * @this {lime.scheduleManager}
- * @private
- */
-lime.scheduleManager.activate_ = function() {
-    if (this.active_) return;
-
-    this.lastRunTime_ = goog.now();
-
-    if (lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {
-        // old mozilla
-        if (goog.global['mozRequestAnimationFrame'] && goog.userAgent.VERSION &lt; 11) {
-            goog.global['mozRequestAnimationFrame']();
-            this.beforePaintHandlerBinded_ = goog.bind(lime.scheduleManager.beforePaintHandler_, this);
-            goog.global.addEventListener('MozBeforePaint', this.beforePaintHandlerBinded_, false);
-        } else {
-            this.animationFrameHandlerBinded_ = goog.bind(lime.scheduleManager.animationFrameHandler_, this);
-            goog.global.requestAnimationFrame(this.animationFrameHandlerBinded_);
-        }
-    } else {
-        this.intervalID_ = setInterval(goog.bind(lime.scheduleManager.stepTimer_, this),
-            lime.scheduleManager.getDisplayRate());
-    }
-    this.active_ = true;
-};
-
-
-
-/**
- * Stop interval timer functions
- * @this {lime.scheduleManager}
- * @private
- */
-lime.scheduleManager.disable_ = function() {
-    if (!this.active_) return;
-
-    if (lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {
-        // old mozilla
-        if (goog.global['mozRequestAnimationFrame'] && goog.userAgent.VERSION &lt; 11) {
-            goog.global.removeEventListener('MozBeforePaint', this.beforePaintHandlerBinded_, false);
-        } else {
-            goog.global.cancelAnimationFrame(this.animationFrameHandlerBinded_);
-        }
-    } else {
-        clearInterval(this.intervalID_);
-    }
-    this.active_ = false;
-};
-
-/**
- * Webkit implemtation of requestAnimationFrame handler.
- * @this {lime.scheduleManager}
- * @private
- */
-lime.scheduleManager.animationFrameHandler_ = function(time) {
-    var performance = goog.global['performance'],
-        now;
-    if (performance && (now = performance['now'] || performance['webkitNow'])) {
-        time = performance['timing']['navigationStart'] + now.call(performance);
-    } else if (!time) {
-        time = goog.now();
-    }
-    var delta = time - this.lastRunTime_;
-    if (delta &lt; 0) { // i0S6 reports relative to the device restart time. So first is negative.
-        delta = 1;
-    }
-    lime.scheduleManager.dispatch_(delta);
-    this.lastRunTime_ = time;
-    goog.global.requestAnimationFrame(this.animationFrameHandlerBinded_);
-}
-
-/**
- * Mozilla &lt; 11 implementation of requestAnimationFrame handler.
- * @this {lime.scheduleManager}
- * @private
- */
-lime.scheduleManager.beforePaintHandler_ = function(event) {
-    var delta = event.timeStamp - this.lastRunTime_;
-    lime.scheduleManager.dispatch_(delta);
-    this.lastRunTime_ = event.timeStamp;
-    goog.global['mozRequestAnimationFrame']();
-}
-
-/**
- * Timer events step function that delegates to other objects waiting
- * @this {lime.scheduleManager}
- * @private
- */
-lime.scheduleManager.stepTimer_ = function() {
-    var t;
-    var curTime = goog.now();
-    var delta = curTime - this.lastRunTime_;
-    if (delta &lt; 0) delta = 1;
-    lime.scheduleManager.dispatch_(delta);
-    this.lastRunTime_ = curTime;
-};
-
-/**
- * Call all scheduled tasks
- * @this {lime.scheduleManager}
- * @param {number} delta Milliseconds since last run.
- * @private
- */
-lime.scheduleManager.dispatch_ = function(delta) {
-
-
-    var stack = this.taskStack_.slice()
-    var i = stack.length;
-    while (--i >= 0) stack[i].step_(delta);
-    //hack to deal with FF4 CSS transformation issue https://bugzilla.mozilla.org/show_bug.cgi?id=637597
-    if (lime.transformSet_ == 1 && (/Firefox\/18./).test(goog.userAgent.getUserAgentString()) && !lime.FF4_USE_HW_ACCELERATION) {
-        if (lime.scheduleManager.odd_) {
-            document.body.style['MozTransform'] = '';
-            lime.scheduleManager.odd_ = 0;
-        } else {
-            document.body.style['MozTransform'] = 'scale(1,1)';
-            lime.scheduleManager.odd_ = 1;
-        }
-        lime.transformSet_ = 0;
-    }
-};
-
-/**
- * Change director's activity. Used for pausing updates when director is paused
- * @this {lime.scheduleManager}
- * @param {lime.Director} director Director.
- * @param {boolean} value Active or inactive?
- */
-lime.scheduleManager.changeDirectorActivity = function(director, value) {
-    var t, context, f, d, i,
-        j = this.taskStack_.length;
-    while (--j >= 0) {
-
-        t = this.taskStack_[j];
-        i = t.functionStack_.length;
-        while (--i >= 0) {
-            f = t.functionStack_[i];
-            context = f[2];
-            if (goog.isFunction(context.getDirector)) {
-                d = context.getDirector();
-                if (d == director) {
-                    f[0] = value;
-                }
-            }
-        }
-    }
-};
-
-/**
- * Set up function to be called once after a delay
- * @param {function(number)} f Function to be called.
- * @param {Object} context Context used when calling object.
- * @param {number} delay Delay before calling.
- */
-lime.scheduleManager.callAfter = function(f, context, delay) {
-    lime.scheduleManager.scheduleWithDelay(f, context, delay, 1);
-};
-
-/**
- * Set up function to be called repeatedly after a delay
- * @param {function(number)} f Function to be called.
- * @param {Object} context Context used when calling object.
- * @param {number} delay Delay before calling.
- * @param {number=} opt_limit Number of times to call.
- * @this {lime.scheduleManager}
- */
-lime.scheduleManager.scheduleWithDelay = function(f, context,
-    delay, opt_limit) {
-    var task = new lime.scheduleManager.Task(delay, opt_limit);
-    lime.scheduleManager.schedule(f, context, task);
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.scheduleManager');<a name="line2"></a>
+<a name="line3"></a>
+goog.require('goog.array');<a name="line4"></a>
+goog.require('goog.userAgent');<a name="line5"></a>
+goog.require('lime');<a name="line6"></a>
+<a name="line7"></a>
+<a name="line8"></a>
+/**<a name="line9"></a>
+ * Unified timer provider class<a name="line10"></a>
+ * Don't create instances of this class. Used the shared instance.<a name="line11"></a>
+ * @this {lime.scheduleManager}<a name="line12"></a>
+ * @constructor<a name="line13"></a>
+ */<a name="line14"></a>
+lime.scheduleManager = new(function() {<a name="line15"></a>
+<a name="line16"></a>
+    /**<a name="line17"></a>
+     * Array of registered functions<a name="line18"></a>
+     * @type {Array.&lt;lime.scheduleManager.Task>}<a name="line19"></a>
+     * @private<a name="line20"></a>
+     */<a name="line21"></a>
+    this.taskStack_ = [];<a name="line22"></a>
+<a name="line23"></a>
+    /**<a name="line24"></a>
+     * ScheduleManager is active<a name="line25"></a>
+     * @type {boolean}<a name="line26"></a>
+     * @private<a name="line27"></a>
+     */<a name="line28"></a>
+    this.active_ = false;<a name="line29"></a>
+<a name="line30"></a>
+    /**<a name="line31"></a>
+     * Internal setInterval id<a name="line32"></a>
+     * @type {number}<a name="line33"></a>
+     * @private<a name="line34"></a>
+     */<a name="line35"></a>
+    this.intervalID_ = 0;<a name="line36"></a>
+<a name="line37"></a>
+    /**<a name="line38"></a>
+     * Maximum update rate in ms.<a name="line39"></a>
+     * @type {number}<a name="line40"></a>
+     * @private<a name="line41"></a>
+     */<a name="line42"></a>
+    this.displayRate_ = 1000 / 30;<a name="line43"></a>
+<a name="line44"></a>
+    /**<a name="line45"></a>
+     * Timer last fire timestamp<a name="line46"></a>
+     * @type {number}<a name="line47"></a>
+     * @private<a name="line48"></a>
+     */<a name="line49"></a>
+    this.lastRunTime_ = 0;<a name="line50"></a>
+<a name="line51"></a>
+})();<a name="line52"></a>
+<a name="line53"></a>
+/**<a name="line54"></a>
+ * Scheduled task<a name="line55"></a>
+ * @param {number} maxdelta Timer wait value after iteration.<a name="line56"></a>
+ * @param {number=} opt_limit Number of calls.<a name="line57"></a>
+ * @constructor<a name="line58"></a>
+ */<a name="line59"></a>
+lime.scheduleManager.Task = function(maxdelta, opt_limit) {<a name="line60"></a>
+    this.delta = this.maxdelta = maxdelta;<a name="line61"></a>
+    this.limit = goog.isDef(opt_limit) ? opt_limit : -1;<a name="line62"></a>
+    this.functionStack_ = [];<a name="line63"></a>
+};<a name="line64"></a>
+<a name="line65"></a>
+/**<a name="line66"></a>
+ * Handle iteration<a name="line67"></a>
+ * @param {number} dt Delta time since last iteration.<a name="line68"></a>
+ * @private<a name="line69"></a>
+ */<a name="line70"></a>
+lime.scheduleManager.Task.prototype.step_ = function(dt) {<a name="line71"></a>
+    if (!this.functionStack_.length) return;<a name="line72"></a>
+    if (this.delta > dt) {<a name="line73"></a>
+        this.delta -= dt;<a name="line74"></a>
+    } else {<a name="line75"></a>
+        var delta = this.maxdelta + dt - this.delta;<a name="line76"></a>
+        this.delta = this.maxdelta - (dt - this.delta);<a name="line77"></a>
+        if (this.delta &lt; 0) this.delta = 0;<a name="line78"></a>
+        var f;<a name="line79"></a>
+        var i = this.functionStack_.length;<a name="line80"></a>
+        while (--i >= 0) {<a name="line81"></a>
+            f = this.functionStack_[i];<a name="line82"></a>
+            if (f && f[0] && goog.isFunction(f[1]))<a name="line83"></a>
+                (f[1]).call(f[2], delta);<a name="line84"></a>
+        }<a name="line85"></a>
+        if (this.limit != -1) {<a name="line86"></a>
+            this.limit--;<a name="line87"></a>
+            if (this.limit == 0) {<a name="line88"></a>
+                lime.scheduleManager.unschedule(f[1], f[2]);<a name="line89"></a>
+            }<a name="line90"></a>
+        }<a name="line91"></a>
+    }<a name="line92"></a>
+};<a name="line93"></a>
+<a name="line94"></a>
+lime.scheduleManager.taskStack_.push(new lime.scheduleManager.Task(0));<a name="line95"></a>
+<a name="line96"></a>
+(function() {<a name="line97"></a>
+    var vendors = ['webkit', 'moz'];<a name="line98"></a>
+    for (var x = 0; x &lt; vendors.length && !goog.global.requestAnimationFrame; ++x) {<a name="line99"></a>
+        goog.global.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];<a name="line100"></a>
+        goog.global.cancelAnimationFrame =<a name="line101"></a>
+            goog.global[vendors[x] + 'CancelAnimationFrame'] || goog.global[vendors[x] + 'CancelRequestAnimationFrame'];<a name="line102"></a>
+    }<a name="line103"></a>
+}());<a name="line104"></a>
+<a name="line105"></a>
+<a name="line106"></a>
+/**<a name="line107"></a>
+ * Whether to use requestAnimationFrame instead of timer events<a name="line108"></a>
+ * Exposed here so it could be disabled if needed.<a name="line109"></a>
+ * @type {boolean}<a name="line110"></a>
+ */<a name="line111"></a>
+lime.scheduleManager.USE_ANIMATION_FRAME = !! goog.global.requestAnimationFrame;<a name="line112"></a>
+<a name="line113"></a>
+/**<a name="line114"></a>
+ * Returns maximum fire rate in ms. If you need FPS then use 1000/x<a name="line115"></a>
+ * @this {lime.scheduleManager}<a name="line116"></a>
+ * @return {number} Display rate.<a name="line117"></a>
+ */<a name="line118"></a>
+lime.scheduleManager.getDisplayRate = function() {<a name="line119"></a>
+    //todo: bad name<a name="line120"></a>
+    return this.displayRate_;<a name="line121"></a>
+};<a name="line122"></a>
+<a name="line123"></a>
+/**<a name="line124"></a>
+ * Sets maximum fire rate for the scheduler in ms.<a name="line125"></a>
+ * If you have FPS then send 1000/x<a name="line126"></a>
+ * Note that if animation frame methods are used browser chooses<a name="line127"></a>
+ * max display rate and this value has no effect.<a name="line128"></a>
+ * @this {lime.scheduleManager}<a name="line129"></a>
+ * @param {number} value New display rate.<a name="line130"></a>
+ */<a name="line131"></a>
+lime.scheduleManager.setDisplayRate = function(value) {<a name="line132"></a>
+    this.displayRate_ = value;<a name="line133"></a>
+    if (this.active_) {<a name="line134"></a>
+        lime.scheduleManager.disable_();<a name="line135"></a>
+        lime.scheduleManager.activate_();<a name="line136"></a>
+    }<a name="line137"></a>
+};<a name="line138"></a>
+<a name="line139"></a>
+/**<a name="line140"></a>
+ * Schedule a function. Passed function will be called on every frame<a name="line141"></a>
+ * with delta time from last run time<a name="line142"></a>
+ * @this {lime.scheduleManager}<a name="line143"></a>
+ * @param {function(number)} f Function to be called.<a name="line144"></a>
+ * @param {Object} context The context used when calling function.<a name="line145"></a>
+ * @param {lime.scheduleManager.Task=} opt_task Task object.<a name="line146"></a>
+ */<a name="line147"></a>
+lime.scheduleManager.schedule = function(f, context, opt_task) {<a name="line148"></a>
+    var task = goog.isDef(opt_task) ? opt_task : this.taskStack_[0];<a name="line149"></a>
+    goog.array.insert(task.functionStack_, [1, f, context]);<a name="line150"></a>
+    goog.array.insert(this.taskStack_, task);<a name="line151"></a>
+    if (!this.active_) {<a name="line152"></a>
+        lime.scheduleManager.activate_();<a name="line153"></a>
+    }<a name="line154"></a>
+};<a name="line155"></a>
+<a name="line156"></a>
+/**<a name="line157"></a>
+ * Unschedule a function. For functions that have be previously scheduled<a name="line158"></a>
+ * @this {lime.scheduleManager}<a name="line159"></a>
+ * @param {function(number)} f Function to be unscheduled.<a name="line160"></a>
+ * @param {Object} context Context used when scheduling.<a name="line161"></a>
+ */<a name="line162"></a>
+lime.scheduleManager.unschedule = function(f, context) {<a name="line163"></a>
+    var j = this.taskStack_.length;<a name="line164"></a>
+    while (--j >= 0) {<a name="line165"></a>
+        var task = this.taskStack_[j],<a name="line166"></a>
+            functionStack_ = task.functionStack_,<a name="line167"></a>
+            fi, i = functionStack_.length;<a name="line168"></a>
+        while (--i >= 0) {<a name="line169"></a>
+            fi = functionStack_[i];<a name="line170"></a>
+            if (fi[1] == f && fi[2] == context) {<a name="line171"></a>
+                goog.array.remove(functionStack_, fi);<a name="line172"></a>
+<a name="line173"></a>
+            }<a name="line174"></a>
+        }<a name="line175"></a>
+        if (functionStack_.length == 0 && j != 0) {<a name="line176"></a>
+            goog.array.remove(this.taskStack_, task);<a name="line177"></a>
+        }<a name="line178"></a>
+    }<a name="line179"></a>
+    // if no more functions: stop timers<a name="line180"></a>
+    if (this.taskStack_.length == 1 &&<a name="line181"></a>
+        this.taskStack_[0].functionStack_.length == 0) {<a name="line182"></a>
+        lime.scheduleManager.disable_();<a name="line183"></a>
+    }<a name="line184"></a>
+};<a name="line185"></a>
+<a name="line186"></a>
+/**<a name="line187"></a>
+ * Start the internal timer functions<a name="line188"></a>
+ * @this {lime.scheduleManager}<a name="line189"></a>
+ * @private<a name="line190"></a>
+ */<a name="line191"></a>
+lime.scheduleManager.activate_ = function() {<a name="line192"></a>
+    if (this.active_) return;<a name="line193"></a>
+<a name="line194"></a>
+    this.lastRunTime_ = goog.now();<a name="line195"></a>
+<a name="line196"></a>
+    if (lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {<a name="line197"></a>
+        // old mozilla<a name="line198"></a>
+        if (goog.global['mozRequestAnimationFrame'] && goog.userAgent.VERSION &lt; 11) {<a name="line199"></a>
+            goog.global['mozRequestAnimationFrame']();<a name="line200"></a>
+            this.beforePaintHandlerBinded_ = goog.bind(lime.scheduleManager.beforePaintHandler_, this);<a name="line201"></a>
+            goog.global.addEventListener('MozBeforePaint', this.beforePaintHandlerBinded_, false);<a name="line202"></a>
+        } else {<a name="line203"></a>
+            this.animationFrameHandlerBinded_ = goog.bind(lime.scheduleManager.animationFrameHandler_, this);<a name="line204"></a>
+            goog.global.requestAnimationFrame(this.animationFrameHandlerBinded_);<a name="line205"></a>
+        }<a name="line206"></a>
+    } else {<a name="line207"></a>
+        this.intervalID_ = setInterval(goog.bind(lime.scheduleManager.stepTimer_, this),<a name="line208"></a>
+            lime.scheduleManager.getDisplayRate());<a name="line209"></a>
+    }<a name="line210"></a>
+    this.active_ = true;<a name="line211"></a>
+};<a name="line212"></a>
+<a name="line213"></a>
+<a name="line214"></a>
+<a name="line215"></a>
+/**<a name="line216"></a>
+ * Stop interval timer functions<a name="line217"></a>
+ * @this {lime.scheduleManager}<a name="line218"></a>
+ * @private<a name="line219"></a>
+ */<a name="line220"></a>
+lime.scheduleManager.disable_ = function() {<a name="line221"></a>
+    if (!this.active_) return;<a name="line222"></a>
+<a name="line223"></a>
+    if (lime.scheduleManager.USE_ANIMATION_FRAME && goog.global.requestAnimationFrame) {<a name="line224"></a>
+        // old mozilla<a name="line225"></a>
+        if (goog.global['mozRequestAnimationFrame'] && goog.userAgent.VERSION &lt; 11) {<a name="line226"></a>
+            goog.global.removeEventListener('MozBeforePaint', this.beforePaintHandlerBinded_, false);<a name="line227"></a>
+        } else {<a name="line228"></a>
+            goog.global.cancelAnimationFrame(this.animationFrameHandlerBinded_);<a name="line229"></a>
+        }<a name="line230"></a>
+    } else {<a name="line231"></a>
+        clearInterval(this.intervalID_);<a name="line232"></a>
+    }<a name="line233"></a>
+    this.active_ = false;<a name="line234"></a>
+};<a name="line235"></a>
+<a name="line236"></a>
+/**<a name="line237"></a>
+ * Webkit implemtation of requestAnimationFrame handler.<a name="line238"></a>
+ * @this {lime.scheduleManager}<a name="line239"></a>
+ * @private<a name="line240"></a>
+ */<a name="line241"></a>
+lime.scheduleManager.animationFrameHandler_ = function(time) {<a name="line242"></a>
+    var performance = goog.global['performance'],<a name="line243"></a>
+        now;<a name="line244"></a>
+    if (performance && (now = performance['now'] || performance['webkitNow'])) {<a name="line245"></a>
+        time = performance['timing']['navigationStart'] + now.call(performance);<a name="line246"></a>
+    } else if (!time) {<a name="line247"></a>
+        time = goog.now();<a name="line248"></a>
+    }<a name="line249"></a>
+    var delta = time - this.lastRunTime_;<a name="line250"></a>
+    if (delta &lt; 0) { // i0S6 reports relative to the device restart time. So first is negative.<a name="line251"></a>
+        delta = 1;<a name="line252"></a>
+    }<a name="line253"></a>
+    lime.scheduleManager.dispatch_(delta);<a name="line254"></a>
+    this.lastRunTime_ = time;<a name="line255"></a>
+    goog.global.requestAnimationFrame(this.animationFrameHandlerBinded_);<a name="line256"></a>
+}<a name="line257"></a>
+<a name="line258"></a>
+/**<a name="line259"></a>
+ * Mozilla &lt; 11 implementation of requestAnimationFrame handler.<a name="line260"></a>
+ * @this {lime.scheduleManager}<a name="line261"></a>
+ * @private<a name="line262"></a>
+ */<a name="line263"></a>
+lime.scheduleManager.beforePaintHandler_ = function(event) {<a name="line264"></a>
+    var delta = event.timeStamp - this.lastRunTime_;<a name="line265"></a>
+    lime.scheduleManager.dispatch_(delta);<a name="line266"></a>
+    this.lastRunTime_ = event.timeStamp;<a name="line267"></a>
+    goog.global['mozRequestAnimationFrame']();<a name="line268"></a>
+}<a name="line269"></a>
+<a name="line270"></a>
+/**<a name="line271"></a>
+ * Timer events step function that delegates to other objects waiting<a name="line272"></a>
+ * @this {lime.scheduleManager}<a name="line273"></a>
+ * @private<a name="line274"></a>
+ */<a name="line275"></a>
+lime.scheduleManager.stepTimer_ = function() {<a name="line276"></a>
+    var t;<a name="line277"></a>
+    var curTime = goog.now();<a name="line278"></a>
+    var delta = curTime - this.lastRunTime_;<a name="line279"></a>
+    if (delta &lt; 0) delta = 1;<a name="line280"></a>
+    lime.scheduleManager.dispatch_(delta);<a name="line281"></a>
+    this.lastRunTime_ = curTime;<a name="line282"></a>
+};<a name="line283"></a>
+<a name="line284"></a>
+/**<a name="line285"></a>
+ * Call all scheduled tasks<a name="line286"></a>
+ * @this {lime.scheduleManager}<a name="line287"></a>
+ * @param {number} delta Milliseconds since last run.<a name="line288"></a>
+ * @private<a name="line289"></a>
+ */<a name="line290"></a>
+lime.scheduleManager.dispatch_ = function(delta) {<a name="line291"></a>
+<a name="line292"></a>
+<a name="line293"></a>
+    var stack = this.taskStack_.slice()<a name="line294"></a>
+    var i = stack.length;<a name="line295"></a>
+    while (--i >= 0) stack[i].step_(delta);<a name="line296"></a>
+    //hack to deal with FF4 CSS transformation issue https://bugzilla.mozilla.org/show_bug.cgi?id=637597<a name="line297"></a>
+    if (lime.transformSet_ == 1 && (/Firefox\/18./).test(goog.userAgent.getUserAgentString()) && !lime.FF4_USE_HW_ACCELERATION) {<a name="line298"></a>
+        if (lime.scheduleManager.odd_) {<a name="line299"></a>
+            document.body.style['MozTransform'] = '';<a name="line300"></a>
+            lime.scheduleManager.odd_ = 0;<a name="line301"></a>
+        } else {<a name="line302"></a>
+            document.body.style['MozTransform'] = 'scale(1,1)';<a name="line303"></a>
+            lime.scheduleManager.odd_ = 1;<a name="line304"></a>
+        }<a name="line305"></a>
+        lime.transformSet_ = 0;<a name="line306"></a>
+    }<a name="line307"></a>
+};<a name="line308"></a>
+<a name="line309"></a>
+/**<a name="line310"></a>
+ * Change director's activity. Used for pausing updates when director is paused<a name="line311"></a>
+ * @this {lime.scheduleManager}<a name="line312"></a>
+ * @param {lime.Director} director Director.<a name="line313"></a>
+ * @param {boolean} value Active or inactive?<a name="line314"></a>
+ */<a name="line315"></a>
+lime.scheduleManager.changeDirectorActivity = function(director, value) {<a name="line316"></a>
+    var t, context, f, d, i,<a name="line317"></a>
+        j = this.taskStack_.length;<a name="line318"></a>
+    while (--j >= 0) {<a name="line319"></a>
+<a name="line320"></a>
+        t = this.taskStack_[j];<a name="line321"></a>
+        i = t.functionStack_.length;<a name="line322"></a>
+        while (--i >= 0) {<a name="line323"></a>
+            f = t.functionStack_[i];<a name="line324"></a>
+            context = f[2];<a name="line325"></a>
+            if (goog.isFunction(context.getDirector)) {<a name="line326"></a>
+                d = context.getDirector();<a name="line327"></a>
+                if (d == director) {<a name="line328"></a>
+                    f[0] = value;<a name="line329"></a>
+                }<a name="line330"></a>
+            }<a name="line331"></a>
+        }<a name="line332"></a>
+    }<a name="line333"></a>
+};<a name="line334"></a>
+<a name="line335"></a>
+/**<a name="line336"></a>
+ * Set up function to be called once after a delay<a name="line337"></a>
+ * @param {function(number)} f Function to be called.<a name="line338"></a>
+ * @param {Object} context Context used when calling object.<a name="line339"></a>
+ * @param {number} delay Delay before calling.<a name="line340"></a>
+ */<a name="line341"></a>
+lime.scheduleManager.callAfter = function(f, context, delay) {<a name="line342"></a>
+    lime.scheduleManager.scheduleWithDelay(f, context, delay, 1);<a name="line343"></a>
+};<a name="line344"></a>
+<a name="line345"></a>
+/**<a name="line346"></a>
+ * Set up function to be called repeatedly after a delay<a name="line347"></a>
+ * @param {function(number)} f Function to be called.<a name="line348"></a>
+ * @param {Object} context Context used when calling object.<a name="line349"></a>
+ * @param {number} delay Delay before calling.<a name="line350"></a>
+ * @param {number=} opt_limit Number of times to call.<a name="line351"></a>
+ * @this {lime.scheduleManager}<a name="line352"></a>
+ */<a name="line353"></a>
+lime.scheduleManager.scheduleWithDelay = function(f, context,<a name="line354"></a>
+    delay, opt_limit) {<a name="line355"></a>
+    var task = new lime.scheduleManager.Task(delay, opt_limit);<a name="line356"></a>
+    lime.scheduleManager.schedule(f, context, task);<a name="line357"></a>
+};<a name="line358"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -399,7 +399,7 @@ lime.scheduleManager.scheduleWithDelay = function(f, context,
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:26 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

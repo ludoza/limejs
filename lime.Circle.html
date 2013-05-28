@@ -28,7 +28,7 @@
 	
 <header>
 	<h2>
-	Circle
+	lime.Circle
 	</h2>
 	
 </header>  
@@ -40,7 +40,7 @@
 	
 		
 <dt>
-    <h4 class="name" id="Circle"><span class="type-signature"></span>new Circle<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Circle"><span class="type-signature"></span>new lime.Circle<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -81,7 +81,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circle.js.html">shape/circle.js</a>, line 16
+        <a href="shape/circle.js.html#line16">shape/circle.js</a>, line 16
     </li></ul></dd>
     
     
@@ -106,42 +106,1054 @@
 	</div>
 	
 	
-	<div class="doc_summary">
+	<div class="summary">
 		<a name="summary"></a>
-		<h3 class="subsection-title summary">Summary</h3>
+		<h3 class="subsection-title">Summary</h3>
 
 		<div class="doc_group"><a name="summary_properties"></a>
-<h5>Members - instance</h5>
-
 <dl>
-    <dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#allow3DCSSTransform_">allow3DCSSTransform_</a></span><span class="type-sig"><span class="type-signature"> :boolean</span></span></dt><dd class=" augmented even">Allow translate3d and other css optimizations<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#allow3DCSSTransform_.html#allow3DCSSTransform_"><img src="media/images/extended.png"></a></div></dd><dt class="private augmented odd"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#customEvent_">customEvent_</a></span><span class="type-sig"><span class="type-signature"> :boolean</span></span></dt><dd class="private augmented odd"><div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#customEvent_.html#customEvent_"><img src="media/images/extended.png"></a></div></dd><dt class="private augmented even"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#eventHandlers_">eventHandlers_</a></span><span class="type-sig"><span class="type-signature"> :Object</span></span></dt><dd class="private augmented even">Hash of active event handlers<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#eventHandlers_.html#eventHandlers_"><img src="media/images/extended.png"></a></div></dd><dt class="private augmented odd"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#fill_">fill_</a></span><span class="type-sig"><span class="type-signature"> :<a href="lime.fill.Fill.html">lime.fill.Fill</a></span></span></dt><dd class="private augmented odd">Fill object used while drawing<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#fill_.html#fill_"><img src="media/images/extended.png"></a></div></dd><dt class="private augmented even"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#getCanvasContextName_">getCanvasContextName_</a></span><span class="type-sig"><span class="type-signature"></span></span></dt><dd class="private augmented even"><div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getCanvasContextName_.html#getCanvasContextName_"><img src="media/images/extended.png"></a></div></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#id">id</a></span><span class="type-sig"><span class="type-signature"> :string</span></span></dt><dd class="  odd">Common name for circle objects</dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#inTree_">inTree_</a></span><span class="type-sig"><span class="type-signature"> :boolean</span></span></dt><dd class=" augmented even">Node has been added to DOM tree<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#inTree_.html#inTree_"><img src="media/images/extended.png"></a></div></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#supportedRenderers">supportedRenderers</a></span><span class="type-sig"><span class="type-signature"></span></span></dt><dd class="  odd"></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#transitionsAdd_">transitionsAdd_</a></span><span class="type-sig"><span class="type-signature"></span></span></dt><dd class=" augmented even">type {Object.<number, number>}<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#transitionsAdd_.html#transitionsAdd_"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#transitionsClear_">transitionsClear_</a></span><span class="type-sig"><span class="type-signature"></span></span></dt><dd class=" augmented odd">type {Object.<number, number>}<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#transitionsClear_.html#transitionsClear_"><img src="media/images/extended.png"></a></div></dd>
-</dl></div><div class="doc_group"><a name="summary_methods"></a>
-<h5>Methods - instance</h5>
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Members</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#allow3DCSSTransform_"><code class="name">allow3DCSSTransform_</code></a><span class="type-signature"><span class="type-signature"> :boolean</span></span>
+						<div class="summary-description"> Allow translate3d and other css optimizations</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#allow3DCSSTransform_">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private> </span>
+				</td>
+				<td class="last">
+						<a href="#customEvent_"><code class="name">customEvent_</code></a><span class="type-signature"><span class="type-signature"> :boolean</span></span>
+						<div class="summary-description"> </div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#customEvent_">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private> </span>
+				</td>
+				<td class="last">
+						<a href="#eventHandlers_"><code class="name">eventHandlers_</code></a><span class="type-signature"><span class="type-signature"> :Object</span></span>
+						<div class="summary-description"> Hash of active event handlers</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#eventHandlers_">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private> </span>
+				</td>
+				<td class="last">
+						<a href="#fill_"><code class="name">fill_</code></a><span class="type-signature"><span class="type-signature"> :<a href="lime.fill.Fill.html">lime.fill.Fill</a></span></span>
+						<div class="summary-description"> Fill object used while drawing</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#fill_">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private> </span>
+				</td>
+				<td class="last">
+						<a href="#getCanvasContextName_"><code class="name">getCanvasContextName_</code></a><span class="type-signature"><span class="type-signature"></span></span>
+						<div class="summary-description"> </div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getCanvasContextName_">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#id"><code class="name">id</code></a><span class="type-signature"><span class="type-signature"> :string</span></span>
+						<div class="summary-description"> Common name for circle objects</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#inTree_"><code class="name">inTree_</code></a><span class="type-signature"><span class="type-signature"> :boolean</span></span>
+						<div class="summary-description"> Node has been added to DOM tree</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#inTree_">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#supportedRenderers"><code class="name">supportedRenderers</code></a><span class="type-signature"><span class="type-signature"></span></span>
+						<div class="summary-description"> </div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#transitionsAdd_"><code class="name">transitionsAdd_</code></a><span class="type-signature"><span class="type-signature"></span></span>
+						<div class="summary-description"> type {Object.<number, number>}</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#transitionsAdd_">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#transitionsClear_"><code class="name">transitionsClear_</code></a><span class="type-signature"><span class="type-signature"></span></span>
+						<div class="summary-description"> type {Object.<number, number>}</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#transitionsClear_">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
+</dl>
 
+</div><div class="doc_group"><a name="summary_methods"></a>
 <dl>
-    <dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#addEventListener">addEventListener</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented even"><div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#addEventListener.html#addEventListener"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#addTransition">addTransition</a></span><span class="type-sig"><span class="signature">(property, value, duration, ease)</span><span class="type-signature"></span></span></dt><dd class=" augmented odd">Register transition property. Use through animations.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#addTransition.html#addTransition"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#appendChild">appendChild</a></span><span class="type-sig"><span class="signature">(child, <span class="optional">opt_pos</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Append element to the end of childrens array<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#appendChild.html#appendChild"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#calcRelativeQuality">calcRelativeQuality</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented odd">Calculates relative quality change from the
-parent objects quality<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#calcRelativeQuality.html#calcRelativeQuality"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#clearTransition">clearTransition</a></span><span class="type-sig"><span class="signature">(property)</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Clear previously set transition<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#clearTransition.html#clearTransition"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#createDomElement">createDomElement</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented odd">Create DOM element to render the node<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#createDomElement.html#createDomElement"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getAnchorPoint">getAnchorPoint</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Vec2}</span></span></dt><dd class=" augmented even">Returns anchor point for the element.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getAnchorPoint.html#getAnchorPoint"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getAutoResize">getAutoResize</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented odd">Returns autoresize rules bitmask.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getAutoResize.html#getAutoResize"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getBoundingBox">getBoundingBox</a></span><span class="type-sig"><span class="signature">(opt_frame)</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span></dt><dd class=" augmented even">Returns bounding box for element in parents coordinate space.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getBoundingBox.html#getBoundingBox"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getChildAt">getChildAt</a></span><span class="type-sig"><span class="signature">(index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>|Element|null}</span></span></dt><dd class=" augmented odd">Return the child at defined index.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getChildAt.html#getChildAt"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getChildIndex">getChildIndex</a></span><span class="type-sig"><span class="signature">(child)</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented even">Return the index position of a child.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getChildIndex.html#getChildIndex"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getCSS3DTransformsAllowed">getCSS3DTransformsAllowed</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span></dt><dd class=" augmented odd">Returns css 3d transforms flag<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getCSS3DTransformsAllowed.html#getCSS3DTransformsAllowed"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getDeepestDomElement">getDeepestDomElement</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {Element}</span></span></dt><dd class=" augmented even">Return deepest element in DOM tree that is used
-for drawing the Node.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getDeepestDomElement.html#getDeepestDomElement"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getDeepestParentWithDom">getDeepestParentWithDom</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Return deepest parent node that requires DOM element
-for drawing on screen.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getDeepestParentWithDom.html#getDeepestParentWithDom"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getDirector">getDirector</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Director.html">lime.Director</a>}</span></span></dt><dd class=" augmented even">Return the Director instance related to the node.
-Returns null if no director connection.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getDirector.html#getDirector"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getDirty">getDirty</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented odd">Return a bitmask of dirty values that need to be updated before next drawing
-The bitmask parts are values of lime.Dirty enum<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getDirty.html#getDirty"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getFill">getFill</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.fill.Fill.html">lime.fill.Fill</a>}</span></span></dt><dd class=" augmented even">Gets fill parameters<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getFill.html#getFill"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getFrame">getFrame</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span></dt><dd class=" augmented odd">Returns a bounding box for the element in its own coordinate space<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getFrame.html#getFrame"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getHidden">getHidden</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span></dt><dd class=" augmented even">Returns true if element currently not visible<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getHidden.html#getHidden"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getMask">getMask</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Returns element used as a mask for current element<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getMask.html#getMask"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getNumberOfChildren">getNumberOfChildren</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented even">Return number of childnodes current element has.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getNumberOfChildren.html#getNumberOfChildren"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getOpacity">getOpacity</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented odd">Returns the opacity value of the Node. 0.0=100% trasparent, 1.0=100% opaque<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getOpacity.html#getOpacity"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getParent">getParent</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Return the parent object. Returns null in not in tree<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getParent.html#getParent"><img src="media/images/extended.png"></a></div></dd><dt class="private augmented odd"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#getParentStack_">getParentStack_</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;<a href="lime.Node.html">lime.Node</a>>}</span></span></dt><dd class="private augmented odd">Return array of parent nodes until scene object<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getParentStack_.html#getParentStack_"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getPosition">getPosition</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span></dt><dd class=" augmented even">Returns element's position coordinate<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getPosition.html#getPosition"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getQuality">getQuality</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented odd">Returns elements quality value.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getQuality.html#getQuality"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getRelativeQuality">getRelativeQuality</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented even">Return cumulative quality value relative to screen full quality.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getRelativeQuality.html#getRelativeQuality"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getRotation">getRotation</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class=" augmented odd">Returns rotation angle for element in degrees<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getRotation.html#getRotation"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getScale">getScale</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Vec2}</span></span></dt><dd class=" augmented even">Returns scale vector for the element. 1,1 means no scale.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getScale.html#getScale"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getScene">getScene</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Scene.html">lime.Scene</a>}</span></span></dt><dd class=" augmented odd">Returns the Scene instance related to the node.
-Returns null if no scene connection.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getScene.html#getScene"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getSize">getSize</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Size.html">goog.math.Size</a>}</span></span></dt><dd class=" augmented even">Returns elements dimension<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getSize.html#getSize"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getStroke">getStroke</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.fill.Stroke.html">lime.fill.Stroke</a>}</span></span></dt><dd class=" augmented odd">Return Stroke object if one is set<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#getStroke.html#getStroke"><img src="media/images/extended.png"></a></div></dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#hitTest">hitTest</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  even"></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#localToNode">localToNode</a></span><span class="type-sig"><span class="signature">(coord, node)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span></dt><dd class=" augmented odd">Convert coordinate in node space to other nodes coordinate space<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#localToNode.html#localToNode"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#localToParent">localToParent</a></span><span class="type-sig"><span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span></dt><dd class=" augmented even">Convert coordinate from current node space to
-parent node space<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#localToParent.html#localToParent"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#localToScreen">localToScreen</a></span><span class="type-sig"><span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span></dt><dd class=" augmented odd">Convert coordinate in node space to screen coordinate<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#localToScreen.html#localToScreen"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#measureContents">measureContents</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span></dt><dd class=" augmented even">Return box containing current element and all its children<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#measureContents.html#measureContents"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#needsDomElement">needsDomElement</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span></dt><dd class=" augmented odd">Does node require DOM element for drawing?<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#needsDomElement.html#needsDomElement"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#parentToLocal">parentToLocal</a></span><span class="type-sig"><span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span></dt><dd class=" augmented even">Covert coordinate form parent node space to
-current node space<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#parentToLocal.html#parentToLocal"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#removeAllChildren">removeAllChildren</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Removes all children of a node.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#removeAllChildren.html#removeAllChildren"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#removeChild">removeChild</a></span><span class="type-sig"><span class="signature">(child)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Remove element from the childrens array<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#removeChild.html#removeChild"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#removeChildAt">removeChildAt</a></span><span class="type-sig"><span class="signature">(index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Remove element at a given index from the childrens array<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#removeChildAt.html#removeChildAt"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#removeDomElement">removeDomElement</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Remove DOM element connected to teh node<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#removeDomElement.html#removeDomElement"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#removeEventListener">removeEventListener</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented odd"><div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#removeEventListener.html#removeEventListener"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#runAction">runAction</a></span><span class="type-sig"><span class="signature">(action)</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Add Node to action targets list and start the animation<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#runAction.html#runAction"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#screenToLocal">screenToLocal</a></span><span class="type-sig"><span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span></dt><dd class=" augmented odd">Convert screen coordinate to node coordinate space<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#screenToLocal.html#screenToLocal"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setAllow3DCSSTransforms">setAllow3DCSSTransforms</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Sets css 3d transforms rule (for DOM renderer).
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Methods</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#addEventListener"><code class="name">addEventListener</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> </div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#addEventListener">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#addTransition"><code class="name">addTransition</code></a><span class="type-signature"><span class="signature">(property, value, duration, ease)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Register transition property. Use through animations.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#addTransition">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#appendChild"><code class="name">appendChild</code></a><span class="type-signature"><span class="signature">(child, <span class="optional">opt_pos</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Append element to the end of childrens array</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#appendChild">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#calcRelativeQuality"><code class="name">calcRelativeQuality</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Calculates relative quality change from the
+parent objects quality</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#calcRelativeQuality">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#clearTransition"><code class="name">clearTransition</code></a><span class="type-signature"><span class="signature">(property)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Clear previously set transition</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#clearTransition">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#createDomElement"><code class="name">createDomElement</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Create DOM element to render the node</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#createDomElement">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getAnchorPoint"><code class="name">getAnchorPoint</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Vec2}</span></span>
+						<div class="summary-description"> Returns anchor point for the element.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getAnchorPoint">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getAutoResize"><code class="name">getAutoResize</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
+						<div class="summary-description"> Returns autoresize rules bitmask.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getAutoResize">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getBoundingBox"><code class="name">getBoundingBox</code></a><span class="type-signature"><span class="signature">(opt_frame)</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span>
+						<div class="summary-description"> Returns bounding box for element in parents coordinate space.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getBoundingBox">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getChildAt"><code class="name">getChildAt</code></a><span class="type-signature"><span class="signature">(index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>|Element|null}</span></span>
+						<div class="summary-description"> Return the child at defined index.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getChildAt">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getChildIndex"><code class="name">getChildIndex</code></a><span class="type-signature"><span class="signature">(child)</span><span class="type-signature"> &rarr; {number}</span></span>
+						<div class="summary-description"> Return the index position of a child.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getChildIndex">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getCSS3DTransformsAllowed"><code class="name">getCSS3DTransformsAllowed</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span>
+						<div class="summary-description"> Returns css 3d transforms flag</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getCSS3DTransformsAllowed">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getDeepestDomElement"><code class="name">getDeepestDomElement</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {Element}</span></span>
+						<div class="summary-description"> Return deepest element in DOM tree that is used
+for drawing the Node.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getDeepestDomElement">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getDeepestParentWithDom"><code class="name">getDeepestParentWithDom</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Return deepest parent node that requires DOM element
+for drawing on screen.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getDeepestParentWithDom">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getDirector"><code class="name">getDirector</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Director.html">lime.Director</a>}</span></span>
+						<div class="summary-description"> Return the Director instance related to the node.
+Returns null if no director connection.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getDirector">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getDirty"><code class="name">getDirty</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
+						<div class="summary-description"> Return a bitmask of dirty values that need to be updated before next drawing
+The bitmask parts are values of lime.Dirty enum</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getDirty">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getFill"><code class="name">getFill</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.fill.Fill.html">lime.fill.Fill</a>}</span></span>
+						<div class="summary-description"> Gets fill parameters</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getFill">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getFrame"><code class="name">getFrame</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span>
+						<div class="summary-description"> Returns a bounding box for the element in its own coordinate space</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getFrame">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getHidden"><code class="name">getHidden</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span>
+						<div class="summary-description"> Returns true if element currently not visible</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getHidden">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getMask"><code class="name">getMask</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Returns element used as a mask for current element</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getMask">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getNumberOfChildren"><code class="name">getNumberOfChildren</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
+						<div class="summary-description"> Return number of childnodes current element has.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getNumberOfChildren">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getOpacity"><code class="name">getOpacity</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
+						<div class="summary-description"> Returns the opacity value of the Node. 0.0=100% trasparent, 1.0=100% opaque</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getOpacity">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getParent"><code class="name">getParent</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Return the parent object. Returns null in not in tree</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getParent">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private> </span>
+				</td>
+				<td class="last">
+						<a href="#getParentStack_"><code class="name">getParentStack_</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;<a href="lime.Node.html">lime.Node</a>>}</span></span>
+						<div class="summary-description"> Return array of parent nodes until scene object</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getParentStack_">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getPosition"><code class="name">getPosition</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span>
+						<div class="summary-description"> Returns element's position coordinate</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getPosition">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getQuality"><code class="name">getQuality</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
+						<div class="summary-description"> Returns elements quality value.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getQuality">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getRelativeQuality"><code class="name">getRelativeQuality</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
+						<div class="summary-description"> Return cumulative quality value relative to screen full quality.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getRelativeQuality">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getRotation"><code class="name">getRotation</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
+						<div class="summary-description"> Returns rotation angle for element in degrees</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getRotation">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getScale"><code class="name">getScale</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Vec2}</span></span>
+						<div class="summary-description"> Returns scale vector for the element. 1,1 means no scale.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getScale">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getScene"><code class="name">getScene</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Scene.html">lime.Scene</a>}</span></span>
+						<div class="summary-description"> Returns the Scene instance related to the node.
+Returns null if no scene connection.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getScene">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getSize"><code class="name">getSize</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Size.html">goog.math.Size</a>}</span></span>
+						<div class="summary-description"> Returns elements dimension</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getSize">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getStroke"><code class="name">getStroke</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.fill.Stroke.html">lime.fill.Stroke</a>}</span></span>
+						<div class="summary-description"> Return Stroke object if one is set</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#getStroke">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#hitTest"><code class="name">hitTest</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> </div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#localToNode"><code class="name">localToNode</code></a><span class="type-signature"><span class="signature">(coord, node)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span>
+						<div class="summary-description"> Convert coordinate in node space to other nodes coordinate space</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#localToNode">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#localToParent"><code class="name">localToParent</code></a><span class="type-signature"><span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span>
+						<div class="summary-description"> Convert coordinate from current node space to
+parent node space</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#localToParent">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#localToScreen"><code class="name">localToScreen</code></a><span class="type-signature"><span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span>
+						<div class="summary-description"> Convert coordinate in node space to screen coordinate</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#localToScreen">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#measureContents"><code class="name">measureContents</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span>
+						<div class="summary-description"> Return box containing current element and all its children</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#measureContents">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#needsDomElement"><code class="name">needsDomElement</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span>
+						<div class="summary-description"> Does node require DOM element for drawing?</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#needsDomElement">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#parentToLocal"><code class="name">parentToLocal</code></a><span class="type-signature"><span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span>
+						<div class="summary-description"> Covert coordinate form parent node space to
+current node space</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#parentToLocal">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#removeAllChildren"><code class="name">removeAllChildren</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Removes all children of a node.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#removeAllChildren">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#removeChild"><code class="name">removeChild</code></a><span class="type-signature"><span class="signature">(child)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Remove element from the childrens array</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#removeChild">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#removeChildAt"><code class="name">removeChildAt</code></a><span class="type-signature"><span class="signature">(index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Remove element at a given index from the childrens array</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#removeChildAt">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#removeDomElement"><code class="name">removeDomElement</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Remove DOM element connected to teh node</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#removeDomElement">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#removeEventListener"><code class="name">removeEventListener</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> </div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#removeEventListener">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#runAction"><code class="name">runAction</code></a><span class="type-signature"><span class="signature">(action)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Add Node to action targets list and start the animation</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#runAction">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#screenToLocal"><code class="name">screenToLocal</code></a><span class="type-signature"><span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span>
+						<div class="summary-description"> Convert screen coordinate to node coordinate space</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#screenToLocal">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setAllow3DCSSTransforms"><code class="name">setAllow3DCSSTransforms</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Sets css 3d transforms rule (for DOM renderer).
 XXX: This hack is required to fix a mobile Safari rendering bug.
 It should only be used on nodes that are affected by the bug!
 3D acceleration in css transforms is enabled by default and applied
-for iOS and Playbook.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setAllow3DCSSTransforms.html#setAllow3DCSSTransforms"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setAnchorPoint">setAnchorPoint</a></span><span class="type-sig"><span class="signature">(value, <span class="optional">opt_y</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Sets elements anchor point to new value. Anchor point is used
+for iOS and Playbook.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setAllow3DCSSTransforms">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setAnchorPoint"><code class="name">setAnchorPoint</code></a><span class="type-signature"><span class="signature">(value, <span class="optional">opt_y</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Sets elements anchor point to new value. Anchor point is used
 when positioning the element to position coordinate. [0,0] means
 top left corner, [1,1] bottom right, [.5,.5] means that element
-is position by the center. You can also pass in 2 numbers.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setAnchorPoint.html#setAnchorPoint"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setAutoResize">setAutoResize</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Sets new autoresixe rules. NOT IMPLEMENTED!<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setAutoResize.html#setAutoResize"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setChildIndex">setChildIndex</a></span><span class="type-sig"><span class="signature">(child, index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Move a child to another index in the childrens array.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setChildIndex.html#setChildIndex"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setDirty">setDirty</a></span><span class="type-sig"><span class="signature">(value, <span class="optional">opt_pass</span>, <span class="optional">opt_nextframe</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Sets a dirty value true. This means that object needs that
-kind of updates before next draw.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setDirty.html#setDirty"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setFill">setFill</a></span><span class="type-sig"><span class="signature">(fill, <span class="optional">opt_g</span>, <span class="optional">opt_b</span>, <span class="optional">opt_a</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Sprite.html">lime.Sprite</a>}</span></span></dt><dd class=" augmented odd">Sets fill parameters<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setFill.html#setFill"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setHidden">setHidden</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Sets if element is visible or not<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setHidden.html#setHidden"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setMask">setMask</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Sets element as a mask for current element<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setMask.html#setMask"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setOpacity">setOpacity</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Sets the opacity value of the Node object<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setOpacity.html#setOpacity"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setPosition">setPosition</a></span><span class="type-sig"><span class="signature">(value, <span class="optional">opt_y</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Sets new position for element. Also accepts 2 numbers(x and y value)<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setPosition.html#setPosition"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setQuality">setQuality</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Sets quality value used while drawing. Not all rendermodes can draw
+is position by the center. You can also pass in 2 numbers.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setAnchorPoint">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setAutoResize"><code class="name">setAutoResize</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Sets new autoresixe rules. NOT IMPLEMENTED!</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setAutoResize">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setChildIndex"><code class="name">setChildIndex</code></a><span class="type-signature"><span class="signature">(child, index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Move a child to another index in the childrens array.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setChildIndex">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setDirty"><code class="name">setDirty</code></a><span class="type-signature"><span class="signature">(value, <span class="optional">opt_pass</span>, <span class="optional">opt_nextframe</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Sets a dirty value true. This means that object needs that
+kind of updates before next draw.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setDirty">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setFill"><code class="name">setFill</code></a><span class="type-signature"><span class="signature">(fill, <span class="optional">opt_g</span>, <span class="optional">opt_b</span>, <span class="optional">opt_a</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Sprite.html">lime.Sprite</a>}</span></span>
+						<div class="summary-description"> Sets fill parameters</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setFill">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setHidden"><code class="name">setHidden</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Sets if element is visible or not</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setHidden">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setMask"><code class="name">setMask</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Sets element as a mask for current element</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setMask">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setOpacity"><code class="name">setOpacity</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Sets the opacity value of the Node object</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setOpacity">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setPosition"><code class="name">setPosition</code></a><span class="type-signature"><span class="signature">(value, <span class="optional">opt_y</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Sets new position for element. Also accepts 2 numbers(x and y value)</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setPosition">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setQuality"><code class="name">setQuality</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Sets quality value used while drawing. Not all rendermodes can draw
 more effectively on lower quality. 1.0 full quality, 0.5 half quality.
-Setting this walue larger than 1.0 almost never does anything good.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setQuality.html#setQuality"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setRenderer">setRenderer</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Set renderer for the node. Renderer defines what lower
-level technology will be used for drawing node on screen<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setRenderer.html#setRenderer"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setRotation">setRotation</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Rotates element to specific angle in degrees<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setRotation.html#setRotation"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setScale">setScale</a></span><span class="type-sig"><span class="signature">(value, <span class="optional">opt_y</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented odd">Sets new scale vector for element. This function also accepts
-2 numbers or 1 number that would be coverted to vector before use<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setScale.html#setScale"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setSize">setSize</a></span><span class="type-sig"><span class="signature">(value, <span class="optional">opt_height</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span></dt><dd class=" augmented even">Sets dimensions for element. This funciton also
-accepts 2 numbers: width,height<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setSize.html#setSize"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setStroke">setStroke</a></span><span class="type-sig"><span class="signature">(stroke)</span><span class="type-signature"> &rarr; {<a href="lime.Sprite.html">lime.Sprite</a>}</span></span></dt><dd class=" augmented odd">Sets stroke parameters.<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#setStroke.html#setStroke"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#update">update</a></span><span class="type-sig"><span class="signature">(<span class="optional">opt_pass</span>)</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Update modified dirty parameters to visible elements properties<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#update.html#update"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#updateDomElement">updateDomElement</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented odd">Update DOM element connected to the node<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#updateDomElement.html#updateDomElement"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#updateLayout">updateLayout</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Update node's layout (tree relations)<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#updateLayout.html#updateLayout"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#wasAddedToTree">wasAddedToTree</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented odd">Handle adding Node to the DOM tree<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#wasAddedToTree.html#wasAddedToTree"><img src="media/images/extended.png"></a></div></dd><dt class=" augmented even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#wasRemovedFromTree">wasRemovedFromTree</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class=" augmented even">Handle removing Node from DOM tree<div class="type-augmented" title="Extended from lime.Sprite"><a href="lime.Sprite#wasRemovedFromTree.html#wasRemovedFromTree"><img src="media/images/extended.png"></a></div></dd>
+Setting this walue larger than 1.0 almost never does anything good.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setQuality">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setRenderer"><code class="name">setRenderer</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Set renderer for the node. Renderer defines what lower
+level technology will be used for drawing node on screen</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setRenderer">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setRotation"><code class="name">setRotation</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Rotates element to specific angle in degrees</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setRotation">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setScale"><code class="name">setScale</code></a><span class="type-signature"><span class="signature">(value, <span class="optional">opt_y</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Sets new scale vector for element. This function also accepts
+2 numbers or 1 number that would be coverted to vector before use</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setScale">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setSize"><code class="name">setSize</code></a><span class="type-signature"><span class="signature">(value, <span class="optional">opt_height</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
+						<div class="summary-description"> Sets dimensions for element. This funciton also
+accepts 2 numbers: width,height</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setSize">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setStroke"><code class="name">setStroke</code></a><span class="type-signature"><span class="signature">(stroke)</span><span class="type-signature"> &rarr; {<a href="lime.Sprite.html">lime.Sprite</a>}</span></span>
+						<div class="summary-description"> Sets stroke parameters.</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#setStroke">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#update"><code class="name">update</code></a><span class="type-signature"><span class="signature">(<span class="optional">opt_pass</span>)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Update modified dirty parameters to visible elements properties</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#update">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#updateDomElement"><code class="name">updateDomElement</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Update DOM element connected to the node</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#updateDomElement">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#updateLayout"><code class="name">updateLayout</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Update node's layout (tree relations)</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#updateLayout">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#wasAddedToTree"><code class="name">wasAddedToTree</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Handle adding Node to the DOM tree</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#wasAddedToTree">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#wasRemovedFromTree"><code class="name">wasRemovedFromTree</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Handle removing Node from DOM tree</div>
+						
+						<span class="small">Inherits from <a href="lime.Sprite.html#wasRemovedFromTree">lime.Sprite</a></span>
+						
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
 </dl>
+
 </div>
 	</div>
 	
@@ -207,7 +1219,7 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 40
+        <a href="node.js.html#line40">node.js</a>, line 40
     </li></ul></dd>
     
     
@@ -221,7 +1233,6 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     
 </dd>
-
 		
 			
 <dt>
@@ -260,7 +1271,7 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 195
+        <a href="node.js.html#line195">node.js</a>, line 195
     </li></ul></dd>
     
     
@@ -274,7 +1285,6 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     
 </dd>
-
 		
 			
 <dt>
@@ -317,7 +1327,7 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 57
+        <a href="node.js.html#line57">node.js</a>, line 57
     </li></ul></dd>
     
     
@@ -331,7 +1341,6 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     
 </dd>
-
 		
 			
 <dt>
@@ -374,7 +1383,7 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sprite.js.html">sprite.js</a>, line 29
+        <a href="sprite.js.html#line29">sprite.js</a>, line 29
     </li></ul></dd>
     
     
@@ -388,7 +1397,6 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     
 </dd>
-
 		
 			
 <dt>
@@ -427,7 +1435,7 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sprite.js.html">sprite.js</a>, line 100
+        <a href="sprite.js.html#line100">sprite.js</a>, line 100
     </li></ul></dd>
     
     
@@ -441,7 +1449,6 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     
 </dd>
-
 		
 			
 <dt>
@@ -479,7 +1486,7 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circle.js.html">shape/circle.js</a>, line 27
+        <a href="shape/circle.js.html#line27">shape/circle.js</a>, line 27
     </li></ul></dd>
     
     
@@ -493,7 +1500,6 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     
 </dd>
-
 		
 			
 <dt>
@@ -536,7 +1542,7 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 46
+        <a href="node.js.html#line46">node.js</a>, line 46
     </li></ul></dd>
     
     
@@ -550,7 +1556,6 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     
 </dd>
-
 		
 			
 <dt>
@@ -584,7 +1589,7 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circle.js.html">shape/circle.js</a>, line 30
+        <a href="shape/circle.js.html#line30">shape/circle.js</a>, line 30
     </li></ul></dd>
     
     
@@ -598,7 +1603,6 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     
 </dd>
-
 		
 			
 <dt>
@@ -641,7 +1645,7 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 30
+        <a href="node.js.html#line30">node.js</a>, line 30
     </li></ul></dd>
     
     
@@ -655,7 +1659,6 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     
 </dd>
-
 		
 			
 <dt>
@@ -698,7 +1701,7 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 34
+        <a href="node.js.html#line34">node.js</a>, line 34
     </li></ul></dd>
     
     
@@ -712,7 +1715,6 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     
 </dd>
-
 		</dl>
 	
 	
@@ -764,7 +1766,7 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 1048
+        <a href="node.js.html#line1048">node.js</a>, line 1048
     </li></ul></dd>
     
     
@@ -951,7 +1953,7 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 1266
+        <a href="node.js.html#line1266">node.js</a>, line 1266
     </li></ul></dd>
     
     
@@ -1118,7 +2120,7 @@ accepts 2 numbers: width,height<div class="type-augmented" title="Extended from 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 926
+        <a href="node.js.html#line926">node.js</a>, line 926
     </li></ul></dd>
     
     
@@ -1211,7 +2213,7 @@ parent objects quality
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 500
+        <a href="node.js.html#line500">node.js</a>, line 500
     </li></ul></dd>
     
     
@@ -1329,7 +2331,7 @@ parent objects quality
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 1274
+        <a href="node.js.html#line1274">node.js</a>, line 1274
     </li></ul></dd>
     
     
@@ -1399,7 +2401,7 @@ parent objects quality
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 684
+        <a href="node.js.html#line684">node.js</a>, line 684
     </li></ul></dd>
     
     
@@ -1469,7 +2471,7 @@ parent objects quality
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 325
+        <a href="node.js.html#line325">node.js</a>, line 325
     </li></ul></dd>
     
     
@@ -1561,7 +2563,7 @@ parent objects quality
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 521
+        <a href="node.js.html#line521">node.js</a>, line 521
     </li></ul></dd>
     
     
@@ -1701,7 +2703,7 @@ parent objects quality
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 1217
+        <a href="node.js.html#line1217">node.js</a>, line 1217
     </li></ul></dd>
     
     
@@ -1841,7 +2843,7 @@ parent objects quality
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 965
+        <a href="node.js.html#line965">node.js</a>, line 965
     </li></ul></dd>
     
     
@@ -1990,7 +2992,7 @@ parent objects quality
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 978
+        <a href="node.js.html#line978">node.js</a>, line 978
     </li></ul></dd>
     
     
@@ -2082,7 +3084,7 @@ parent objects quality
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 553
+        <a href="node.js.html#line553">node.js</a>, line 553
     </li></ul></dd>
     
     
@@ -2171,7 +3173,7 @@ for drawing the Node.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 132
+        <a href="node.js.html#line132">node.js</a>, line 132
     </li></ul></dd>
     
     
@@ -2264,7 +3266,7 @@ for drawing on screen.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 141
+        <a href="node.js.html#line141">node.js</a>, line 141
     </li></ul></dd>
     
     
@@ -2357,7 +3359,7 @@ Returns null if no director connection.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 1093
+        <a href="node.js.html#line1093">node.js</a>, line 1093
     </li></ul></dd>
     
     
@@ -2450,7 +3452,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 202
+        <a href="node.js.html#line202">node.js</a>, line 202
     </li></ul></dd>
     
     
@@ -2542,7 +3544,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sprite.js.html">sprite.js</a>, line 55
+        <a href="sprite.js.html#line55">sprite.js</a>, line 55
     </li></ul></dd>
     
     
@@ -2634,7 +3636,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 1201
+        <a href="node.js.html#line1201">node.js</a>, line 1201
     </li></ul></dd>
     
     
@@ -2726,7 +3728,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 374
+        <a href="node.js.html#line374">node.js</a>, line 374
     </li></ul></dd>
     
     
@@ -2818,7 +3820,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 295
+        <a href="node.js.html#line295">node.js</a>, line 295
     </li></ul></dd>
     
     
@@ -2910,7 +3912,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 956
+        <a href="node.js.html#line956">node.js</a>, line 956
     </li></ul></dd>
     
     
@@ -3002,7 +4004,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 652
+        <a href="node.js.html#line652">node.js</a>, line 652
     </li></ul></dd>
     
     
@@ -3094,7 +4096,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 916
+        <a href="node.js.html#line916">node.js</a>, line 916
     </li></ul></dd>
     
     
@@ -3186,7 +4188,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 157
+        <a href="node.js.html#line157">node.js</a>, line 157
     </li></ul></dd>
     
     
@@ -3278,7 +4280,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 271
+        <a href="node.js.html#line271">node.js</a>, line 271
     </li></ul></dd>
     
     
@@ -3370,7 +4372,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 466
+        <a href="node.js.html#line466">node.js</a>, line 466
     </li></ul></dd>
     
     
@@ -3462,7 +4464,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 489
+        <a href="node.js.html#line489">node.js</a>, line 489
     </li></ul></dd>
     
     
@@ -3554,7 +4556,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 351
+        <a href="node.js.html#line351">node.js</a>, line 351
     </li></ul></dd>
     
     
@@ -3646,7 +4648,7 @@ The bitmask parts are values of lime.Dirty enum
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 245
+        <a href="node.js.html#line245">node.js</a>, line 245
     </li></ul></dd>
     
     
@@ -3739,7 +4741,7 @@ Returns null if no scene connection.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 1104
+        <a href="node.js.html#line1104">node.js</a>, line 1104
     </li></ul></dd>
     
     
@@ -3831,7 +4833,7 @@ Returns null if no scene connection.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 393
+        <a href="node.js.html#line393">node.js</a>, line 393
     </li></ul></dd>
     
     
@@ -3923,7 +4925,7 @@ Returns null if no scene connection.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sprite.js.html">sprite.js</a>, line 78
+        <a href="sprite.js.html#line78">sprite.js</a>, line 78
     </li></ul></dd>
     
     
@@ -4006,7 +5008,7 @@ Returns null if no scene connection.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="circle.js.html">shape/circle.js</a>, line 38
+        <a href="shape/circle.js.html#line38">shape/circle.js</a>, line 38
     </li></ul></dd>
     
     
@@ -4147,7 +5149,7 @@ Returns null if no scene connection.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 640
+        <a href="node.js.html#line640">node.js</a>, line 640
     </li></ul></dd>
     
     
@@ -4288,7 +5290,7 @@ parent node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 613
+        <a href="node.js.html#line613">node.js</a>, line 613
     </li></ul></dd>
     
     
@@ -4428,7 +5430,7 @@ parent node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 601
+        <a href="node.js.html#line601">node.js</a>, line 601
     </li></ul></dd>
     
     
@@ -4520,7 +5522,7 @@ parent node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 1241
+        <a href="node.js.html#line1241">node.js</a>, line 1241
     </li></ul></dd>
     
     
@@ -4612,7 +5614,7 @@ parent node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 122
+        <a href="node.js.html#line122">node.js</a>, line 122
     </li></ul></dd>
     
     
@@ -4753,7 +5755,7 @@ current node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 575
+        <a href="node.js.html#line575">node.js</a>, line 575
     </li></ul></dd>
     
     
@@ -4845,7 +5847,7 @@ current node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 1020
+        <a href="node.js.html#line1020">node.js</a>, line 1020
     </li></ul></dd>
     
     
@@ -4988,7 +5990,7 @@ current node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 987
+        <a href="node.js.html#line987">node.js</a>, line 987
     </li></ul></dd>
     
     
@@ -5128,7 +6130,7 @@ current node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 996
+        <a href="node.js.html#line996">node.js</a>, line 996
     </li></ul></dd>
     
     
@@ -5220,7 +6222,7 @@ current node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 727
+        <a href="node.js.html#line727">node.js</a>, line 727
     </li></ul></dd>
     
     
@@ -5286,7 +6288,7 @@ current node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 1072
+        <a href="node.js.html#line1072">node.js</a>, line 1072
     </li></ul></dd>
     
     
@@ -5404,7 +6406,7 @@ current node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 1298
+        <a href="node.js.html#line1298">node.js</a>, line 1298
     </li></ul></dd>
     
     
@@ -5522,7 +6524,7 @@ current node space
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 562
+        <a href="node.js.html#line562">node.js</a>, line 562
     </li></ul></dd>
     
     
@@ -5666,7 +6668,7 @@ for iOS and Playbook.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 544
+        <a href="node.js.html#line544">node.js</a>, line 544
     </li></ul></dd>
     
     
@@ -5855,7 +6857,7 @@ is position by the center. You can also pass in 2 numbers.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 338
+        <a href="node.js.html#line338">node.js</a>, line 338
     </li></ul></dd>
     
     
@@ -5995,7 +6997,7 @@ is position by the center. You can also pass in 2 numbers.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 529
+        <a href="node.js.html#line529">node.js</a>, line 529
     </li></ul></dd>
     
     
@@ -6158,7 +7160,7 @@ is position by the center. You can also pass in 2 numbers.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 1033
+        <a href="node.js.html#line1033">node.js</a>, line 1033
     </li></ul></dd>
     
     
@@ -6375,7 +7377,7 @@ kind of updates before next draw.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 214
+        <a href="node.js.html#line214">node.js</a>, line 214
     </li></ul></dd>
     
     
@@ -6624,7 +7626,7 @@ kind of updates before next draw.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sprite.js.html">sprite.js</a>, line 67
+        <a href="sprite.js.html#line67">sprite.js</a>, line 67
     </li></ul></dd>
     
     
@@ -6764,7 +7766,7 @@ kind of updates before next draw.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 382
+        <a href="node.js.html#line382">node.js</a>, line 382
     </li></ul></dd>
     
     
@@ -6904,7 +7906,7 @@ kind of updates before next draw.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 303
+        <a href="node.js.html#line303">node.js</a>, line 303
     </li></ul></dd>
     
     
@@ -7044,7 +8046,7 @@ kind of updates before next draw.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 661
+        <a href="node.js.html#line661">node.js</a>, line 661
     </li></ul></dd>
     
     
@@ -7230,7 +8232,7 @@ kind of updates before next draw.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 281
+        <a href="node.js.html#line281">node.js</a>, line 281
     </li></ul></dd>
     
     
@@ -7372,7 +8374,7 @@ Setting this walue larger than 1.0 almost never does anything good.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 476
+        <a href="node.js.html#line476">node.js</a>, line 476
     </li></ul></dd>
     
     
@@ -7513,7 +8515,7 @@ level technology will be used for drawing node on screen
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 98
+        <a href="node.js.html#line98">node.js</a>, line 98
     </li></ul></dd>
     
     
@@ -7653,7 +8655,7 @@ level technology will be used for drawing node on screen
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 360
+        <a href="node.js.html#line360">node.js</a>, line 360
     </li></ul></dd>
     
     
@@ -7840,7 +8842,7 @@ level technology will be used for drawing node on screen
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 255
+        <a href="node.js.html#line255">node.js</a>, line 255
     </li></ul></dd>
     
     
@@ -8027,7 +9029,7 @@ accepts 2 numbers: width,height
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 404
+        <a href="node.js.html#line404">node.js</a>, line 404
     </li></ul></dd>
     
     
@@ -8167,7 +9169,7 @@ accepts 2 numbers: width,height
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sprite.js.html">sprite.js</a>, line 87
+        <a href="sprite.js.html#line87">sprite.js</a>, line 87
     </li></ul></dd>
     
     
@@ -8319,7 +9321,7 @@ accepts 2 numbers: width,height
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 768
+        <a href="node.js.html#line768">node.js</a>, line 768
     </li></ul></dd>
     
     
@@ -8389,7 +9391,7 @@ accepts 2 numbers: width,height
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 715
+        <a href="node.js.html#line715">node.js</a>, line 715
     </li></ul></dd>
     
     
@@ -8459,7 +9461,7 @@ accepts 2 numbers: width,height
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 740
+        <a href="node.js.html#line740">node.js</a>, line 740
     </li></ul></dd>
     
     
@@ -8529,7 +9531,7 @@ accepts 2 numbers: width,height
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 1145
+        <a href="node.js.html#line1145">node.js</a>, line 1145
     </li></ul></dd>
     
     
@@ -8599,7 +9601,7 @@ accepts 2 numbers: width,height
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node.js.html">node.js</a>, line 1113
+        <a href="node.js.html#line1113">node.js</a>, line 1113
     </li></ul></dd>
     
     
@@ -8642,7 +9644,7 @@ accepts 2 numbers: width,height
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:13 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:36 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

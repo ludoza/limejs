@@ -26,372 +26,372 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.ui.Scroller');
-
-goog.require('lime.Sprite');
-goog.require('lime.animation.MoveTo');
-
-/**
- * @constructor
- * @extends lime.Sprite
- */
-lime.ui.Scroller = function() {
-
-    goog.base(this);
-
-    //need default size for autoresize
-    this.setSize(100, 100);
-
-    this.clipper = new lime.Sprite().setFill('#c00').setSize(100, 100).
-    setAutoResize(lime.AutoResize.ALL);
-    this.appendChild(this.clipper);
-    this.setMask(this.clipper);
-
-    this.moving_ = new lime.Layer();
-    lime.Node.prototype.appendChild.call(this, this.moving_);
-
-    goog.events.listen(this, ['mousedown', 'touchstart'],
-        this.downHandler_, false, this);
-
-
-    this.setDirection(lime.ui.Scroller.Direction.HORIZONTAL);
-
-};
-goog.inherits(lime.ui.Scroller, lime.Sprite);
-
-/**
- * Offset that can be dragged over the edge
- * @const
- * @type number
- */
-lime.ui.Scroller.OFFSET = 250;
-
-/**
- * Factor to slow down if over the edge
- * @const
- * @type number
- */
-lime.ui.Scroller.OFFSET_LAG = .4;
-
-/**
- * How fast to slow down
- * @const
- * @type number
- */
-lime.ui.Scroller.FRICTION = .95;
-
-/**
- * Directions of the scroller.
- * @enum number
- */
-lime.ui.Scroller.Direction = {
-    HORIZONTAL: 0,
-    VERTICAL: 1
-};
-
-/**
- * Cleans up event listeners and references
- */
-lime.ui.Scroller.prototype.dispose = function() {
-    if (this.event) {
-        this.event.disposeInternal();
-        this.event = null;
-    }
-    if (this.clipper) {
-        goog.events.removeAll(this.clipper);
-        this.clipper.maskTarget_ = null;
-        this.clipper.targetNode = null;
-        this.clipper = null;
-    }
-    if (this.moving_) {
-        goog.events.removeAll(this.moving_);
-        this.moving_.removeAllChildren();
-        this.moving_ = null;
-    }
-    this.mask_ = null;
-    this.activeMask_ = null;
-
-    goog.base(this, 'dispose');
-};
-
-/**
- * Returns the direction of the scroller (horizontal/vertical)
- * @return {lime.ui.Scroller.Direction} Scroll direction.
- */
-lime.ui.Scroller.prototype.getDirection = function() {
-    return this.direction_;
-};
-
-/**
- * Set the direction of the scroller (horizontal/vertical)
- * @param {lime.ui.Scroller.Direction} direction Direction.
- * @return {lime.ui.Scroller} object itself.
- */
-lime.ui.Scroller.prototype.setDirection = function(direction) {
-    this.direction_ = direction;
-    return this;
-};
-
-/**
- * @inheritDoc
- * @see lime.Node#setAnchorPoint
- */
-lime.ui.Scroller.prototype.setAnchorPoint = function() {
-    if (this.clipper) {
-        this.clipper.setAnchorPoint.apply(this.clipper, arguments);
-    }
-    return lime.Node.prototype.setAnchorPoint.apply(this, arguments);
-};
-
-/**
- * @inheritDoc
- * @see lime.Node#appendChild
- */
-lime.ui.Scroller.prototype.appendChild = function() {
-    if (this.moving_) return this.moving_.appendChild.apply(
-            this.moving_, arguments);
-    return lime.Node.prototype.appendChild.apply(this, arguments);
-};
-
-/**
- * @inheritDoc
- * @see lime.Node#removeChild
- */
-lime.ui.Scroller.prototype.removeChild = function() {
-    if (this.moving_) return this.moving_.removeChild.apply(
-            this.moving_, arguments);
-    return lime.Node.prototype.removeChild.apply(this, arguments);
-};
-
-/**
- * Measure the contents of the scroller and set
- * up high and low limits.
- */
-lime.ui.Scroller.prototype.measureLimits = function() {
-
-    var measure = this.moving_.measureContents();
-    if (this.getDirection() == lime.ui.Scroller.Direction.HORIZONTAL) {
-        this.downy = this.moving_.getPosition().y;
-        var max = this.getSize().width;
-
-        this.LOW = -measure.left;
-        this.HIGH = Math.min(max - measure.right, -measure.left);
-        var diff = (measure.right - measure.left) - max;
-    } else {
-        this.downx = this.moving_.getPosition().x;
-        max = this.getSize().height;
-
-        this.LOW = -measure.top;
-        this.HIGH = Math.min(max - measure.bottom, -measure.top);
-        diff = (measure.bottom - measure.top) - max;
-    }
-
-    if (diff > 0) {
-        this.LOW -= diff;
-        this.HIGH += diff;
-    }
-};
-
-/**
- * Scroll to specific offset in pixels
- * @param {number} offset Offset in pixels.
- * @param {number=} opt_duration Animation duration.
- */
-lime.ui.Scroller.prototype.scrollTo = function(offset, opt_duration) {
-    var pos = this.moving_.getPosition().clone();
-    var duration = opt_duration || 0;
-
-    this.measureLimits();
-
-    if (offset &lt; 0) offset = 0;
-
-    if (this.getDirection() == lime.ui.Scroller.Direction.HORIZONTAL) {
-        pos.x = this.HIGH - offset;
-        if (pos.x &lt; this.LOW) pos.x = this.LOW;
-    } else {
-        pos.y = this.HIGH - offset;
-        if (pos.y &lt; this.LOW) pos.y = this.LOW;
-    }
-
-    if (duration) {
-        this.moving_.runAction(new lime.animation.MoveTo(pos.x, pos.y).setDuration(duration).enableOptimizations().setEasing(lime.animation.getEasingFunction(.19, .6, .35, .97)));
-    } else this.moving_.setPosition(pos);
-};
-
-/**
- * Handle down events
- * @private
- * @param {lime.events.Event} e Event.
- */
-lime.ui.Scroller.prototype.downHandler_ = function(e) {
-    if (this.ismove) return;
-
-    e.position = this.localToNode(e.position, this.moving_);
-    this.downx = e.position.x;
-    this.downy = e.position.y;
-
-    this.v = 0;
-    this.ismove = 1;
-
-    if (this.getDirection() == lime.ui.Scroller.Direction.HORIZONTAL) {
-        this.oldvalue = this.posvalue = this.moving_.getPosition().x;
-    } else {
-        this.oldvalue = this.posvalue = this.moving_.getPosition().y;
-    }
-
-    this.measureLimits();
-
-    lime.animation.actionManager.stopAll(this.moving_);
-    //this.moving_.setPosition(p);
-
-    lime.scheduleManager.schedule(this.captureVelocity_, this);
-
-    e.swallow(['touchmove', 'mousemove'], this.moveHandler_);
-
-    e.swallow(['touchend', 'mouseup', 'touchcancel'], this.upHandler_);
-
-    this.event = e.clone();
-};
-
-/**
- * Capture the scrolling velocity to get some throwing
- * motion after release.
- * @private
- */
-lime.ui.Scroller.prototype.captureVelocity_ = function() {
-    if (this.ismove) {
-        this.v = (this.posvalue - this.oldvalue) * 1.05;
-        this.oldvalue = this.posvalue;
-    }
-    this.v *= lime.ui.Scroller.FRICTION;
-};
-
-/**
- * Cancel all current movement events.
- */
-lime.ui.Scroller.prototype.cancelEvents = function() {
-    if (this.event) {
-        this.event.release();
-    }
-    this.ismove = 0;
-};
-
-/**
- * Handle move events.
- * @private
- * @param {lime.events.Event} e Event.
- */
-lime.ui.Scroller.prototype.moveHandler_ = function(e) {
-    var pos = e.position.clone(),
-        dir = this.getDirection(),
-        activeval;
-    if (dir == lime.ui.Scroller.Direction.HORIZONTAL) {
-        pos.x -= this.downx;
-        pos.y = this.downy;
-        activeval = pos.x;
-    } else {
-        pos.x = this.downx;
-        pos.y -= this.downy;
-        activeval = pos.y;
-    }
-
-
-    if (activeval &lt; this.LOW) {
-        var diff = this.LOW - activeval;
-
-        if (diff > lime.ui.Scroller.OFFSET) diff = lime.ui.Scroller.OFFSET;
-        activeval = this.LOW - diff * lime.ui.Scroller.OFFSET_LAG;
-    }
-    if (activeval > this.HIGH) {
-        diff = activeval - this.HIGH;
-
-        if (diff > lime.ui.Scroller.OFFSET) diff = lime.ui.Scroller.OFFSET;
-        activeval = this.HIGH + diff * lime.ui.Scroller.OFFSET_LAG;
-    }
-
-    this.posvalue = activeval;
-
-    if (dir == lime.ui.Scroller.Direction.HORIZONTAL) {
-        pos.x = activeval;
-    } else {
-        pos.y = activeval;
-    }
-
-    this.moving_.setPosition(pos);
-
-
-};
-
-/**
- * Handle release(up) events.
- * @private
- * @param {lime.events.Event} e Event.
- */
-lime.ui.Scroller.prototype.upHandler_ = function(e) {
-    var pos = e.position.clone(),
-        dir = this.getDirection(),
-        activeval;
-
-    if (dir == lime.ui.Scroller.Direction.HORIZONTAL) {
-        pos.x -= this.downx;
-        pos.y = this.downy;
-        activeval = pos.x;
-    } else {
-        pos.x = this.downx;
-        pos.y -= this.downy;
-        activeval = pos.y;
-    }
-
-    lime.scheduleManager.unschedule(this.captureVelocity_, this);
-    var k = Math.log(0.5 / Math.abs(this.v)) /
-        Math.log(lime.ui.Scroller.FRICTION),
-        duration = k / 30,
-        endpos = (Math.abs(this.v) *
-            (Math.pow(lime.ui.Scroller.FRICTION, k) - 1)) /
-            (lime.ui.Scroller.FRICTION - 1) * (this.v > 0 ? 1 : -1);
-
-    activeval += endpos;
-    this.ismove = 0;
-
-    if (this.v != 0) {
-
-        var diff = endpos;
-
-        if (activeval &lt; this.LOW) {
-            diff = this.LOW - (activeval - endpos);
-            activeval = this.LOW;
-        }
-        if (activeval > this.HIGH) {
-            diff = this.HIGH - (activeval - endpos);
-            activeval = this.HIGH;
-        }
-        //console.log(diff,endpos);
-        duration *= (diff / endpos);
-
-    }
-
-    if (this.oldvalue &lt; this.LOW) {
-        activeval = this.LOW;
-        duration = .3;
-    }
-    if (this.oldvalue > this.HIGH) {
-        activeval = this.HIGH;
-        duration = .3;
-    }
-
-    if (dir == lime.ui.Scroller.Direction.HORIZONTAL) {
-        pos.x = activeval;
-    } else {
-        pos.y = activeval;
-    }
-
-    if (Math.abs(duration) &lt; 10) {
-        this.moving_.runAction(new lime.animation.MoveTo(pos.x, pos.y).setDuration(duration).enableOptimizations().setEasing(lime.animation.getEasingFunction(.19, .6, .35, .97)));
-    }
-
-
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.ui.Scroller');<a name="line2"></a>
+<a name="line3"></a>
+goog.require('lime.Sprite');<a name="line4"></a>
+goog.require('lime.animation.MoveTo');<a name="line5"></a>
+<a name="line6"></a>
+/**<a name="line7"></a>
+ * @constructor<a name="line8"></a>
+ * @extends lime.Sprite<a name="line9"></a>
+ */<a name="line10"></a>
+lime.ui.Scroller = function() {<a name="line11"></a>
+<a name="line12"></a>
+    goog.base(this);<a name="line13"></a>
+<a name="line14"></a>
+    //need default size for autoresize<a name="line15"></a>
+    this.setSize(100, 100);<a name="line16"></a>
+<a name="line17"></a>
+    this.clipper = new lime.Sprite().setFill('#c00').setSize(100, 100).<a name="line18"></a>
+    setAutoResize(lime.AutoResize.ALL);<a name="line19"></a>
+    this.appendChild(this.clipper);<a name="line20"></a>
+    this.setMask(this.clipper);<a name="line21"></a>
+<a name="line22"></a>
+    this.moving_ = new lime.Layer();<a name="line23"></a>
+    lime.Node.prototype.appendChild.call(this, this.moving_);<a name="line24"></a>
+<a name="line25"></a>
+    goog.events.listen(this, ['mousedown', 'touchstart'],<a name="line26"></a>
+        this.downHandler_, false, this);<a name="line27"></a>
+<a name="line28"></a>
+<a name="line29"></a>
+    this.setDirection(lime.ui.Scroller.Direction.HORIZONTAL);<a name="line30"></a>
+<a name="line31"></a>
+};<a name="line32"></a>
+goog.inherits(lime.ui.Scroller, lime.Sprite);<a name="line33"></a>
+<a name="line34"></a>
+/**<a name="line35"></a>
+ * Offset that can be dragged over the edge<a name="line36"></a>
+ * @const<a name="line37"></a>
+ * @type number<a name="line38"></a>
+ */<a name="line39"></a>
+lime.ui.Scroller.OFFSET = 250;<a name="line40"></a>
+<a name="line41"></a>
+/**<a name="line42"></a>
+ * Factor to slow down if over the edge<a name="line43"></a>
+ * @const<a name="line44"></a>
+ * @type number<a name="line45"></a>
+ */<a name="line46"></a>
+lime.ui.Scroller.OFFSET_LAG = .4;<a name="line47"></a>
+<a name="line48"></a>
+/**<a name="line49"></a>
+ * How fast to slow down<a name="line50"></a>
+ * @const<a name="line51"></a>
+ * @type number<a name="line52"></a>
+ */<a name="line53"></a>
+lime.ui.Scroller.FRICTION = .95;<a name="line54"></a>
+<a name="line55"></a>
+/**<a name="line56"></a>
+ * Directions of the scroller.<a name="line57"></a>
+ * @enum number<a name="line58"></a>
+ */<a name="line59"></a>
+lime.ui.Scroller.Direction = {<a name="line60"></a>
+    HORIZONTAL: 0,<a name="line61"></a>
+    VERTICAL: 1<a name="line62"></a>
+};<a name="line63"></a>
+<a name="line64"></a>
+/**<a name="line65"></a>
+ * Cleans up event listeners and references<a name="line66"></a>
+ */<a name="line67"></a>
+lime.ui.Scroller.prototype.dispose = function() {<a name="line68"></a>
+    if (this.event) {<a name="line69"></a>
+        this.event.disposeInternal();<a name="line70"></a>
+        this.event = null;<a name="line71"></a>
+    }<a name="line72"></a>
+    if (this.clipper) {<a name="line73"></a>
+        goog.events.removeAll(this.clipper);<a name="line74"></a>
+        this.clipper.maskTarget_ = null;<a name="line75"></a>
+        this.clipper.targetNode = null;<a name="line76"></a>
+        this.clipper = null;<a name="line77"></a>
+    }<a name="line78"></a>
+    if (this.moving_) {<a name="line79"></a>
+        goog.events.removeAll(this.moving_);<a name="line80"></a>
+        this.moving_.removeAllChildren();<a name="line81"></a>
+        this.moving_ = null;<a name="line82"></a>
+    }<a name="line83"></a>
+    this.mask_ = null;<a name="line84"></a>
+    this.activeMask_ = null;<a name="line85"></a>
+<a name="line86"></a>
+    goog.base(this, 'dispose');<a name="line87"></a>
+};<a name="line88"></a>
+<a name="line89"></a>
+/**<a name="line90"></a>
+ * Returns the direction of the scroller (horizontal/vertical)<a name="line91"></a>
+ * @return {lime.ui.Scroller.Direction} Scroll direction.<a name="line92"></a>
+ */<a name="line93"></a>
+lime.ui.Scroller.prototype.getDirection = function() {<a name="line94"></a>
+    return this.direction_;<a name="line95"></a>
+};<a name="line96"></a>
+<a name="line97"></a>
+/**<a name="line98"></a>
+ * Set the direction of the scroller (horizontal/vertical)<a name="line99"></a>
+ * @param {lime.ui.Scroller.Direction} direction Direction.<a name="line100"></a>
+ * @return {lime.ui.Scroller} object itself.<a name="line101"></a>
+ */<a name="line102"></a>
+lime.ui.Scroller.prototype.setDirection = function(direction) {<a name="line103"></a>
+    this.direction_ = direction;<a name="line104"></a>
+    return this;<a name="line105"></a>
+};<a name="line106"></a>
+<a name="line107"></a>
+/**<a name="line108"></a>
+ * @inheritDoc<a name="line109"></a>
+ * @see lime.Node#setAnchorPoint<a name="line110"></a>
+ */<a name="line111"></a>
+lime.ui.Scroller.prototype.setAnchorPoint = function() {<a name="line112"></a>
+    if (this.clipper) {<a name="line113"></a>
+        this.clipper.setAnchorPoint.apply(this.clipper, arguments);<a name="line114"></a>
+    }<a name="line115"></a>
+    return lime.Node.prototype.setAnchorPoint.apply(this, arguments);<a name="line116"></a>
+};<a name="line117"></a>
+<a name="line118"></a>
+/**<a name="line119"></a>
+ * @inheritDoc<a name="line120"></a>
+ * @see lime.Node#appendChild<a name="line121"></a>
+ */<a name="line122"></a>
+lime.ui.Scroller.prototype.appendChild = function() {<a name="line123"></a>
+    if (this.moving_) return this.moving_.appendChild.apply(<a name="line124"></a>
+            this.moving_, arguments);<a name="line125"></a>
+    return lime.Node.prototype.appendChild.apply(this, arguments);<a name="line126"></a>
+};<a name="line127"></a>
+<a name="line128"></a>
+/**<a name="line129"></a>
+ * @inheritDoc<a name="line130"></a>
+ * @see lime.Node#removeChild<a name="line131"></a>
+ */<a name="line132"></a>
+lime.ui.Scroller.prototype.removeChild = function() {<a name="line133"></a>
+    if (this.moving_) return this.moving_.removeChild.apply(<a name="line134"></a>
+            this.moving_, arguments);<a name="line135"></a>
+    return lime.Node.prototype.removeChild.apply(this, arguments);<a name="line136"></a>
+};<a name="line137"></a>
+<a name="line138"></a>
+/**<a name="line139"></a>
+ * Measure the contents of the scroller and set<a name="line140"></a>
+ * up high and low limits.<a name="line141"></a>
+ */<a name="line142"></a>
+lime.ui.Scroller.prototype.measureLimits = function() {<a name="line143"></a>
+<a name="line144"></a>
+    var measure = this.moving_.measureContents();<a name="line145"></a>
+    if (this.getDirection() == lime.ui.Scroller.Direction.HORIZONTAL) {<a name="line146"></a>
+        this.downy = this.moving_.getPosition().y;<a name="line147"></a>
+        var max = this.getSize().width;<a name="line148"></a>
+<a name="line149"></a>
+        this.LOW = -measure.left;<a name="line150"></a>
+        this.HIGH = Math.min(max - measure.right, -measure.left);<a name="line151"></a>
+        var diff = (measure.right - measure.left) - max;<a name="line152"></a>
+    } else {<a name="line153"></a>
+        this.downx = this.moving_.getPosition().x;<a name="line154"></a>
+        max = this.getSize().height;<a name="line155"></a>
+<a name="line156"></a>
+        this.LOW = -measure.top;<a name="line157"></a>
+        this.HIGH = Math.min(max - measure.bottom, -measure.top);<a name="line158"></a>
+        diff = (measure.bottom - measure.top) - max;<a name="line159"></a>
+    }<a name="line160"></a>
+<a name="line161"></a>
+    if (diff > 0) {<a name="line162"></a>
+        this.LOW -= diff;<a name="line163"></a>
+        this.HIGH += diff;<a name="line164"></a>
+    }<a name="line165"></a>
+};<a name="line166"></a>
+<a name="line167"></a>
+/**<a name="line168"></a>
+ * Scroll to specific offset in pixels<a name="line169"></a>
+ * @param {number} offset Offset in pixels.<a name="line170"></a>
+ * @param {number=} opt_duration Animation duration.<a name="line171"></a>
+ */<a name="line172"></a>
+lime.ui.Scroller.prototype.scrollTo = function(offset, opt_duration) {<a name="line173"></a>
+    var pos = this.moving_.getPosition().clone();<a name="line174"></a>
+    var duration = opt_duration || 0;<a name="line175"></a>
+<a name="line176"></a>
+    this.measureLimits();<a name="line177"></a>
+<a name="line178"></a>
+    if (offset &lt; 0) offset = 0;<a name="line179"></a>
+<a name="line180"></a>
+    if (this.getDirection() == lime.ui.Scroller.Direction.HORIZONTAL) {<a name="line181"></a>
+        pos.x = this.HIGH - offset;<a name="line182"></a>
+        if (pos.x &lt; this.LOW) pos.x = this.LOW;<a name="line183"></a>
+    } else {<a name="line184"></a>
+        pos.y = this.HIGH - offset;<a name="line185"></a>
+        if (pos.y &lt; this.LOW) pos.y = this.LOW;<a name="line186"></a>
+    }<a name="line187"></a>
+<a name="line188"></a>
+    if (duration) {<a name="line189"></a>
+        this.moving_.runAction(new lime.animation.MoveTo(pos.x, pos.y).setDuration(duration).enableOptimizations().setEasing(lime.animation.getEasingFunction(.19, .6, .35, .97)));<a name="line190"></a>
+    } else this.moving_.setPosition(pos);<a name="line191"></a>
+};<a name="line192"></a>
+<a name="line193"></a>
+/**<a name="line194"></a>
+ * Handle down events<a name="line195"></a>
+ * @private<a name="line196"></a>
+ * @param {lime.events.Event} e Event.<a name="line197"></a>
+ */<a name="line198"></a>
+lime.ui.Scroller.prototype.downHandler_ = function(e) {<a name="line199"></a>
+    if (this.ismove) return;<a name="line200"></a>
+<a name="line201"></a>
+    e.position = this.localToNode(e.position, this.moving_);<a name="line202"></a>
+    this.downx = e.position.x;<a name="line203"></a>
+    this.downy = e.position.y;<a name="line204"></a>
+<a name="line205"></a>
+    this.v = 0;<a name="line206"></a>
+    this.ismove = 1;<a name="line207"></a>
+<a name="line208"></a>
+    if (this.getDirection() == lime.ui.Scroller.Direction.HORIZONTAL) {<a name="line209"></a>
+        this.oldvalue = this.posvalue = this.moving_.getPosition().x;<a name="line210"></a>
+    } else {<a name="line211"></a>
+        this.oldvalue = this.posvalue = this.moving_.getPosition().y;<a name="line212"></a>
+    }<a name="line213"></a>
+<a name="line214"></a>
+    this.measureLimits();<a name="line215"></a>
+<a name="line216"></a>
+    lime.animation.actionManager.stopAll(this.moving_);<a name="line217"></a>
+    //this.moving_.setPosition(p);<a name="line218"></a>
+<a name="line219"></a>
+    lime.scheduleManager.schedule(this.captureVelocity_, this);<a name="line220"></a>
+<a name="line221"></a>
+    e.swallow(['touchmove', 'mousemove'], this.moveHandler_);<a name="line222"></a>
+<a name="line223"></a>
+    e.swallow(['touchend', 'mouseup', 'touchcancel'], this.upHandler_);<a name="line224"></a>
+<a name="line225"></a>
+    this.event = e.clone();<a name="line226"></a>
+};<a name="line227"></a>
+<a name="line228"></a>
+/**<a name="line229"></a>
+ * Capture the scrolling velocity to get some throwing<a name="line230"></a>
+ * motion after release.<a name="line231"></a>
+ * @private<a name="line232"></a>
+ */<a name="line233"></a>
+lime.ui.Scroller.prototype.captureVelocity_ = function() {<a name="line234"></a>
+    if (this.ismove) {<a name="line235"></a>
+        this.v = (this.posvalue - this.oldvalue) * 1.05;<a name="line236"></a>
+        this.oldvalue = this.posvalue;<a name="line237"></a>
+    }<a name="line238"></a>
+    this.v *= lime.ui.Scroller.FRICTION;<a name="line239"></a>
+};<a name="line240"></a>
+<a name="line241"></a>
+/**<a name="line242"></a>
+ * Cancel all current movement events.<a name="line243"></a>
+ */<a name="line244"></a>
+lime.ui.Scroller.prototype.cancelEvents = function() {<a name="line245"></a>
+    if (this.event) {<a name="line246"></a>
+        this.event.release();<a name="line247"></a>
+    }<a name="line248"></a>
+    this.ismove = 0;<a name="line249"></a>
+};<a name="line250"></a>
+<a name="line251"></a>
+/**<a name="line252"></a>
+ * Handle move events.<a name="line253"></a>
+ * @private<a name="line254"></a>
+ * @param {lime.events.Event} e Event.<a name="line255"></a>
+ */<a name="line256"></a>
+lime.ui.Scroller.prototype.moveHandler_ = function(e) {<a name="line257"></a>
+    var pos = e.position.clone(),<a name="line258"></a>
+        dir = this.getDirection(),<a name="line259"></a>
+        activeval;<a name="line260"></a>
+    if (dir == lime.ui.Scroller.Direction.HORIZONTAL) {<a name="line261"></a>
+        pos.x -= this.downx;<a name="line262"></a>
+        pos.y = this.downy;<a name="line263"></a>
+        activeval = pos.x;<a name="line264"></a>
+    } else {<a name="line265"></a>
+        pos.x = this.downx;<a name="line266"></a>
+        pos.y -= this.downy;<a name="line267"></a>
+        activeval = pos.y;<a name="line268"></a>
+    }<a name="line269"></a>
+<a name="line270"></a>
+<a name="line271"></a>
+    if (activeval &lt; this.LOW) {<a name="line272"></a>
+        var diff = this.LOW - activeval;<a name="line273"></a>
+<a name="line274"></a>
+        if (diff > lime.ui.Scroller.OFFSET) diff = lime.ui.Scroller.OFFSET;<a name="line275"></a>
+        activeval = this.LOW - diff * lime.ui.Scroller.OFFSET_LAG;<a name="line276"></a>
+    }<a name="line277"></a>
+    if (activeval > this.HIGH) {<a name="line278"></a>
+        diff = activeval - this.HIGH;<a name="line279"></a>
+<a name="line280"></a>
+        if (diff > lime.ui.Scroller.OFFSET) diff = lime.ui.Scroller.OFFSET;<a name="line281"></a>
+        activeval = this.HIGH + diff * lime.ui.Scroller.OFFSET_LAG;<a name="line282"></a>
+    }<a name="line283"></a>
+<a name="line284"></a>
+    this.posvalue = activeval;<a name="line285"></a>
+<a name="line286"></a>
+    if (dir == lime.ui.Scroller.Direction.HORIZONTAL) {<a name="line287"></a>
+        pos.x = activeval;<a name="line288"></a>
+    } else {<a name="line289"></a>
+        pos.y = activeval;<a name="line290"></a>
+    }<a name="line291"></a>
+<a name="line292"></a>
+    this.moving_.setPosition(pos);<a name="line293"></a>
+<a name="line294"></a>
+<a name="line295"></a>
+};<a name="line296"></a>
+<a name="line297"></a>
+/**<a name="line298"></a>
+ * Handle release(up) events.<a name="line299"></a>
+ * @private<a name="line300"></a>
+ * @param {lime.events.Event} e Event.<a name="line301"></a>
+ */<a name="line302"></a>
+lime.ui.Scroller.prototype.upHandler_ = function(e) {<a name="line303"></a>
+    var pos = e.position.clone(),<a name="line304"></a>
+        dir = this.getDirection(),<a name="line305"></a>
+        activeval;<a name="line306"></a>
+<a name="line307"></a>
+    if (dir == lime.ui.Scroller.Direction.HORIZONTAL) {<a name="line308"></a>
+        pos.x -= this.downx;<a name="line309"></a>
+        pos.y = this.downy;<a name="line310"></a>
+        activeval = pos.x;<a name="line311"></a>
+    } else {<a name="line312"></a>
+        pos.x = this.downx;<a name="line313"></a>
+        pos.y -= this.downy;<a name="line314"></a>
+        activeval = pos.y;<a name="line315"></a>
+    }<a name="line316"></a>
+<a name="line317"></a>
+    lime.scheduleManager.unschedule(this.captureVelocity_, this);<a name="line318"></a>
+    var k = Math.log(0.5 / Math.abs(this.v)) /<a name="line319"></a>
+        Math.log(lime.ui.Scroller.FRICTION),<a name="line320"></a>
+        duration = k / 30,<a name="line321"></a>
+        endpos = (Math.abs(this.v) *<a name="line322"></a>
+            (Math.pow(lime.ui.Scroller.FRICTION, k) - 1)) /<a name="line323"></a>
+            (lime.ui.Scroller.FRICTION - 1) * (this.v > 0 ? 1 : -1);<a name="line324"></a>
+<a name="line325"></a>
+    activeval += endpos;<a name="line326"></a>
+    this.ismove = 0;<a name="line327"></a>
+<a name="line328"></a>
+    if (this.v != 0) {<a name="line329"></a>
+<a name="line330"></a>
+        var diff = endpos;<a name="line331"></a>
+<a name="line332"></a>
+        if (activeval &lt; this.LOW) {<a name="line333"></a>
+            diff = this.LOW - (activeval - endpos);<a name="line334"></a>
+            activeval = this.LOW;<a name="line335"></a>
+        }<a name="line336"></a>
+        if (activeval > this.HIGH) {<a name="line337"></a>
+            diff = this.HIGH - (activeval - endpos);<a name="line338"></a>
+            activeval = this.HIGH;<a name="line339"></a>
+        }<a name="line340"></a>
+        //console.log(diff,endpos);<a name="line341"></a>
+        duration *= (diff / endpos);<a name="line342"></a>
+<a name="line343"></a>
+    }<a name="line344"></a>
+<a name="line345"></a>
+    if (this.oldvalue &lt; this.LOW) {<a name="line346"></a>
+        activeval = this.LOW;<a name="line347"></a>
+        duration = .3;<a name="line348"></a>
+    }<a name="line349"></a>
+    if (this.oldvalue > this.HIGH) {<a name="line350"></a>
+        activeval = this.HIGH;<a name="line351"></a>
+        duration = .3;<a name="line352"></a>
+    }<a name="line353"></a>
+<a name="line354"></a>
+    if (dir == lime.ui.Scroller.Direction.HORIZONTAL) {<a name="line355"></a>
+        pos.x = activeval;<a name="line356"></a>
+    } else {<a name="line357"></a>
+        pos.y = activeval;<a name="line358"></a>
+    }<a name="line359"></a>
+<a name="line360"></a>
+    if (Math.abs(duration) &lt; 10) {<a name="line361"></a>
+        this.moving_.runAction(new lime.animation.MoveTo(pos.x, pos.y).setDuration(duration).enableOptimizations().setEasing(lime.animation.getEasingFunction(.19, .6, .35, .97)));<a name="line362"></a>
+    }<a name="line363"></a>
+<a name="line364"></a>
+<a name="line365"></a>
+};<a name="line366"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -407,7 +407,7 @@ lime.ui.Scroller.prototype.upHandler_ = function(e) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

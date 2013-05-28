@@ -28,7 +28,7 @@
 	
 <header>
 	<h2>
-	scheduleManager
+	lime.scheduleManager
 	</h2>
 	
 </header>  
@@ -40,7 +40,7 @@
 	
 		
 <dt>
-    <h4 class="name" id="scheduleManager"><span class="type-signature"></span>new scheduleManager<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="scheduleManager"><span class="type-signature"></span>new lime.scheduleManager<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -85,7 +85,7 @@ Don't create instances of this class. Used the shared instance.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 14
+        <a href="schedulemanager.js.html#line14">schedulemanager.js</a>, line 14
     </li></ul></dd>
     
     
@@ -110,29 +110,200 @@ Don't create instances of this class. Used the shared instance.
 	</div>
 	
 	
-	<div class="doc_summary">
+	<div class="summary">
 		<a name="summary"></a>
-		<h3 class="subsection-title summary">Summary</h3>
+		<h3 class="subsection-title">Summary</h3>
 
 		<div class="doc_group"><a name="summary_classes"></a><h5>Classes</h5>
 <dl>
 	<dt class="even"><span class="type-name"><a href="lime.scheduleManager.Task.html">Task</a></span></dt><dd class="even">Scheduled task</dd>
-</dl></div><div class="doc_group"><a name="summary_properties_static"></a>
-<h5>Members - static</h5>
-
+</dl></div><div class="doc_group"><a name="summary_properties"></a>
 <dl>
-    <dt class="  even"><span class="type-attr"><span class="type-signature">&lt;static> </span></span><span class="type-name"><a href="#USE_ANIMATION_FRAME">USE_ANIMATION_FRAME</a></span><span class="type-sig"><span class="type-signature"> :boolean</span></span></dt><dd class="  even">Whether to use requestAnimationFrame instead of timer events
-Exposed here so it could be disabled if needed.</dd>
-</dl></div><div class="doc_group"><a name="summary_methods_static"></a>
-<h5>Methods - static</h5>
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Members</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static> </span>
+				</td>
+				<td class="last">
+						<a href="#USE_ANIMATION_FRAME"><code class="name">USE_ANIMATION_FRAME</code></a><span class="type-signature"><span class="type-signature"> :boolean</span></span>
+						<div class="summary-description"> Whether to use requestAnimationFrame instead of timer events
+Exposed here so it could be disabled if needed.</div>
+						
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
+</dl>
 
+</div><div class="doc_group"><a name="summary_methods"></a>
 <dl>
-    <dt class="private  even"><span class="type-attr"><span class="type-signature">&lt;private, static> </span></span><span class="type-name"><a href="#activate_">activate_</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="private  even">Start the internal timer functions</dd><dt class="private  odd"><span class="type-attr"><span class="type-signature">&lt;private, static> </span></span><span class="type-name"><a href="#animationFrameHandler_">animationFrameHandler_</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="private  odd">Webkit implemtation of requestAnimationFrame handler.</dd><dt class="private  even"><span class="type-attr"><span class="type-signature">&lt;private, static> </span></span><span class="type-name"><a href="#beforePaintHandler_">beforePaintHandler_</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="private  even">Mozilla < 11 implementation of requestAnimationFrame handler.</dd><dt class="  odd"><span class="type-attr"><span class="type-signature">&lt;static> </span></span><span class="type-name"><a href="#callAfter">callAfter</a></span><span class="type-sig"><span class="signature">(f, context, delay)</span><span class="type-signature"></span></span></dt><dd class="  odd">Set up function to be called once after a delay</dd><dt class="  even"><span class="type-attr"><span class="type-signature">&lt;static> </span></span><span class="type-name"><a href="#changeDirectorActivity">changeDirectorActivity</a></span><span class="type-sig"><span class="signature">(director, value)</span><span class="type-signature"></span></span></dt><dd class="  even">Change director's activity. Used for pausing updates when director is paused</dd><dt class="private  odd"><span class="type-attr"><span class="type-signature">&lt;private, static> </span></span><span class="type-name"><a href="#disable_">disable_</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="private  odd">Stop interval timer functions</dd><dt class="private  even"><span class="type-attr"><span class="type-signature">&lt;private, static> </span></span><span class="type-name"><a href="#dispatch_">dispatch_</a></span><span class="type-sig"><span class="signature">(delta)</span><span class="type-signature"></span></span></dt><dd class="private  even">Call all scheduled tasks</dd><dt class="  odd"><span class="type-attr"><span class="type-signature">&lt;static> </span></span><span class="type-name"><a href="#getDisplayRate">getDisplayRate</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span></dt><dd class="  odd">Returns maximum fire rate in ms. If you need FPS then use 1000/x</dd><dt class="  even"><span class="type-attr"><span class="type-signature">&lt;static> </span></span><span class="type-name"><a href="#schedule">schedule</a></span><span class="type-sig"><span class="signature">(f, context, <span class="optional">opt_task</span>)</span><span class="type-signature"></span></span></dt><dd class="  even">Schedule a function. Passed function will be called on every frame
-with delta time from last run time</dd><dt class="  odd"><span class="type-attr"><span class="type-signature">&lt;static> </span></span><span class="type-name"><a href="#scheduleWithDelay">scheduleWithDelay</a></span><span class="type-sig"><span class="signature">(f, context, delay, <span class="optional">opt_limit</span>)</span><span class="type-signature"></span></span></dt><dd class="  odd">Set up function to be called repeatedly after a delay</dd><dt class="  even"><span class="type-attr"><span class="type-signature">&lt;static> </span></span><span class="type-name"><a href="#setDisplayRate">setDisplayRate</a></span><span class="type-sig"><span class="signature">(value)</span><span class="type-signature"></span></span></dt><dd class="  even">Sets maximum fire rate for the scheduler in ms.
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Methods</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private, static> </span>
+				</td>
+				<td class="last">
+						<a href="#activate_"><code class="name">activate_</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Start the internal timer functions</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private, static> </span>
+				</td>
+				<td class="last">
+						<a href="#animationFrameHandler_"><code class="name">animationFrameHandler_</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Webkit implemtation of requestAnimationFrame handler.</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private, static> </span>
+				</td>
+				<td class="last">
+						<a href="#beforePaintHandler_"><code class="name">beforePaintHandler_</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Mozilla < 11 implementation of requestAnimationFrame handler.</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static> </span>
+				</td>
+				<td class="last">
+						<a href="#callAfter"><code class="name">callAfter</code></a><span class="type-signature"><span class="signature">(f, context, delay)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Set up function to be called once after a delay</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static> </span>
+				</td>
+				<td class="last">
+						<a href="#changeDirectorActivity"><code class="name">changeDirectorActivity</code></a><span class="type-signature"><span class="signature">(director, value)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Change director's activity. Used for pausing updates when director is paused</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private, static> </span>
+				</td>
+				<td class="last">
+						<a href="#disable_"><code class="name">disable_</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Stop interval timer functions</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private, static> </span>
+				</td>
+				<td class="last">
+						<a href="#dispatch_"><code class="name">dispatch_</code></a><span class="type-signature"><span class="signature">(delta)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Call all scheduled tasks</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static> </span>
+				</td>
+				<td class="last">
+						<a href="#getDisplayRate"><code class="name">getDisplayRate</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
+						<div class="summary-description"> Returns maximum fire rate in ms. If you need FPS then use 1000/x</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static> </span>
+				</td>
+				<td class="last">
+						<a href="#schedule"><code class="name">schedule</code></a><span class="type-signature"><span class="signature">(f, context, <span class="optional">opt_task</span>)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Schedule a function. Passed function will be called on every frame
+with delta time from last run time</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static> </span>
+				</td>
+				<td class="last">
+						<a href="#scheduleWithDelay"><code class="name">scheduleWithDelay</code></a><span class="type-signature"><span class="signature">(f, context, delay, <span class="optional">opt_limit</span>)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Set up function to be called repeatedly after a delay</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static> </span>
+				</td>
+				<td class="last">
+						<a href="#setDisplayRate"><code class="name">setDisplayRate</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Sets maximum fire rate for the scheduler in ms.
 If you have FPS then send 1000/x
 Note that if animation frame methods are used browser chooses
-max display rate and this value has no effect.</dd><dt class="private  odd"><span class="type-attr"><span class="type-signature">&lt;private, static> </span></span><span class="type-name"><a href="#stepTimer_">stepTimer_</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="private  odd">Timer events step function that delegates to other objects waiting</dd><dt class="  even"><span class="type-attr"><span class="type-signature">&lt;static> </span></span><span class="type-name"><a href="#unschedule">unschedule</a></span><span class="type-sig"><span class="signature">(f, context)</span><span class="type-signature"></span></span></dt><dd class="  even">Unschedule a function. For functions that have be previously scheduled</dd>
+max display rate and this value has no effect.</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private, static> </span>
+				</td>
+				<td class="last">
+						<a href="#stepTimer_"><code class="name">stepTimer_</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Timer events step function that delegates to other objects waiting</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static> </span>
+				</td>
+				<td class="last">
+						<a href="#unschedule"><code class="name">unschedule</code></a><span class="type-signature"><span class="signature">(f, context)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Unschedule a function. For functions that have be previously scheduled</div>
+						
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
 </dl>
+
 </div>
 	</div>
 	
@@ -147,7 +318,7 @@ max display rate and this value has no effect.</dd><dt class="private  odd"><spa
 		<h3 class="subsection-title">Classes</h3>
 		
 		<dl>
-			<dt><a href="lime.scheduleManager.Task.html">Task</a></dt>
+			<dt><a href="lime.scheduleManager.Task.html">lime.scheduleManager.Task</a></dt>
 			<dd></dd>
 		</dl>
 	
@@ -195,7 +366,7 @@ Exposed here so it could be disabled if needed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 111
+        <a href="schedulemanager.js.html#line111">schedulemanager.js</a>, line 111
     </li></ul></dd>
     
     
@@ -209,7 +380,6 @@ Exposed here so it could be disabled if needed.
     
     
 </dd>
-
 		</dl>
 	
 	
@@ -263,7 +433,7 @@ Exposed here so it could be disabled if needed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 191
+        <a href="schedulemanager.js.html#line191">schedulemanager.js</a>, line 191
     </li></ul></dd>
     
     
@@ -331,7 +501,7 @@ Exposed here so it could be disabled if needed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 241
+        <a href="schedulemanager.js.html#line241">schedulemanager.js</a>, line 241
     </li></ul></dd>
     
     
@@ -399,7 +569,7 @@ Exposed here so it could be disabled if needed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 263
+        <a href="schedulemanager.js.html#line263">schedulemanager.js</a>, line 263
     </li></ul></dd>
     
     
@@ -558,7 +728,7 @@ Exposed here so it could be disabled if needed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 341
+        <a href="schedulemanager.js.html#line341">schedulemanager.js</a>, line 341
     </li></ul></dd>
     
     
@@ -697,7 +867,7 @@ Exposed here so it could be disabled if needed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 315
+        <a href="schedulemanager.js.html#line315">schedulemanager.js</a>, line 315
     </li></ul></dd>
     
     
@@ -765,7 +935,7 @@ Exposed here so it could be disabled if needed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 220
+        <a href="schedulemanager.js.html#line220">schedulemanager.js</a>, line 220
     </li></ul></dd>
     
     
@@ -881,7 +1051,7 @@ Exposed here so it could be disabled if needed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 290
+        <a href="schedulemanager.js.html#line290">schedulemanager.js</a>, line 290
     </li></ul></dd>
     
     
@@ -949,7 +1119,7 @@ Exposed here so it could be disabled if needed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 118
+        <a href="schedulemanager.js.html#line118">schedulemanager.js</a>, line 118
     </li></ul></dd>
     
     
@@ -1162,7 +1332,7 @@ with delta time from last run time
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 147
+        <a href="schedulemanager.js.html#line147">schedulemanager.js</a>, line 147
     </li></ul></dd>
     
     
@@ -1383,7 +1553,7 @@ with delta time from last run time
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 353
+        <a href="schedulemanager.js.html#line353">schedulemanager.js</a>, line 353
     </li></ul></dd>
     
     
@@ -1502,7 +1672,7 @@ max display rate and this value has no effect.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 131
+        <a href="schedulemanager.js.html#line131">schedulemanager.js</a>, line 131
     </li></ul></dd>
     
     
@@ -1570,7 +1740,7 @@ max display rate and this value has no effect.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 275
+        <a href="schedulemanager.js.html#line275">schedulemanager.js</a>, line 275
     </li></ul></dd>
     
     
@@ -1709,7 +1879,7 @@ max display rate and this value has no effect.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="schedulemanager.js.html">schedulemanager.js</a>, line 162
+        <a href="schedulemanager.js.html#line162">schedulemanager.js</a>, line 162
     </li></ul></dd>
     
     
@@ -1752,7 +1922,7 @@ max display rate and this value has no effect.
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:25 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:44 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

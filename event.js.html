@@ -26,87 +26,87 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.events.Event');
-
-goog.require('lime.events.Drag');
-
-/**
- * Dfkit Event object
- * @param {lime.events.EventDispatcher} dispatcher Dispatcher.
- * @constructor
- */
-lime.events.Event = function(dispatcher) {
-    this.dispatcher_ = dispatcher;
-
-    this.identifier = 0;
-};
-
-/**
- * Swallow an event. This means that next event from the same
- * interaction will be sent directly to handler without any search
- * @param {string|Array.&lt;string>} type Event types to swallow.
- * @param {function(lime.events.Event)} handler Function to call on event.
- * @param {boolean=} opt_deny_shared Deny further actions for same event.
- */
-lime.events.Event.prototype.swallow = function(type, handler, opt_deny_shared) {
-    type = goog.isArray(type) ? type : [type];
-    for (var i = 0; i &lt; type.length; i++)
-        this.dispatcher_.swallow(this, type[i], handler);
-
-    if (opt_deny_shared) {
-        this.event.stopPropagation();
-    }
-};
-
-/**
- * Release all swllowed handlers.
- * @param {(string|Array.&lt;string>)=} opt_type Event types to release.
- */
-lime.events.Event.prototype.release = function(opt_type) {
-    var limit_type = goog.isDef(opt_type);
-    var type = goog.isArray(opt_type) ? opt_type : [opt_type];
-    var s = this.dispatcher_.swallows[this.identifier];
-    if (!s) return;
-
-    var e = this;
-    var s2 = goog.array.filter(s, function(swallow) {
-        if (!goog.isDef(e.targetObject) || (swallow[0] == e.targetObject &&
-            (!limit_type || goog.array.contains(type, swallow[1])))) {
-            goog.events.unlisten(swallow[0], swallow[1], swallow[2]);
-            return false;
-        }
-        return true;
-    });
-
-    if (s2.length) {
-        this.dispatcher_.swallows[this.identifier] = s2;
-    } else {
-        delete this.dispatcher_.swallows[this.identifier];
-    }
-};
-
-/**
- * Start dragging sequence from current event
- * @param {boolean} snapToCenter Drag from center or not.
- * @param {goog.math.Box} box Limited area where dragging is possible.
- * @param {lime.Node=} opt_targetObject Different target object to drag.
- * @return {lime.events.Drag} New Drag object.
- */
-lime.events.Event.prototype.startDrag = function(snapToCenter, box,
-    opt_targetObject) {
-    return new lime.events.Drag(this, snapToCenter, box, opt_targetObject);
-};
-
-/**
- * Retunr new event with same parameters
- * @return {lime.events.Event} event.
- */
-lime.events.Event.prototype.clone = function() {
-    var e = new lime.events.Event(this.dispatcher_);
-    goog.object.extend(e, this);
-    return e;
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.events.Event');<a name="line2"></a>
+<a name="line3"></a>
+goog.require('lime.events.Drag');<a name="line4"></a>
+<a name="line5"></a>
+/**<a name="line6"></a>
+ * Dfkit Event object<a name="line7"></a>
+ * @param {lime.events.EventDispatcher} dispatcher Dispatcher.<a name="line8"></a>
+ * @constructor<a name="line9"></a>
+ */<a name="line10"></a>
+lime.events.Event = function(dispatcher) {<a name="line11"></a>
+    this.dispatcher_ = dispatcher;<a name="line12"></a>
+<a name="line13"></a>
+    this.identifier = 0;<a name="line14"></a>
+};<a name="line15"></a>
+<a name="line16"></a>
+/**<a name="line17"></a>
+ * Swallow an event. This means that next event from the same<a name="line18"></a>
+ * interaction will be sent directly to handler without any search<a name="line19"></a>
+ * @param {string|Array.&lt;string>} type Event types to swallow.<a name="line20"></a>
+ * @param {function(lime.events.Event)} handler Function to call on event.<a name="line21"></a>
+ * @param {boolean=} opt_deny_shared Deny further actions for same event.<a name="line22"></a>
+ */<a name="line23"></a>
+lime.events.Event.prototype.swallow = function(type, handler, opt_deny_shared) {<a name="line24"></a>
+    type = goog.isArray(type) ? type : [type];<a name="line25"></a>
+    for (var i = 0; i &lt; type.length; i++)<a name="line26"></a>
+        this.dispatcher_.swallow(this, type[i], handler);<a name="line27"></a>
+<a name="line28"></a>
+    if (opt_deny_shared) {<a name="line29"></a>
+        this.event.stopPropagation();<a name="line30"></a>
+    }<a name="line31"></a>
+};<a name="line32"></a>
+<a name="line33"></a>
+/**<a name="line34"></a>
+ * Release all swllowed handlers.<a name="line35"></a>
+ * @param {(string|Array.&lt;string>)=} opt_type Event types to release.<a name="line36"></a>
+ */<a name="line37"></a>
+lime.events.Event.prototype.release = function(opt_type) {<a name="line38"></a>
+    var limit_type = goog.isDef(opt_type);<a name="line39"></a>
+    var type = goog.isArray(opt_type) ? opt_type : [opt_type];<a name="line40"></a>
+    var s = this.dispatcher_.swallows[this.identifier];<a name="line41"></a>
+    if (!s) return;<a name="line42"></a>
+<a name="line43"></a>
+    var e = this;<a name="line44"></a>
+    var s2 = goog.array.filter(s, function(swallow) {<a name="line45"></a>
+        if (!goog.isDef(e.targetObject) || (swallow[0] == e.targetObject &&<a name="line46"></a>
+            (!limit_type || goog.array.contains(type, swallow[1])))) {<a name="line47"></a>
+            goog.events.unlisten(swallow[0], swallow[1], swallow[2]);<a name="line48"></a>
+            return false;<a name="line49"></a>
+        }<a name="line50"></a>
+        return true;<a name="line51"></a>
+    });<a name="line52"></a>
+<a name="line53"></a>
+    if (s2.length) {<a name="line54"></a>
+        this.dispatcher_.swallows[this.identifier] = s2;<a name="line55"></a>
+    } else {<a name="line56"></a>
+        delete this.dispatcher_.swallows[this.identifier];<a name="line57"></a>
+    }<a name="line58"></a>
+};<a name="line59"></a>
+<a name="line60"></a>
+/**<a name="line61"></a>
+ * Start dragging sequence from current event<a name="line62"></a>
+ * @param {boolean} snapToCenter Drag from center or not.<a name="line63"></a>
+ * @param {goog.math.Box} box Limited area where dragging is possible.<a name="line64"></a>
+ * @param {lime.Node=} opt_targetObject Different target object to drag.<a name="line65"></a>
+ * @return {lime.events.Drag} New Drag object.<a name="line66"></a>
+ */<a name="line67"></a>
+lime.events.Event.prototype.startDrag = function(snapToCenter, box,<a name="line68"></a>
+    opt_targetObject) {<a name="line69"></a>
+    return new lime.events.Drag(this, snapToCenter, box, opt_targetObject);<a name="line70"></a>
+};<a name="line71"></a>
+<a name="line72"></a>
+/**<a name="line73"></a>
+ * Retunr new event with same parameters<a name="line74"></a>
+ * @return {lime.events.Event} event.<a name="line75"></a>
+ */<a name="line76"></a>
+lime.events.Event.prototype.clone = function() {<a name="line77"></a>
+    var e = new lime.events.Event(this.dispatcher_);<a name="line78"></a>
+    goog.object.extend(e, this);<a name="line79"></a>
+    return e;<a name="line80"></a>
+};<a name="line81"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -122,7 +122,7 @@ lime.events.Event.prototype.clone = function() {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

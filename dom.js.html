@@ -26,302 +26,302 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.Renderer.DOM');
-
-goog.require('goog.dom');
-goog.require('lime.Renderer');
-goog.require('lime.style');
-
-/**
- * DOM renderer. This renders as div dom elements and
- * styles are added with CSS
- * @const
- * @type {lime.Renderer}
- */
-lime.Renderer.DOM = new lime.Renderer();
-
-/**
- * Update the DOM tree relations of the element.
- * @this {lime.Node}
- */
-lime.Renderer.DOM.updateLayout = function() {
-    var j = 0,
-        el;
-    for (var i = 0, child; child = this.children_[i]; i++) {
-        el = child instanceof lime.Node ? child.rootElement : child;
-
-        if (el == this.domElement.childNodes[j]) {
-            j++;
-            continue;
-        } else {
-            if (goog.dom.contains(this.containerElement, el)) {
-                goog.dom.removeNode(el);
-            }
-            lime.Renderer.DOM.appendAt_(this.containerElement, el, j++);
-            continue;
-        }
-    }
-
-    /* var lastIndex = this.containerElement.childNodes.length - 1;
-    while (lastIndex >= j) {
-        goog.dom.removeNode(this.containerElement.childNodes[lastIndex]);
-        lastIndex--;
-    }*/
-};
-
-/**
- * Calculate the size and position of the element and draw it
- * @this {lime.Node}
- */
-lime.Renderer.DOM.drawSizePosition = function() {
-    var size = this.getSize(),
-        quality = this.getQuality(),
-        position = this.getPosition(),
-        rquality = this.relativeQuality_ || 1,
-        enable3D = this.getCSS3DTransformsAllowed();
-
-    if (this.transitionsActive_[lime.Transition.POSITION]) {
-        position = this.transitionsActive_[lime.Transition.POSITION];
-    }
-
-    var width = Math.round(size.width * rquality);
-    var height = Math.round(size.height * rquality);
-
-    var realScale = this.getScale().clone();
-    if (this.transitionsActive_[lime.Transition.SCALE]) {
-        realScale = this.transitionsActive_[lime.Transition.SCALE].clone();
-    }
-    if (width != 0) realScale.scale(size.width / (width * quality / rquality));
-    else realScale.scale(1 / quality);
-
-    lime.style.setSize(this.domElement, width, height);
-
-    lime.style.setTransformOrigin(this.domElement,
-        this.anchorPoint_.x * 100, this.anchorPoint_.y * 100, true);
-
-
-    var ax = this.anchorPoint_.x * size.width * rquality;
-    var ay = this.anchorPoint_.y * size.height * rquality;
-
-    var px = position.x * rquality / quality - ax,
-        py = position.y * rquality / quality - ay;
-
-    var so = this.stroke_ ? this.stroke_.width_ : 0;
-
-    if (((ax - so) != 0 || (ay - so) != 0) && this.domElement == this.containerElement &&
-        this.children_.length) {
-        lime.Renderer.DOM.makeContainer.call(this);
-    }
-
-
-    if (this.domElement != this.containerElement) {
-        if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION])
-            lime.style.setTransform(this.containerElement,
-                new lime.style.Transform()
-                .set3DAllowed(enable3D)
-                .translate(ax - so, ay - so));
-    }
-
-    if (this.mask_ != this.activeMask_) {
-        if (this.activeMask_) {
-            lime.Renderer.DOM.removeMask.call(this);
-        }
-
-        if (this.mask_) {
-            lime.Renderer.DOM.addMask.call(this);
-        }
-    }
-
-    var transform = new lime.style.Transform()
-        .setPrecision(0.1)
-        .set3DAllowed(enable3D);
-
-    if (this.mask_) {
-        lime.Renderer.DOM.calculateMaskPosition.call(this.mask_);
-        transform.setPrecision(0.1)
-            .translate(-this.mask_.mX - ax, -this.mask_.mY - ay)
-            .rotate(this.mask_.mRot, 'rad').translate(ax, ay).setPrecision(1);
-    }
-
-    var rotation = -this.getRotation();
-    if (goog.isDef(this.transitionsActive_[lime.Transition.ROTATION])) {
-        rotation = -this.transitionsActive_[lime.Transition.ROTATION];
-    }
-
-    transform.translate(px, py).scale(realScale.x, realScale.y).
-    rotate(rotation);
-
-    if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]) {
-        //     console.log('transform',this.transition_position_set_,this.transition_position_);
-        lime.style.setTransform(this.domElement, transform);
-    }
-
-};
-
-/**
- * Update nodes dirty values and call draw after
- * @this {lime.Node}
- */
-lime.Renderer.DOM.update = function() {
-    if (!this.domElement) return;
-
-    lime.Renderer.DOM.drawSizePosition.call(this);
-
-    if (!this.transitionsActiveSet_[lime.Transition.OPACITY]) {
-        var opacity = this.opacity_;
-        if (goog.isDef(this.transitionsActive_[lime.Transition.OPACITY])) {
-            opacity = this.transitionsActive_[lime.Transition.OPACITY];
-        }
-        if (this.getDirty() & lime.Dirty.ALPHA) {
-            goog.style.setOpacity(this.domElement, opacity);
-        }
-    }
-
-    if (this.getDirty() & lime.Dirty.VISIBILITY) {
-        this.domElement.style['display'] = this.hidden_ ? 'none' : 'block';
-    }
-
-    if (!this.maskTarget_)
-        this.renderer.draw.call(this, this.domElement);
-
-};
-
-/**
- * Update the mask changes to reflect on the element
- * @this {lime.Node}
- */
-lime.Renderer.DOM.calculateMaskPosition = function() {
-
-    if (!goog.isDef(this.targetNode) || !this.targetNode.inTree_) return;
-
-    var target = this.targetNode;
-    //todo: replace with bounds method
-    var bb = this.getFrame();
-    var tl = new goog.math.Coordinate(bb.left, bb.top);
-    var tr = new goog.math.Coordinate(bb.right, bb.top);
-    var br = new goog.math.Coordinate(bb.right, bb.bottom);
-
-    var targetParent = target.getParent();
-
-    tl = this.localToNode(tl, targetParent);
-    tr = this.localToNode(tr, targetParent);
-    br = this.localToNode(br, targetParent);
-    /*
-    console.log('tl: '+tl.x+' '+tl.y);
-    console.log('tr: '+tr.x+' '+tr.y);
-    console.log('br: '+br.x+' '+br.y);
-    */
-    var rot = Math.atan2(tl.y - tr.y, tr.x - tl.x);
-
-
-    var x1 = tr.x - tl.x;
-    var y1 = tl.y - tr.y;
-
-    var x2 = br.x - tr.x;
-    var y2 = br.y - tr.y;
-
-    var cos = Math.cos(rot);
-    var sin = Math.sin(rot);
-
-
-    this.mWidth = Math.round(Math.sqrt(x1 * x1 + y1 * y1));
-    this.mHeight = Math.round(Math.sqrt(x2 * x2 + y2 * y2));
-
-    if (target.renderer.getType() == lime.Renderer.DOM) {
-        var el = target.rootElement;
-
-        //todo: can be optimized
-        goog.style.setSize(el, this.mWidth, this.mHeight);
-
-        lime.style.setTransform(el, new lime.style.Transform()
-            .setPrecision(0.1)
-            .set3DAllowed(this.getCSS3DTransformsAllowed())
-            .translate(tl.x, tl.y).rotate(-rot, 'rad'));
-    }
-
-    if (this.renderer.getType() == lime.Renderer.DOM) {
-        this.domElement.style['display'] = 'none';
-    }
-
-    this.mPos = target.parentToLocal(tl.clone());
-
-    this.mSet = true;
-    this.mX = cos * tl.x - sin * tl.y;
-    this.mY = cos * tl.y + sin * tl.x;
-    this.mRot = rot;
-    /*
-    target.setDirty(lime.Dirty.POSITION);
-    target.update();
-*/
-
-};
-
-/**
- * Helper function to add DOM node to the specific position
- * as a child.
- * @param {Object} p Parent DOM element.
- * @param {Object} c Child DOM element.
- * @param {number} opt_pos Position of the child.
- * @private
- */
-lime.Renderer.DOM.appendAt_ = function(p, c, opt_pos) {
-    if (opt_pos == undefined || p.childNodes.length &lt;= opt_pos)
-        p.appendChild(c);
-    else
-        p.insertBefore(c, p.childNodes[opt_pos]);
-};
-
-/**
- * Make separate container element for the childnodes
- * @this {lime.Node}
- */
-lime.Renderer.DOM.makeContainer = function() {
-    this.containerElement = goog.dom.createDom('div');
-    var fragment = document.createDocumentFragment(),
-        child;
-    while ((child = this.domElement.firstChild)) {
-        this.domElement.removeChild(child);
-        fragment.appendChild(child);
-    }
-    this.containerElement.appendChild(fragment);
-    this.domElement.appendChild(this.containerElement);
-};
-
-/**
- * Remove mask element relations
- * @this {lime.Node}
- */
-lime.Renderer.DOM.removeMask = function() {
-    if (this.domElement == this.rootElement) return;
-    if (this.renderer.getType() == lime.Renderer.DOM) {
-        goog.dom.removeNode(this.domElement);
-        goog.dom.replaceNode(this.domElement, this.rootElement);
-        this.rootElement = this.domElement;
-    }
-    this.activeMask_.isMask = 0;
-    this.activeMask_ = null;
-};
-
-/**
- * Add mask element and make its relations
- * @this {lime.Node}
- */
-lime.Renderer.DOM.addMask = function() {
-    if (this.renderer.getType() == lime.Renderer.DOM) {
-        this.rootElement = goog.dom.createDom('div');
-        this.rootElement.style.cssText = 'position:absolute;overflow:hidden;';
-        //todo: combine into css class
-        lime.style.setTransformOrigin(this.rootElement, 0, 0);
-        goog.dom.replaceNode(this.rootElement, this.domElement);
-        this.rootElement.appendChild(this.domElement);
-    }
-
-    this.mask_.isMask = 1;
-    this.mask_.targetNode = this;
-    this.activeMask_ = this.mask_;
-    this.mask_.setDirty(lime.Dirty.POSITION);
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.Renderer.DOM');<a name="line2"></a>
+<a name="line3"></a>
+goog.require('goog.dom');<a name="line4"></a>
+goog.require('lime.Renderer');<a name="line5"></a>
+goog.require('lime.style');<a name="line6"></a>
+<a name="line7"></a>
+/**<a name="line8"></a>
+ * DOM renderer. This renders as div dom elements and<a name="line9"></a>
+ * styles are added with CSS<a name="line10"></a>
+ * @const<a name="line11"></a>
+ * @type {lime.Renderer}<a name="line12"></a>
+ */<a name="line13"></a>
+lime.Renderer.DOM = new lime.Renderer();<a name="line14"></a>
+<a name="line15"></a>
+/**<a name="line16"></a>
+ * Update the DOM tree relations of the element.<a name="line17"></a>
+ * @this {lime.Node}<a name="line18"></a>
+ */<a name="line19"></a>
+lime.Renderer.DOM.updateLayout = function() {<a name="line20"></a>
+    var j = 0,<a name="line21"></a>
+        el;<a name="line22"></a>
+    for (var i = 0, child; child = this.children_[i]; i++) {<a name="line23"></a>
+        el = child instanceof lime.Node ? child.rootElement : child;<a name="line24"></a>
+<a name="line25"></a>
+        if (el == this.domElement.childNodes[j]) {<a name="line26"></a>
+            j++;<a name="line27"></a>
+            continue;<a name="line28"></a>
+        } else {<a name="line29"></a>
+            if (goog.dom.contains(this.containerElement, el)) {<a name="line30"></a>
+                goog.dom.removeNode(el);<a name="line31"></a>
+            }<a name="line32"></a>
+            lime.Renderer.DOM.appendAt_(this.containerElement, el, j++);<a name="line33"></a>
+            continue;<a name="line34"></a>
+        }<a name="line35"></a>
+    }<a name="line36"></a>
+<a name="line37"></a>
+    /* var lastIndex = this.containerElement.childNodes.length - 1;<a name="line38"></a>
+    while (lastIndex >= j) {<a name="line39"></a>
+        goog.dom.removeNode(this.containerElement.childNodes[lastIndex]);<a name="line40"></a>
+        lastIndex--;<a name="line41"></a>
+    }*/<a name="line42"></a>
+};<a name="line43"></a>
+<a name="line44"></a>
+/**<a name="line45"></a>
+ * Calculate the size and position of the element and draw it<a name="line46"></a>
+ * @this {lime.Node}<a name="line47"></a>
+ */<a name="line48"></a>
+lime.Renderer.DOM.drawSizePosition = function() {<a name="line49"></a>
+    var size = this.getSize(),<a name="line50"></a>
+        quality = this.getQuality(),<a name="line51"></a>
+        position = this.getPosition(),<a name="line52"></a>
+        rquality = this.relativeQuality_ || 1,<a name="line53"></a>
+        enable3D = this.getCSS3DTransformsAllowed();<a name="line54"></a>
+<a name="line55"></a>
+    if (this.transitionsActive_[lime.Transition.POSITION]) {<a name="line56"></a>
+        position = this.transitionsActive_[lime.Transition.POSITION];<a name="line57"></a>
+    }<a name="line58"></a>
+<a name="line59"></a>
+    var width = Math.round(size.width * rquality);<a name="line60"></a>
+    var height = Math.round(size.height * rquality);<a name="line61"></a>
+<a name="line62"></a>
+    var realScale = this.getScale().clone();<a name="line63"></a>
+    if (this.transitionsActive_[lime.Transition.SCALE]) {<a name="line64"></a>
+        realScale = this.transitionsActive_[lime.Transition.SCALE].clone();<a name="line65"></a>
+    }<a name="line66"></a>
+    if (width != 0) realScale.scale(size.width / (width * quality / rquality));<a name="line67"></a>
+    else realScale.scale(1 / quality);<a name="line68"></a>
+<a name="line69"></a>
+    lime.style.setSize(this.domElement, width, height);<a name="line70"></a>
+<a name="line71"></a>
+    lime.style.setTransformOrigin(this.domElement,<a name="line72"></a>
+        this.anchorPoint_.x * 100, this.anchorPoint_.y * 100, true);<a name="line73"></a>
+<a name="line74"></a>
+<a name="line75"></a>
+    var ax = this.anchorPoint_.x * size.width * rquality;<a name="line76"></a>
+    var ay = this.anchorPoint_.y * size.height * rquality;<a name="line77"></a>
+<a name="line78"></a>
+    var px = position.x * rquality / quality - ax,<a name="line79"></a>
+        py = position.y * rquality / quality - ay;<a name="line80"></a>
+<a name="line81"></a>
+    var so = this.stroke_ ? this.stroke_.width_ : 0;<a name="line82"></a>
+<a name="line83"></a>
+    if (((ax - so) != 0 || (ay - so) != 0) && this.domElement == this.containerElement &&<a name="line84"></a>
+        this.children_.length) {<a name="line85"></a>
+        lime.Renderer.DOM.makeContainer.call(this);<a name="line86"></a>
+    }<a name="line87"></a>
+<a name="line88"></a>
+<a name="line89"></a>
+    if (this.domElement != this.containerElement) {<a name="line90"></a>
+        if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION])<a name="line91"></a>
+            lime.style.setTransform(this.containerElement,<a name="line92"></a>
+                new lime.style.Transform()<a name="line93"></a>
+                .set3DAllowed(enable3D)<a name="line94"></a>
+                .translate(ax - so, ay - so));<a name="line95"></a>
+    }<a name="line96"></a>
+<a name="line97"></a>
+    if (this.mask_ != this.activeMask_) {<a name="line98"></a>
+        if (this.activeMask_) {<a name="line99"></a>
+            lime.Renderer.DOM.removeMask.call(this);<a name="line100"></a>
+        }<a name="line101"></a>
+<a name="line102"></a>
+        if (this.mask_) {<a name="line103"></a>
+            lime.Renderer.DOM.addMask.call(this);<a name="line104"></a>
+        }<a name="line105"></a>
+    }<a name="line106"></a>
+<a name="line107"></a>
+    var transform = new lime.style.Transform()<a name="line108"></a>
+        .setPrecision(0.1)<a name="line109"></a>
+        .set3DAllowed(enable3D);<a name="line110"></a>
+<a name="line111"></a>
+    if (this.mask_) {<a name="line112"></a>
+        lime.Renderer.DOM.calculateMaskPosition.call(this.mask_);<a name="line113"></a>
+        transform.setPrecision(0.1)<a name="line114"></a>
+            .translate(-this.mask_.mX - ax, -this.mask_.mY - ay)<a name="line115"></a>
+            .rotate(this.mask_.mRot, 'rad').translate(ax, ay).setPrecision(1);<a name="line116"></a>
+    }<a name="line117"></a>
+<a name="line118"></a>
+    var rotation = -this.getRotation();<a name="line119"></a>
+    if (goog.isDef(this.transitionsActive_[lime.Transition.ROTATION])) {<a name="line120"></a>
+        rotation = -this.transitionsActive_[lime.Transition.ROTATION];<a name="line121"></a>
+    }<a name="line122"></a>
+<a name="line123"></a>
+    transform.translate(px, py).scale(realScale.x, realScale.y).<a name="line124"></a>
+    rotate(rotation);<a name="line125"></a>
+<a name="line126"></a>
+    if (!this.transitionsActiveSet_[lime.Transition.POSITION] && !this.transitionsActiveSet_[lime.Transition.SCALE] && !this.transitionsActiveSet_[lime.Transition.ROTATION]) {<a name="line127"></a>
+        //     console.log('transform',this.transition_position_set_,this.transition_position_);<a name="line128"></a>
+        lime.style.setTransform(this.domElement, transform);<a name="line129"></a>
+    }<a name="line130"></a>
+<a name="line131"></a>
+};<a name="line132"></a>
+<a name="line133"></a>
+/**<a name="line134"></a>
+ * Update nodes dirty values and call draw after<a name="line135"></a>
+ * @this {lime.Node}<a name="line136"></a>
+ */<a name="line137"></a>
+lime.Renderer.DOM.update = function() {<a name="line138"></a>
+    if (!this.domElement) return;<a name="line139"></a>
+<a name="line140"></a>
+    lime.Renderer.DOM.drawSizePosition.call(this);<a name="line141"></a>
+<a name="line142"></a>
+    if (!this.transitionsActiveSet_[lime.Transition.OPACITY]) {<a name="line143"></a>
+        var opacity = this.opacity_;<a name="line144"></a>
+        if (goog.isDef(this.transitionsActive_[lime.Transition.OPACITY])) {<a name="line145"></a>
+            opacity = this.transitionsActive_[lime.Transition.OPACITY];<a name="line146"></a>
+        }<a name="line147"></a>
+        if (this.getDirty() & lime.Dirty.ALPHA) {<a name="line148"></a>
+            goog.style.setOpacity(this.domElement, opacity);<a name="line149"></a>
+        }<a name="line150"></a>
+    }<a name="line151"></a>
+<a name="line152"></a>
+    if (this.getDirty() & lime.Dirty.VISIBILITY) {<a name="line153"></a>
+        this.domElement.style['display'] = this.hidden_ ? 'none' : 'block';<a name="line154"></a>
+    }<a name="line155"></a>
+<a name="line156"></a>
+    if (!this.maskTarget_)<a name="line157"></a>
+        this.renderer.draw.call(this, this.domElement);<a name="line158"></a>
+<a name="line159"></a>
+};<a name="line160"></a>
+<a name="line161"></a>
+/**<a name="line162"></a>
+ * Update the mask changes to reflect on the element<a name="line163"></a>
+ * @this {lime.Node}<a name="line164"></a>
+ */<a name="line165"></a>
+lime.Renderer.DOM.calculateMaskPosition = function() {<a name="line166"></a>
+<a name="line167"></a>
+    if (!goog.isDef(this.targetNode) || !this.targetNode.inTree_) return;<a name="line168"></a>
+<a name="line169"></a>
+    var target = this.targetNode;<a name="line170"></a>
+    //todo: replace with bounds method<a name="line171"></a>
+    var bb = this.getFrame();<a name="line172"></a>
+    var tl = new goog.math.Coordinate(bb.left, bb.top);<a name="line173"></a>
+    var tr = new goog.math.Coordinate(bb.right, bb.top);<a name="line174"></a>
+    var br = new goog.math.Coordinate(bb.right, bb.bottom);<a name="line175"></a>
+<a name="line176"></a>
+    var targetParent = target.getParent();<a name="line177"></a>
+<a name="line178"></a>
+    tl = this.localToNode(tl, targetParent);<a name="line179"></a>
+    tr = this.localToNode(tr, targetParent);<a name="line180"></a>
+    br = this.localToNode(br, targetParent);<a name="line181"></a>
+    /*<a name="line182"></a>
+    console.log('tl: '+tl.x+' '+tl.y);<a name="line183"></a>
+    console.log('tr: '+tr.x+' '+tr.y);<a name="line184"></a>
+    console.log('br: '+br.x+' '+br.y);<a name="line185"></a>
+    */<a name="line186"></a>
+    var rot = Math.atan2(tl.y - tr.y, tr.x - tl.x);<a name="line187"></a>
+<a name="line188"></a>
+<a name="line189"></a>
+    var x1 = tr.x - tl.x;<a name="line190"></a>
+    var y1 = tl.y - tr.y;<a name="line191"></a>
+<a name="line192"></a>
+    var x2 = br.x - tr.x;<a name="line193"></a>
+    var y2 = br.y - tr.y;<a name="line194"></a>
+<a name="line195"></a>
+    var cos = Math.cos(rot);<a name="line196"></a>
+    var sin = Math.sin(rot);<a name="line197"></a>
+<a name="line198"></a>
+<a name="line199"></a>
+    this.mWidth = Math.round(Math.sqrt(x1 * x1 + y1 * y1));<a name="line200"></a>
+    this.mHeight = Math.round(Math.sqrt(x2 * x2 + y2 * y2));<a name="line201"></a>
+<a name="line202"></a>
+    if (target.renderer.getType() == lime.Renderer.DOM) {<a name="line203"></a>
+        var el = target.rootElement;<a name="line204"></a>
+<a name="line205"></a>
+        //todo: can be optimized<a name="line206"></a>
+        goog.style.setSize(el, this.mWidth, this.mHeight);<a name="line207"></a>
+<a name="line208"></a>
+        lime.style.setTransform(el, new lime.style.Transform()<a name="line209"></a>
+            .setPrecision(0.1)<a name="line210"></a>
+            .set3DAllowed(this.getCSS3DTransformsAllowed())<a name="line211"></a>
+            .translate(tl.x, tl.y).rotate(-rot, 'rad'));<a name="line212"></a>
+    }<a name="line213"></a>
+<a name="line214"></a>
+    if (this.renderer.getType() == lime.Renderer.DOM) {<a name="line215"></a>
+        this.domElement.style['display'] = 'none';<a name="line216"></a>
+    }<a name="line217"></a>
+<a name="line218"></a>
+    this.mPos = target.parentToLocal(tl.clone());<a name="line219"></a>
+<a name="line220"></a>
+    this.mSet = true;<a name="line221"></a>
+    this.mX = cos * tl.x - sin * tl.y;<a name="line222"></a>
+    this.mY = cos * tl.y + sin * tl.x;<a name="line223"></a>
+    this.mRot = rot;<a name="line224"></a>
+    /*<a name="line225"></a>
+    target.setDirty(lime.Dirty.POSITION);<a name="line226"></a>
+    target.update();<a name="line227"></a>
+*/<a name="line228"></a>
+<a name="line229"></a>
+};<a name="line230"></a>
+<a name="line231"></a>
+/**<a name="line232"></a>
+ * Helper function to add DOM node to the specific position<a name="line233"></a>
+ * as a child.<a name="line234"></a>
+ * @param {Object} p Parent DOM element.<a name="line235"></a>
+ * @param {Object} c Child DOM element.<a name="line236"></a>
+ * @param {number} opt_pos Position of the child.<a name="line237"></a>
+ * @private<a name="line238"></a>
+ */<a name="line239"></a>
+lime.Renderer.DOM.appendAt_ = function(p, c, opt_pos) {<a name="line240"></a>
+    if (opt_pos == undefined || p.childNodes.length &lt;= opt_pos)<a name="line241"></a>
+        p.appendChild(c);<a name="line242"></a>
+    else<a name="line243"></a>
+        p.insertBefore(c, p.childNodes[opt_pos]);<a name="line244"></a>
+};<a name="line245"></a>
+<a name="line246"></a>
+/**<a name="line247"></a>
+ * Make separate container element for the childnodes<a name="line248"></a>
+ * @this {lime.Node}<a name="line249"></a>
+ */<a name="line250"></a>
+lime.Renderer.DOM.makeContainer = function() {<a name="line251"></a>
+    this.containerElement = goog.dom.createDom('div');<a name="line252"></a>
+    var fragment = document.createDocumentFragment(),<a name="line253"></a>
+        child;<a name="line254"></a>
+    while ((child = this.domElement.firstChild)) {<a name="line255"></a>
+        this.domElement.removeChild(child);<a name="line256"></a>
+        fragment.appendChild(child);<a name="line257"></a>
+    }<a name="line258"></a>
+    this.containerElement.appendChild(fragment);<a name="line259"></a>
+    this.domElement.appendChild(this.containerElement);<a name="line260"></a>
+};<a name="line261"></a>
+<a name="line262"></a>
+/**<a name="line263"></a>
+ * Remove mask element relations<a name="line264"></a>
+ * @this {lime.Node}<a name="line265"></a>
+ */<a name="line266"></a>
+lime.Renderer.DOM.removeMask = function() {<a name="line267"></a>
+    if (this.domElement == this.rootElement) return;<a name="line268"></a>
+    if (this.renderer.getType() == lime.Renderer.DOM) {<a name="line269"></a>
+        goog.dom.removeNode(this.domElement);<a name="line270"></a>
+        goog.dom.replaceNode(this.domElement, this.rootElement);<a name="line271"></a>
+        this.rootElement = this.domElement;<a name="line272"></a>
+    }<a name="line273"></a>
+    this.activeMask_.isMask = 0;<a name="line274"></a>
+    this.activeMask_ = null;<a name="line275"></a>
+};<a name="line276"></a>
+<a name="line277"></a>
+/**<a name="line278"></a>
+ * Add mask element and make its relations<a name="line279"></a>
+ * @this {lime.Node}<a name="line280"></a>
+ */<a name="line281"></a>
+lime.Renderer.DOM.addMask = function() {<a name="line282"></a>
+    if (this.renderer.getType() == lime.Renderer.DOM) {<a name="line283"></a>
+        this.rootElement = goog.dom.createDom('div');<a name="line284"></a>
+        this.rootElement.style.cssText = 'position:absolute;overflow:hidden;';<a name="line285"></a>
+        //todo: combine into css class<a name="line286"></a>
+        lime.style.setTransformOrigin(this.rootElement, 0, 0);<a name="line287"></a>
+        goog.dom.replaceNode(this.rootElement, this.domElement);<a name="line288"></a>
+        this.rootElement.appendChild(this.domElement);<a name="line289"></a>
+    }<a name="line290"></a>
+<a name="line291"></a>
+    this.mask_.isMask = 1;<a name="line292"></a>
+    this.mask_.targetNode = this;<a name="line293"></a>
+    this.activeMask_ = this.mask_;<a name="line294"></a>
+    this.mask_.setDirty(lime.Dirty.POSITION);<a name="line295"></a>
+};<a name="line296"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -337,7 +337,7 @@ lime.Renderer.DOM.addMask = function() {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

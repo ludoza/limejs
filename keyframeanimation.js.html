@@ -26,238 +26,238 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.animation.KeyframeAnimation');
-
-
-goog.require('goog.events');
-goog.require('lime.Sprite');
-goog.require('lime.animation.Animation');
-
-/**
- * Keyframe Animation object.
- * Keyframe Animation contains images that are changed on targets.
- * Similar to GIF effect.
- * @constructor
- * @extends lime.animation.Animation
- */
-lime.animation.KeyframeAnimation = function() {
-    lime.animation.Animation.call(this);
-
-    /**
-     * Array of frame images
-     * @type {Array.&lt;Image>}
-     * @private
-     */
-    this.frames_ = [];
-
-    /**
-     * Number of frame images loaded
-     * @type {number}
-     * @private
-     */
-    this.numFramesLoaded_ = 0;
-
-    /**
-     * Have all the frames been loaded?
-     * @type {boolean}
-     * @private
-     */
-    //this.framesLoaded_ = false;
-
-    /**
-     * Animation is using Background Canvas
-     * to make the changes. Faster if there are many targets
-     * but only supported on Webkit.
-     * @type {boolean}
-     * @private
-     */
-    this.usesBackgroundCanvas_ = false;
-
-    /**
-     * Current frame index of the playhead
-     * @type {number}
-     * @private
-     */
-    this.currentFrame_ = -1;
-
-    /**
-     * Delay in seconds between frames
-     * @type {number}
-     */
-    this.delay = 1 / 15;
-
-    /**
-     * Should the animation keep looping or stop when frame animation done.
-     * Setting loopoing to true, this is deafault behaviour.
-     * @type {boolean}
-     */
-    this.looping = true;
-};
-goog.inherits(lime.animation.KeyframeAnimation, lime.animation.Animation);
-
-
-/** @inheritDoc */
-lime.animation.KeyframeAnimation.prototype.scope = 'keyframe';
-
-/**
- * Returns the delay in seconds between frames.
- * @return {number} Delay between frames.
- */
-lime.animation.KeyframeAnimation.prototype.getDelay = function() {
-    return this.delay;
-};
-
-/**
- * Set the delay between frames to specific value.
- * @param {number} value New delay value.
- * @return {lime.animation.KeyframeAnimation} object itself.
- */
-lime.animation.KeyframeAnimation.prototype.setDelay = function(value) {
-    this.delay = value;
-    return this;
-};
-
-/**
- * Set array of frames to be used in the animation
- * @param {Array.&lt;string>} frames Paths to frame images.
- * @return {lime.animation.KeyframeAnimation} object itself.
- */
-lime.animation.KeyframeAnimation.prototype.setFrames = function(frames) {
-    this.frames_ = [];
-    this.numFramesLoaded_ = 0;
-    this.currentFrame_ = -1;
-
-    for (var i = 0; i &lt; frames.length; i++) {
-        this.addFrame(lime.fill.parse([frames[i]]));
-    }
-    return this;
-};
-
-/**
- * Set the keyframe animation to keep loopoing or just play the animation once.
- * @param {boolean} looping Keep looping or not.
- * @return {lime.animation.KeyframeAnimation} object itself.
- */
-lime.animation.KeyframeAnimation.prototype.setLooping = function(looping) {
-    this.looping = looping;
-    return this;
-};
-
-/**
- * Add frame to the current animation
- * @param {string|lime.fill.Fill} frame Path to frame image.
- * @return {lime.animation.KeyframeAnimation} object itself.
- */
-lime.animation.KeyframeAnimation.prototype.addFrame = function(frame) {
-    this.framesLoaded_ = false;
-
-    var fill = lime.fill.parse(goog.array.toArray(arguments));
-
-    if (fill.id == 'image' && !fill.isLoaded()) {
-        goog.events.listen(fill, goog.events.EventType.LOAD,
-            this.frameLoadedHandler_, false, this);
-    } else if (fill.id == 'frame' && !frame.isProcessed()) {
-        goog.events.listen(fill, 'processed', this.frameLoadedHandler_, false, this);
-    } else {
-        this.numFramesLoaded_++;
-    }
-    this.frames_.push(fill);
-    return this;
-};
-
-/**
- * Handler to be called on every loaded frame image
- * @private
- */
-lime.animation.KeyframeAnimation.prototype.frameLoadedHandler_ = function() {
-    this.numFramesLoaded_++;
-};
-
-
-
-/**
- * @inheritDoc
- */
-lime.animation.KeyframeAnimation.prototype.play = function() {
-
-    this.lastChangeTime_ = 0;
-
-    lime.animation.Animation.prototype.play.call(this);
-};
-
-/**
- * @inheritDoc
- */
-lime.animation.KeyframeAnimation.prototype.updateAll = function(t, targets) {
-    var dt = this.dt_,
-        delay_msec = Math.round(this.delay * 1000),
-        nextImage = null,
-        i = targets.length,
-        looping = this.looping,
-        validframe;
-
-    while (--i >= 0) {
-        this.getTargetProp(targets[i]);
-    }
-
-    this.lastChangeTime_ += dt;
-    var nextFrame = this.currentFrame_ + 1;
-    if (this.lastChangeTime_ > delay_msec) {
-        if (nextFrame &lt; this.frames_.length) {
-            validframe = true;
-        } else if (looping && nextFrame >= this.frames_.length) {
-            validframe = true;
-            nextFrame = 0;
-        } else {
-            validframe = false;
-        }
-        if (validframe) {
-            nextImage = this.frames_[nextFrame];
-
-            i = targets.length;
-            if (i > 0) {
-
-                // Todo: make CSS Canvas optional
-                /* if (!this.usesBackgroundCanvas_ &&
-                 goog.isFunction(document.getCSSCanvasContext)) {
-
-                 this.bgSprite = new lime.Sprite;
-                 this.bgSprite.setRenderMode(lime.RenderMode.CSS_CANVAS);
-                 this.bgSprite.setQuality(this.targets[0].getQuality());
-                 this.usesBackgroundCanvas_ = true;
-
-                 }
-                if (this.usesBackgroundCanvas_) {
-                    this.bgSprite.setFill(nextImage);
-                     while (--i >= 0) {
-                     this.targets[i].setRenderMode(
-                     lime.RenderMode.BACKGROUND_CANVAS);
-                     this.targets[i].setFill(this.bgSprite);
-                     }
-                }
-                else {
-                    */
-                while (--i >= 0) {
-                    this.targets[i].setFill(nextImage);
-
-                }
-                //}
-            }
-
-            this.currentFrame_ = nextFrame;
-
-            this.lastChangeTime_ -= delay_msec;
-            this.lastChangeTime_ %= delay_msec;
-        }
-    }
-
-    if (!looping) {
-        return nextFrame / this.frames_.length;
-    } else {
-        return 0;
-    }
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.animation.KeyframeAnimation');<a name="line2"></a>
+<a name="line3"></a>
+<a name="line4"></a>
+goog.require('goog.events');<a name="line5"></a>
+goog.require('lime.Sprite');<a name="line6"></a>
+goog.require('lime.animation.Animation');<a name="line7"></a>
+<a name="line8"></a>
+/**<a name="line9"></a>
+ * Keyframe Animation object.<a name="line10"></a>
+ * Keyframe Animation contains images that are changed on targets.<a name="line11"></a>
+ * Similar to GIF effect.<a name="line12"></a>
+ * @constructor<a name="line13"></a>
+ * @extends lime.animation.Animation<a name="line14"></a>
+ */<a name="line15"></a>
+lime.animation.KeyframeAnimation = function() {<a name="line16"></a>
+    lime.animation.Animation.call(this);<a name="line17"></a>
+<a name="line18"></a>
+    /**<a name="line19"></a>
+     * Array of frame images<a name="line20"></a>
+     * @type {Array.&lt;Image>}<a name="line21"></a>
+     * @private<a name="line22"></a>
+     */<a name="line23"></a>
+    this.frames_ = [];<a name="line24"></a>
+<a name="line25"></a>
+    /**<a name="line26"></a>
+     * Number of frame images loaded<a name="line27"></a>
+     * @type {number}<a name="line28"></a>
+     * @private<a name="line29"></a>
+     */<a name="line30"></a>
+    this.numFramesLoaded_ = 0;<a name="line31"></a>
+<a name="line32"></a>
+    /**<a name="line33"></a>
+     * Have all the frames been loaded?<a name="line34"></a>
+     * @type {boolean}<a name="line35"></a>
+     * @private<a name="line36"></a>
+     */<a name="line37"></a>
+    //this.framesLoaded_ = false;<a name="line38"></a>
+<a name="line39"></a>
+    /**<a name="line40"></a>
+     * Animation is using Background Canvas<a name="line41"></a>
+     * to make the changes. Faster if there are many targets<a name="line42"></a>
+     * but only supported on Webkit.<a name="line43"></a>
+     * @type {boolean}<a name="line44"></a>
+     * @private<a name="line45"></a>
+     */<a name="line46"></a>
+    this.usesBackgroundCanvas_ = false;<a name="line47"></a>
+<a name="line48"></a>
+    /**<a name="line49"></a>
+     * Current frame index of the playhead<a name="line50"></a>
+     * @type {number}<a name="line51"></a>
+     * @private<a name="line52"></a>
+     */<a name="line53"></a>
+    this.currentFrame_ = -1;<a name="line54"></a>
+<a name="line55"></a>
+    /**<a name="line56"></a>
+     * Delay in seconds between frames<a name="line57"></a>
+     * @type {number}<a name="line58"></a>
+     */<a name="line59"></a>
+    this.delay = 1 / 15;<a name="line60"></a>
+<a name="line61"></a>
+    /**<a name="line62"></a>
+     * Should the animation keep looping or stop when frame animation done.<a name="line63"></a>
+     * Setting loopoing to true, this is deafault behaviour.<a name="line64"></a>
+     * @type {boolean}<a name="line65"></a>
+     */<a name="line66"></a>
+    this.looping = true;<a name="line67"></a>
+};<a name="line68"></a>
+goog.inherits(lime.animation.KeyframeAnimation, lime.animation.Animation);<a name="line69"></a>
+<a name="line70"></a>
+<a name="line71"></a>
+/** @inheritDoc */<a name="line72"></a>
+lime.animation.KeyframeAnimation.prototype.scope = 'keyframe';<a name="line73"></a>
+<a name="line74"></a>
+/**<a name="line75"></a>
+ * Returns the delay in seconds between frames.<a name="line76"></a>
+ * @return {number} Delay between frames.<a name="line77"></a>
+ */<a name="line78"></a>
+lime.animation.KeyframeAnimation.prototype.getDelay = function() {<a name="line79"></a>
+    return this.delay;<a name="line80"></a>
+};<a name="line81"></a>
+<a name="line82"></a>
+/**<a name="line83"></a>
+ * Set the delay between frames to specific value.<a name="line84"></a>
+ * @param {number} value New delay value.<a name="line85"></a>
+ * @return {lime.animation.KeyframeAnimation} object itself.<a name="line86"></a>
+ */<a name="line87"></a>
+lime.animation.KeyframeAnimation.prototype.setDelay = function(value) {<a name="line88"></a>
+    this.delay = value;<a name="line89"></a>
+    return this;<a name="line90"></a>
+};<a name="line91"></a>
+<a name="line92"></a>
+/**<a name="line93"></a>
+ * Set array of frames to be used in the animation<a name="line94"></a>
+ * @param {Array.&lt;string>} frames Paths to frame images.<a name="line95"></a>
+ * @return {lime.animation.KeyframeAnimation} object itself.<a name="line96"></a>
+ */<a name="line97"></a>
+lime.animation.KeyframeAnimation.prototype.setFrames = function(frames) {<a name="line98"></a>
+    this.frames_ = [];<a name="line99"></a>
+    this.numFramesLoaded_ = 0;<a name="line100"></a>
+    this.currentFrame_ = -1;<a name="line101"></a>
+<a name="line102"></a>
+    for (var i = 0; i &lt; frames.length; i++) {<a name="line103"></a>
+        this.addFrame(lime.fill.parse([frames[i]]));<a name="line104"></a>
+    }<a name="line105"></a>
+    return this;<a name="line106"></a>
+};<a name="line107"></a>
+<a name="line108"></a>
+/**<a name="line109"></a>
+ * Set the keyframe animation to keep loopoing or just play the animation once.<a name="line110"></a>
+ * @param {boolean} looping Keep looping or not.<a name="line111"></a>
+ * @return {lime.animation.KeyframeAnimation} object itself.<a name="line112"></a>
+ */<a name="line113"></a>
+lime.animation.KeyframeAnimation.prototype.setLooping = function(looping) {<a name="line114"></a>
+    this.looping = looping;<a name="line115"></a>
+    return this;<a name="line116"></a>
+};<a name="line117"></a>
+<a name="line118"></a>
+/**<a name="line119"></a>
+ * Add frame to the current animation<a name="line120"></a>
+ * @param {string|lime.fill.Fill} frame Path to frame image.<a name="line121"></a>
+ * @return {lime.animation.KeyframeAnimation} object itself.<a name="line122"></a>
+ */<a name="line123"></a>
+lime.animation.KeyframeAnimation.prototype.addFrame = function(frame) {<a name="line124"></a>
+    this.framesLoaded_ = false;<a name="line125"></a>
+<a name="line126"></a>
+    var fill = lime.fill.parse(goog.array.toArray(arguments));<a name="line127"></a>
+<a name="line128"></a>
+    if (fill.id == 'image' && !fill.isLoaded()) {<a name="line129"></a>
+        goog.events.listen(fill, goog.events.EventType.LOAD,<a name="line130"></a>
+            this.frameLoadedHandler_, false, this);<a name="line131"></a>
+    } else if (fill.id == 'frame' && !frame.isProcessed()) {<a name="line132"></a>
+        goog.events.listen(fill, 'processed', this.frameLoadedHandler_, false, this);<a name="line133"></a>
+    } else {<a name="line134"></a>
+        this.numFramesLoaded_++;<a name="line135"></a>
+    }<a name="line136"></a>
+    this.frames_.push(fill);<a name="line137"></a>
+    return this;<a name="line138"></a>
+};<a name="line139"></a>
+<a name="line140"></a>
+/**<a name="line141"></a>
+ * Handler to be called on every loaded frame image<a name="line142"></a>
+ * @private<a name="line143"></a>
+ */<a name="line144"></a>
+lime.animation.KeyframeAnimation.prototype.frameLoadedHandler_ = function() {<a name="line145"></a>
+    this.numFramesLoaded_++;<a name="line146"></a>
+};<a name="line147"></a>
+<a name="line148"></a>
+<a name="line149"></a>
+<a name="line150"></a>
+/**<a name="line151"></a>
+ * @inheritDoc<a name="line152"></a>
+ */<a name="line153"></a>
+lime.animation.KeyframeAnimation.prototype.play = function() {<a name="line154"></a>
+<a name="line155"></a>
+    this.lastChangeTime_ = 0;<a name="line156"></a>
+<a name="line157"></a>
+    lime.animation.Animation.prototype.play.call(this);<a name="line158"></a>
+};<a name="line159"></a>
+<a name="line160"></a>
+/**<a name="line161"></a>
+ * @inheritDoc<a name="line162"></a>
+ */<a name="line163"></a>
+lime.animation.KeyframeAnimation.prototype.updateAll = function(t, targets) {<a name="line164"></a>
+    var dt = this.dt_,<a name="line165"></a>
+        delay_msec = Math.round(this.delay * 1000),<a name="line166"></a>
+        nextImage = null,<a name="line167"></a>
+        i = targets.length,<a name="line168"></a>
+        looping = this.looping,<a name="line169"></a>
+        validframe;<a name="line170"></a>
+<a name="line171"></a>
+    while (--i >= 0) {<a name="line172"></a>
+        this.getTargetProp(targets[i]);<a name="line173"></a>
+    }<a name="line174"></a>
+<a name="line175"></a>
+    this.lastChangeTime_ += dt;<a name="line176"></a>
+    var nextFrame = this.currentFrame_ + 1;<a name="line177"></a>
+    if (this.lastChangeTime_ > delay_msec) {<a name="line178"></a>
+        if (nextFrame &lt; this.frames_.length) {<a name="line179"></a>
+            validframe = true;<a name="line180"></a>
+        } else if (looping && nextFrame >= this.frames_.length) {<a name="line181"></a>
+            validframe = true;<a name="line182"></a>
+            nextFrame = 0;<a name="line183"></a>
+        } else {<a name="line184"></a>
+            validframe = false;<a name="line185"></a>
+        }<a name="line186"></a>
+        if (validframe) {<a name="line187"></a>
+            nextImage = this.frames_[nextFrame];<a name="line188"></a>
+<a name="line189"></a>
+            i = targets.length;<a name="line190"></a>
+            if (i > 0) {<a name="line191"></a>
+<a name="line192"></a>
+                // Todo: make CSS Canvas optional<a name="line193"></a>
+                /* if (!this.usesBackgroundCanvas_ &&<a name="line194"></a>
+                 goog.isFunction(document.getCSSCanvasContext)) {<a name="line195"></a>
+<a name="line196"></a>
+                 this.bgSprite = new lime.Sprite;<a name="line197"></a>
+                 this.bgSprite.setRenderMode(lime.RenderMode.CSS_CANVAS);<a name="line198"></a>
+                 this.bgSprite.setQuality(this.targets[0].getQuality());<a name="line199"></a>
+                 this.usesBackgroundCanvas_ = true;<a name="line200"></a>
+<a name="line201"></a>
+                 }<a name="line202"></a>
+                if (this.usesBackgroundCanvas_) {<a name="line203"></a>
+                    this.bgSprite.setFill(nextImage);<a name="line204"></a>
+                     while (--i >= 0) {<a name="line205"></a>
+                     this.targets[i].setRenderMode(<a name="line206"></a>
+                     lime.RenderMode.BACKGROUND_CANVAS);<a name="line207"></a>
+                     this.targets[i].setFill(this.bgSprite);<a name="line208"></a>
+                     }<a name="line209"></a>
+                }<a name="line210"></a>
+                else {<a name="line211"></a>
+                    */<a name="line212"></a>
+                while (--i >= 0) {<a name="line213"></a>
+                    this.targets[i].setFill(nextImage);<a name="line214"></a>
+<a name="line215"></a>
+                }<a name="line216"></a>
+                //}<a name="line217"></a>
+            }<a name="line218"></a>
+<a name="line219"></a>
+            this.currentFrame_ = nextFrame;<a name="line220"></a>
+<a name="line221"></a>
+            this.lastChangeTime_ -= delay_msec;<a name="line222"></a>
+            this.lastChangeTime_ %= delay_msec;<a name="line223"></a>
+        }<a name="line224"></a>
+    }<a name="line225"></a>
+<a name="line226"></a>
+    if (!looping) {<a name="line227"></a>
+        return nextFrame / this.frames_.length;<a name="line228"></a>
+    } else {<a name="line229"></a>
+        return 0;<a name="line230"></a>
+    }<a name="line231"></a>
+};<a name="line232"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -273,7 +273,7 @@ lime.animation.KeyframeAnimation.prototype.updateAll = function(t, targets) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:26 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

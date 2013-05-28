@@ -26,121 +26,121 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.animation.MoveBy');
-
-
-goog.require('goog.math.Coordinate');
-goog.require('lime.Sprite');
-goog.require('lime.animation.Animation');
-
-/**
- * Move elemenet by offset
- * Also accepts two numbers (x and y)
- * @example
- * var moveleft = new lime.animation.MoveBy(100,0);
- * sprite.runAction(moveleft);
- * @constructor
- * @param {(goog.math.Coordinate|number)} delta Offset to move.
- * @param {number=} opt_y Optionaly use x,y
- * @extends lime.animation.Animation
- */
-lime.animation.MoveBy = function(delta, opt_y) {
-    lime.animation.Animation.call(this);
-
-    if (arguments.length == 2) {
-        this.delta_ = new goog.math.Coordinate(arguments[0], arguments[1]);
-    } else {
-        this.delta_ = /** @type {!goog.math.Coordinate} */ (delta);
-    }
-
-
-};
-goog.inherits(lime.animation.MoveBy, lime.animation.Animation);
-
-/** @inheritDoc */
-lime.animation.MoveBy.prototype.scope = 'move';
-
-/**
- * Helper function that sets tha animation duration
- * based on the size of the delta. 1 unit means 100px/sec.
- * @param {number} speed Speed value.
- * @return {lime.animation.MoveBy} Object itself.
- */
-lime.animation.MoveBy.prototype.setSpeed = function(speed) {
-    this.speed_ = speed;
-    this.calcDurationFromSpeed_();
-    return this;
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#makeTargetProp
- */
-lime.animation.MoveBy.prototype.makeTargetProp = function(target) {
-    if (this.useTransitions()) {
-        target.addTransition(lime.Transition.POSITION,
-            goog.math.Coordinate.sum(target.getPosition(), this.delta_),
-            this.duration_, this.getEasing());
-        target.setDirty(lime.Dirty.POSITION);
-    }
-    return {
-        startpos: target.getPosition()
-    };
-};
-
-/**
- * Calculate animations duration based on its speed.
- * @private
- */
-lime.animation.MoveBy.prototype.calcDurationFromSpeed_ = function() {
-    if (!this.speed_) return;
-
-    this.setDuration(this.speed_ * goog.math.Coordinate.distance(
-        this.delta_, new goog.math.Coordinate(0, 0)) / 100);
-
-    this.speedCalcDone_ = 1;
-}
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#update
- */
-lime.animation.MoveBy.prototype.update = function(t, target) {
-    if (this.status_ == 0) return;
-    var prop = this.getTargetProp(target);
-
-    target.setPosition(
-        prop.startpos.x + this.delta_.x * t,
-        prop.startpos.y + this.delta_.y * t);
-
-};
-
-/**
- * Clear previously set transition values.
- * @param {lime.Node} target Target node.
- */
-lime.animation.MoveBy.prototype.clearTransition = function(target) {
-
-    if (this.useTransitions()) {
-        target.clearTransition(lime.Transition.POSITION);
-        target.setDirty(lime.Dirty.POSITION);
-    }
-
-
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#reverse
- */
-lime.animation.MoveBy.prototype.reverse = function() {
-    var d = this.delta_.clone();
-    d.x *= -1;
-    d.y *= -1;
-
-    return new lime.animation.MoveBy(d).cloneParam(this);
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.animation.MoveBy');<a name="line2"></a>
+<a name="line3"></a>
+<a name="line4"></a>
+goog.require('goog.math.Coordinate');<a name="line5"></a>
+goog.require('lime.Sprite');<a name="line6"></a>
+goog.require('lime.animation.Animation');<a name="line7"></a>
+<a name="line8"></a>
+/**<a name="line9"></a>
+ * Move elemenet by offset<a name="line10"></a>
+ * Also accepts two numbers (x and y)<a name="line11"></a>
+ * @example<a name="line12"></a>
+ * var moveleft = new lime.animation.MoveBy(100,0);<a name="line13"></a>
+ * sprite.runAction(moveleft);<a name="line14"></a>
+ * @constructor<a name="line15"></a>
+ * @param {(goog.math.Coordinate|number)} delta Offset to move.<a name="line16"></a>
+ * @param {number=} opt_y Optionaly use x,y<a name="line17"></a>
+ * @extends lime.animation.Animation<a name="line18"></a>
+ */<a name="line19"></a>
+lime.animation.MoveBy = function(delta, opt_y) {<a name="line20"></a>
+    lime.animation.Animation.call(this);<a name="line21"></a>
+<a name="line22"></a>
+    if (arguments.length == 2) {<a name="line23"></a>
+        this.delta_ = new goog.math.Coordinate(arguments[0], arguments[1]);<a name="line24"></a>
+    } else {<a name="line25"></a>
+        this.delta_ = /** @type {!goog.math.Coordinate} */ (delta);<a name="line26"></a>
+    }<a name="line27"></a>
+<a name="line28"></a>
+<a name="line29"></a>
+};<a name="line30"></a>
+goog.inherits(lime.animation.MoveBy, lime.animation.Animation);<a name="line31"></a>
+<a name="line32"></a>
+/** @inheritDoc */<a name="line33"></a>
+lime.animation.MoveBy.prototype.scope = 'move';<a name="line34"></a>
+<a name="line35"></a>
+/**<a name="line36"></a>
+ * Helper function that sets tha animation duration<a name="line37"></a>
+ * based on the size of the delta. 1 unit means 100px/sec.<a name="line38"></a>
+ * @param {number} speed Speed value.<a name="line39"></a>
+ * @return {lime.animation.MoveBy} Object itself.<a name="line40"></a>
+ */<a name="line41"></a>
+lime.animation.MoveBy.prototype.setSpeed = function(speed) {<a name="line42"></a>
+    this.speed_ = speed;<a name="line43"></a>
+    this.calcDurationFromSpeed_();<a name="line44"></a>
+    return this;<a name="line45"></a>
+};<a name="line46"></a>
+<a name="line47"></a>
+/**<a name="line48"></a>
+ * @inheritDoc<a name="line49"></a>
+ * @see lime.animation.Animation#makeTargetProp<a name="line50"></a>
+ */<a name="line51"></a>
+lime.animation.MoveBy.prototype.makeTargetProp = function(target) {<a name="line52"></a>
+    if (this.useTransitions()) {<a name="line53"></a>
+        target.addTransition(lime.Transition.POSITION,<a name="line54"></a>
+            goog.math.Coordinate.sum(target.getPosition(), this.delta_),<a name="line55"></a>
+            this.duration_, this.getEasing());<a name="line56"></a>
+        target.setDirty(lime.Dirty.POSITION);<a name="line57"></a>
+    }<a name="line58"></a>
+    return {<a name="line59"></a>
+        startpos: target.getPosition()<a name="line60"></a>
+    };<a name="line61"></a>
+};<a name="line62"></a>
+<a name="line63"></a>
+/**<a name="line64"></a>
+ * Calculate animations duration based on its speed.<a name="line65"></a>
+ * @private<a name="line66"></a>
+ */<a name="line67"></a>
+lime.animation.MoveBy.prototype.calcDurationFromSpeed_ = function() {<a name="line68"></a>
+    if (!this.speed_) return;<a name="line69"></a>
+<a name="line70"></a>
+    this.setDuration(this.speed_ * goog.math.Coordinate.distance(<a name="line71"></a>
+        this.delta_, new goog.math.Coordinate(0, 0)) / 100);<a name="line72"></a>
+<a name="line73"></a>
+    this.speedCalcDone_ = 1;<a name="line74"></a>
+}<a name="line75"></a>
+<a name="line76"></a>
+/**<a name="line77"></a>
+ * @inheritDoc<a name="line78"></a>
+ * @see lime.animation.Animation#update<a name="line79"></a>
+ */<a name="line80"></a>
+lime.animation.MoveBy.prototype.update = function(t, target) {<a name="line81"></a>
+    if (this.status_ == 0) return;<a name="line82"></a>
+    var prop = this.getTargetProp(target);<a name="line83"></a>
+<a name="line84"></a>
+    target.setPosition(<a name="line85"></a>
+        prop.startpos.x + this.delta_.x * t,<a name="line86"></a>
+        prop.startpos.y + this.delta_.y * t);<a name="line87"></a>
+<a name="line88"></a>
+};<a name="line89"></a>
+<a name="line90"></a>
+/**<a name="line91"></a>
+ * Clear previously set transition values.<a name="line92"></a>
+ * @param {lime.Node} target Target node.<a name="line93"></a>
+ */<a name="line94"></a>
+lime.animation.MoveBy.prototype.clearTransition = function(target) {<a name="line95"></a>
+<a name="line96"></a>
+    if (this.useTransitions()) {<a name="line97"></a>
+        target.clearTransition(lime.Transition.POSITION);<a name="line98"></a>
+        target.setDirty(lime.Dirty.POSITION);<a name="line99"></a>
+    }<a name="line100"></a>
+<a name="line101"></a>
+<a name="line102"></a>
+};<a name="line103"></a>
+<a name="line104"></a>
+/**<a name="line105"></a>
+ * @inheritDoc<a name="line106"></a>
+ * @see lime.animation.Animation#reverse<a name="line107"></a>
+ */<a name="line108"></a>
+lime.animation.MoveBy.prototype.reverse = function() {<a name="line109"></a>
+    var d = this.delta_.clone();<a name="line110"></a>
+    d.x *= -1;<a name="line111"></a>
+    d.y *= -1;<a name="line112"></a>
+<a name="line113"></a>
+    return new lime.animation.MoveBy(d).cloneParam(this);<a name="line114"></a>
+};<a name="line115"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -156,7 +156,7 @@ lime.animation.MoveBy.prototype.reverse = function() {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:26 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

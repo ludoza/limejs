@@ -26,117 +26,117 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.animation.MoveTo');
-
-
-goog.require('goog.math.Coordinate');
-goog.require('lime.Sprite');
-goog.require('lime.animation.Animation');
-
-/**
- * Move element to specific position
- * Also accepts two numbers (x and y)
- * @constructor
- * @param {(goog.math.Coordinate|number)} position New position value.
- * @param {number=} opt_y Optionaly use x,y
- * @extends lime.animation.Animation
- */
-lime.animation.MoveTo = function(position, opt_y) {
-    lime.animation.Animation.call(this);
-
-    if (arguments.length == 2) {
-        this.position_ = new goog.math.Coordinate(arguments[0], arguments[1]);
-    } else this.position_ = position;
-
-};
-goog.inherits(lime.animation.MoveTo, lime.animation.Animation);
-
-/**
- * @inheritDoc
- */
-lime.animation.MoveTo.prototype.scope = 'move';
-
-/**
- * Helper function that sets tha animation duration
- * based on the size of the delta. 1 unit means 100px/sec.
- * Calculation is based on first target node.
- * @param {number} speed Speed value.
- * @return {lime.animation.MoveTo} Object itself.
- */
-lime.animation.MoveTo.prototype.setSpeed = function(speed) {
-    this.speed_ = speed;
-    delete this.speedCalcDone_;
-    return this;
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#makeTargetProp
- */
-lime.animation.MoveTo.prototype.makeTargetProp = function(target) {
-    var start = target.getPosition();
-    var delta = new goog.math.Coordinate(
-        this.position_.x - start.x,
-        this.position_.y - start.y);
-
-    if (this.useTransitions()) {
-        target.addTransition(lime.Transition.POSITION,
-            this.position_,
-            this.duration_, this.getEasing());
-        target.setDirty(lime.Dirty.POSITION);
-    }
-
-    return {
-        startpos: start,
-        delta: delta
-    };
-};
-
-
-/**
- * Calculate animations duration based on its speed.
- * @private
- */
-lime.animation.MoveTo.prototype.calcDurationFromSpeed_ = function() {
-    if (!this.speed_ || !this.targets.length) return;
-
-    var start = this.targets[0].getPosition();
-    var delta = new goog.math.Coordinate(
-        this.position_.x - start.x,
-        this.position_.y - start.y);
-
-    this.setDuration(this.speed_ * goog.math.Coordinate.distance(
-        delta, new goog.math.Coordinate(0, 0)) / 100);
-    this.speedCalcDone_ = 1;
-}
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#update
- */
-lime.animation.MoveTo.prototype.update = function(t, target) {
-    if (this.status_ == 0) return;
-    var prop = this.getTargetProp(target);
-
-    target.setPosition(
-        prop.startpos.x + prop.delta.x * t,
-        prop.startpos.y + prop.delta.y * t);
-};
-
-/**
- * Clear transistion when animation is stoped.
- * @see lime.animation.Animation#clearTransition
- * @param {lime.Node} target The target to clear transistion for.
- */
-lime.animation.MoveTo.prototype.clearTransition = function(target) {
-
-    if (this.useTransitions()) {
-        target.clearTransition(lime.Transition.POSITION);
-        target.setDirty(lime.Dirty.POSITION);
-    }
-
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.animation.MoveTo');<a name="line2"></a>
+<a name="line3"></a>
+<a name="line4"></a>
+goog.require('goog.math.Coordinate');<a name="line5"></a>
+goog.require('lime.Sprite');<a name="line6"></a>
+goog.require('lime.animation.Animation');<a name="line7"></a>
+<a name="line8"></a>
+/**<a name="line9"></a>
+ * Move element to specific position<a name="line10"></a>
+ * Also accepts two numbers (x and y)<a name="line11"></a>
+ * @constructor<a name="line12"></a>
+ * @param {(goog.math.Coordinate|number)} position New position value.<a name="line13"></a>
+ * @param {number=} opt_y Optionaly use x,y<a name="line14"></a>
+ * @extends lime.animation.Animation<a name="line15"></a>
+ */<a name="line16"></a>
+lime.animation.MoveTo = function(position, opt_y) {<a name="line17"></a>
+    lime.animation.Animation.call(this);<a name="line18"></a>
+<a name="line19"></a>
+    if (arguments.length == 2) {<a name="line20"></a>
+        this.position_ = new goog.math.Coordinate(arguments[0], arguments[1]);<a name="line21"></a>
+    } else this.position_ = position;<a name="line22"></a>
+<a name="line23"></a>
+};<a name="line24"></a>
+goog.inherits(lime.animation.MoveTo, lime.animation.Animation);<a name="line25"></a>
+<a name="line26"></a>
+/**<a name="line27"></a>
+ * @inheritDoc<a name="line28"></a>
+ */<a name="line29"></a>
+lime.animation.MoveTo.prototype.scope = 'move';<a name="line30"></a>
+<a name="line31"></a>
+/**<a name="line32"></a>
+ * Helper function that sets tha animation duration<a name="line33"></a>
+ * based on the size of the delta. 1 unit means 100px/sec.<a name="line34"></a>
+ * Calculation is based on first target node.<a name="line35"></a>
+ * @param {number} speed Speed value.<a name="line36"></a>
+ * @return {lime.animation.MoveTo} Object itself.<a name="line37"></a>
+ */<a name="line38"></a>
+lime.animation.MoveTo.prototype.setSpeed = function(speed) {<a name="line39"></a>
+    this.speed_ = speed;<a name="line40"></a>
+    delete this.speedCalcDone_;<a name="line41"></a>
+    return this;<a name="line42"></a>
+};<a name="line43"></a>
+<a name="line44"></a>
+/**<a name="line45"></a>
+ * @inheritDoc<a name="line46"></a>
+ * @see lime.animation.Animation#makeTargetProp<a name="line47"></a>
+ */<a name="line48"></a>
+lime.animation.MoveTo.prototype.makeTargetProp = function(target) {<a name="line49"></a>
+    var start = target.getPosition();<a name="line50"></a>
+    var delta = new goog.math.Coordinate(<a name="line51"></a>
+        this.position_.x - start.x,<a name="line52"></a>
+        this.position_.y - start.y);<a name="line53"></a>
+<a name="line54"></a>
+    if (this.useTransitions()) {<a name="line55"></a>
+        target.addTransition(lime.Transition.POSITION,<a name="line56"></a>
+            this.position_,<a name="line57"></a>
+            this.duration_, this.getEasing());<a name="line58"></a>
+        target.setDirty(lime.Dirty.POSITION);<a name="line59"></a>
+    }<a name="line60"></a>
+<a name="line61"></a>
+    return {<a name="line62"></a>
+        startpos: start,<a name="line63"></a>
+        delta: delta<a name="line64"></a>
+    };<a name="line65"></a>
+};<a name="line66"></a>
+<a name="line67"></a>
+<a name="line68"></a>
+/**<a name="line69"></a>
+ * Calculate animations duration based on its speed.<a name="line70"></a>
+ * @private<a name="line71"></a>
+ */<a name="line72"></a>
+lime.animation.MoveTo.prototype.calcDurationFromSpeed_ = function() {<a name="line73"></a>
+    if (!this.speed_ || !this.targets.length) return;<a name="line74"></a>
+<a name="line75"></a>
+    var start = this.targets[0].getPosition();<a name="line76"></a>
+    var delta = new goog.math.Coordinate(<a name="line77"></a>
+        this.position_.x - start.x,<a name="line78"></a>
+        this.position_.y - start.y);<a name="line79"></a>
+<a name="line80"></a>
+    this.setDuration(this.speed_ * goog.math.Coordinate.distance(<a name="line81"></a>
+        delta, new goog.math.Coordinate(0, 0)) / 100);<a name="line82"></a>
+    this.speedCalcDone_ = 1;<a name="line83"></a>
+}<a name="line84"></a>
+<a name="line85"></a>
+/**<a name="line86"></a>
+ * @inheritDoc<a name="line87"></a>
+ * @see lime.animation.Animation#update<a name="line88"></a>
+ */<a name="line89"></a>
+lime.animation.MoveTo.prototype.update = function(t, target) {<a name="line90"></a>
+    if (this.status_ == 0) return;<a name="line91"></a>
+    var prop = this.getTargetProp(target);<a name="line92"></a>
+<a name="line93"></a>
+    target.setPosition(<a name="line94"></a>
+        prop.startpos.x + prop.delta.x * t,<a name="line95"></a>
+        prop.startpos.y + prop.delta.y * t);<a name="line96"></a>
+};<a name="line97"></a>
+<a name="line98"></a>
+/**<a name="line99"></a>
+ * Clear transistion when animation is stoped.<a name="line100"></a>
+ * @see lime.animation.Animation#clearTransition<a name="line101"></a>
+ * @param {lime.Node} target The target to clear transistion for.<a name="line102"></a>
+ */<a name="line103"></a>
+lime.animation.MoveTo.prototype.clearTransition = function(target) {<a name="line104"></a>
+<a name="line105"></a>
+    if (this.useTransitions()) {<a name="line106"></a>
+        target.clearTransition(lime.Transition.POSITION);<a name="line107"></a>
+        target.setDirty(lime.Dirty.POSITION);<a name="line108"></a>
+    }<a name="line109"></a>
+<a name="line110"></a>
+};<a name="line111"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -152,7 +152,7 @@ lime.animation.MoveTo.prototype.clearTransition = function(target) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:26 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

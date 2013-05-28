@@ -26,77 +26,77 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.transitions.Transition');
-
-/**
- * Animation for switching active scenes
- * @param {lime.Scene} outgoing Outgoing scene.
- * @param {lime.Scene} incoming Incoming scene.
- * @constructor
- * @extends goog.events.EventTarget
- */
-lime.transitions.Transition = function(outgoing, incoming) {
-    goog.events.EventTarget.call(this);
-
-    this.duration_ = 1.0; //sec
-
-    this.outgoing_ = outgoing;
-    this.incoming_ = incoming;
-
-    this.finished_ = false;
-};
-goog.inherits(lime.transitions.Transition, goog.events.EventTarget);
-
-/**
- * Returns the animation duration in seconds.
- * @return {number} duration.
- */
-lime.transitions.Transition.prototype.getDuration = function() {
-    return this.duration_;
-};
-
-/**
- * Set the duration of the transition.
- * @param {number} value New duration.
- * @return {lime.transitions.Transition} object itself.
- */
-lime.transitions.Transition.prototype.setDuration = function(value) {
-    this.duration_ = value;
-    return this;
-};
-
-/**
- * Set finish callback for transition. This function will be called
- * after the transition has finished. DEPRECATED! Use event listeners instead.
- * @deprecated
- * @param {function()} value Callback.
- * @return {lime.transitions.Transition} object itself.
- */
-lime.transitions.Transition.prototype.setFinishCallback = function(value) {
-    if (goog.DEBUG && console && console.warn) {
-        console.warn('Transition.prototype.setFinishCallback() is deprecated. Use event listeners.');
-    }
-    return this;
-};
-
-/**
- * Start the transition animation.
- */
-lime.transitions.Transition.prototype.start = function() {
-
-    this.incoming_.setPosition(new goog.math.Coordinate(0, 0));
-    this.incoming_.setHidden(false);
-    this.finish();
-};
-
-/**
- * Complete the transition animation
- */
-lime.transitions.Transition.prototype.finish = function() {
-    this.dispatchEvent(new goog.events.Event('end'));
-    this.finished_ = true;
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.transitions.Transition');<a name="line2"></a>
+<a name="line3"></a>
+/**<a name="line4"></a>
+ * Animation for switching active scenes<a name="line5"></a>
+ * @param {lime.Scene} outgoing Outgoing scene.<a name="line6"></a>
+ * @param {lime.Scene} incoming Incoming scene.<a name="line7"></a>
+ * @constructor<a name="line8"></a>
+ * @extends goog.events.EventTarget<a name="line9"></a>
+ */<a name="line10"></a>
+lime.transitions.Transition = function(outgoing, incoming) {<a name="line11"></a>
+    goog.events.EventTarget.call(this);<a name="line12"></a>
+<a name="line13"></a>
+    this.duration_ = 1.0; //sec<a name="line14"></a>
+<a name="line15"></a>
+    this.outgoing_ = outgoing;<a name="line16"></a>
+    this.incoming_ = incoming;<a name="line17"></a>
+<a name="line18"></a>
+    this.finished_ = false;<a name="line19"></a>
+};<a name="line20"></a>
+goog.inherits(lime.transitions.Transition, goog.events.EventTarget);<a name="line21"></a>
+<a name="line22"></a>
+/**<a name="line23"></a>
+ * Returns the animation duration in seconds.<a name="line24"></a>
+ * @return {number} duration.<a name="line25"></a>
+ */<a name="line26"></a>
+lime.transitions.Transition.prototype.getDuration = function() {<a name="line27"></a>
+    return this.duration_;<a name="line28"></a>
+};<a name="line29"></a>
+<a name="line30"></a>
+/**<a name="line31"></a>
+ * Set the duration of the transition.<a name="line32"></a>
+ * @param {number} value New duration.<a name="line33"></a>
+ * @return {lime.transitions.Transition} object itself.<a name="line34"></a>
+ */<a name="line35"></a>
+lime.transitions.Transition.prototype.setDuration = function(value) {<a name="line36"></a>
+    this.duration_ = value;<a name="line37"></a>
+    return this;<a name="line38"></a>
+};<a name="line39"></a>
+<a name="line40"></a>
+/**<a name="line41"></a>
+ * Set finish callback for transition. This function will be called<a name="line42"></a>
+ * after the transition has finished. DEPRECATED! Use event listeners instead.<a name="line43"></a>
+ * @deprecated<a name="line44"></a>
+ * @param {function()} value Callback.<a name="line45"></a>
+ * @return {lime.transitions.Transition} object itself.<a name="line46"></a>
+ */<a name="line47"></a>
+lime.transitions.Transition.prototype.setFinishCallback = function(value) {<a name="line48"></a>
+    if (goog.DEBUG && console && console.warn) {<a name="line49"></a>
+        console.warn('Transition.prototype.setFinishCallback() is deprecated. Use event listeners.');<a name="line50"></a>
+    }<a name="line51"></a>
+    return this;<a name="line52"></a>
+};<a name="line53"></a>
+<a name="line54"></a>
+/**<a name="line55"></a>
+ * Start the transition animation.<a name="line56"></a>
+ */<a name="line57"></a>
+lime.transitions.Transition.prototype.start = function() {<a name="line58"></a>
+<a name="line59"></a>
+    this.incoming_.setPosition(new goog.math.Coordinate(0, 0));<a name="line60"></a>
+    this.incoming_.setHidden(false);<a name="line61"></a>
+    this.finish();<a name="line62"></a>
+};<a name="line63"></a>
+<a name="line64"></a>
+/**<a name="line65"></a>
+ * Complete the transition animation<a name="line66"></a>
+ */<a name="line67"></a>
+lime.transitions.Transition.prototype.finish = function() {<a name="line68"></a>
+    this.dispatchEvent(new goog.events.Event('end'));<a name="line69"></a>
+    this.finished_ = true;<a name="line70"></a>
+};<a name="line71"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -112,7 +112,7 @@ lime.transitions.Transition.prototype.finish = function() {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

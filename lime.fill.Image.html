@@ -28,7 +28,7 @@
 	
 <header>
 	<h2>
-	Image
+	lime.fill.Image
 	</h2>
 	
 </header>  
@@ -40,7 +40,7 @@
 	
 		
 <dt>
-    <h4 class="name" id="Image"><span class="type-signature"></span>new Image<span class="signature">(img)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Image"><span class="type-signature"></span>new lime.fill.Image<span class="signature">(img)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -135,7 +135,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="image.js.html">fill/image.js</a>, line 11
+        <a href="fill/image.js.html#line11">fill/image.js</a>, line 11
     </li></ul></dd>
     
     
@@ -160,27 +160,160 @@
 	</div>
 	
 	
-	<div class="doc_summary">
+	<div class="summary">
 		<a name="summary"></a>
-		<h3 class="subsection-title summary">Summary</h3>
+		<h3 class="subsection-title">Summary</h3>
 
 		<div class="doc_group"><a name="summary_properties"></a>
-<h5>Members - instance</h5>
-
 <dl>
-    <dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#id">id</a></span><span class="type-sig"><span class="type-signature"> :string</span></span></dt><dd class="  even">Common name for Image objects</dd>
-</dl></div><div class="doc_group"><a name="summary_properties_static"></a>
-<h5>Members - static</h5>
-
-<dl>
-    <dt class="private  even"><span class="type-attr"><span class="type-signature">&lt;private, static> </span></span><span class="type-name"><a href="#loadedImages_">loadedImages_</a></span><span class="type-sig"><span class="type-signature"></span></span></dt><dd class="private  even">Already loaded image cache to reuse all img objects.</dd>
-</dl></div><div class="doc_group"><a name="summary_methods"></a>
-<h5>Methods - instance</h5>
-
-<dl>
-    <dt class="private  even"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#addLoadHandler_">addLoadHandler_</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="private  even"></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getImageElement">getImageElement</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {HTMLImageElement}</span></span></dt><dd class="  odd">Return core DOM Image element for the fill.</dd><dt class="private  even"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#imageLoadedHandler_">imageLoadedHandler_</a></span><span class="type-sig"><span class="signature">(e)</span><span class="type-signature"></span></span></dt><dd class="private  even">Update sprite dimensions after image has been loaded</dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#initForSprite">initForSprite</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  odd"></dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#isLoaded">isLoaded</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span></dt><dd class="  even">Return true if image object has been loaded from network.</dd><dt class="protected  odd"><span class="type-attr"><span class="type-signature">&lt;protected> </span></span><span class="type-name"><a href="#setDOMBackgroundProp_">setDOMBackgroundProp_</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="protected  odd">Common functionality so it could be reused on Frame</dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setDOMStyle">setDOMStyle</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  even"></dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setOffset">setOffset</a></span><span class="type-sig"><span class="signature">(offset, <span class="optional">opt_perc</span>)</span><span class="type-signature"> &rarr; {<a href="lime.fill.Image.html">lime.fill.Image</a>}</span></span></dt><dd class="  odd">Set the offset that defines the drawing start position. Default is top-left(0,0).</dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setSize">setSize</a></span><span class="type-sig"><span class="signature">(size, <span class="optional">opt_perc</span>)</span><span class="type-signature"> &rarr; {<a href="lime.fill.Image.html">lime.fill.Image</a>}</span></span></dt><dd class="  even">Set the drawing size for the fill. Size can also be passed in
-with two numbers.</dd>
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Members</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private, static> </span>
+				</td>
+				<td class="last">
+						<a href="#loadedImages_"><code class="name">loadedImages_</code></a><span class="type-signature"><span class="type-signature"></span></span>
+						<div class="summary-description"> Already loaded image cache to reuse all img objects.</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#id"><code class="name">id</code></a><span class="type-signature"><span class="type-signature"> :string</span></span>
+						<div class="summary-description"> Common name for Image objects</div>
+						
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
 </dl>
+
+</div><div class="doc_group"><a name="summary_methods"></a>
+<dl>
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Methods</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private> </span>
+				</td>
+				<td class="last">
+						<a href="#addLoadHandler_"><code class="name">addLoadHandler_</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> </div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getImageElement"><code class="name">getImageElement</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {HTMLImageElement}</span></span>
+						<div class="summary-description"> Return core DOM Image element for the fill.</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private> </span>
+				</td>
+				<td class="last">
+						<a href="#imageLoadedHandler_"><code class="name">imageLoadedHandler_</code></a><span class="type-signature"><span class="signature">(e)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Update sprite dimensions after image has been loaded</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#initForSprite"><code class="name">initForSprite</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> </div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#isLoaded"><code class="name">isLoaded</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span>
+						<div class="summary-description"> Return true if image object has been loaded from network.</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;protected> </span>
+				</td>
+				<td class="last">
+						<a href="#setDOMBackgroundProp_"><code class="name">setDOMBackgroundProp_</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Common functionality so it could be reused on Frame</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setDOMStyle"><code class="name">setDOMStyle</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> </div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setOffset"><code class="name">setOffset</code></a><span class="type-signature"><span class="signature">(offset, <span class="optional">opt_perc</span>)</span><span class="type-signature"> &rarr; {<a href="lime.fill.Image.html">lime.fill.Image</a>}</span></span>
+						<div class="summary-description"> Set the offset that defines the drawing start position. Default is top-left(0,0).</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setSize"><code class="name">setSize</code></a><span class="type-signature"><span class="signature">(size, <span class="optional">opt_perc</span>)</span><span class="type-signature"> &rarr; {<a href="lime.fill.Image.html">lime.fill.Image</a>}</span></span>
+						<div class="summary-description"> Set the drawing size for the fill. Size can also be passed in
+with two numbers.</div>
+						
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
+</dl>
+
 </div>
 	</div>
 	
@@ -241,7 +374,7 @@ with two numbers.</dd>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="image.js.html">fill/image.js</a>, line 62
+        <a href="fill/image.js.html#line62">fill/image.js</a>, line 62
     </li></ul></dd>
     
     
@@ -255,7 +388,6 @@ with two numbers.</dd>
     
     
 </dd>
-
 		
 			
 <dt>
@@ -293,7 +425,7 @@ with two numbers.</dd>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="image.js.html">fill/image.js</a>, line 68
+        <a href="fill/image.js.html#line68">fill/image.js</a>, line 68
     </li></ul></dd>
     
     
@@ -307,7 +439,6 @@ with two numbers.</dd>
     
     
 </dd>
-
 		</dl>
 	
 	
@@ -354,7 +485,7 @@ with two numbers.</dd>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="image.js.html">fill/image.js</a>, line 103
+        <a href="fill/image.js.html#line103">fill/image.js</a>, line 103
     </li></ul></dd>
     
     
@@ -419,7 +550,7 @@ with two numbers.</dd>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="image.js.html">fill/image.js</a>, line 121
+        <a href="fill/image.js.html#line121">fill/image.js</a>, line 121
     </li></ul></dd>
     
     
@@ -554,7 +685,7 @@ with two numbers.</dd>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="image.js.html">fill/image.js</a>, line 113
+        <a href="fill/image.js.html#line113">fill/image.js</a>, line 113
     </li></ul></dd>
     
     
@@ -615,7 +746,7 @@ with two numbers.</dd>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="image.js.html">fill/image.js</a>, line 73
+        <a href="fill/image.js.html#line73">fill/image.js</a>, line 73
     </li></ul></dd>
     
     
@@ -680,7 +811,7 @@ with two numbers.</dd>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="image.js.html">fill/image.js</a>, line 129
+        <a href="fill/image.js.html#line129">fill/image.js</a>, line 129
     </li></ul></dd>
     
     
@@ -767,7 +898,7 @@ with two numbers.</dd>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="image.js.html">fill/image.js</a>, line 193
+        <a href="fill/image.js.html#line193">fill/image.js</a>, line 193
     </li></ul></dd>
     
     
@@ -828,7 +959,7 @@ with two numbers.</dd>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="image.js.html">fill/image.js</a>, line 207
+        <a href="fill/image.js.html#line207">fill/image.js</a>, line 207
     </li></ul></dd>
     
     
@@ -984,7 +1115,7 @@ with two numbers.</dd>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="image.js.html">fill/image.js</a>, line 156
+        <a href="fill/image.js.html#line156">fill/image.js</a>, line 156
     </li></ul></dd>
     
     
@@ -1169,7 +1300,7 @@ with two numbers.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="image.js.html">fill/image.js</a>, line 140
+        <a href="fill/image.js.html#line140">fill/image.js</a>, line 140
     </li></ul></dd>
     
     
@@ -1234,7 +1365,7 @@ with two numbers.
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:18 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:39 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

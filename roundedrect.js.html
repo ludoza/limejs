@@ -26,122 +26,122 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.Renderer.CANVAS.ROUNDEDRECT');
-goog.provide('lime.Renderer.DOM.ROUNDEDRECT');
-goog.provide('lime.RoundedRect');
-
-
-goog.require('lime.Renderer.CANVAS.SPRITE');
-goog.require('lime.Renderer.DOM.SPRITE');
-goog.require('lime.Sprite');
-goog.require('lime.style');
-
-/**
- * Rounded rectangle
- * @constructor
- * @extends lime.Sprite
- */
-lime.RoundedRect = function() {
-    lime.Sprite.call(this);
-
-    this.setRadius(5);
-};
-goog.inherits(lime.RoundedRect, lime.Sprite);
-
-/**
- * Common name for RoundedRect objects
- * @type {string}
- */
-lime.RoundedRect.prototype.id = 'roundedrect';
-
-/** @inheritDoc */
-lime.RoundedRect.prototype.supportedRenderers = [
-    lime.Renderer.DOM.SPRITE.makeSubRenderer(lime.Renderer.DOM.ROUNDEDRECT),
-    lime.Renderer.CANVAS.SPRITE.makeSubRenderer(lime.Renderer.CANVAS.ROUNDEDRECT)
-];
-
-/**
- * Return corner radius
- * @return {number} Radius.
- */
-lime.RoundedRect.prototype.getRadius = function() {
-    return this.radius_;
-};
-
-/**
- * Return true if radius is in percentage units
- * @return {boolean} Unit is percentage?
- */
-lime.RoundedRect.prototype.getUnitPercentage = function() {
-    return this.unitPercentage_;
-};
-
-/**
- * Sets the corner radius for object
- * @param {number} value Radius.
- * @param {boolean=} opt_percentage use percentage units.
- */
-lime.RoundedRect.prototype.setRadius = function(value, opt_percentage) {
-    this.unitPercentage_ = opt_percentage || false;
-    this.radius_ = value;
-    return this;
-};
-
-/**
- * @inheritDoc
- * @this {lime.RoundedRect}
- */
-lime.Renderer.DOM.ROUNDEDRECT.draw = function(el) {
-    var size = this.getSize();
-
-    lime.Renderer.DOM.SPRITE.draw.call(this, el);
-
-    lime.style.setBorderRadius(el, [this.radius_ * this.getQuality(), this.radius_ * this.getQuality()]);
-
-};
-
-/**
- * @inheritDoc
- * @this {lime.RoundedRect}
- */
-lime.Renderer.CANVAS.ROUNDEDRECT.draw = function(context) {
-    //http://js-bits.blogspot.com/2010/07/canvas-rounded-corner-rectangles.html
-
-    var size = this.getSize(),
-        fill = this.getFill(),
-        frame = this.getFrame(),
-        radius = this.getRadius(),
-        x = frame.left,
-        y = frame.top,
-        width = frame.right - frame.left,
-        height = frame.bottom - frame.top;
-
-    context.save();
-    context.beginPath();
-    context.moveTo(x + radius, y);
-    context.lineTo(x + width - radius, y);
-    context.quadraticCurveTo(x + width, y, x + width, y + radius);
-    context.lineTo(x + width, y + height - radius);
-    context.quadraticCurveTo(x + width, y + height,
-        x + width - radius, y + height);
-    context.lineTo(x + radius, y + height);
-    context.quadraticCurveTo(x, y + height, x, y + height - radius);
-    context.lineTo(x, y + radius);
-    context.quadraticCurveTo(x, y, x + radius, y);
-    context.closePath();
-
-    context.clip();
-
-    lime.Renderer.CANVAS.SPRITE.draw.call(this, context);
-
-    if (this.stroke_) {
-        context.lineWidth *= 2;
-        context.stroke();
-    }
-
-    context.restore();
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.Renderer.CANVAS.ROUNDEDRECT');<a name="line2"></a>
+goog.provide('lime.Renderer.DOM.ROUNDEDRECT');<a name="line3"></a>
+goog.provide('lime.RoundedRect');<a name="line4"></a>
+<a name="line5"></a>
+<a name="line6"></a>
+goog.require('lime.Renderer.CANVAS.SPRITE');<a name="line7"></a>
+goog.require('lime.Renderer.DOM.SPRITE');<a name="line8"></a>
+goog.require('lime.Sprite');<a name="line9"></a>
+goog.require('lime.style');<a name="line10"></a>
+<a name="line11"></a>
+/**<a name="line12"></a>
+ * Rounded rectangle<a name="line13"></a>
+ * @constructor<a name="line14"></a>
+ * @extends lime.Sprite<a name="line15"></a>
+ */<a name="line16"></a>
+lime.RoundedRect = function() {<a name="line17"></a>
+    lime.Sprite.call(this);<a name="line18"></a>
+<a name="line19"></a>
+    this.setRadius(5);<a name="line20"></a>
+};<a name="line21"></a>
+goog.inherits(lime.RoundedRect, lime.Sprite);<a name="line22"></a>
+<a name="line23"></a>
+/**<a name="line24"></a>
+ * Common name for RoundedRect objects<a name="line25"></a>
+ * @type {string}<a name="line26"></a>
+ */<a name="line27"></a>
+lime.RoundedRect.prototype.id = 'roundedrect';<a name="line28"></a>
+<a name="line29"></a>
+/** @inheritDoc */<a name="line30"></a>
+lime.RoundedRect.prototype.supportedRenderers = [<a name="line31"></a>
+    lime.Renderer.DOM.SPRITE.makeSubRenderer(lime.Renderer.DOM.ROUNDEDRECT),<a name="line32"></a>
+    lime.Renderer.CANVAS.SPRITE.makeSubRenderer(lime.Renderer.CANVAS.ROUNDEDRECT)<a name="line33"></a>
+];<a name="line34"></a>
+<a name="line35"></a>
+/**<a name="line36"></a>
+ * Return corner radius<a name="line37"></a>
+ * @return {number} Radius.<a name="line38"></a>
+ */<a name="line39"></a>
+lime.RoundedRect.prototype.getRadius = function() {<a name="line40"></a>
+    return this.radius_;<a name="line41"></a>
+};<a name="line42"></a>
+<a name="line43"></a>
+/**<a name="line44"></a>
+ * Return true if radius is in percentage units<a name="line45"></a>
+ * @return {boolean} Unit is percentage?<a name="line46"></a>
+ */<a name="line47"></a>
+lime.RoundedRect.prototype.getUnitPercentage = function() {<a name="line48"></a>
+    return this.unitPercentage_;<a name="line49"></a>
+};<a name="line50"></a>
+<a name="line51"></a>
+/**<a name="line52"></a>
+ * Sets the corner radius for object<a name="line53"></a>
+ * @param {number} value Radius.<a name="line54"></a>
+ * @param {boolean=} opt_percentage use percentage units.<a name="line55"></a>
+ */<a name="line56"></a>
+lime.RoundedRect.prototype.setRadius = function(value, opt_percentage) {<a name="line57"></a>
+    this.unitPercentage_ = opt_percentage || false;<a name="line58"></a>
+    this.radius_ = value;<a name="line59"></a>
+    return this;<a name="line60"></a>
+};<a name="line61"></a>
+<a name="line62"></a>
+/**<a name="line63"></a>
+ * @inheritDoc<a name="line64"></a>
+ * @this {lime.RoundedRect}<a name="line65"></a>
+ */<a name="line66"></a>
+lime.Renderer.DOM.ROUNDEDRECT.draw = function(el) {<a name="line67"></a>
+    var size = this.getSize();<a name="line68"></a>
+<a name="line69"></a>
+    lime.Renderer.DOM.SPRITE.draw.call(this, el);<a name="line70"></a>
+<a name="line71"></a>
+    lime.style.setBorderRadius(el, [this.radius_ * this.getQuality(), this.radius_ * this.getQuality()]);<a name="line72"></a>
+<a name="line73"></a>
+};<a name="line74"></a>
+<a name="line75"></a>
+/**<a name="line76"></a>
+ * @inheritDoc<a name="line77"></a>
+ * @this {lime.RoundedRect}<a name="line78"></a>
+ */<a name="line79"></a>
+lime.Renderer.CANVAS.ROUNDEDRECT.draw = function(context) {<a name="line80"></a>
+    //http://js-bits.blogspot.com/2010/07/canvas-rounded-corner-rectangles.html<a name="line81"></a>
+<a name="line82"></a>
+    var size = this.getSize(),<a name="line83"></a>
+        fill = this.getFill(),<a name="line84"></a>
+        frame = this.getFrame(),<a name="line85"></a>
+        radius = this.getRadius(),<a name="line86"></a>
+        x = frame.left,<a name="line87"></a>
+        y = frame.top,<a name="line88"></a>
+        width = frame.right - frame.left,<a name="line89"></a>
+        height = frame.bottom - frame.top;<a name="line90"></a>
+<a name="line91"></a>
+    context.save();<a name="line92"></a>
+    context.beginPath();<a name="line93"></a>
+    context.moveTo(x + radius, y);<a name="line94"></a>
+    context.lineTo(x + width - radius, y);<a name="line95"></a>
+    context.quadraticCurveTo(x + width, y, x + width, y + radius);<a name="line96"></a>
+    context.lineTo(x + width, y + height - radius);<a name="line97"></a>
+    context.quadraticCurveTo(x + width, y + height,<a name="line98"></a>
+        x + width - radius, y + height);<a name="line99"></a>
+    context.lineTo(x + radius, y + height);<a name="line100"></a>
+    context.quadraticCurveTo(x, y + height, x, y + height - radius);<a name="line101"></a>
+    context.lineTo(x, y + radius);<a name="line102"></a>
+    context.quadraticCurveTo(x, y, x + radius, y);<a name="line103"></a>
+    context.closePath();<a name="line104"></a>
+<a name="line105"></a>
+    context.clip();<a name="line106"></a>
+<a name="line107"></a>
+    lime.Renderer.CANVAS.SPRITE.draw.call(this, context);<a name="line108"></a>
+<a name="line109"></a>
+    if (this.stroke_) {<a name="line110"></a>
+        context.lineWidth *= 2;<a name="line111"></a>
+        context.stroke();<a name="line112"></a>
+    }<a name="line113"></a>
+<a name="line114"></a>
+    context.restore();<a name="line115"></a>
+};<a name="line116"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -157,7 +157,7 @@ lime.Renderer.CANVAS.ROUNDEDRECT.draw = function(context) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

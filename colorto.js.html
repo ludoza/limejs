@@ -26,117 +26,117 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.animation.ColorTo');
-
-
-goog.require('lime.Sprite');
-goog.require('lime.animation.Animation');
-
-/**
- * Animation for changing element's fillcolor value
- * @param {...mixed} args Color definition.
- * @constructor
- * @extends lime.animation.Animation
- */
-lime.animation.ColorTo = function(args) {
-    lime.animation.Animation.call(this);
-
-    this.rgb_ = null;
-
-    this.target_ = lime.animation.ColorTo.Target.FILL;
-
-    var color = lime.fill.parse(goog.array.toArray(arguments));
-
-    if (color instanceof lime.fill.Color) {
-        this.rgba_ = color.getRgba();
-    }
-};
-goog.inherits(lime.animation.ColorTo, lime.animation.Animation);
-
-/** @inheritDoc */
-lime.animation.ColorTo.prototype.scope = 'color';
-
-/**
- * Element component to apply the animation
- * @enum {string}
- */
-lime.animation.ColorTo.Target = {
-    FILL: 'fill',
-    STROKE: 'stroke',
-    FONT: 'font'
-};
-
-/**
- * Set the component to apply the animation
- * @param {lime.animation.ColorTo.Target} component type.
- * @return {lime.animation.ColorTo} object itself.
- */
-lime.animation.ColorTo.prototype.setTargetComponent = function(target) {
-    this.target_ = target;
-    return this;
-};
-
-/**
- * Return the animation target component
- * @return {lime.animation.ColorTo.Target} component type.
- */
-lime.animation.ColorTo.prototype.getTargetComponent = function() {
-    return this.target_;
-};
-
-/** @inheritDoc */
-lime.animation.ColorTo.prototype.makeTargetProp = function(target) {
-    var fill, oldrgb;
-
-    switch (this.target_) {
-        case lime.animation.ColorTo.Target.FILL:
-            fill = target.getFill(),
-            oldrgb = fill instanceof lime.fill.Color ? fill.getRgba() : [255, 255, 255, 0];
-            break;
-        case lime.animation.ColorTo.Target.STROKE:
-            fill = target.getStroke().getColor();
-            oldrgb = fill instanceof lime.fill.Color ? fill.getRgba() : [255, 255, 255, 0];
-            break;
-        case lime.animation.ColorTo.Target.FONT:
-            oldrgb = goog.color.hexToRgb(target.getFontColor());
-            break;
-    }
-
-    return {
-        start: oldrgb,
-        delta: [this.rgba_[0] - oldrgb[0], this.rgba_[1] - oldrgb[1],
-            this.rgba_[2] - oldrgb[2], this.rgba_[3] - oldrgb[3]
-        ]
-    };
-};
-
-/** @inheritDoc */
-lime.animation.ColorTo.prototype.update = function(t, target) {
-    if (this.status_ == 0) return;
-
-    var prop = this.getTargetProp(target),
-        red = Math.round(prop.start[0] + prop.delta[0] * t),
-        green = Math.round(prop.start[1] + prop.delta[1] * t),
-        blue = Math.round(prop.start[2] + prop.delta[2] * t),
-        alpha;
-
-    if ('start' in prop) {
-        switch (this.target_) {
-            case lime.animation.ColorTo.Target.FILL:
-                alpha = prop.start[3] + prop.delta[3] * t;
-                target.setFill(red, green, blue, alpha);
-                break;
-            case lime.animation.ColorTo.Target.STROKE:
-                alpha = prop.start[3] + prop.delta[3] * t;
-                target.setStroke(target.getStroke().setColor(red, green, blue, alpha));
-                break;
-            case lime.animation.ColorTo.Target.FONT:
-                target.setFontColor(goog.color.rgbToHex(red, green, blue));
-                break;
-        }
-    }
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.animation.ColorTo');<a name="line2"></a>
+<a name="line3"></a>
+<a name="line4"></a>
+goog.require('lime.Sprite');<a name="line5"></a>
+goog.require('lime.animation.Animation');<a name="line6"></a>
+<a name="line7"></a>
+/**<a name="line8"></a>
+ * Animation for changing element's fillcolor value<a name="line9"></a>
+ * @param {...mixed} args Color definition.<a name="line10"></a>
+ * @constructor<a name="line11"></a>
+ * @extends lime.animation.Animation<a name="line12"></a>
+ */<a name="line13"></a>
+lime.animation.ColorTo = function(args) {<a name="line14"></a>
+    lime.animation.Animation.call(this);<a name="line15"></a>
+<a name="line16"></a>
+    this.rgb_ = null;<a name="line17"></a>
+<a name="line18"></a>
+    this.target_ = lime.animation.ColorTo.Target.FILL;<a name="line19"></a>
+<a name="line20"></a>
+    var color = lime.fill.parse(goog.array.toArray(arguments));<a name="line21"></a>
+<a name="line22"></a>
+    if (color instanceof lime.fill.Color) {<a name="line23"></a>
+        this.rgba_ = color.getRgba();<a name="line24"></a>
+    }<a name="line25"></a>
+};<a name="line26"></a>
+goog.inherits(lime.animation.ColorTo, lime.animation.Animation);<a name="line27"></a>
+<a name="line28"></a>
+/** @inheritDoc */<a name="line29"></a>
+lime.animation.ColorTo.prototype.scope = 'color';<a name="line30"></a>
+<a name="line31"></a>
+/**<a name="line32"></a>
+ * Element component to apply the animation<a name="line33"></a>
+ * @enum {string}<a name="line34"></a>
+ */<a name="line35"></a>
+lime.animation.ColorTo.Target = {<a name="line36"></a>
+    FILL: 'fill',<a name="line37"></a>
+    STROKE: 'stroke',<a name="line38"></a>
+    FONT: 'font'<a name="line39"></a>
+};<a name="line40"></a>
+<a name="line41"></a>
+/**<a name="line42"></a>
+ * Set the component to apply the animation<a name="line43"></a>
+ * @param {lime.animation.ColorTo.Target} component type.<a name="line44"></a>
+ * @return {lime.animation.ColorTo} object itself.<a name="line45"></a>
+ */<a name="line46"></a>
+lime.animation.ColorTo.prototype.setTargetComponent = function(target) {<a name="line47"></a>
+    this.target_ = target;<a name="line48"></a>
+    return this;<a name="line49"></a>
+};<a name="line50"></a>
+<a name="line51"></a>
+/**<a name="line52"></a>
+ * Return the animation target component<a name="line53"></a>
+ * @return {lime.animation.ColorTo.Target} component type.<a name="line54"></a>
+ */<a name="line55"></a>
+lime.animation.ColorTo.prototype.getTargetComponent = function() {<a name="line56"></a>
+    return this.target_;<a name="line57"></a>
+};<a name="line58"></a>
+<a name="line59"></a>
+/** @inheritDoc */<a name="line60"></a>
+lime.animation.ColorTo.prototype.makeTargetProp = function(target) {<a name="line61"></a>
+    var fill, oldrgb;<a name="line62"></a>
+<a name="line63"></a>
+    switch (this.target_) {<a name="line64"></a>
+        case lime.animation.ColorTo.Target.FILL:<a name="line65"></a>
+            fill = target.getFill(),<a name="line66"></a>
+            oldrgb = fill instanceof lime.fill.Color ? fill.getRgba() : [255, 255, 255, 0];<a name="line67"></a>
+            break;<a name="line68"></a>
+        case lime.animation.ColorTo.Target.STROKE:<a name="line69"></a>
+            fill = target.getStroke().getColor();<a name="line70"></a>
+            oldrgb = fill instanceof lime.fill.Color ? fill.getRgba() : [255, 255, 255, 0];<a name="line71"></a>
+            break;<a name="line72"></a>
+        case lime.animation.ColorTo.Target.FONT:<a name="line73"></a>
+            oldrgb = goog.color.hexToRgb(target.getFontColor());<a name="line74"></a>
+            break;<a name="line75"></a>
+    }<a name="line76"></a>
+<a name="line77"></a>
+    return {<a name="line78"></a>
+        start: oldrgb,<a name="line79"></a>
+        delta: [this.rgba_[0] - oldrgb[0], this.rgba_[1] - oldrgb[1],<a name="line80"></a>
+            this.rgba_[2] - oldrgb[2], this.rgba_[3] - oldrgb[3]<a name="line81"></a>
+        ]<a name="line82"></a>
+    };<a name="line83"></a>
+};<a name="line84"></a>
+<a name="line85"></a>
+/** @inheritDoc */<a name="line86"></a>
+lime.animation.ColorTo.prototype.update = function(t, target) {<a name="line87"></a>
+    if (this.status_ == 0) return;<a name="line88"></a>
+<a name="line89"></a>
+    var prop = this.getTargetProp(target),<a name="line90"></a>
+        red = Math.round(prop.start[0] + prop.delta[0] * t),<a name="line91"></a>
+        green = Math.round(prop.start[1] + prop.delta[1] * t),<a name="line92"></a>
+        blue = Math.round(prop.start[2] + prop.delta[2] * t),<a name="line93"></a>
+        alpha;<a name="line94"></a>
+<a name="line95"></a>
+    if ('start' in prop) {<a name="line96"></a>
+        switch (this.target_) {<a name="line97"></a>
+            case lime.animation.ColorTo.Target.FILL:<a name="line98"></a>
+                alpha = prop.start[3] + prop.delta[3] * t;<a name="line99"></a>
+                target.setFill(red, green, blue, alpha);<a name="line100"></a>
+                break;<a name="line101"></a>
+            case lime.animation.ColorTo.Target.STROKE:<a name="line102"></a>
+                alpha = prop.start[3] + prop.delta[3] * t;<a name="line103"></a>
+                target.setStroke(target.getStroke().setColor(red, green, blue, alpha));<a name="line104"></a>
+                break;<a name="line105"></a>
+            case lime.animation.ColorTo.Target.FONT:<a name="line106"></a>
+                target.setFontColor(goog.color.rgbToHex(red, green, blue));<a name="line107"></a>
+                break;<a name="line108"></a>
+        }<a name="line109"></a>
+    }<a name="line110"></a>
+};<a name="line111"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -152,7 +152,7 @@ lime.animation.ColorTo.prototype.update = function(t, target) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:26 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

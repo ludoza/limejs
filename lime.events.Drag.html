@@ -28,7 +28,7 @@
 	
 <header>
 	<h2>
-	Drag
+	lime.events.Drag
 	</h2>
 	
 </header>  
@@ -40,7 +40,7 @@
 	
 		
 <dt>
-    <h4 class="name" id="Drag"><span class="type-signature"></span>new Drag<span class="signature">(event, <span class="optional">opt_snapToCenter</span>, <span class="optional">opt_bounds</span>, <span class="optional">opt_targetObject</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Drag"><span class="type-signature"></span>new lime.events.Drag<span class="signature">(event, <span class="optional">opt_snapToCenter</span>, <span class="optional">opt_bounds</span>, <span class="optional">opt_targetObject</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -238,7 +238,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="drag.js.html">events/drag.js</a>, line 16
+        <a href="events/drag.js.html#line16">events/drag.js</a>, line 16
     </li></ul></dd>
     
     
@@ -263,26 +263,126 @@
 	</div>
 	
 	
-	<div class="doc_summary">
+	<div class="summary">
 		<a name="summary"></a>
-		<h3 class="subsection-title summary">Summary</h3>
+		<h3 class="subsection-title">Summary</h3>
 
 		<div class="doc_group"><a name="summary_properties"></a>
-<h5>Members - instance</h5>
-
 <dl>
-    <dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#dropTargets_">dropTargets_</a></span><span class="type-sig"><span class="type-signature"> :Array.&lt;<a href="lime.Node.html">lime.Node</a>></span></span></dt><dd class="  even"></dd>
-</dl></div><div class="doc_group"><a name="summary_properties_static"></a>
-<h5>Members - static</h5>
-
-<dl>
-    <dt class="  even"><span class="type-attr"><span class="type-signature">&lt;static> </span></span><span class="type-name"><a href="#Event">Event</a></span><span class="type-sig"><span class="type-signature"> :string</span></span></dt><dd class="  even">Enum for dragging related events</dd>
-</dl></div><div class="doc_group"><a name="summary_methods"></a>
-<h5>Methods - instance</h5>
-
-<dl>
-    <dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#addDropTarget">addDropTarget</a></span><span class="type-sig"><span class="signature">(drop)</span><span class="type-signature"></span></span></dt><dd class="  even">Add another node as drop target.</dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#disposeInternal">disposeInternal</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"></span></span></dt><dd class="  odd"></dd><dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getBounds">getBounds</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span></dt><dd class="  even">Return the area limit.</dd><dt class="private  odd"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#moveHandler_">moveHandler_</a></span><span class="type-sig"><span class="signature">(e)</span><span class="type-signature"></span></span></dt><dd class="private  odd">Handle move events.</dd><dt class="private  even"><span class="type-attr"><span class="type-signature">&lt;private> </span></span><span class="type-name"><a href="#releaseHandler_">releaseHandler_</a></span><span class="type-sig"><span class="signature">(e)</span><span class="type-signature"></span></span></dt><dd class="private  even">Handle release events.</dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#setBounds">setBounds</a></span><span class="type-sig"><span class="signature">(bounds)</span><span class="type-signature"></span></span></dt><dd class="  odd">Set new limitation area.</dd>
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Members</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static> </span>
+				</td>
+				<td class="last">
+						<a href="#Event"><code class="name">Event</code></a><span class="type-signature"><span class="type-signature"> :string</span></span>
+						<div class="summary-description"> Enum for dragging related events</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#dropTargets_"><code class="name">dropTargets_</code></a><span class="type-signature"><span class="type-signature"> :Array.&lt;<a href="lime.Node.html">lime.Node</a>></span></span>
+						<div class="summary-description"> </div>
+						
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
 </dl>
+
+</div><div class="doc_group"><a name="summary_methods"></a>
+<dl>
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Methods</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#addDropTarget"><code class="name">addDropTarget</code></a><span class="type-signature"><span class="signature">(drop)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Add another node as drop target.</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#disposeInternal"><code class="name">disposeInternal</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> </div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getBounds"><code class="name">getBounds</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span>
+						<div class="summary-description"> Return the area limit.</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private> </span>
+				</td>
+				<td class="last">
+						<a href="#moveHandler_"><code class="name">moveHandler_</code></a><span class="type-signature"><span class="signature">(e)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Handle move events.</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;private> </span>
+				</td>
+				<td class="last">
+						<a href="#releaseHandler_"><code class="name">releaseHandler_</code></a><span class="type-signature"><span class="signature">(e)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Handle release events.</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#setBounds"><code class="name">setBounds</code></a><span class="type-signature"><span class="signature">(bounds)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> Set new limitation area.</div>
+						
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
+</dl>
+
 </div>
 	</div>
 	
@@ -547,7 +647,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="drag.js.html">events/drag.js</a>, line 53
+        <a href="events/drag.js.html#line53">events/drag.js</a>, line 53
     </li></ul></dd>
     
     
@@ -561,7 +661,6 @@
     
     
 </dd>
-
 		
 			
 <dt>
@@ -595,7 +694,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="drag.js.html">events/drag.js</a>, line 24
+        <a href="events/drag.js.html#line24">events/drag.js</a>, line 24
     </li></ul></dd>
     
     
@@ -609,7 +708,6 @@
     
     
 </dd>
-
 		</dl>
 	
 	
@@ -708,7 +806,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="drag.js.html">events/drag.js</a>, line 237
+        <a href="events/drag.js.html#line237">events/drag.js</a>, line 237
     </li></ul></dd>
     
     
@@ -769,7 +867,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="drag.js.html">events/drag.js</a>, line 65
+        <a href="events/drag.js.html#line65">events/drag.js</a>, line 65
     </li></ul></dd>
     
     
@@ -834,7 +932,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="drag.js.html">events/drag.js</a>, line 76
+        <a href="events/drag.js.html#line76">events/drag.js</a>, line 76
     </li></ul></dd>
     
     
@@ -969,7 +1067,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="drag.js.html">events/drag.js</a>, line 93
+        <a href="events/drag.js.html#line93">events/drag.js</a>, line 93
     </li></ul></dd>
     
     
@@ -1082,7 +1180,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="drag.js.html">events/drag.js</a>, line 202
+        <a href="events/drag.js.html#line202">events/drag.js</a>, line 202
     </li></ul></dd>
     
     
@@ -1195,7 +1293,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="drag.js.html">events/drag.js</a>, line 84
+        <a href="events/drag.js.html#line84">events/drag.js</a>, line 84
     </li></ul></dd>
     
     
@@ -1238,7 +1336,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:16 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:37 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

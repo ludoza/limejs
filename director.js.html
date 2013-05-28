@@ -26,603 +26,603 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.Director');
-
-
-goog.require('lime.CoverNode');
-goog.require('goog.array');
-goog.require('goog.dom');
-goog.require('goog.dom.ViewportSizeMonitor');
-goog.require('goog.dom.classes');
-goog.require('goog.events');
-goog.require('goog.math.Box');
-goog.require('goog.math.Coordinate');
-goog.require('goog.math.Size');
-goog.require('goog.math.Vec2');
-goog.require('goog.style');
-goog.require('lime');
-goog.require('lime.Node');
-goog.require('lime.events.EventDispatcher');
-goog.require('lime.helper.PauseScene');
-goog.require('lime.scheduleManager');
-goog.require('lime.transitions.Transition');
-
-
-/**
- * Director object. Base object for every game.
- * @param {Element} parentElement Parent element for director.
- * @param {number=} opt_width Optionaly define what height and width the director should have.
- * @param {number=} opt_height Optionaly define what height and width the director should have.
- * @constructor
- * @extends lime.Node
- */
-lime.Director = function(parentElement, opt_width, opt_height) {
-    lime.Node.call(this);
-
-    // Unlike other nodes Director is always in the DOM as
-    // it requires parentNode in the constructor
-    this.inTree_ = true;
-
-    this.setAnchorPoint(0, 0);
-    // todo: maybe easier if director just positions itselt
-    // to the center of the screen
-
-    /**
-     * Array of Scene instances. Last one is the active scene.
-     * @type {Array.&lt;lime.Scene>}
-     * @private
-     */
-    this.sceneStack_ = [];
-
-    /**
-     * Array of CoverNode instances.
-     * @type {Array.&lt;lime.CoverNode>}
-     * @private
-     */
-    this.coverStack_ = [];
-
-    this.domClassName = goog.getCssName('lime-director');
-    this.createDomElement();
-    parentElement.appendChild(this.domElement);
-
-
-
-    if (goog.userAgent.WEBKIT && goog.userAgent.MOBILE) {
-        //todo: Not pretty solution. Cover layers may not be needed at all.
-        this.coverElementBelow = document.createElement('div');
-        goog.dom.classes.add(this.coverElementBelow,
-            goog.getCssName('lime-cover-below'));
-        goog.dom.insertSiblingBefore(this.coverElementBelow, this.domElement);
-
-        this.coverElementAbove = document.createElement('div');
-        goog.dom.classes.add(this.coverElementAbove,
-            goog.getCssName('lime-cover-above'));
-        goog.dom.insertSiblingAfter(this.coverElementAbove, this.domElement);
-    }
-
-    if (parentElement.style['position'] != 'absolute') {
-        parentElement.style['position'] = 'relative';
-    }
-    parentElement.style['overflow'] = 'hidden';
-
-    if (parentElement == document.body) {
-        goog.style.installStyles('html,body{margin:0;padding:0;height:100%;}');
-
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        var content = 'initial-scale=1.0,minimum-scale=1,' +
-            'maximum-scale=1.0,user-scalable=no';
-        if ((/android/i).test(navigator.userAgent)) {
-            content += ',target-densityDpi=device-dpi';
-        }
-
-        meta.content = content;
-        document.getElementsByTagName('head').item(0).appendChild(meta);
-
-
-        //todo: look for a less hacky solution
-        if (goog.userAgent.MOBILE && !goog.global['navigator'].standalone) {
-            var that = this;
-            setTimeout(function() {
-                window.scrollTo(0, 0);
-                that.invalidateSize_()
-            }, 100);
-        }
-    }
-
-    var width, parentSize = goog.style.getSize(parentElement);
-
-    this.setSize(new goog.math.Size(
-        width = arguments[1] || parentSize.width || lime.Director.DEFAULT_WIDTH,
-        arguments[2] || parentSize.height * width / parentSize.width || lime.Director.DEFAULT_HEIGHT));
-
-    // --define goog.debug=false
-    this.setDisplayFPS(goog.DEBUG);
-    this.setPaused(false);
-
-
-    var vsm = new goog.dom.ViewportSizeMonitor();
-    goog.events.listen(vsm, goog.events.EventType.RESIZE,
-        this.invalidateSize_, false, this);
-    goog.events.listen(goog.global, 'orientationchange',
-        this.invalidateSize_, false, this);
-
-
-    lime.scheduleManager.schedule(this.step_, this);
-
-
-    this.eventDispatcher = new lime.events.EventDispatcher(this);
-
-    goog.events.listen(this, ['touchmove', 'touchstart'], function(e) {
-        e.event.preventDefault();
-    }, false, this);
-
-    // todo: check if all those are really neccessary as Event code
-    // is much more mature now
-    goog.events.listen(this, ['mouseup', 'touchend', 'mouseout', 'touchcancel'], function() {}, false);
-
-
-    this.invalidateSize_();
-
-    if (goog.DEBUG) {
-        goog.events.listen(goog.global, 'keyup', this.keyUpHandler_, false, this);
-    }
-
-};
-goog.inherits(lime.Director, lime.Node);
-
-
-/**
- * Milliseconds between recalculating FPS value
- * @const
- * @type {number}
- */
-lime.Director.FPS_INTERVAL = 100;
-
-/**
- * Default width of the Director
- * @const
- * @type {number}
- */
-lime.Director.DEFAULT_WIDTH = 400;
-
-
-/**
- * Default height of the Director
- * @const
- * @type {number}
- */
-lime.Director.DEFAULT_HEIGHT = 400;
-
-
-/**
- * Returns true if director is paused? On paused state
- * the update timer doesn't fire.
- * @return {boolean} If director is paused.
- */
-lime.Director.prototype.isPaused = function() {
-    return this.isPaused_;
-};
-
-
-/**
- * Pauses or resumes the director
- * @param {boolean} value Pause or resume.
- * @return {lime.Director} The director object itself.
- */
-lime.Director.prototype.setPaused = function(value) {
-    if (this.isPaused_ === value) return this;
-    this.isPaused_ = value;
-    lime.scheduleManager.changeDirectorActivity(this, !value);
-    if (this.isPaused_) {
-        var pauseClass = this.pauseClassFactory || lime.helper.PauseScene;
-        this.pauseScene = new pauseClass();
-        this.pushScene(this.pauseScene);
-    } else if (this.pauseScene) {
-        this.popScene();
-        delete this.pauseScene;
-    }
-    return this;
-};
-
-
-/**
- * Returns true if FPS counter is displayed
- * @return {boolean} FPS is displayed.
- */
-lime.Director.prototype.isDisplayFPS = function() {
-    return this.displayFPS_;
-};
-
-/**
- * Show or hide FPS counter
- * @param {boolean} value Display FPS?
- * @return {lime.Director} The director object itself.
- */
-lime.Director.prototype.setDisplayFPS = function(value) {
-    if (this.displayFPS_ && !value) {
-        goog.dom.removeNode(this.fpsElement_);
-    } else if (!this.displayFPS_ && value) {
-        this.frames_ = 0;
-        this.accumDt_ = 0;
-
-        this.fpsElement_ = goog.dom.createDom('div');
-        goog.dom.classes.add(this.fpsElement_, goog.getCssName('lime-fps'));
-        this.domElement.parentNode.appendChild(this.fpsElement_);
-    }
-
-    this.displayFPS_ = value;
-    return this;
-};
-
-
-/**
- * Get current active scene
- * @return {lime.Scene} Currently active scene.
- */
-lime.Director.prototype.getCurrentScene = function() {
-    return this.sceneStack_.length ?
-        this.sceneStack_[this.sceneStack_.length - 1] : null;
-};
-
-/** @inheritDoc */
-lime.Director.prototype.getDirector = function() {
-    return this;
-};
-
-/** @inheritDoc */
-lime.Director.prototype.getScene = function() {
-    return null;
-};
-
-/**
- * Timeline function.
- * @param {number} delta Milliseconds since last step.
- * @private
- */
-lime.Director.prototype.step_ = function(delta) {
-    if (this.isDisplayFPS()) {
-
-        this.frames_++;
-        this.accumDt_ += delta;
-        if (this.accumDt_ > lime.Director.FPS_INTERVAL) {
-            this.fps = ((1000 * this.frames_) / this.accumDt_);
-            goog.dom.setTextContent(this.fpsElement_, this.fps.toFixed(2));
-            this.frames_ = 0;
-            this.accumDt_ = 0;
-        }
-    }
-    lime.updateDirtyObjects();
-};
-
-
-/**
- * Replace current scene with new scene
- * @param {lime.Scene} scene New scene.
- * @param {function(lime.Scene,lime.Scene,boolean=)=} opt_transition Transition played.
- * @param {number=} opt_duration Duration of transition.
- */
-lime.Director.prototype.replaceScene = function(scene, opt_transition,
-    opt_duration) {
-
-    scene.setSize(this.getSize().clone());
-
-    var transitionclass = opt_transition || lime.transitions.Transition;
-
-    var outgoing = null;
-    if (this.sceneStack_.length)
-        outgoing = this.sceneStack_[this.sceneStack_.length - 1];
-
-
-
-    var removelist = [];
-    var i = this.sceneStack_.length;
-    while (--i >= 0) {
-        this.sceneStack_[i].wasRemovedFromTree();
-        removelist.push(this.sceneStack_[i].domElement);
-        this.sceneStack_[i].parent_ = null;
-    }
-    this.sceneStack_.length = 0;
-
-    this.sceneStack_.push(scene);
-    scene.domElement.style['display'] = 'none';
-    this.domElement.appendChild(scene.domElement);
-    scene.parent_ = this;
-    scene.wasAddedToTree();
-
-    var transition = new transitionclass(outgoing, scene);
-
-    goog.events.listenOnce(transition, 'end', function() {
-        var i = removelist.length;
-        while (--i >= 0) {
-            goog.dom.removeNode(removelist[i]);
-        }
-        removelist.length = 0;
-
-    }, false, this);
-
-    if (goog.isDef(opt_duration)) {
-        transition.setDuration(opt_duration);
-    }
-
-    transition.start();
-    return transition;
-
-};
-
-/** @inheritDoc */
-lime.Director.prototype.updateLayout = function() {
-    // debugger;
-    this.dirty_ &= ~lime.Dirty.LAYOUT;
-};
-
-/**
- * Push scene to the top of scene stack
- * @param {lime.Scene} scene New scene.
- * @param {function(lime.Scene,lime.Scene,boolean=)=} opt_transition Transition played.
- * @param {number=} opt_duration Duration of transition.
- * @return Transition object if opt_transition is defined
- */
-lime.Director.prototype.pushScene = function(scene, opt_transition, opt_duration) {
-    var transition, outgoing;
-
-    scene.setSize(this.getSize().clone());
-
-    if (goog.isDef(opt_transition) && this.sceneStack_.length) {
-        outgoing = this.sceneStack_[this.sceneStack_.length - 1];
-        transition = new opt_transition(outgoing, scene);
-
-        if (goog.isDef(opt_duration)) {
-            transition.setDuration(opt_duration);
-        }
-        scene.domElement.style['display'] = 'none';
-    }
-    this.sceneStack_.push(scene);
-    this.domElement.appendChild(scene.domElement);
-    scene.parent_ = this;
-    scene.wasAddedToTree();
-
-    if (transition) {
-        transition.start();
-        return transition;
-    }
-};
-
-
-/**
- * Remove current scene from the stack
- * @param {function(lime.Scene,lime.Scene,boolean=)=} opt_transition Transition played.
- * @param {number=} opt_duration Duration of transition.
- * @return Transition object if opt_transition is defined
- */
-lime.Director.prototype.popScene = function(opt_transition, opt_duration) {
-    var transition,
-        outgoing = this.getCurrentScene();
-
-    if (goog.isNull(outgoing)) return;
-
-    var popOutgoing = function() {
-        outgoing.wasRemovedFromTree();
-        outgoing.parent_ = null;
-        goog.dom.removeNode(outgoing.domElement);
-        this.sceneStack_.pop();
-        outgoing = null; // GC
-    };
-    // Transitions require an existing incoming scene
-    if (goog.isDef(opt_transition) && (this.sceneStack_.length > 1)) {
-        transition = new opt_transition(outgoing, this.sceneStack_[this.sceneStack_.length - 2]);
-
-        if (goog.isDef(opt_duration)) {
-            transition.setDuration(opt_duration);
-        }
-        goog.events.listenOnce(transition, 'end', popOutgoing, false, this);
-    } else {
-        popOutgoing.call(this);
-    }
-    if (transition) {
-        transition.start();
-        return transition;
-    }
-};
-
-
-/**
- * Add CoverNode object to the viewport
- * @param {lime.CoverNode} cover Covernode.
- * @param {boolean} opt_addAboveDirector Cover is added above director object.
- */
-lime.Director.prototype.addCover = function(cover, opt_addAboveDirector) {
-    //mobile safari performes much better with this hack. needs investigation.
-    if (goog.userAgent.WEBKIT && goog.userAgent.MOBILE) {
-        if (opt_addAboveDirector) {
-            this.coverElementAbove.appendChild(cover.domElement);
-        } else {
-            this.coverElementBelow.appendChild(cover.domElement);
-        }
-
-    } else {
-        if (opt_addAboveDirector) {
-            goog.dom.insertSiblingAfter(cover.domElement, this.domElement);
-        } else {
-            goog.dom.insertSiblingBefore(cover.domElement, this.domElement);
-        }
-    }
-    cover.director = this;
-    this.coverStack_.push(cover);
-};
-
-/**
- * Remove CoverNode object from the viewport
- * @param {lime.CoverNode} cover Cover to remove.
- */
-lime.Director.prototype.removeCover = function(cover) {
-    goog.array.remove(this.coverStack_, cover);
-    goog.dom.removeNode(cover.domElement);
-};
-
-
-/**
- * Return bounds of director,
- * @param {goog.math.Box} box Edges.
- * @return {goog.math.Box} new bounds.
- */
-lime.Director.prototype.getBounds = function(box) {
-    //todo:This should basically be same as boundingbox on lime.node
-    var position = this.getPosition(),
-        scale = this.getScale();
-    return new goog.math.Box(
-        box.top - position.y / scale.y,
-        box.right - position.x / scale.x,
-        box.bottom - position.y / scale.y,
-        box.left - position.x / scale.x);
-};
-
-/**
- * @inheritDoc
- */
-lime.Director.prototype.screenToLocal = function(c) {
-    var coord = c.clone();
-    coord.x -= this.domOffset.x + this.position_.x;
-    coord.y -= this.domOffset.y + this.position_.y;
-
-    coord.x /= this.scale_.x;
-    coord.y /= this.scale_.y;
-    return coord;
-};
-
-/**
- * @inheritDoc
- */
-lime.Director.prototype.localToScreen = function(c) {
-    var coord = c.clone();
-    coord.x *= this.scale_.x;
-    coord.y *= this.scale_.y;
-
-    coord.x += this.domOffset.x + this.position_.x;
-    coord.y += this.domOffset.y + this.position_.y;
-
-    return coord;
-};
-
-
-/**
- * @inheritDoc
- */
-lime.Director.prototype.update = function() {
-    lime.Node.prototype.update.call(this);
-
-    var i = this.coverStack_.length;
-    while (--i >= 0) {
-        this.coverStack_[i].update();
-    }
-};
-
-
-/**
- * Update dimensions based on viewport dimension changes
- * @private
- */
-lime.Director.prototype.invalidateSize_ = function() {
-
-    var stageSize = goog.style.getSize(this.domElement.parentNode);
-
-    if (this.domElement.parentNode == document.body) {
-        window.scrollTo(0, 0);
-        if (goog.isNumber(window.innerHeight)) {
-            stageSize.height = window.innerHeight;
-        }
-    }
-
-    var realSize = this.getSize().clone().scaleToFit(stageSize);
-
-    var scale = realSize.width / this.getSize().width;
-    this.setScale(scale);
-
-    if (stageSize.aspectRatio() &lt; realSize.aspectRatio()) {
-        this.setPosition(0, (stageSize.height - realSize.height) / 2);
-    } else {
-        this.setPosition((stageSize.width - realSize.width) / 2, 0);
-    }
-
-    this.updateDomOffset_();
-
-    // overflow hidden is for hiding away unused edges of document
-    // height addition is because scroll(0,0) doesn't work any more if the
-    // document has no edge @tonis todo:look for less hacky solution(iframe?).
-    if (goog.userAgent.MOBILE && this.domElement.parentNode == document.body) {
-        if (this.overflowStyle_) goog.style.uninstallStyles(this.overflowStyle_);
-        this.overflowStyle_ = goog.style.installStyles(
-            'html{height:' + (stageSize.height + 120) + 'px;overflow:hidden;}');
-    }
-
-};
-
-/**
- * Add support for adding game to Springboard as a
- * web application on iOS devices
- */
-lime.Director.prototype.makeMobileWebAppCapable = function() {
-
-    var meta = document.createElement('meta');
-    meta.name = 'apple-mobile-web-app-capable';
-    meta.content = 'yes';
-    document.getElementsByTagName('head').item(0).appendChild(meta);
-
-    meta = document.createElement('meta');
-    meta.name = 'apple-mobile-web-app-status-bar-style';
-    meta.content = 'black';
-    document.getElementsByTagName('head').item(0).appendChild(meta);
-
-    var visited = false;
-    if (goog.isDef(localStorage)) {
-        visited = localStorage.getItem('_lime_visited');
-    }
-
-    var ios = (/(ipod|iphone|ipad)/i).test(navigator.userAgent);
-    if (ios && !window.navigator.standalone && COMPILED && !visited && this.domElement.parentNode == document.body) {
-        alert('Please install this page as a web app by ' +
-            'clicking Share + Add to home screen.');
-        if (goog.isDef(localStorage)) {
-            localStorage.setItem('_lime_visited', true);
-        }
-    }
-
-};
-
-/**
- * Updates the cached value of directors parentelement position in the viewport
- * @private
- */
-lime.Director.prototype.updateDomOffset_ = function() {
-    this.domOffset = goog.style.getPageOffset(this.domElement.parentNode);
-};
-
-/**
- * @private
- */
-lime.Director.prototype.keyUpHandler_ = function(e) {
-    if (e.altKey && String.fromCharCode(e.keyCode).toLowerCase() == 'd') {
-        if (this.debugModeOn_) {
-            goog.style.uninstallStyles(this.debugModeOn_);
-            this.debugModeOn_ = null;
-        } else {
-            this.debugModeOn_ = goog.style.installStyles('.lime-scene div,.lime-scene img,' +
-                '.lime-scene canvas{border: 1px solid #c00;}');
-        }
-        e.stopPropagation();
-        e.preventDefault();
-    }
-}
-
-/**
- * @inheritDoc
- */
-lime.Director.prototype.hitTest = function(e) {
-    if (e && e.screenPosition)
-        e.position = this.screenToLocal(e.screenPosition);
-    return true;
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.Director');<a name="line2"></a>
+<a name="line3"></a>
+<a name="line4"></a>
+goog.require('lime.CoverNode');<a name="line5"></a>
+goog.require('goog.array');<a name="line6"></a>
+goog.require('goog.dom');<a name="line7"></a>
+goog.require('goog.dom.ViewportSizeMonitor');<a name="line8"></a>
+goog.require('goog.dom.classes');<a name="line9"></a>
+goog.require('goog.events');<a name="line10"></a>
+goog.require('goog.math.Box');<a name="line11"></a>
+goog.require('goog.math.Coordinate');<a name="line12"></a>
+goog.require('goog.math.Size');<a name="line13"></a>
+goog.require('goog.math.Vec2');<a name="line14"></a>
+goog.require('goog.style');<a name="line15"></a>
+goog.require('lime');<a name="line16"></a>
+goog.require('lime.Node');<a name="line17"></a>
+goog.require('lime.events.EventDispatcher');<a name="line18"></a>
+goog.require('lime.helper.PauseScene');<a name="line19"></a>
+goog.require('lime.scheduleManager');<a name="line20"></a>
+goog.require('lime.transitions.Transition');<a name="line21"></a>
+<a name="line22"></a>
+<a name="line23"></a>
+/**<a name="line24"></a>
+ * Director object. Base object for every game.<a name="line25"></a>
+ * @param {Element} parentElement Parent element for director.<a name="line26"></a>
+ * @param {number=} opt_width Optionaly define what height and width the director should have.<a name="line27"></a>
+ * @param {number=} opt_height Optionaly define what height and width the director should have.<a name="line28"></a>
+ * @constructor<a name="line29"></a>
+ * @extends lime.Node<a name="line30"></a>
+ */<a name="line31"></a>
+lime.Director = function(parentElement, opt_width, opt_height) {<a name="line32"></a>
+    lime.Node.call(this);<a name="line33"></a>
+<a name="line34"></a>
+    // Unlike other nodes Director is always in the DOM as<a name="line35"></a>
+    // it requires parentNode in the constructor<a name="line36"></a>
+    this.inTree_ = true;<a name="line37"></a>
+<a name="line38"></a>
+    this.setAnchorPoint(0, 0);<a name="line39"></a>
+    // todo: maybe easier if director just positions itselt<a name="line40"></a>
+    // to the center of the screen<a name="line41"></a>
+<a name="line42"></a>
+    /**<a name="line43"></a>
+     * Array of Scene instances. Last one is the active scene.<a name="line44"></a>
+     * @type {Array.&lt;lime.Scene>}<a name="line45"></a>
+     * @private<a name="line46"></a>
+     */<a name="line47"></a>
+    this.sceneStack_ = [];<a name="line48"></a>
+<a name="line49"></a>
+    /**<a name="line50"></a>
+     * Array of CoverNode instances.<a name="line51"></a>
+     * @type {Array.&lt;lime.CoverNode>}<a name="line52"></a>
+     * @private<a name="line53"></a>
+     */<a name="line54"></a>
+    this.coverStack_ = [];<a name="line55"></a>
+<a name="line56"></a>
+    this.domClassName = goog.getCssName('lime-director');<a name="line57"></a>
+    this.createDomElement();<a name="line58"></a>
+    parentElement.appendChild(this.domElement);<a name="line59"></a>
+<a name="line60"></a>
+<a name="line61"></a>
+<a name="line62"></a>
+    if (goog.userAgent.WEBKIT && goog.userAgent.MOBILE) {<a name="line63"></a>
+        //todo: Not pretty solution. Cover layers may not be needed at all.<a name="line64"></a>
+        this.coverElementBelow = document.createElement('div');<a name="line65"></a>
+        goog.dom.classes.add(this.coverElementBelow,<a name="line66"></a>
+            goog.getCssName('lime-cover-below'));<a name="line67"></a>
+        goog.dom.insertSiblingBefore(this.coverElementBelow, this.domElement);<a name="line68"></a>
+<a name="line69"></a>
+        this.coverElementAbove = document.createElement('div');<a name="line70"></a>
+        goog.dom.classes.add(this.coverElementAbove,<a name="line71"></a>
+            goog.getCssName('lime-cover-above'));<a name="line72"></a>
+        goog.dom.insertSiblingAfter(this.coverElementAbove, this.domElement);<a name="line73"></a>
+    }<a name="line74"></a>
+<a name="line75"></a>
+    if (parentElement.style['position'] != 'absolute') {<a name="line76"></a>
+        parentElement.style['position'] = 'relative';<a name="line77"></a>
+    }<a name="line78"></a>
+    parentElement.style['overflow'] = 'hidden';<a name="line79"></a>
+<a name="line80"></a>
+    if (parentElement == document.body) {<a name="line81"></a>
+        goog.style.installStyles('html,body{margin:0;padding:0;height:100%;}');<a name="line82"></a>
+<a name="line83"></a>
+        var meta = document.createElement('meta');<a name="line84"></a>
+        meta.name = 'viewport';<a name="line85"></a>
+        var content = 'initial-scale=1.0,minimum-scale=1,' +<a name="line86"></a>
+            'maximum-scale=1.0,user-scalable=no';<a name="line87"></a>
+        if ((/android/i).test(navigator.userAgent)) {<a name="line88"></a>
+            content += ',target-densityDpi=device-dpi';<a name="line89"></a>
+        }<a name="line90"></a>
+<a name="line91"></a>
+        meta.content = content;<a name="line92"></a>
+        document.getElementsByTagName('head').item(0).appendChild(meta);<a name="line93"></a>
+<a name="line94"></a>
+<a name="line95"></a>
+        //todo: look for a less hacky solution<a name="line96"></a>
+        if (goog.userAgent.MOBILE && !goog.global['navigator'].standalone) {<a name="line97"></a>
+            var that = this;<a name="line98"></a>
+            setTimeout(function() {<a name="line99"></a>
+                window.scrollTo(0, 0);<a name="line100"></a>
+                that.invalidateSize_()<a name="line101"></a>
+            }, 100);<a name="line102"></a>
+        }<a name="line103"></a>
+    }<a name="line104"></a>
+<a name="line105"></a>
+    var width, parentSize = goog.style.getSize(parentElement);<a name="line106"></a>
+<a name="line107"></a>
+    this.setSize(new goog.math.Size(<a name="line108"></a>
+        width = arguments[1] || parentSize.width || lime.Director.DEFAULT_WIDTH,<a name="line109"></a>
+        arguments[2] || parentSize.height * width / parentSize.width || lime.Director.DEFAULT_HEIGHT));<a name="line110"></a>
+<a name="line111"></a>
+    // --define goog.debug=false<a name="line112"></a>
+    this.setDisplayFPS(goog.DEBUG);<a name="line113"></a>
+    this.setPaused(false);<a name="line114"></a>
+<a name="line115"></a>
+<a name="line116"></a>
+    var vsm = new goog.dom.ViewportSizeMonitor();<a name="line117"></a>
+    goog.events.listen(vsm, goog.events.EventType.RESIZE,<a name="line118"></a>
+        this.invalidateSize_, false, this);<a name="line119"></a>
+    goog.events.listen(goog.global, 'orientationchange',<a name="line120"></a>
+        this.invalidateSize_, false, this);<a name="line121"></a>
+<a name="line122"></a>
+<a name="line123"></a>
+    lime.scheduleManager.schedule(this.step_, this);<a name="line124"></a>
+<a name="line125"></a>
+<a name="line126"></a>
+    this.eventDispatcher = new lime.events.EventDispatcher(this);<a name="line127"></a>
+<a name="line128"></a>
+    goog.events.listen(this, ['touchmove', 'touchstart'], function(e) {<a name="line129"></a>
+        e.event.preventDefault();<a name="line130"></a>
+    }, false, this);<a name="line131"></a>
+<a name="line132"></a>
+    // todo: check if all those are really neccessary as Event code<a name="line133"></a>
+    // is much more mature now<a name="line134"></a>
+    goog.events.listen(this, ['mouseup', 'touchend', 'mouseout', 'touchcancel'], function() {}, false);<a name="line135"></a>
+<a name="line136"></a>
+<a name="line137"></a>
+    this.invalidateSize_();<a name="line138"></a>
+<a name="line139"></a>
+    if (goog.DEBUG) {<a name="line140"></a>
+        goog.events.listen(goog.global, 'keyup', this.keyUpHandler_, false, this);<a name="line141"></a>
+    }<a name="line142"></a>
+<a name="line143"></a>
+};<a name="line144"></a>
+goog.inherits(lime.Director, lime.Node);<a name="line145"></a>
+<a name="line146"></a>
+<a name="line147"></a>
+/**<a name="line148"></a>
+ * Milliseconds between recalculating FPS value<a name="line149"></a>
+ * @const<a name="line150"></a>
+ * @type {number}<a name="line151"></a>
+ */<a name="line152"></a>
+lime.Director.FPS_INTERVAL = 100;<a name="line153"></a>
+<a name="line154"></a>
+/**<a name="line155"></a>
+ * Default width of the Director<a name="line156"></a>
+ * @const<a name="line157"></a>
+ * @type {number}<a name="line158"></a>
+ */<a name="line159"></a>
+lime.Director.DEFAULT_WIDTH = 400;<a name="line160"></a>
+<a name="line161"></a>
+<a name="line162"></a>
+/**<a name="line163"></a>
+ * Default height of the Director<a name="line164"></a>
+ * @const<a name="line165"></a>
+ * @type {number}<a name="line166"></a>
+ */<a name="line167"></a>
+lime.Director.DEFAULT_HEIGHT = 400;<a name="line168"></a>
+<a name="line169"></a>
+<a name="line170"></a>
+/**<a name="line171"></a>
+ * Returns true if director is paused? On paused state<a name="line172"></a>
+ * the update timer doesn't fire.<a name="line173"></a>
+ * @return {boolean} If director is paused.<a name="line174"></a>
+ */<a name="line175"></a>
+lime.Director.prototype.isPaused = function() {<a name="line176"></a>
+    return this.isPaused_;<a name="line177"></a>
+};<a name="line178"></a>
+<a name="line179"></a>
+<a name="line180"></a>
+/**<a name="line181"></a>
+ * Pauses or resumes the director<a name="line182"></a>
+ * @param {boolean} value Pause or resume.<a name="line183"></a>
+ * @return {lime.Director} The director object itself.<a name="line184"></a>
+ */<a name="line185"></a>
+lime.Director.prototype.setPaused = function(value) {<a name="line186"></a>
+    if (this.isPaused_ === value) return this;<a name="line187"></a>
+    this.isPaused_ = value;<a name="line188"></a>
+    lime.scheduleManager.changeDirectorActivity(this, !value);<a name="line189"></a>
+    if (this.isPaused_) {<a name="line190"></a>
+        var pauseClass = this.pauseClassFactory || lime.helper.PauseScene;<a name="line191"></a>
+        this.pauseScene = new pauseClass();<a name="line192"></a>
+        this.pushScene(this.pauseScene);<a name="line193"></a>
+    } else if (this.pauseScene) {<a name="line194"></a>
+        this.popScene();<a name="line195"></a>
+        delete this.pauseScene;<a name="line196"></a>
+    }<a name="line197"></a>
+    return this;<a name="line198"></a>
+};<a name="line199"></a>
+<a name="line200"></a>
+<a name="line201"></a>
+/**<a name="line202"></a>
+ * Returns true if FPS counter is displayed<a name="line203"></a>
+ * @return {boolean} FPS is displayed.<a name="line204"></a>
+ */<a name="line205"></a>
+lime.Director.prototype.isDisplayFPS = function() {<a name="line206"></a>
+    return this.displayFPS_;<a name="line207"></a>
+};<a name="line208"></a>
+<a name="line209"></a>
+/**<a name="line210"></a>
+ * Show or hide FPS counter<a name="line211"></a>
+ * @param {boolean} value Display FPS?<a name="line212"></a>
+ * @return {lime.Director} The director object itself.<a name="line213"></a>
+ */<a name="line214"></a>
+lime.Director.prototype.setDisplayFPS = function(value) {<a name="line215"></a>
+    if (this.displayFPS_ && !value) {<a name="line216"></a>
+        goog.dom.removeNode(this.fpsElement_);<a name="line217"></a>
+    } else if (!this.displayFPS_ && value) {<a name="line218"></a>
+        this.frames_ = 0;<a name="line219"></a>
+        this.accumDt_ = 0;<a name="line220"></a>
+<a name="line221"></a>
+        this.fpsElement_ = goog.dom.createDom('div');<a name="line222"></a>
+        goog.dom.classes.add(this.fpsElement_, goog.getCssName('lime-fps'));<a name="line223"></a>
+        this.domElement.parentNode.appendChild(this.fpsElement_);<a name="line224"></a>
+    }<a name="line225"></a>
+<a name="line226"></a>
+    this.displayFPS_ = value;<a name="line227"></a>
+    return this;<a name="line228"></a>
+};<a name="line229"></a>
+<a name="line230"></a>
+<a name="line231"></a>
+/**<a name="line232"></a>
+ * Get current active scene<a name="line233"></a>
+ * @return {lime.Scene} Currently active scene.<a name="line234"></a>
+ */<a name="line235"></a>
+lime.Director.prototype.getCurrentScene = function() {<a name="line236"></a>
+    return this.sceneStack_.length ?<a name="line237"></a>
+        this.sceneStack_[this.sceneStack_.length - 1] : null;<a name="line238"></a>
+};<a name="line239"></a>
+<a name="line240"></a>
+/** @inheritDoc */<a name="line241"></a>
+lime.Director.prototype.getDirector = function() {<a name="line242"></a>
+    return this;<a name="line243"></a>
+};<a name="line244"></a>
+<a name="line245"></a>
+/** @inheritDoc */<a name="line246"></a>
+lime.Director.prototype.getScene = function() {<a name="line247"></a>
+    return null;<a name="line248"></a>
+};<a name="line249"></a>
+<a name="line250"></a>
+/**<a name="line251"></a>
+ * Timeline function.<a name="line252"></a>
+ * @param {number} delta Milliseconds since last step.<a name="line253"></a>
+ * @private<a name="line254"></a>
+ */<a name="line255"></a>
+lime.Director.prototype.step_ = function(delta) {<a name="line256"></a>
+    if (this.isDisplayFPS()) {<a name="line257"></a>
+<a name="line258"></a>
+        this.frames_++;<a name="line259"></a>
+        this.accumDt_ += delta;<a name="line260"></a>
+        if (this.accumDt_ > lime.Director.FPS_INTERVAL) {<a name="line261"></a>
+            this.fps = ((1000 * this.frames_) / this.accumDt_);<a name="line262"></a>
+            goog.dom.setTextContent(this.fpsElement_, this.fps.toFixed(2));<a name="line263"></a>
+            this.frames_ = 0;<a name="line264"></a>
+            this.accumDt_ = 0;<a name="line265"></a>
+        }<a name="line266"></a>
+    }<a name="line267"></a>
+    lime.updateDirtyObjects();<a name="line268"></a>
+};<a name="line269"></a>
+<a name="line270"></a>
+<a name="line271"></a>
+/**<a name="line272"></a>
+ * Replace current scene with new scene<a name="line273"></a>
+ * @param {lime.Scene} scene New scene.<a name="line274"></a>
+ * @param {function(lime.Scene,lime.Scene,boolean=)=} opt_transition Transition played.<a name="line275"></a>
+ * @param {number=} opt_duration Duration of transition.<a name="line276"></a>
+ */<a name="line277"></a>
+lime.Director.prototype.replaceScene = function(scene, opt_transition,<a name="line278"></a>
+    opt_duration) {<a name="line279"></a>
+<a name="line280"></a>
+    scene.setSize(this.getSize().clone());<a name="line281"></a>
+<a name="line282"></a>
+    var transitionclass = opt_transition || lime.transitions.Transition;<a name="line283"></a>
+<a name="line284"></a>
+    var outgoing = null;<a name="line285"></a>
+    if (this.sceneStack_.length)<a name="line286"></a>
+        outgoing = this.sceneStack_[this.sceneStack_.length - 1];<a name="line287"></a>
+<a name="line288"></a>
+<a name="line289"></a>
+<a name="line290"></a>
+    var removelist = [];<a name="line291"></a>
+    var i = this.sceneStack_.length;<a name="line292"></a>
+    while (--i >= 0) {<a name="line293"></a>
+        this.sceneStack_[i].wasRemovedFromTree();<a name="line294"></a>
+        removelist.push(this.sceneStack_[i].domElement);<a name="line295"></a>
+        this.sceneStack_[i].parent_ = null;<a name="line296"></a>
+    }<a name="line297"></a>
+    this.sceneStack_.length = 0;<a name="line298"></a>
+<a name="line299"></a>
+    this.sceneStack_.push(scene);<a name="line300"></a>
+    scene.domElement.style['display'] = 'none';<a name="line301"></a>
+    this.domElement.appendChild(scene.domElement);<a name="line302"></a>
+    scene.parent_ = this;<a name="line303"></a>
+    scene.wasAddedToTree();<a name="line304"></a>
+<a name="line305"></a>
+    var transition = new transitionclass(outgoing, scene);<a name="line306"></a>
+<a name="line307"></a>
+    goog.events.listenOnce(transition, 'end', function() {<a name="line308"></a>
+        var i = removelist.length;<a name="line309"></a>
+        while (--i >= 0) {<a name="line310"></a>
+            goog.dom.removeNode(removelist[i]);<a name="line311"></a>
+        }<a name="line312"></a>
+        removelist.length = 0;<a name="line313"></a>
+<a name="line314"></a>
+    }, false, this);<a name="line315"></a>
+<a name="line316"></a>
+    if (goog.isDef(opt_duration)) {<a name="line317"></a>
+        transition.setDuration(opt_duration);<a name="line318"></a>
+    }<a name="line319"></a>
+<a name="line320"></a>
+    transition.start();<a name="line321"></a>
+    return transition;<a name="line322"></a>
+<a name="line323"></a>
+};<a name="line324"></a>
+<a name="line325"></a>
+/** @inheritDoc */<a name="line326"></a>
+lime.Director.prototype.updateLayout = function() {<a name="line327"></a>
+    // debugger;<a name="line328"></a>
+    this.dirty_ &= ~lime.Dirty.LAYOUT;<a name="line329"></a>
+};<a name="line330"></a>
+<a name="line331"></a>
+/**<a name="line332"></a>
+ * Push scene to the top of scene stack<a name="line333"></a>
+ * @param {lime.Scene} scene New scene.<a name="line334"></a>
+ * @param {function(lime.Scene,lime.Scene,boolean=)=} opt_transition Transition played.<a name="line335"></a>
+ * @param {number=} opt_duration Duration of transition.<a name="line336"></a>
+ * @return Transition object if opt_transition is defined<a name="line337"></a>
+ */<a name="line338"></a>
+lime.Director.prototype.pushScene = function(scene, opt_transition, opt_duration) {<a name="line339"></a>
+    var transition, outgoing;<a name="line340"></a>
+<a name="line341"></a>
+    scene.setSize(this.getSize().clone());<a name="line342"></a>
+<a name="line343"></a>
+    if (goog.isDef(opt_transition) && this.sceneStack_.length) {<a name="line344"></a>
+        outgoing = this.sceneStack_[this.sceneStack_.length - 1];<a name="line345"></a>
+        transition = new opt_transition(outgoing, scene);<a name="line346"></a>
+<a name="line347"></a>
+        if (goog.isDef(opt_duration)) {<a name="line348"></a>
+            transition.setDuration(opt_duration);<a name="line349"></a>
+        }<a name="line350"></a>
+        scene.domElement.style['display'] = 'none';<a name="line351"></a>
+    }<a name="line352"></a>
+    this.sceneStack_.push(scene);<a name="line353"></a>
+    this.domElement.appendChild(scene.domElement);<a name="line354"></a>
+    scene.parent_ = this;<a name="line355"></a>
+    scene.wasAddedToTree();<a name="line356"></a>
+<a name="line357"></a>
+    if (transition) {<a name="line358"></a>
+        transition.start();<a name="line359"></a>
+        return transition;<a name="line360"></a>
+    }<a name="line361"></a>
+};<a name="line362"></a>
+<a name="line363"></a>
+<a name="line364"></a>
+/**<a name="line365"></a>
+ * Remove current scene from the stack<a name="line366"></a>
+ * @param {function(lime.Scene,lime.Scene,boolean=)=} opt_transition Transition played.<a name="line367"></a>
+ * @param {number=} opt_duration Duration of transition.<a name="line368"></a>
+ * @return Transition object if opt_transition is defined<a name="line369"></a>
+ */<a name="line370"></a>
+lime.Director.prototype.popScene = function(opt_transition, opt_duration) {<a name="line371"></a>
+    var transition,<a name="line372"></a>
+        outgoing = this.getCurrentScene();<a name="line373"></a>
+<a name="line374"></a>
+    if (goog.isNull(outgoing)) return;<a name="line375"></a>
+<a name="line376"></a>
+    var popOutgoing = function() {<a name="line377"></a>
+        outgoing.wasRemovedFromTree();<a name="line378"></a>
+        outgoing.parent_ = null;<a name="line379"></a>
+        goog.dom.removeNode(outgoing.domElement);<a name="line380"></a>
+        this.sceneStack_.pop();<a name="line381"></a>
+        outgoing = null; // GC<a name="line382"></a>
+    };<a name="line383"></a>
+    // Transitions require an existing incoming scene<a name="line384"></a>
+    if (goog.isDef(opt_transition) && (this.sceneStack_.length > 1)) {<a name="line385"></a>
+        transition = new opt_transition(outgoing, this.sceneStack_[this.sceneStack_.length - 2]);<a name="line386"></a>
+<a name="line387"></a>
+        if (goog.isDef(opt_duration)) {<a name="line388"></a>
+            transition.setDuration(opt_duration);<a name="line389"></a>
+        }<a name="line390"></a>
+        goog.events.listenOnce(transition, 'end', popOutgoing, false, this);<a name="line391"></a>
+    } else {<a name="line392"></a>
+        popOutgoing.call(this);<a name="line393"></a>
+    }<a name="line394"></a>
+    if (transition) {<a name="line395"></a>
+        transition.start();<a name="line396"></a>
+        return transition;<a name="line397"></a>
+    }<a name="line398"></a>
+};<a name="line399"></a>
+<a name="line400"></a>
+<a name="line401"></a>
+/**<a name="line402"></a>
+ * Add CoverNode object to the viewport<a name="line403"></a>
+ * @param {lime.CoverNode} cover Covernode.<a name="line404"></a>
+ * @param {boolean} opt_addAboveDirector Cover is added above director object.<a name="line405"></a>
+ */<a name="line406"></a>
+lime.Director.prototype.addCover = function(cover, opt_addAboveDirector) {<a name="line407"></a>
+    //mobile safari performes much better with this hack. needs investigation.<a name="line408"></a>
+    if (goog.userAgent.WEBKIT && goog.userAgent.MOBILE) {<a name="line409"></a>
+        if (opt_addAboveDirector) {<a name="line410"></a>
+            this.coverElementAbove.appendChild(cover.domElement);<a name="line411"></a>
+        } else {<a name="line412"></a>
+            this.coverElementBelow.appendChild(cover.domElement);<a name="line413"></a>
+        }<a name="line414"></a>
+<a name="line415"></a>
+    } else {<a name="line416"></a>
+        if (opt_addAboveDirector) {<a name="line417"></a>
+            goog.dom.insertSiblingAfter(cover.domElement, this.domElement);<a name="line418"></a>
+        } else {<a name="line419"></a>
+            goog.dom.insertSiblingBefore(cover.domElement, this.domElement);<a name="line420"></a>
+        }<a name="line421"></a>
+    }<a name="line422"></a>
+    cover.director = this;<a name="line423"></a>
+    this.coverStack_.push(cover);<a name="line424"></a>
+};<a name="line425"></a>
+<a name="line426"></a>
+/**<a name="line427"></a>
+ * Remove CoverNode object from the viewport<a name="line428"></a>
+ * @param {lime.CoverNode} cover Cover to remove.<a name="line429"></a>
+ */<a name="line430"></a>
+lime.Director.prototype.removeCover = function(cover) {<a name="line431"></a>
+    goog.array.remove(this.coverStack_, cover);<a name="line432"></a>
+    goog.dom.removeNode(cover.domElement);<a name="line433"></a>
+};<a name="line434"></a>
+<a name="line435"></a>
+<a name="line436"></a>
+/**<a name="line437"></a>
+ * Return bounds of director,<a name="line438"></a>
+ * @param {goog.math.Box} box Edges.<a name="line439"></a>
+ * @return {goog.math.Box} new bounds.<a name="line440"></a>
+ */<a name="line441"></a>
+lime.Director.prototype.getBounds = function(box) {<a name="line442"></a>
+    //todo:This should basically be same as boundingbox on lime.node<a name="line443"></a>
+    var position = this.getPosition(),<a name="line444"></a>
+        scale = this.getScale();<a name="line445"></a>
+    return new goog.math.Box(<a name="line446"></a>
+        box.top - position.y / scale.y,<a name="line447"></a>
+        box.right - position.x / scale.x,<a name="line448"></a>
+        box.bottom - position.y / scale.y,<a name="line449"></a>
+        box.left - position.x / scale.x);<a name="line450"></a>
+};<a name="line451"></a>
+<a name="line452"></a>
+/**<a name="line453"></a>
+ * @inheritDoc<a name="line454"></a>
+ */<a name="line455"></a>
+lime.Director.prototype.screenToLocal = function(c) {<a name="line456"></a>
+    var coord = c.clone();<a name="line457"></a>
+    coord.x -= this.domOffset.x + this.position_.x;<a name="line458"></a>
+    coord.y -= this.domOffset.y + this.position_.y;<a name="line459"></a>
+<a name="line460"></a>
+    coord.x /= this.scale_.x;<a name="line461"></a>
+    coord.y /= this.scale_.y;<a name="line462"></a>
+    return coord;<a name="line463"></a>
+};<a name="line464"></a>
+<a name="line465"></a>
+/**<a name="line466"></a>
+ * @inheritDoc<a name="line467"></a>
+ */<a name="line468"></a>
+lime.Director.prototype.localToScreen = function(c) {<a name="line469"></a>
+    var coord = c.clone();<a name="line470"></a>
+    coord.x *= this.scale_.x;<a name="line471"></a>
+    coord.y *= this.scale_.y;<a name="line472"></a>
+<a name="line473"></a>
+    coord.x += this.domOffset.x + this.position_.x;<a name="line474"></a>
+    coord.y += this.domOffset.y + this.position_.y;<a name="line475"></a>
+<a name="line476"></a>
+    return coord;<a name="line477"></a>
+};<a name="line478"></a>
+<a name="line479"></a>
+<a name="line480"></a>
+/**<a name="line481"></a>
+ * @inheritDoc<a name="line482"></a>
+ */<a name="line483"></a>
+lime.Director.prototype.update = function() {<a name="line484"></a>
+    lime.Node.prototype.update.call(this);<a name="line485"></a>
+<a name="line486"></a>
+    var i = this.coverStack_.length;<a name="line487"></a>
+    while (--i >= 0) {<a name="line488"></a>
+        this.coverStack_[i].update();<a name="line489"></a>
+    }<a name="line490"></a>
+};<a name="line491"></a>
+<a name="line492"></a>
+<a name="line493"></a>
+/**<a name="line494"></a>
+ * Update dimensions based on viewport dimension changes<a name="line495"></a>
+ * @private<a name="line496"></a>
+ */<a name="line497"></a>
+lime.Director.prototype.invalidateSize_ = function() {<a name="line498"></a>
+<a name="line499"></a>
+    var stageSize = goog.style.getSize(this.domElement.parentNode);<a name="line500"></a>
+<a name="line501"></a>
+    if (this.domElement.parentNode == document.body) {<a name="line502"></a>
+        window.scrollTo(0, 0);<a name="line503"></a>
+        if (goog.isNumber(window.innerHeight)) {<a name="line504"></a>
+            stageSize.height = window.innerHeight;<a name="line505"></a>
+        }<a name="line506"></a>
+    }<a name="line507"></a>
+<a name="line508"></a>
+    var realSize = this.getSize().clone().scaleToFit(stageSize);<a name="line509"></a>
+<a name="line510"></a>
+    var scale = realSize.width / this.getSize().width;<a name="line511"></a>
+    this.setScale(scale);<a name="line512"></a>
+<a name="line513"></a>
+    if (stageSize.aspectRatio() &lt; realSize.aspectRatio()) {<a name="line514"></a>
+        this.setPosition(0, (stageSize.height - realSize.height) / 2);<a name="line515"></a>
+    } else {<a name="line516"></a>
+        this.setPosition((stageSize.width - realSize.width) / 2, 0);<a name="line517"></a>
+    }<a name="line518"></a>
+<a name="line519"></a>
+    this.updateDomOffset_();<a name="line520"></a>
+<a name="line521"></a>
+    // overflow hidden is for hiding away unused edges of document<a name="line522"></a>
+    // height addition is because scroll(0,0) doesn't work any more if the<a name="line523"></a>
+    // document has no edge @tonis todo:look for less hacky solution(iframe?).<a name="line524"></a>
+    if (goog.userAgent.MOBILE && this.domElement.parentNode == document.body) {<a name="line525"></a>
+        if (this.overflowStyle_) goog.style.uninstallStyles(this.overflowStyle_);<a name="line526"></a>
+        this.overflowStyle_ = goog.style.installStyles(<a name="line527"></a>
+            'html{height:' + (stageSize.height + 120) + 'px;overflow:hidden;}');<a name="line528"></a>
+    }<a name="line529"></a>
+<a name="line530"></a>
+};<a name="line531"></a>
+<a name="line532"></a>
+/**<a name="line533"></a>
+ * Add support for adding game to Springboard as a<a name="line534"></a>
+ * web application on iOS devices<a name="line535"></a>
+ */<a name="line536"></a>
+lime.Director.prototype.makeMobileWebAppCapable = function() {<a name="line537"></a>
+<a name="line538"></a>
+    var meta = document.createElement('meta');<a name="line539"></a>
+    meta.name = 'apple-mobile-web-app-capable';<a name="line540"></a>
+    meta.content = 'yes';<a name="line541"></a>
+    document.getElementsByTagName('head').item(0).appendChild(meta);<a name="line542"></a>
+<a name="line543"></a>
+    meta = document.createElement('meta');<a name="line544"></a>
+    meta.name = 'apple-mobile-web-app-status-bar-style';<a name="line545"></a>
+    meta.content = 'black';<a name="line546"></a>
+    document.getElementsByTagName('head').item(0).appendChild(meta);<a name="line547"></a>
+<a name="line548"></a>
+    var visited = false;<a name="line549"></a>
+    if (goog.isDef(localStorage)) {<a name="line550"></a>
+        visited = localStorage.getItem('_lime_visited');<a name="line551"></a>
+    }<a name="line552"></a>
+<a name="line553"></a>
+    var ios = (/(ipod|iphone|ipad)/i).test(navigator.userAgent);<a name="line554"></a>
+    if (ios && !window.navigator.standalone && COMPILED && !visited && this.domElement.parentNode == document.body) {<a name="line555"></a>
+        alert('Please install this page as a web app by ' +<a name="line556"></a>
+            'clicking Share + Add to home screen.');<a name="line557"></a>
+        if (goog.isDef(localStorage)) {<a name="line558"></a>
+            localStorage.setItem('_lime_visited', true);<a name="line559"></a>
+        }<a name="line560"></a>
+    }<a name="line561"></a>
+<a name="line562"></a>
+};<a name="line563"></a>
+<a name="line564"></a>
+/**<a name="line565"></a>
+ * Updates the cached value of directors parentelement position in the viewport<a name="line566"></a>
+ * @private<a name="line567"></a>
+ */<a name="line568"></a>
+lime.Director.prototype.updateDomOffset_ = function() {<a name="line569"></a>
+    this.domOffset = goog.style.getPageOffset(this.domElement.parentNode);<a name="line570"></a>
+};<a name="line571"></a>
+<a name="line572"></a>
+/**<a name="line573"></a>
+ * @private<a name="line574"></a>
+ */<a name="line575"></a>
+lime.Director.prototype.keyUpHandler_ = function(e) {<a name="line576"></a>
+    if (e.altKey && String.fromCharCode(e.keyCode).toLowerCase() == 'd') {<a name="line577"></a>
+        if (this.debugModeOn_) {<a name="line578"></a>
+            goog.style.uninstallStyles(this.debugModeOn_);<a name="line579"></a>
+            this.debugModeOn_ = null;<a name="line580"></a>
+        } else {<a name="line581"></a>
+            this.debugModeOn_ = goog.style.installStyles('.lime-scene div,.lime-scene img,' +<a name="line582"></a>
+                '.lime-scene canvas{border: 1px solid #c00;}');<a name="line583"></a>
+        }<a name="line584"></a>
+        e.stopPropagation();<a name="line585"></a>
+        e.preventDefault();<a name="line586"></a>
+    }<a name="line587"></a>
+}<a name="line588"></a>
+<a name="line589"></a>
+/**<a name="line590"></a>
+ * @inheritDoc<a name="line591"></a>
+ */<a name="line592"></a>
+lime.Director.prototype.hitTest = function(e) {<a name="line593"></a>
+    if (e && e.screenPosition)<a name="line594"></a>
+        e.position = this.screenToLocal(e.screenPosition);<a name="line595"></a>
+    return true;<a name="line596"></a>
+};<a name="line597"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -638,7 +638,7 @@ lime.Director.prototype.hitTest = function(e) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

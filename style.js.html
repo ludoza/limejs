@@ -26,286 +26,286 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.style');
-goog.provide('lime.style.Transform');
-
-goog.require('goog.dom');
-goog.require('goog.style');
-goog.require('lime.userAgent');
-
-(function() {
-
-    var prefix = goog.userAgent.WEBKIT ? 'Webkit' :
-        goog.userAgent.GECKO ? 'Moz' :
-        goog.userAgent.OPERA ? 'O' :
-        goog.userAgent.IE ? 'ms' : '';
-
-    var testDivStyle = goog.dom.createDom('div').style;
-
-    lime.style.transformProperty = '-' + prefix.toLowerCase() + '-transform';
-
-    /**
-     * Try if a CSS style property with given name exists
-     * @param {string} name Property name.
-     * @return {boolean|string} If property exists.
-     */
-    lime.style.tryProperty = function(name) {
-        return testDivStyle[name] !== undefined ? name : false;
-    };
-
-    /**
-     * Get the name of actual CSS property from general(unprefixed) name
-     * @param {string} name Unprefixed name.
-     * @return {string} Actual valid property name.
-     */
-    lime.style.getCSSproperty = function(name) {
-        var name_lower = name.charAt(0).toLowerCase() + name.substr(1),
-            prefix_name = prefix + name;
-        return lime.style.tryProperty(name) ?
-            name : (lime.style.tryProperty(name_lower) ?
-            name_lower : lime.style.tryProperty(prefix_name) ?
-            prefix_name : undefined);
-    };
-
-})();
-
-/**
- * Set border radius of a DOM element
- * @param {Element} el Element to change.
- * @param {Array.&lt;number>} values Radius values.
- * @param {Array.&lt;number>=} opt_vertical Vertical radius values.
- * @param {boolean=} opt_isPerc If values are given in percentages.
- */
-lime.style.setBorderRadius = (function() {
-    var stylename = lime.style.getCSSproperty('BorderRadius');
-    var out = function(values, unit) {
-        return (goog.isArray(values) ? values.join(unit + ' ') : values) + unit;
-    };
-    return function(el, values, opt_vertical, opt_isPerc) {
-        var unit = opt_isPerc ? '%' : 'px';
-        var vertical = goog.isDef(opt_vertical) ? opt_vertical : values;
-        var value = out(values, unit) + '/' + out(vertical, unit);
-        if (value != el.border_radius_cache_) {
-            el.style[stylename] = el.border_radius_cache_ = value;
-        }
-    };
-})();
-
-// There are classes like CSSMatrix in some browsers.
-// Maybe this would make more sense.
-
-/**
- * Object representing CSS Transform.
- * @constructor
- * @param {number=} opt_precision Default precision.
- */
-lime.style.Transform = function(opt_precision) {
-    this.values = [];
-    this.precision = 1;
-    this.enable3D_ = true;
-    if (this.opt_precision) {
-        this.setPrecision( /** @type {number} */ (opt_precision));
-    }
-};
-
-/**
- * Sets 3D enabling flag for css hardware acceleration (on by default)
- * @param {Boolean} value
- * @return {lime.style.Transform} object itself.
- */
-lime.style.Transform.prototype.set3DAllowed = function(value) {
-    this.enable3D_ = value;
-    return this;
-};
-
-/**
- * Scale current transform object
- * @param {number} sx X-axis scale factor.
- * @param {number} sy y-axis scale factor.
- * @return {lime.style.Transform} object itself.
- */
-lime.style.Transform.prototype.scale = function(sx, sy) {
-    //if(sx!=1 && sy!=1)
-    this.values.push('scale(' + sx + ',' + sy + ')');
-    return this;
-};
-
-/**
- * Rotate current transform object
- * @param {number} angle Angle to rotate.
- * @param {string=} opt_unit Units. Defaults to degrees.
- * @return {lime.style.Transform} object itself.
- */
-lime.style.Transform.prototype.rotate = function(angle, opt_unit) {
-    var rot_str;
-
-    if (this.enable3D_ && (lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
-        rot_str = 'rotate3d(0, 0, 1, ' + angle + (opt_unit ? opt_unit : 'deg') + ')';
-    } else {
-        rot_str = 'rotate(' + angle + (opt_unit ? opt_unit : 'deg') + ')';
-    }
-    if (angle != 0)
-        this.values.push(rot_str);
-
-    return this;
-};
-
-/**
- * Translate(move) current transform object
- * @param {number} tx Offset in x-axis.
- * @param {number} ty Offset in y-axis.
- * @param {number=} opt_tz Offset in z-axis.
- * @return {lime.style.Transform} object itself.
- */
-lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {
-
-    var p = 1 / this.precision;
-    var val = 'translate';
-
-    if (this.enable3D_ && (lime.userAgent.CHROME || lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
-        val += '3d';
-    }
-    val += '(' + (tx * p) + 'px,' + (ty * p) + 'px';
-    if (this.enable3D_ && (lime.userAgent.CHROME || lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {
-        val += ',' + ((opt_tz ? opt_tz : 0) * p) + 'px';
-    }
-    this.values.push(val + ')');
-
-    return this;
-};
-
-/**
- * Set the current precision of transform. This is handled as a
- * state machine so it's added when called not when done.
- * @param {number} p Precision(Lowest value to make a difference).
- * @return {lime.style.Transform} object itself.
- */
-lime.style.Transform.prototype.setPrecision = function(p) {
-    if (this.precision != 1) {
-        var opposite = 1 / this.precision;
-        this.scale(opposite, opposite);
-        this.precision = 1;
-    }
-    if (p != 1) {
-        this.scale(p, p);
-        this.precision = p;
-    }
-    return this;
-};
-
-/**
- * Return CSS transform string from the object
- * @return {string} CSS value string.
- */
-lime.style.Transform.prototype.toString = function() {
-    if (this.precision != 1) {
-        this.setPrecision(1);
-    }
-    return this.values.join(' ');
-};
-
-/**
- * Set transform to a DOM element.
- * @param {Element} el Element to change.
- * @param {lime.style.Transform} transform Transform.
- */
-lime.style.setTransform = (function() {
-    var stylename = lime.style.getCSSproperty('Transform');
-    return function(el, transform) {
-        var value = transform.toString();
-
-        if (value != el.transform_cache_) {
-            el.style[stylename] = el.transform_cache_ = value;
-        }
-        lime.transformSet_ = 1;
-
-    };
-})();
-
-/**
- * Set transform origin point for a DOM element.
- * @param {Element} el Element to change.
- * @param {number} ox X Offset.
- * @param {number} oy Y Offset.
- * @param {boolean=} opt_isPerc If unit is percentage.
- */
-lime.style.setTransformOrigin = (function() {
-    var stylename = lime.style.getCSSproperty('TransformOrigin');
-    return function(el, ox, oy, opt_isPerc) {
-        var unit = opt_isPerc ? '%' : 'px';
-        var value = ox + unit + ' ' + oy + unit;
-        if (value != el.transform_origin_cache_) {
-            el.style[stylename] = el.transform_origin_cache_ = value;
-        }
-    };
-})();
-
-(function() {
-    var stylename = lime.style.getCSSproperty('Transition');
-    lime.style.isTransitionsSupported = !! stylename && !goog.userAgent.OPERA;
-    // Opera's CSS3 transitions seem to be unstable atm. No shorthand plus
-    // doesn't work if the duration property has not been previously set inside
-    // CSS style sheet @tonis
-
-    var clearProp = function(str, prop) {
-        if (!str.length) return str;
-        var proplist = str.split('),');
-        for (var i = 0; i &lt; proplist.length - 1; i++) {
-            proplist[i] += ')';
-        }
-
-        proplist = goog.array.filter(proplist, function(part) {
-            return part.indexOf(prop) == -1;
-        });
-        return proplist.join(',');
-    };
-
-    /**
-     * Activate transition rule for a property
-     * @param {Element} el Element to change.
-     * @param {string} property Transition property name.
-     * @param {number} time Transition duration.
-     * @param {lime.animation.EasingFunction} ease Easing function.
-     */
-    lime.style.setTransition = function(el, property, time, ease) {
-        if (!stylename) return;
-        var curvalue = clearProp(el.style[stylename], property);
-        if (curvalue.length) curvalue += ', ';
-        //console.log(time+'s cubic-bezier('+ease[1]+',
-        //'+ease[2]+','+ease[3]+','+ease[4]+')');
-        curvalue += property + ' ' + time + 's cubic-bezier(' + ease[1] +
-            ',' + ease[2] + ',' + ease[3] + ',' + ease[4] + ')';
-        el.style[stylename] = curvalue;
-    };
-
-    /**
-     * Clear previously set transition rule.
-     * @param {Element} el Element to change.
-     * @param {string} property Transition property name.
-     */
-    lime.style.clearTransition = function(el, property) {
-        if (!stylename || !el) return;
-        el.style[stylename] = clearProp(el.style[stylename], property);
-
-        // console.log('clear',el.style[stylename],property);
-    };
-
-    /**
-     * Change size of a DOM element. Has cache built in for speed boost.
-     * @param {Element} el Element to change.
-     * @param {number} w New width.
-     * @param {number} h New height.
-     */
-    lime.style.setSize = function(el, w, h) {
-        if (el.width_cache_ != w || el.height_cache_ != h) {
-            el.width_cache_ = w;
-            el.height_cache_ = h;
-            return goog.style.setSize(el, w, h);
-        }
-        return undefined;
-    };
-})();
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.style');<a name="line2"></a>
+goog.provide('lime.style.Transform');<a name="line3"></a>
+<a name="line4"></a>
+goog.require('goog.dom');<a name="line5"></a>
+goog.require('goog.style');<a name="line6"></a>
+goog.require('lime.userAgent');<a name="line7"></a>
+<a name="line8"></a>
+(function() {<a name="line9"></a>
+<a name="line10"></a>
+    var prefix = goog.userAgent.WEBKIT ? 'Webkit' :<a name="line11"></a>
+        goog.userAgent.GECKO ? 'Moz' :<a name="line12"></a>
+        goog.userAgent.OPERA ? 'O' :<a name="line13"></a>
+        goog.userAgent.IE ? 'ms' : '';<a name="line14"></a>
+<a name="line15"></a>
+    var testDivStyle = goog.dom.createDom('div').style;<a name="line16"></a>
+<a name="line17"></a>
+    lime.style.transformProperty = '-' + prefix.toLowerCase() + '-transform';<a name="line18"></a>
+<a name="line19"></a>
+    /**<a name="line20"></a>
+     * Try if a CSS style property with given name exists<a name="line21"></a>
+     * @param {string} name Property name.<a name="line22"></a>
+     * @return {boolean|string} If property exists.<a name="line23"></a>
+     */<a name="line24"></a>
+    lime.style.tryProperty = function(name) {<a name="line25"></a>
+        return testDivStyle[name] !== undefined ? name : false;<a name="line26"></a>
+    };<a name="line27"></a>
+<a name="line28"></a>
+    /**<a name="line29"></a>
+     * Get the name of actual CSS property from general(unprefixed) name<a name="line30"></a>
+     * @param {string} name Unprefixed name.<a name="line31"></a>
+     * @return {string} Actual valid property name.<a name="line32"></a>
+     */<a name="line33"></a>
+    lime.style.getCSSproperty = function(name) {<a name="line34"></a>
+        var name_lower = name.charAt(0).toLowerCase() + name.substr(1),<a name="line35"></a>
+            prefix_name = prefix + name;<a name="line36"></a>
+        return lime.style.tryProperty(name) ?<a name="line37"></a>
+            name : (lime.style.tryProperty(name_lower) ?<a name="line38"></a>
+            name_lower : lime.style.tryProperty(prefix_name) ?<a name="line39"></a>
+            prefix_name : undefined);<a name="line40"></a>
+    };<a name="line41"></a>
+<a name="line42"></a>
+})();<a name="line43"></a>
+<a name="line44"></a>
+/**<a name="line45"></a>
+ * Set border radius of a DOM element<a name="line46"></a>
+ * @param {Element} el Element to change.<a name="line47"></a>
+ * @param {Array.&lt;number>} values Radius values.<a name="line48"></a>
+ * @param {Array.&lt;number>=} opt_vertical Vertical radius values.<a name="line49"></a>
+ * @param {boolean=} opt_isPerc If values are given in percentages.<a name="line50"></a>
+ */<a name="line51"></a>
+lime.style.setBorderRadius = (function() {<a name="line52"></a>
+    var stylename = lime.style.getCSSproperty('BorderRadius');<a name="line53"></a>
+    var out = function(values, unit) {<a name="line54"></a>
+        return (goog.isArray(values) ? values.join(unit + ' ') : values) + unit;<a name="line55"></a>
+    };<a name="line56"></a>
+    return function(el, values, opt_vertical, opt_isPerc) {<a name="line57"></a>
+        var unit = opt_isPerc ? '%' : 'px';<a name="line58"></a>
+        var vertical = goog.isDef(opt_vertical) ? opt_vertical : values;<a name="line59"></a>
+        var value = out(values, unit) + '/' + out(vertical, unit);<a name="line60"></a>
+        if (value != el.border_radius_cache_) {<a name="line61"></a>
+            el.style[stylename] = el.border_radius_cache_ = value;<a name="line62"></a>
+        }<a name="line63"></a>
+    };<a name="line64"></a>
+})();<a name="line65"></a>
+<a name="line66"></a>
+// There are classes like CSSMatrix in some browsers.<a name="line67"></a>
+// Maybe this would make more sense.<a name="line68"></a>
+<a name="line69"></a>
+/**<a name="line70"></a>
+ * Object representing CSS Transform.<a name="line71"></a>
+ * @constructor<a name="line72"></a>
+ * @param {number=} opt_precision Default precision.<a name="line73"></a>
+ */<a name="line74"></a>
+lime.style.Transform = function(opt_precision) {<a name="line75"></a>
+    this.values = [];<a name="line76"></a>
+    this.precision = 1;<a name="line77"></a>
+    this.enable3D_ = true;<a name="line78"></a>
+    if (this.opt_precision) {<a name="line79"></a>
+        this.setPrecision( /** @type {number} */ (opt_precision));<a name="line80"></a>
+    }<a name="line81"></a>
+};<a name="line82"></a>
+<a name="line83"></a>
+/**<a name="line84"></a>
+ * Sets 3D enabling flag for css hardware acceleration (on by default)<a name="line85"></a>
+ * @param {Boolean} value<a name="line86"></a>
+ * @return {lime.style.Transform} object itself.<a name="line87"></a>
+ */<a name="line88"></a>
+lime.style.Transform.prototype.set3DAllowed = function(value) {<a name="line89"></a>
+    this.enable3D_ = value;<a name="line90"></a>
+    return this;<a name="line91"></a>
+};<a name="line92"></a>
+<a name="line93"></a>
+/**<a name="line94"></a>
+ * Scale current transform object<a name="line95"></a>
+ * @param {number} sx X-axis scale factor.<a name="line96"></a>
+ * @param {number} sy y-axis scale factor.<a name="line97"></a>
+ * @return {lime.style.Transform} object itself.<a name="line98"></a>
+ */<a name="line99"></a>
+lime.style.Transform.prototype.scale = function(sx, sy) {<a name="line100"></a>
+    //if(sx!=1 && sy!=1)<a name="line101"></a>
+    this.values.push('scale(' + sx + ',' + sy + ')');<a name="line102"></a>
+    return this;<a name="line103"></a>
+};<a name="line104"></a>
+<a name="line105"></a>
+/**<a name="line106"></a>
+ * Rotate current transform object<a name="line107"></a>
+ * @param {number} angle Angle to rotate.<a name="line108"></a>
+ * @param {string=} opt_unit Units. Defaults to degrees.<a name="line109"></a>
+ * @return {lime.style.Transform} object itself.<a name="line110"></a>
+ */<a name="line111"></a>
+lime.style.Transform.prototype.rotate = function(angle, opt_unit) {<a name="line112"></a>
+    var rot_str;<a name="line113"></a>
+<a name="line114"></a>
+    if (this.enable3D_ && (lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {<a name="line115"></a>
+        rot_str = 'rotate3d(0, 0, 1, ' + angle + (opt_unit ? opt_unit : 'deg') + ')';<a name="line116"></a>
+    } else {<a name="line117"></a>
+        rot_str = 'rotate(' + angle + (opt_unit ? opt_unit : 'deg') + ')';<a name="line118"></a>
+    }<a name="line119"></a>
+    if (angle != 0)<a name="line120"></a>
+        this.values.push(rot_str);<a name="line121"></a>
+<a name="line122"></a>
+    return this;<a name="line123"></a>
+};<a name="line124"></a>
+<a name="line125"></a>
+/**<a name="line126"></a>
+ * Translate(move) current transform object<a name="line127"></a>
+ * @param {number} tx Offset in x-axis.<a name="line128"></a>
+ * @param {number} ty Offset in y-axis.<a name="line129"></a>
+ * @param {number=} opt_tz Offset in z-axis.<a name="line130"></a>
+ * @return {lime.style.Transform} object itself.<a name="line131"></a>
+ */<a name="line132"></a>
+lime.style.Transform.prototype.translate = function(tx, ty, opt_tz) {<a name="line133"></a>
+<a name="line134"></a>
+    var p = 1 / this.precision;<a name="line135"></a>
+    var val = 'translate';<a name="line136"></a>
+<a name="line137"></a>
+    if (this.enable3D_ && (lime.userAgent.CHROME || lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {<a name="line138"></a>
+        val += '3d';<a name="line139"></a>
+    }<a name="line140"></a>
+    val += '(' + (tx * p) + 'px,' + (ty * p) + 'px';<a name="line141"></a>
+    if (this.enable3D_ && (lime.userAgent.CHROME || lime.userAgent.IOS || lime.userAgent.PLAYBOOK)) {<a name="line142"></a>
+        val += ',' + ((opt_tz ? opt_tz : 0) * p) + 'px';<a name="line143"></a>
+    }<a name="line144"></a>
+    this.values.push(val + ')');<a name="line145"></a>
+<a name="line146"></a>
+    return this;<a name="line147"></a>
+};<a name="line148"></a>
+<a name="line149"></a>
+/**<a name="line150"></a>
+ * Set the current precision of transform. This is handled as a<a name="line151"></a>
+ * state machine so it's added when called not when done.<a name="line152"></a>
+ * @param {number} p Precision(Lowest value to make a difference).<a name="line153"></a>
+ * @return {lime.style.Transform} object itself.<a name="line154"></a>
+ */<a name="line155"></a>
+lime.style.Transform.prototype.setPrecision = function(p) {<a name="line156"></a>
+    if (this.precision != 1) {<a name="line157"></a>
+        var opposite = 1 / this.precision;<a name="line158"></a>
+        this.scale(opposite, opposite);<a name="line159"></a>
+        this.precision = 1;<a name="line160"></a>
+    }<a name="line161"></a>
+    if (p != 1) {<a name="line162"></a>
+        this.scale(p, p);<a name="line163"></a>
+        this.precision = p;<a name="line164"></a>
+    }<a name="line165"></a>
+    return this;<a name="line166"></a>
+};<a name="line167"></a>
+<a name="line168"></a>
+/**<a name="line169"></a>
+ * Return CSS transform string from the object<a name="line170"></a>
+ * @return {string} CSS value string.<a name="line171"></a>
+ */<a name="line172"></a>
+lime.style.Transform.prototype.toString = function() {<a name="line173"></a>
+    if (this.precision != 1) {<a name="line174"></a>
+        this.setPrecision(1);<a name="line175"></a>
+    }<a name="line176"></a>
+    return this.values.join(' ');<a name="line177"></a>
+};<a name="line178"></a>
+<a name="line179"></a>
+/**<a name="line180"></a>
+ * Set transform to a DOM element.<a name="line181"></a>
+ * @param {Element} el Element to change.<a name="line182"></a>
+ * @param {lime.style.Transform} transform Transform.<a name="line183"></a>
+ */<a name="line184"></a>
+lime.style.setTransform = (function() {<a name="line185"></a>
+    var stylename = lime.style.getCSSproperty('Transform');<a name="line186"></a>
+    return function(el, transform) {<a name="line187"></a>
+        var value = transform.toString();<a name="line188"></a>
+<a name="line189"></a>
+        if (value != el.transform_cache_) {<a name="line190"></a>
+            el.style[stylename] = el.transform_cache_ = value;<a name="line191"></a>
+        }<a name="line192"></a>
+        lime.transformSet_ = 1;<a name="line193"></a>
+<a name="line194"></a>
+    };<a name="line195"></a>
+})();<a name="line196"></a>
+<a name="line197"></a>
+/**<a name="line198"></a>
+ * Set transform origin point for a DOM element.<a name="line199"></a>
+ * @param {Element} el Element to change.<a name="line200"></a>
+ * @param {number} ox X Offset.<a name="line201"></a>
+ * @param {number} oy Y Offset.<a name="line202"></a>
+ * @param {boolean=} opt_isPerc If unit is percentage.<a name="line203"></a>
+ */<a name="line204"></a>
+lime.style.setTransformOrigin = (function() {<a name="line205"></a>
+    var stylename = lime.style.getCSSproperty('TransformOrigin');<a name="line206"></a>
+    return function(el, ox, oy, opt_isPerc) {<a name="line207"></a>
+        var unit = opt_isPerc ? '%' : 'px';<a name="line208"></a>
+        var value = ox + unit + ' ' + oy + unit;<a name="line209"></a>
+        if (value != el.transform_origin_cache_) {<a name="line210"></a>
+            el.style[stylename] = el.transform_origin_cache_ = value;<a name="line211"></a>
+        }<a name="line212"></a>
+    };<a name="line213"></a>
+})();<a name="line214"></a>
+<a name="line215"></a>
+(function() {<a name="line216"></a>
+    var stylename = lime.style.getCSSproperty('Transition');<a name="line217"></a>
+    lime.style.isTransitionsSupported = !! stylename && !goog.userAgent.OPERA;<a name="line218"></a>
+    // Opera's CSS3 transitions seem to be unstable atm. No shorthand plus<a name="line219"></a>
+    // doesn't work if the duration property has not been previously set inside<a name="line220"></a>
+    // CSS style sheet @tonis<a name="line221"></a>
+<a name="line222"></a>
+    var clearProp = function(str, prop) {<a name="line223"></a>
+        if (!str.length) return str;<a name="line224"></a>
+        var proplist = str.split('),');<a name="line225"></a>
+        for (var i = 0; i &lt; proplist.length - 1; i++) {<a name="line226"></a>
+            proplist[i] += ')';<a name="line227"></a>
+        }<a name="line228"></a>
+<a name="line229"></a>
+        proplist = goog.array.filter(proplist, function(part) {<a name="line230"></a>
+            return part.indexOf(prop) == -1;<a name="line231"></a>
+        });<a name="line232"></a>
+        return proplist.join(',');<a name="line233"></a>
+    };<a name="line234"></a>
+<a name="line235"></a>
+    /**<a name="line236"></a>
+     * Activate transition rule for a property<a name="line237"></a>
+     * @param {Element} el Element to change.<a name="line238"></a>
+     * @param {string} property Transition property name.<a name="line239"></a>
+     * @param {number} time Transition duration.<a name="line240"></a>
+     * @param {lime.animation.EasingFunction} ease Easing function.<a name="line241"></a>
+     */<a name="line242"></a>
+    lime.style.setTransition = function(el, property, time, ease) {<a name="line243"></a>
+        if (!stylename) return;<a name="line244"></a>
+        var curvalue = clearProp(el.style[stylename], property);<a name="line245"></a>
+        if (curvalue.length) curvalue += ', ';<a name="line246"></a>
+        //console.log(time+'s cubic-bezier('+ease[1]+',<a name="line247"></a>
+        //'+ease[2]+','+ease[3]+','+ease[4]+')');<a name="line248"></a>
+        curvalue += property + ' ' + time + 's cubic-bezier(' + ease[1] +<a name="line249"></a>
+            ',' + ease[2] + ',' + ease[3] + ',' + ease[4] + ')';<a name="line250"></a>
+        el.style[stylename] = curvalue;<a name="line251"></a>
+    };<a name="line252"></a>
+<a name="line253"></a>
+    /**<a name="line254"></a>
+     * Clear previously set transition rule.<a name="line255"></a>
+     * @param {Element} el Element to change.<a name="line256"></a>
+     * @param {string} property Transition property name.<a name="line257"></a>
+     */<a name="line258"></a>
+    lime.style.clearTransition = function(el, property) {<a name="line259"></a>
+        if (!stylename || !el) return;<a name="line260"></a>
+        el.style[stylename] = clearProp(el.style[stylename], property);<a name="line261"></a>
+<a name="line262"></a>
+        // console.log('clear',el.style[stylename],property);<a name="line263"></a>
+    };<a name="line264"></a>
+<a name="line265"></a>
+    /**<a name="line266"></a>
+     * Change size of a DOM element. Has cache built in for speed boost.<a name="line267"></a>
+     * @param {Element} el Element to change.<a name="line268"></a>
+     * @param {number} w New width.<a name="line269"></a>
+     * @param {number} h New height.<a name="line270"></a>
+     */<a name="line271"></a>
+    lime.style.setSize = function(el, w, h) {<a name="line272"></a>
+        if (el.width_cache_ != w || el.height_cache_ != h) {<a name="line273"></a>
+            el.width_cache_ = w;<a name="line274"></a>
+            el.height_cache_ = h;<a name="line275"></a>
+            return goog.style.setSize(el, w, h);<a name="line276"></a>
+        }<a name="line277"></a>
+        return undefined;<a name="line278"></a>
+    };<a name="line279"></a>
+})();<a name="line280"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -321,7 +321,7 @@ lime.style.setTransformOrigin = (function() {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -26,73 +26,73 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.animation.FadeTo');
-
-
-goog.require('lime.Sprite');
-goog.require('lime.animation.Animation');
-
-/**
- * Animation for changing elements opacity value
- * @constructor
- * @param {number} opacity New opacity value.
- * @extends lime.animation.Animation
- */
-lime.animation.FadeTo = function(opacity) {
-    lime.animation.Animation.call(this);
-
-    this.opacity_ = opacity;
-
-};
-goog.inherits(lime.animation.FadeTo, lime.animation.Animation);
-
-/**
- * @inheritDoc
- */
-lime.animation.FadeTo.prototype.scope = 'fade';
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#makeTargetProp
- */
-lime.animation.FadeTo.prototype.makeTargetProp = function(target) {
-    var op = target.getOpacity();
-    if (this.useTransitions()) {
-        target.addTransition(lime.Transition.OPACITY,
-            this.opacity_,
-            this.duration_, this.getEasing());
-
-        target.setDirty(lime.Dirty.ALPHA);
-    }
-    return {
-        startOpacity: op,
-        delta: this.opacity_ - op
-    };
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#update
- */
-lime.animation.FadeTo.prototype.update = function(t, target) {
-    if (this.status_ == 0) return;
-    var prop = this.getTargetProp(target);
-
-    target.setOpacity(prop.startOpacity + prop.delta * t);
-
-};
-
-/**
- * Clear transistion when animation is stoped.
- * @param {lime.Node} target The target to clear transistion for.
- */
-lime.animation.FadeTo.prototype.clearTransition = function(target) {
-    if (this.useTransitions()) {
-        target.clearTransition(lime.Transition.OPACITY);
-        target.setDirty(lime.Dirty.ALPHA);
-    }
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.animation.FadeTo');<a name="line2"></a>
+<a name="line3"></a>
+<a name="line4"></a>
+goog.require('lime.Sprite');<a name="line5"></a>
+goog.require('lime.animation.Animation');<a name="line6"></a>
+<a name="line7"></a>
+/**<a name="line8"></a>
+ * Animation for changing elements opacity value<a name="line9"></a>
+ * @constructor<a name="line10"></a>
+ * @param {number} opacity New opacity value.<a name="line11"></a>
+ * @extends lime.animation.Animation<a name="line12"></a>
+ */<a name="line13"></a>
+lime.animation.FadeTo = function(opacity) {<a name="line14"></a>
+    lime.animation.Animation.call(this);<a name="line15"></a>
+<a name="line16"></a>
+    this.opacity_ = opacity;<a name="line17"></a>
+<a name="line18"></a>
+};<a name="line19"></a>
+goog.inherits(lime.animation.FadeTo, lime.animation.Animation);<a name="line20"></a>
+<a name="line21"></a>
+/**<a name="line22"></a>
+ * @inheritDoc<a name="line23"></a>
+ */<a name="line24"></a>
+lime.animation.FadeTo.prototype.scope = 'fade';<a name="line25"></a>
+<a name="line26"></a>
+/**<a name="line27"></a>
+ * @inheritDoc<a name="line28"></a>
+ * @see lime.animation.Animation#makeTargetProp<a name="line29"></a>
+ */<a name="line30"></a>
+lime.animation.FadeTo.prototype.makeTargetProp = function(target) {<a name="line31"></a>
+    var op = target.getOpacity();<a name="line32"></a>
+    if (this.useTransitions()) {<a name="line33"></a>
+        target.addTransition(lime.Transition.OPACITY,<a name="line34"></a>
+            this.opacity_,<a name="line35"></a>
+            this.duration_, this.getEasing());<a name="line36"></a>
+<a name="line37"></a>
+        target.setDirty(lime.Dirty.ALPHA);<a name="line38"></a>
+    }<a name="line39"></a>
+    return {<a name="line40"></a>
+        startOpacity: op,<a name="line41"></a>
+        delta: this.opacity_ - op<a name="line42"></a>
+    };<a name="line43"></a>
+};<a name="line44"></a>
+<a name="line45"></a>
+/**<a name="line46"></a>
+ * @inheritDoc<a name="line47"></a>
+ * @see lime.animation.Animation#update<a name="line48"></a>
+ */<a name="line49"></a>
+lime.animation.FadeTo.prototype.update = function(t, target) {<a name="line50"></a>
+    if (this.status_ == 0) return;<a name="line51"></a>
+    var prop = this.getTargetProp(target);<a name="line52"></a>
+<a name="line53"></a>
+    target.setOpacity(prop.startOpacity + prop.delta * t);<a name="line54"></a>
+<a name="line55"></a>
+};<a name="line56"></a>
+<a name="line57"></a>
+/**<a name="line58"></a>
+ * Clear transistion when animation is stoped.<a name="line59"></a>
+ * @param {lime.Node} target The target to clear transistion for.<a name="line60"></a>
+ */<a name="line61"></a>
+lime.animation.FadeTo.prototype.clearTransition = function(target) {<a name="line62"></a>
+    if (this.useTransitions()) {<a name="line63"></a>
+        target.clearTransition(lime.Transition.OPACITY);<a name="line64"></a>
+        target.setDirty(lime.Dirty.ALPHA);<a name="line65"></a>
+    }<a name="line66"></a>
+};<a name="line67"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -108,7 +108,7 @@ lime.animation.FadeTo.prototype.clearTransition = function(target) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:26 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

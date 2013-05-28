@@ -26,87 +26,87 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.animation.Spawn');
-
-goog.require('lime.animation.Animation');
-goog.require('lime.animation.Delay');
-goog.require('lime.animation.Sequence');
-
-/**
- * Animations that are run parallel with each other.
- * Also accepts more than two animations
- * @param {...lime.animation.Animation|...Array.&lt;lime.animation.Animation>} one First animation.
- * @constructor
- * @extends lime.animation.Animation
- */
-lime.animation.Spawn = function(one) {
-
-    lime.animation.Animation.call(this);
-
-    var act = goog.array.toArray(arguments);
-    if (goog.isArray(one)) act = one;
-
-    if (act.length > 2) {
-
-        this.one = act.shift();
-        this.two = new lime.animation.Spawn(act);
-    } else {
-        this.one = act[0];
-        this.two = act[1];
-    }
-    var d1 = this.one.duration_;
-    var d2 = this.two.duration_;
-
-    this.setDuration(Math.max(d1, d2));
-
-    var delay = new lime.animation.Delay;
-
-    if (d1 > d2) {
-        this.two = new lime.animation.Sequence(this.two,
-            delay.setDuration(d1 - d2));
-    } else if (d1 &lt; d2) {
-        this.one = new lime.animation.Sequence(this.one,
-            delay.setDuration(d2 - d1));
-    }
-
-};
-goog.inherits(lime.animation.Spawn, lime.animation.Animation);
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#initTarget
- */
-lime.animation.Spawn.prototype.initTarget = function(target) {
-    lime.animation.Animation.prototype.initTarget.call(this, target);
-
-    this.one.status_ = 1;
-    this.two.status_ = 1;
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#updateAll
- */
-lime.animation.Spawn.prototype.updateAll = function(t, targets) {
-    if (this.status_ == 0) return undefined;
-    var i = targets.length;
-    while (--i >= 0) {
-        this.getTargetProp(targets[i]);
-    }
-    this.one.updateAll(t, targets);
-    this.two.updateAll(t, targets);
-
-    return t;
-};
-
-/**
- * @inheritDoc
- * @see lime.animation.Animation#reverse
- */
-lime.animation.Spawn.prototype.reverse = function() {
-    return new lime.animation.Spawn(this.one.reverse(), this.two.reverse());
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.animation.Spawn');<a name="line2"></a>
+<a name="line3"></a>
+goog.require('lime.animation.Animation');<a name="line4"></a>
+goog.require('lime.animation.Delay');<a name="line5"></a>
+goog.require('lime.animation.Sequence');<a name="line6"></a>
+<a name="line7"></a>
+/**<a name="line8"></a>
+ * Animations that are run parallel with each other.<a name="line9"></a>
+ * Also accepts more than two animations<a name="line10"></a>
+ * @param {...lime.animation.Animation|...Array.&lt;lime.animation.Animation>} one First animation.<a name="line11"></a>
+ * @constructor<a name="line12"></a>
+ * @extends lime.animation.Animation<a name="line13"></a>
+ */<a name="line14"></a>
+lime.animation.Spawn = function(one) {<a name="line15"></a>
+<a name="line16"></a>
+    lime.animation.Animation.call(this);<a name="line17"></a>
+<a name="line18"></a>
+    var act = goog.array.toArray(arguments);<a name="line19"></a>
+    if (goog.isArray(one)) act = one;<a name="line20"></a>
+<a name="line21"></a>
+    if (act.length > 2) {<a name="line22"></a>
+<a name="line23"></a>
+        this.one = act.shift();<a name="line24"></a>
+        this.two = new lime.animation.Spawn(act);<a name="line25"></a>
+    } else {<a name="line26"></a>
+        this.one = act[0];<a name="line27"></a>
+        this.two = act[1];<a name="line28"></a>
+    }<a name="line29"></a>
+    var d1 = this.one.duration_;<a name="line30"></a>
+    var d2 = this.two.duration_;<a name="line31"></a>
+<a name="line32"></a>
+    this.setDuration(Math.max(d1, d2));<a name="line33"></a>
+<a name="line34"></a>
+    var delay = new lime.animation.Delay;<a name="line35"></a>
+<a name="line36"></a>
+    if (d1 > d2) {<a name="line37"></a>
+        this.two = new lime.animation.Sequence(this.two,<a name="line38"></a>
+            delay.setDuration(d1 - d2));<a name="line39"></a>
+    } else if (d1 &lt; d2) {<a name="line40"></a>
+        this.one = new lime.animation.Sequence(this.one,<a name="line41"></a>
+            delay.setDuration(d2 - d1));<a name="line42"></a>
+    }<a name="line43"></a>
+<a name="line44"></a>
+};<a name="line45"></a>
+goog.inherits(lime.animation.Spawn, lime.animation.Animation);<a name="line46"></a>
+<a name="line47"></a>
+/**<a name="line48"></a>
+ * @inheritDoc<a name="line49"></a>
+ * @see lime.animation.Animation#initTarget<a name="line50"></a>
+ */<a name="line51"></a>
+lime.animation.Spawn.prototype.initTarget = function(target) {<a name="line52"></a>
+    lime.animation.Animation.prototype.initTarget.call(this, target);<a name="line53"></a>
+<a name="line54"></a>
+    this.one.status_ = 1;<a name="line55"></a>
+    this.two.status_ = 1;<a name="line56"></a>
+};<a name="line57"></a>
+<a name="line58"></a>
+/**<a name="line59"></a>
+ * @inheritDoc<a name="line60"></a>
+ * @see lime.animation.Animation#updateAll<a name="line61"></a>
+ */<a name="line62"></a>
+lime.animation.Spawn.prototype.updateAll = function(t, targets) {<a name="line63"></a>
+    if (this.status_ == 0) return undefined;<a name="line64"></a>
+    var i = targets.length;<a name="line65"></a>
+    while (--i >= 0) {<a name="line66"></a>
+        this.getTargetProp(targets[i]);<a name="line67"></a>
+    }<a name="line68"></a>
+    this.one.updateAll(t, targets);<a name="line69"></a>
+    this.two.updateAll(t, targets);<a name="line70"></a>
+<a name="line71"></a>
+    return t;<a name="line72"></a>
+};<a name="line73"></a>
+<a name="line74"></a>
+/**<a name="line75"></a>
+ * @inheritDoc<a name="line76"></a>
+ * @see lime.animation.Animation#reverse<a name="line77"></a>
+ */<a name="line78"></a>
+lime.animation.Spawn.prototype.reverse = function() {<a name="line79"></a>
+    return new lime.animation.Spawn(this.one.reverse(), this.two.reverse());<a name="line80"></a>
+};<a name="line81"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -122,7 +122,7 @@ lime.animation.Spawn.prototype.reverse = function() {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

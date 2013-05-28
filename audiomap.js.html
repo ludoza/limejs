@@ -26,118 +26,118 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.audio.AudioMap');
-
-goog.require('goog.events');
-goog.require('lime.audio.Audio');
-goog.require('lime.userAgent');
-goog.require('jukebox.Manager');
-goog.require('jukebox.Player');
-
-/**
- * AudioMap object
- * @constructor
- * @param {object} config Configuration object.
- */
-lime.audio.AudioMap = function(config) {
-    if (config.data && goog.isFunction(config.data)) {
-        config = config.data();
-    }
-    this.config = config;
-    this.tracks = {};
-
-    if (lime.audio.AudioContext) {
-        var path;
-        for (var i = 0; i &lt; config['resources'].length; i++) {
-            if ((lime.userAgent.IOS ? /\.caf/i : /\.mp3/i).test(config['resources'][i])) {
-                path = config['resources'][i];
-                continue;
-            }
-        }
-        this.sprites = {};
-        this.numSprites = 0;
-        var loadedSprites = 0;
-        var self = this;
-        var keys = Object.keys(config['spritemap']);
-        for (i = 0; i &lt; keys.length; i++) {
-            if (keys[i] === 'silence') continue;
-            this.numSprites++;
-            var spritePath = path.replace(/(.*)\.(.*?$)/, '$1_' + goog.string.padNumber(this.numSprites, 3) + '.$2');
-            var audio = new lime.audio.Audio(spritePath);
-            this.sprites[keys[i]] = {
-                path: spritePath,
-                audio: audio
-            };
-        }
-    } else if (lime.userAgent.IOS || lime.userAgent.WINPHONE) {
-        goog.events.listenOnce(goog.global, lime.userAgent.SUPPORTS_TOUCH ? 'touchstart' : 'mousedown', this._initPlayer, true, this);
-    } else {
-        this._initPlayer();
-    }
-};
-
-lime.audio.AudioMap.prototype._initPlayer = function() {
-    this.player = new jukebox.Player(this.config);
-}
-
-/**
- * Start playing the audio
- * @param {string} sprite Sprite name to play.
- * @param {boolean=} opt_loop Loop the sound.
- * @param {number} opt_after Only start playing after this track has finished.
- */
-lime.audio.AudioMap.prototype.play = function(sprite, opt_loop, opt_after) {
-    if (lime.audio.AudioContext) {
-        var spriteObj = this.sprites[sprite];
-        if (spriteObj) {
-            if (!goog.isDef(opt_loop) && this.config['spritemap'][sprite]['loop']) {
-                opt_loop = true;
-            }
-            var delay = 0;
-            var after;
-            var audio = new lime.audio.Audio(spriteObj.path);
-
-            if (opt_after && (after = this.tracks[opt_after])) {
-                if (!after.next_) after.next_ = [];
-                after.next_.push([audio, opt_loop]);
-            } else {
-                audio.play(opt_loop);
-            }
-            var id = (Math.random() * 1e6) | 0;
-            this.tracks[id] = audio;
-            goog.events.listen(audio, 'ended', function(e) {
-                if (!audio.loop_) {
-                    delete this.tracks[id];
-                };
-            }, false, this);
-            return id;
-        }
-    } else if (this.player && this.config['spritemap'][sprite] && !lime.audio.getMute()) {
-        this.player.play(sprite, true);
-        var ctx = (this.player.context);
-        if (!ctx.duration || ctx.buffered.end(0) | 0 &lt; ctx.duration | 0) return;
-        if (lime.audio._playQueue.indexOf(this) == -1) {
-            lime.audio._playQueue.push(this);
-        }
-    }
-};
-
-/**
- * Stop playing the audio
- */
-lime.audio.AudioMap.prototype.stop = lime.audio.AudioMap.prototype.pause = function(opt_playId) {
-    if (lime.audio.AudioContext) {
-        for (var i in this.tracks) {
-            if (!opt_playId || i == opt_playId) {
-                this.tracks[i].stop();
-                delete this.tracks[i];
-            }
-        }
-    } else if (this.player) {
-        this.player.pause();
-    }
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.audio.AudioMap');<a name="line2"></a>
+<a name="line3"></a>
+goog.require('goog.events');<a name="line4"></a>
+goog.require('lime.audio.Audio');<a name="line5"></a>
+goog.require('lime.userAgent');<a name="line6"></a>
+goog.require('jukebox.Manager');<a name="line7"></a>
+goog.require('jukebox.Player');<a name="line8"></a>
+<a name="line9"></a>
+/**<a name="line10"></a>
+ * AudioMap object<a name="line11"></a>
+ * @constructor<a name="line12"></a>
+ * @param {object} config Configuration object.<a name="line13"></a>
+ */<a name="line14"></a>
+lime.audio.AudioMap = function(config) {<a name="line15"></a>
+    if (config.data && goog.isFunction(config.data)) {<a name="line16"></a>
+        config = config.data();<a name="line17"></a>
+    }<a name="line18"></a>
+    this.config = config;<a name="line19"></a>
+    this.tracks = {};<a name="line20"></a>
+<a name="line21"></a>
+    if (lime.audio.AudioContext) {<a name="line22"></a>
+        var path;<a name="line23"></a>
+        for (var i = 0; i &lt; config['resources'].length; i++) {<a name="line24"></a>
+            if ((lime.userAgent.IOS ? /\.caf/i : /\.mp3/i).test(config['resources'][i])) {<a name="line25"></a>
+                path = config['resources'][i];<a name="line26"></a>
+                continue;<a name="line27"></a>
+            }<a name="line28"></a>
+        }<a name="line29"></a>
+        this.sprites = {};<a name="line30"></a>
+        this.numSprites = 0;<a name="line31"></a>
+        var loadedSprites = 0;<a name="line32"></a>
+        var self = this;<a name="line33"></a>
+        var keys = Object.keys(config['spritemap']);<a name="line34"></a>
+        for (i = 0; i &lt; keys.length; i++) {<a name="line35"></a>
+            if (keys[i] === 'silence') continue;<a name="line36"></a>
+            this.numSprites++;<a name="line37"></a>
+            var spritePath = path.replace(/(.*)\.(.*?$)/, '$1_' + goog.string.padNumber(this.numSprites, 3) + '.$2');<a name="line38"></a>
+            var audio = new lime.audio.Audio(spritePath);<a name="line39"></a>
+            this.sprites[keys[i]] = {<a name="line40"></a>
+                path: spritePath,<a name="line41"></a>
+                audio: audio<a name="line42"></a>
+            };<a name="line43"></a>
+        }<a name="line44"></a>
+    } else if (lime.userAgent.IOS || lime.userAgent.WINPHONE) {<a name="line45"></a>
+        goog.events.listenOnce(goog.global, lime.userAgent.SUPPORTS_TOUCH ? 'touchstart' : 'mousedown', this._initPlayer, true, this);<a name="line46"></a>
+    } else {<a name="line47"></a>
+        this._initPlayer();<a name="line48"></a>
+    }<a name="line49"></a>
+};<a name="line50"></a>
+<a name="line51"></a>
+lime.audio.AudioMap.prototype._initPlayer = function() {<a name="line52"></a>
+    this.player = new jukebox.Player(this.config);<a name="line53"></a>
+}<a name="line54"></a>
+<a name="line55"></a>
+/**<a name="line56"></a>
+ * Start playing the audio<a name="line57"></a>
+ * @param {string} sprite Sprite name to play.<a name="line58"></a>
+ * @param {boolean=} opt_loop Loop the sound.<a name="line59"></a>
+ * @param {number} opt_after Only start playing after this track has finished.<a name="line60"></a>
+ */<a name="line61"></a>
+lime.audio.AudioMap.prototype.play = function(sprite, opt_loop, opt_after) {<a name="line62"></a>
+    if (lime.audio.AudioContext) {<a name="line63"></a>
+        var spriteObj = this.sprites[sprite];<a name="line64"></a>
+        if (spriteObj) {<a name="line65"></a>
+            if (!goog.isDef(opt_loop) && this.config['spritemap'][sprite]['loop']) {<a name="line66"></a>
+                opt_loop = true;<a name="line67"></a>
+            }<a name="line68"></a>
+            var delay = 0;<a name="line69"></a>
+            var after;<a name="line70"></a>
+            var audio = new lime.audio.Audio(spriteObj.path);<a name="line71"></a>
+<a name="line72"></a>
+            if (opt_after && (after = this.tracks[opt_after])) {<a name="line73"></a>
+                if (!after.next_) after.next_ = [];<a name="line74"></a>
+                after.next_.push([audio, opt_loop]);<a name="line75"></a>
+            } else {<a name="line76"></a>
+                audio.play(opt_loop);<a name="line77"></a>
+            }<a name="line78"></a>
+            var id = (Math.random() * 1e6) | 0;<a name="line79"></a>
+            this.tracks[id] = audio;<a name="line80"></a>
+            goog.events.listen(audio, 'ended', function(e) {<a name="line81"></a>
+                if (!audio.loop_) {<a name="line82"></a>
+                    delete this.tracks[id];<a name="line83"></a>
+                };<a name="line84"></a>
+            }, false, this);<a name="line85"></a>
+            return id;<a name="line86"></a>
+        }<a name="line87"></a>
+    } else if (this.player && this.config['spritemap'][sprite] && !lime.audio.getMute()) {<a name="line88"></a>
+        this.player.play(sprite, true);<a name="line89"></a>
+        var ctx = (this.player.context);<a name="line90"></a>
+        if (!ctx.duration || ctx.buffered.end(0) | 0 &lt; ctx.duration | 0) return;<a name="line91"></a>
+        if (lime.audio._playQueue.indexOf(this) == -1) {<a name="line92"></a>
+            lime.audio._playQueue.push(this);<a name="line93"></a>
+        }<a name="line94"></a>
+    }<a name="line95"></a>
+};<a name="line96"></a>
+<a name="line97"></a>
+/**<a name="line98"></a>
+ * Stop playing the audio<a name="line99"></a>
+ */<a name="line100"></a>
+lime.audio.AudioMap.prototype.stop = lime.audio.AudioMap.prototype.pause = function(opt_playId) {<a name="line101"></a>
+    if (lime.audio.AudioContext) {<a name="line102"></a>
+        for (var i in this.tracks) {<a name="line103"></a>
+            if (!opt_playId || i == opt_playId) {<a name="line104"></a>
+                this.tracks[i].stop();<a name="line105"></a>
+                delete this.tracks[i];<a name="line106"></a>
+            }<a name="line107"></a>
+        }<a name="line108"></a>
+    } else if (this.player) {<a name="line109"></a>
+        this.player.pause();<a name="line110"></a>
+    }<a name="line111"></a>
+};<a name="line112"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -153,7 +153,7 @@ lime.audio.AudioMap.prototype.stop = lime.audio.AudioMap.prototype.pause = funct
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

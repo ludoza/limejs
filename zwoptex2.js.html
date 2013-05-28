@@ -26,81 +26,81 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.parser.ZWOPTEX2');
-
-goog.require('goog.dom.xml');
-goog.require('goog.math.Rect');
-goog.require('goog.math.Vec2');
-goog.require('goog.math.Size');
-goog.require('goog.json');
-
-
-
-/**
- * @const
- */
-lime.parser.ZWOPTEX2 = (function() {
-    function makeDict(element) {
-        var ob = {};
-        var keys = findNodes(element, 'key');
-        for (var i = 0; i &lt; keys.length; i++) {
-            ob[keys[i].firstChild.nodeValue] = goog.dom.getNextElementSibling(keys[i]);
-        }
-        return ob;
-    };
-
-    function findNodes(element, tag) {
-        var ar = [];
-        for (var i = 0; i &lt; element.childNodes.length; i++) {
-            if (element.childNodes[i].nodeName == tag) {
-                ar.push(element.childNodes[i]);
-            }
-        }
-        return ar;
-    }
-
-    return function(data) {
-        var dict = {},
-            doc = goog.dom.xml.loadXml(data),
-
-            root = findNodes(findNodes(doc, 'plist')[1], 'dict')[0],
-
-            d0 = makeDict(root),
-            d1 = makeDict(d0['frames']),
-            parse = function(v) {
-                return goog.json.parse(this[v].firstChild.nodeValue.replace(/\{/g, '[').replace(/\}/g, ']'));
-            };
-
-        for (var i in d1) {
-            var d2 = makeDict(d1[i]);
-            d2.getValue = parse;
-
-            var frame_ = d2['textureRect'] ? 'textureRect' : 'frame',
-                sourceSize_ = d2['spriteSourceSize'] ? 'spriteSourceSize' : 'sourceSize',
-                sourceColorRect_ = d2['spriteColorRect'] ? 'spriteColorRect' : 'sourceColorRect',
-                rotated_ = d2['textureRotated'] ? 'textureRotated' : 'rotated';
-
-            var tr = d2.getValue(frame_),
-                ss = d2.getValue(sourceSize_),
-                scr = d2.getValue(sourceColorRect_);
-
-            var rotated = d2[rotated_].tagName.toLowerCase() == 'true';
-
-            if (rotated && rotated_ == 'rotated') {
-                var c = tr[1][0];
-                tr[1][0] = tr[1][1];
-                tr[1][1] = c;
-            }
-            dict[i] = [new goog.math.Rect(tr[0][0], tr[0][1], tr[1][0], tr[1][1]),
-                new goog.math.Vec2(scr[0][0], scr[0][1]),
-                new goog.math.Size(ss[0], ss[1]), rotated
-            ];
-        }
-
-        return dict;
-    };
-})();
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.parser.ZWOPTEX2');<a name="line2"></a>
+<a name="line3"></a>
+goog.require('goog.dom.xml');<a name="line4"></a>
+goog.require('goog.math.Rect');<a name="line5"></a>
+goog.require('goog.math.Vec2');<a name="line6"></a>
+goog.require('goog.math.Size');<a name="line7"></a>
+goog.require('goog.json');<a name="line8"></a>
+<a name="line9"></a>
+<a name="line10"></a>
+<a name="line11"></a>
+/**<a name="line12"></a>
+ * @const<a name="line13"></a>
+ */<a name="line14"></a>
+lime.parser.ZWOPTEX2 = (function() {<a name="line15"></a>
+    function makeDict(element) {<a name="line16"></a>
+        var ob = {};<a name="line17"></a>
+        var keys = findNodes(element, 'key');<a name="line18"></a>
+        for (var i = 0; i &lt; keys.length; i++) {<a name="line19"></a>
+            ob[keys[i].firstChild.nodeValue] = goog.dom.getNextElementSibling(keys[i]);<a name="line20"></a>
+        }<a name="line21"></a>
+        return ob;<a name="line22"></a>
+    };<a name="line23"></a>
+<a name="line24"></a>
+    function findNodes(element, tag) {<a name="line25"></a>
+        var ar = [];<a name="line26"></a>
+        for (var i = 0; i &lt; element.childNodes.length; i++) {<a name="line27"></a>
+            if (element.childNodes[i].nodeName == tag) {<a name="line28"></a>
+                ar.push(element.childNodes[i]);<a name="line29"></a>
+            }<a name="line30"></a>
+        }<a name="line31"></a>
+        return ar;<a name="line32"></a>
+    }<a name="line33"></a>
+<a name="line34"></a>
+    return function(data) {<a name="line35"></a>
+        var dict = {},<a name="line36"></a>
+            doc = goog.dom.xml.loadXml(data),<a name="line37"></a>
+<a name="line38"></a>
+            root = findNodes(findNodes(doc, 'plist')[1], 'dict')[0],<a name="line39"></a>
+<a name="line40"></a>
+            d0 = makeDict(root),<a name="line41"></a>
+            d1 = makeDict(d0['frames']),<a name="line42"></a>
+            parse = function(v) {<a name="line43"></a>
+                return goog.json.parse(this[v].firstChild.nodeValue.replace(/\{/g, '[').replace(/\}/g, ']'));<a name="line44"></a>
+            };<a name="line45"></a>
+<a name="line46"></a>
+        for (var i in d1) {<a name="line47"></a>
+            var d2 = makeDict(d1[i]);<a name="line48"></a>
+            d2.getValue = parse;<a name="line49"></a>
+<a name="line50"></a>
+            var frame_ = d2['textureRect'] ? 'textureRect' : 'frame',<a name="line51"></a>
+                sourceSize_ = d2['spriteSourceSize'] ? 'spriteSourceSize' : 'sourceSize',<a name="line52"></a>
+                sourceColorRect_ = d2['spriteColorRect'] ? 'spriteColorRect' : 'sourceColorRect',<a name="line53"></a>
+                rotated_ = d2['textureRotated'] ? 'textureRotated' : 'rotated';<a name="line54"></a>
+<a name="line55"></a>
+            var tr = d2.getValue(frame_),<a name="line56"></a>
+                ss = d2.getValue(sourceSize_),<a name="line57"></a>
+                scr = d2.getValue(sourceColorRect_);<a name="line58"></a>
+<a name="line59"></a>
+            var rotated = d2[rotated_].tagName.toLowerCase() == 'true';<a name="line60"></a>
+<a name="line61"></a>
+            if (rotated && rotated_ == 'rotated') {<a name="line62"></a>
+                var c = tr[1][0];<a name="line63"></a>
+                tr[1][0] = tr[1][1];<a name="line64"></a>
+                tr[1][1] = c;<a name="line65"></a>
+            }<a name="line66"></a>
+            dict[i] = [new goog.math.Rect(tr[0][0], tr[0][1], tr[1][0], tr[1][1]),<a name="line67"></a>
+                new goog.math.Vec2(scr[0][0], scr[0][1]),<a name="line68"></a>
+                new goog.math.Size(ss[0], ss[1]), rotated<a name="line69"></a>
+            ];<a name="line70"></a>
+        }<a name="line71"></a>
+<a name="line72"></a>
+        return dict;<a name="line73"></a>
+    };<a name="line74"></a>
+})();<a name="line75"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -116,7 +116,7 @@ lime.parser.ZWOPTEX2 = (function() {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

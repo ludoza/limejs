@@ -28,7 +28,7 @@
 	
 <header>
 	<h2>
-	Renderer
+	lime.Renderer
 	</h2>
 	
 </header>  
@@ -40,7 +40,7 @@
 	
 		
 <dt>
-    <h4 class="name" id="Renderer"><span class="type-signature"></span>new Renderer<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Renderer"><span class="type-signature"></span>new lime.Renderer<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -82,7 +82,7 @@ technologies that are used to draw Node instaces on screen.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="renderer.js.html">renderer/renderer.js</a>, line 9
+        <a href="renderer/renderer.js.html#line9">renderer/renderer.js</a>, line 9
     </li></ul></dd>
     
     
@@ -107,28 +107,95 @@ technologies that are used to draw Node instaces on screen.
 	</div>
 	
 	
-	<div class="doc_summary">
+	<div class="summary">
 		<a name="summary"></a>
-		<h3 class="subsection-title summary">Summary</h3>
+		<h3 class="subsection-title">Summary</h3>
 
 		<div class="doc_group"><a name="summary_properties"></a>
-<h5>Members - instance</h5>
-
 <dl>
-    <dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#draw">draw</a></span><span class="type-sig"><span class="type-signature"></span></span></dt><dd class="  even">Draw the object using the renderer</dd>
-</dl></div><div class="doc_group"><a name="summary_properties_static"></a>
-<h5>Members - static</h5>
-
-<dl>
-    <dt class="  even"><span class="type-attr"><span class="type-signature">&lt;static, constant> </span></span><span class="type-name"><a href="#CANVAS">CANVAS</a></span><span class="type-sig"><span class="type-signature"> :<a href="lime.Renderer.html">lime.Renderer</a></span></span></dt><dd class="  even">Canvas renderer. This renders as canvas element or just
-draws on parent context.</dd><dt class="  odd"><span class="type-attr"><span class="type-signature">&lt;static, constant> </span></span><span class="type-name"><a href="#DOM">DOM</a></span><span class="type-sig"><span class="type-signature"> :<a href="lime.Renderer.html">lime.Renderer</a></span></span></dt><dd class="  odd">DOM renderer. This renders as div dom elements and
-styles are added with CSS</dd>
-</dl></div><div class="doc_group"><a name="summary_methods"></a>
-<h5>Methods - instance</h5>
-
-<dl>
-    <dt class="  even"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#getType">getType</a></span><span class="type-sig"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Renderer.html">lime.Renderer</a>}</span></span></dt><dd class="  even">Return base object of the subrenderer</dd><dt class="  odd"><span class="type-attr"><span class="type-signature"></span></span><span class="type-name"><a href="#makeSubRenderer">makeSubRenderer</a></span><span class="type-sig"><span class="signature">(sub)</span><span class="type-signature"> &rarr; {Object|<a href="lime.Renderer.html">lime.Renderer</a>}</span></span></dt><dd class="  odd">Make and return subrenderer object.</dd>
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Members</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static, constant> </span>
+				</td>
+				<td class="last">
+						<a href="#CANVAS"><code class="name">CANVAS</code></a><span class="type-signature"><span class="type-signature"> :<a href="lime.Renderer.html">lime.Renderer</a></span></span>
+						<div class="summary-description"> Canvas renderer. This renders as canvas element or just
+draws on parent context.</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static, constant> </span>
+				</td>
+				<td class="last">
+						<a href="#DOM"><code class="name">DOM</code></a><span class="type-signature"><span class="type-signature"> :<a href="lime.Renderer.html">lime.Renderer</a></span></span>
+						<div class="summary-description"> DOM renderer. This renders as div dom elements and
+styles are added with CSS</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#draw"><code class="name">draw</code></a><span class="type-signature"><span class="type-signature"></span></span>
+						<div class="summary-description"> Draw the object using the renderer</div>
+						
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
 </dl>
+
+</div><div class="doc_group"><a name="summary_methods"></a>
+<dl>
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Methods</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#getType"><code class="name">getType</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Renderer.html">lime.Renderer</a>}</span></span>
+						<div class="summary-description"> Return base object of the subrenderer</div>
+						
+				</td>
+			</tr>
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature"></span>
+				</td>
+				<td class="last">
+						<a href="#makeSubRenderer"><code class="name">makeSubRenderer</code></a><span class="type-signature"><span class="signature">(sub)</span><span class="type-signature"> &rarr; {Object|<a href="lime.Renderer.html">lime.Renderer</a>}</span></span>
+						<div class="summary-description"> Make and return subrenderer object.</div>
+						
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
+</dl>
+
 </div>
 	</div>
 	
@@ -184,7 +251,7 @@ draws on parent context.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="canvas.js.html">renderer/canvas.js</a>, line 13
+        <a href="renderer/canvas.js.html#line13">renderer/canvas.js</a>, line 13
     </li></ul></dd>
     
     
@@ -198,7 +265,6 @@ draws on parent context.
     
     
 </dd>
-
 		
 			
 <dt>
@@ -237,7 +303,7 @@ styles are added with CSS
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="dom.js.html">renderer/dom.js</a>, line 13
+        <a href="renderer/dom.js.html#line13">renderer/dom.js</a>, line 13
     </li></ul></dd>
     
     
@@ -251,7 +317,6 @@ styles are added with CSS
     
     
 </dd>
-
 		
 			
 <dt>
@@ -289,7 +354,7 @@ styles are added with CSS
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="renderer.js.html">renderer/renderer.js</a>, line 14
+        <a href="renderer/renderer.js.html#line14">renderer/renderer.js</a>, line 14
     </li></ul></dd>
     
     
@@ -303,7 +368,6 @@ styles are added with CSS
     
     
 </dd>
-
 		</dl>
 	
 	
@@ -354,7 +418,7 @@ styles are added with CSS
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="renderer.js.html">renderer/renderer.js</a>, line 20
+        <a href="renderer/renderer.js.html#line20">renderer/renderer.js</a>, line 20
     </li></ul></dd>
     
     
@@ -492,7 +556,7 @@ styles are added with CSS
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="renderer.js.html">renderer/renderer.js</a>, line 29
+        <a href="renderer/renderer.js.html#line29">renderer/renderer.js</a>, line 29
     </li></ul></dd>
     
     
@@ -560,7 +624,7 @@ styles are added with CSS
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:23 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:43 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

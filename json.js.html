@@ -26,70 +26,70 @@
 	
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('lime.parser.JSON');
-
-goog.require('goog.math.Rect');
-goog.require('goog.math.Vec2');
-goog.require('goog.math.Size');
-
-/**
- * A JSON sprite sheet parser.
- * 
- * The JSON format is as follow:
- * &lt;code>
- *   {
- *     "frames": {
- *       "walk1": {
- *         "frame": { "x": 0, "y": 0, "w": 72, "h": 96}, 
- *         "spriteSourceSize": { "x": 0, "y": 0}, 
- *         "sourceSize": { "w": 72, "h": 96 } ,
- *         "rotated": false,
- *       },
- *       "walk2": {
- *         "frame": { "x": 73, "y": 0, "w": 72, "h": 96}, 
- *         "spriteSourceSize": { "x": 0, "y": 0}, 
- *         "sourceSize": { "w": 72, "h": 96 } ,
- *         "rotated": false,
- *       }
- *     }
- *   }
- * &lt;/code>
- *
- * @param {object} data The JSON sprite sheet.
- * @function
- */
-lime.parser.JSON = function(data) {
-    var dict = {};
-
-    var root = data['frames'];
-
-    for (var i in root) {
-        var frame = root[i];
-
-        var w = frame['frame']['w'],
-            h = frame['frame']['h'];
-
-        if (frame['rotated']) {
-            h = frame['frame']['w'];
-            w = frame['frame']['h'];
-        }
-        /*
-         * {goog.math.Rect|number} rect Crop frame.
-         * {goog.math.Vec2=} opt_offset Frame offset.
-         * {goog.math.Size=} opt_size Frame size.
-         * {boolean=} opt_rotated Is frame rotated.
-         */
-        var rect = new goog.math.Rect(frame['frame']['x'], frame['frame']['y'], w, h),
-            opt_offset = new goog.math.Vec2(frame['spriteSourceSize']['x'], frame['spriteSourceSize']['y']),
-            opt_size = new goog.math.Size(frame['sourceSize']['w'], frame['sourceSize']['h']),
-            opt_rotated = frame['rotated'];
-
-        dict[i] = [rect, opt_offset, opt_size, opt_rotated];
-    }
-
-    return dict;
-};
-</code></pre>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.parser.JSON');<a name="line2"></a>
+<a name="line3"></a>
+goog.require('goog.math.Rect');<a name="line4"></a>
+goog.require('goog.math.Vec2');<a name="line5"></a>
+goog.require('goog.math.Size');<a name="line6"></a>
+<a name="line7"></a>
+/**<a name="line8"></a>
+ * A JSON sprite sheet parser.<a name="line9"></a>
+ * <a name="line10"></a>
+ * The JSON format is as follow:<a name="line11"></a>
+ * &lt;code><a name="line12"></a>
+ *   {<a name="line13"></a>
+ *     "frames": {<a name="line14"></a>
+ *       "walk1": {<a name="line15"></a>
+ *         "frame": { "x": 0, "y": 0, "w": 72, "h": 96}, <a name="line16"></a>
+ *         "spriteSourceSize": { "x": 0, "y": 0}, <a name="line17"></a>
+ *         "sourceSize": { "w": 72, "h": 96 } ,<a name="line18"></a>
+ *         "rotated": false,<a name="line19"></a>
+ *       },<a name="line20"></a>
+ *       "walk2": {<a name="line21"></a>
+ *         "frame": { "x": 73, "y": 0, "w": 72, "h": 96}, <a name="line22"></a>
+ *         "spriteSourceSize": { "x": 0, "y": 0}, <a name="line23"></a>
+ *         "sourceSize": { "w": 72, "h": 96 } ,<a name="line24"></a>
+ *         "rotated": false,<a name="line25"></a>
+ *       }<a name="line26"></a>
+ *     }<a name="line27"></a>
+ *   }<a name="line28"></a>
+ * &lt;/code><a name="line29"></a>
+ *<a name="line30"></a>
+ * @param {object} data The JSON sprite sheet.<a name="line31"></a>
+ * @function<a name="line32"></a>
+ */<a name="line33"></a>
+lime.parser.JSON = function(data) {<a name="line34"></a>
+    var dict = {};<a name="line35"></a>
+<a name="line36"></a>
+    var root = data['frames'];<a name="line37"></a>
+<a name="line38"></a>
+    for (var i in root) {<a name="line39"></a>
+        var frame = root[i];<a name="line40"></a>
+<a name="line41"></a>
+        var w = frame['frame']['w'],<a name="line42"></a>
+            h = frame['frame']['h'];<a name="line43"></a>
+<a name="line44"></a>
+        if (frame['rotated']) {<a name="line45"></a>
+            h = frame['frame']['w'];<a name="line46"></a>
+            w = frame['frame']['h'];<a name="line47"></a>
+        }<a name="line48"></a>
+        /*<a name="line49"></a>
+         * {goog.math.Rect|number} rect Crop frame.<a name="line50"></a>
+         * {goog.math.Vec2=} opt_offset Frame offset.<a name="line51"></a>
+         * {goog.math.Size=} opt_size Frame size.<a name="line52"></a>
+         * {boolean=} opt_rotated Is frame rotated.<a name="line53"></a>
+         */<a name="line54"></a>
+        var rect = new goog.math.Rect(frame['frame']['x'], frame['frame']['y'], w, h),<a name="line55"></a>
+            opt_offset = new goog.math.Vec2(frame['spriteSourceSize']['x'], frame['spriteSourceSize']['y']),<a name="line56"></a>
+            opt_size = new goog.math.Size(frame['sourceSize']['w'], frame['sourceSize']['h']),<a name="line57"></a>
+            opt_rotated = frame['rotated'];<a name="line58"></a>
+<a name="line59"></a>
+        dict[i] = [rect, opt_offset, opt_size, opt_rotated];<a name="line60"></a>
+    }<a name="line61"></a>
+<a name="line62"></a>
+    return dict;<a name="line63"></a>
+};<a name="line64"></a></code></pre>
+			<a name="line"></a>
         </article>
     </section>
 
@@ -105,7 +105,7 @@ lime.parser.JSON = function(data) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon May 27 2013 22:08:01 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>
