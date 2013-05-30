@@ -10,7 +10,8 @@ module.exports = function(grunt) {
 				src: ['lime/src/', 'README.md'],
 				options: {
 					destination: 'doc',
-					recurse: true
+					recurse: true,
+					template: 'templates/sour',
 				}
 			}
 		}

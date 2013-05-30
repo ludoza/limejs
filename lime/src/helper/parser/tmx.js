@@ -9,6 +9,7 @@ goog.require('goog.string');
 
 // Based on MelonJS implementation.
 
+/** @memberof lime.parser */
 lime.parser.TMX = function(file) {
     function loadXMLDoc(dname) {
         var xhttp, xmlDoc, parser;

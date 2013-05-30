@@ -10,6 +10,8 @@ goog.require('goog.json');
 
 /**
  * @const
+ * @function
+ * @memberof lime.parser
  */
 lime.parser.ZWOPTEX2 = (function() {
     function makeDict(element) {

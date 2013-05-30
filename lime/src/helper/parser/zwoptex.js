@@ -8,6 +8,7 @@ goog.require('goog.math.Size');
 
 /**
  * @const
+ * @memberof lime.parser
  */
 lime.parser.ZWOPTEX = (function() {
     function makeDict(element) {

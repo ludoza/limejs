@@ -7,8 +7,7 @@ goog.require('goog.math.Size');
 /**
  * A JSON sprite sheet parser.
  * 
- * The JSON format is as follow:
- * <code>
+ * @example <caption> The JSON format is as follow: </caption>
  *   {
  *     "frames": {
  *       "walk1": {
@@ -25,10 +24,10 @@ goog.require('goog.math.Size');
  *       }
  *     }
  *   }
- * </code>
  *
  * @param {object} data The JSON sprite sheet.
  * @function
+ * @memberof lime.parser
  */
 lime.parser.JSON = function(data) {
     var dict = {};

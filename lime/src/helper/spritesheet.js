@@ -1,7 +1,11 @@
 goog.provide('lime.SpriteSheet');
 
 goog.require('lime.fill.Frame');
+/** @namespace lime.parser */
 goog.require('lime.parser.ZWOPTEX');
+goog.require('lime.parser.ZWOPTEX2');
+goog.require('lime.parser.JSON');
+goog.require('lime.parser.TMX');
 
 /**
  * [Sprite Sheets]{@link http://www.limejs.com/2011/02/21/introducing-sprite-sheets} allows you to gather your image 
