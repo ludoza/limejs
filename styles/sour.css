@@ -1,8 +1,5 @@
 div.summary {
-	margin-top: 2em;
-	margin-bottom: 2em;
-	clear: both;
-	display: inline-block;
+
 }
 
 div.doc_group {
@@ -71,3 +68,15 @@ td.text-right {
 
 /* End: Move into summary table */
 
+/* Someone said it is bad to use tables for formatting... I forgot why. */
+table.layout-table {
+	width: 100%;
+}
+
+table.layout-table td.layout {
+	vertical-align: top;
+}
+
+.inherited div {
+	padding-left: 2em;
+}

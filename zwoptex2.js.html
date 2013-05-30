@@ -15,7 +15,9 @@
 </head>
 
 <body>
-
+	<table class="layout-table">
+		<tr>
+			<td class="layout">
 <div id="main">
     
     <h1 class="page-title">Source: helper/parser/zwoptex2.js</h1>
@@ -38,68 +40,70 @@ goog.require('goog.json');<a name="line8"></a>
 <a name="line11"></a>
 /**<a name="line12"></a>
  * @const<a name="line13"></a>
- */<a name="line14"></a>
-lime.parser.ZWOPTEX2 = (function() {<a name="line15"></a>
-    function makeDict(element) {<a name="line16"></a>
-        var ob = {};<a name="line17"></a>
-        var keys = findNodes(element, 'key');<a name="line18"></a>
-        for (var i = 0; i &lt; keys.length; i++) {<a name="line19"></a>
-            ob[keys[i].firstChild.nodeValue] = goog.dom.getNextElementSibling(keys[i]);<a name="line20"></a>
-        }<a name="line21"></a>
-        return ob;<a name="line22"></a>
-    };<a name="line23"></a>
-<a name="line24"></a>
-    function findNodes(element, tag) {<a name="line25"></a>
-        var ar = [];<a name="line26"></a>
-        for (var i = 0; i &lt; element.childNodes.length; i++) {<a name="line27"></a>
-            if (element.childNodes[i].nodeName == tag) {<a name="line28"></a>
-                ar.push(element.childNodes[i]);<a name="line29"></a>
-            }<a name="line30"></a>
-        }<a name="line31"></a>
-        return ar;<a name="line32"></a>
-    }<a name="line33"></a>
-<a name="line34"></a>
-    return function(data) {<a name="line35"></a>
-        var dict = {},<a name="line36"></a>
-            doc = goog.dom.xml.loadXml(data),<a name="line37"></a>
-<a name="line38"></a>
-            root = findNodes(findNodes(doc, 'plist')[1], 'dict')[0],<a name="line39"></a>
+ * @function<a name="line14"></a>
+ * @memberof lime.parser<a name="line15"></a>
+ */<a name="line16"></a>
+lime.parser.ZWOPTEX2 = (function() {<a name="line17"></a>
+    function makeDict(element) {<a name="line18"></a>
+        var ob = {};<a name="line19"></a>
+        var keys = findNodes(element, 'key');<a name="line20"></a>
+        for (var i = 0; i &lt; keys.length; i++) {<a name="line21"></a>
+            ob[keys[i].firstChild.nodeValue] = goog.dom.getNextElementSibling(keys[i]);<a name="line22"></a>
+        }<a name="line23"></a>
+        return ob;<a name="line24"></a>
+    };<a name="line25"></a>
+<a name="line26"></a>
+    function findNodes(element, tag) {<a name="line27"></a>
+        var ar = [];<a name="line28"></a>
+        for (var i = 0; i &lt; element.childNodes.length; i++) {<a name="line29"></a>
+            if (element.childNodes[i].nodeName == tag) {<a name="line30"></a>
+                ar.push(element.childNodes[i]);<a name="line31"></a>
+            }<a name="line32"></a>
+        }<a name="line33"></a>
+        return ar;<a name="line34"></a>
+    }<a name="line35"></a>
+<a name="line36"></a>
+    return function(data) {<a name="line37"></a>
+        var dict = {},<a name="line38"></a>
+            doc = goog.dom.xml.loadXml(data),<a name="line39"></a>
 <a name="line40"></a>
-            d0 = makeDict(root),<a name="line41"></a>
-            d1 = makeDict(d0['frames']),<a name="line42"></a>
-            parse = function(v) {<a name="line43"></a>
-                return goog.json.parse(this[v].firstChild.nodeValue.replace(/\{/g, '[').replace(/\}/g, ']'));<a name="line44"></a>
-            };<a name="line45"></a>
-<a name="line46"></a>
-        for (var i in d1) {<a name="line47"></a>
-            var d2 = makeDict(d1[i]);<a name="line48"></a>
-            d2.getValue = parse;<a name="line49"></a>
-<a name="line50"></a>
-            var frame_ = d2['textureRect'] ? 'textureRect' : 'frame',<a name="line51"></a>
-                sourceSize_ = d2['spriteSourceSize'] ? 'spriteSourceSize' : 'sourceSize',<a name="line52"></a>
-                sourceColorRect_ = d2['spriteColorRect'] ? 'spriteColorRect' : 'sourceColorRect',<a name="line53"></a>
-                rotated_ = d2['textureRotated'] ? 'textureRotated' : 'rotated';<a name="line54"></a>
-<a name="line55"></a>
-            var tr = d2.getValue(frame_),<a name="line56"></a>
-                ss = d2.getValue(sourceSize_),<a name="line57"></a>
-                scr = d2.getValue(sourceColorRect_);<a name="line58"></a>
-<a name="line59"></a>
-            var rotated = d2[rotated_].tagName.toLowerCase() == 'true';<a name="line60"></a>
+            root = findNodes(findNodes(doc, 'plist')[1], 'dict')[0],<a name="line41"></a>
+<a name="line42"></a>
+            d0 = makeDict(root),<a name="line43"></a>
+            d1 = makeDict(d0['frames']),<a name="line44"></a>
+            parse = function(v) {<a name="line45"></a>
+                return goog.json.parse(this[v].firstChild.nodeValue.replace(/\{/g, '[').replace(/\}/g, ']'));<a name="line46"></a>
+            };<a name="line47"></a>
+<a name="line48"></a>
+        for (var i in d1) {<a name="line49"></a>
+            var d2 = makeDict(d1[i]);<a name="line50"></a>
+            d2.getValue = parse;<a name="line51"></a>
+<a name="line52"></a>
+            var frame_ = d2['textureRect'] ? 'textureRect' : 'frame',<a name="line53"></a>
+                sourceSize_ = d2['spriteSourceSize'] ? 'spriteSourceSize' : 'sourceSize',<a name="line54"></a>
+                sourceColorRect_ = d2['spriteColorRect'] ? 'spriteColorRect' : 'sourceColorRect',<a name="line55"></a>
+                rotated_ = d2['textureRotated'] ? 'textureRotated' : 'rotated';<a name="line56"></a>
+<a name="line57"></a>
+            var tr = d2.getValue(frame_),<a name="line58"></a>
+                ss = d2.getValue(sourceSize_),<a name="line59"></a>
+                scr = d2.getValue(sourceColorRect_);<a name="line60"></a>
 <a name="line61"></a>
-            if (rotated && rotated_ == 'rotated') {<a name="line62"></a>
-                var c = tr[1][0];<a name="line63"></a>
-                tr[1][0] = tr[1][1];<a name="line64"></a>
-                tr[1][1] = c;<a name="line65"></a>
-            }<a name="line66"></a>
-            dict[i] = [new goog.math.Rect(tr[0][0], tr[0][1], tr[1][0], tr[1][1]),<a name="line67"></a>
-                new goog.math.Vec2(scr[0][0], scr[0][1]),<a name="line68"></a>
-                new goog.math.Size(ss[0], ss[1]), rotated<a name="line69"></a>
-            ];<a name="line70"></a>
-        }<a name="line71"></a>
-<a name="line72"></a>
-        return dict;<a name="line73"></a>
-    };<a name="line74"></a>
-})();<a name="line75"></a></code></pre>
+            var rotated = d2[rotated_].tagName.toLowerCase() == 'true';<a name="line62"></a>
+<a name="line63"></a>
+            if (rotated && rotated_ == 'rotated') {<a name="line64"></a>
+                var c = tr[1][0];<a name="line65"></a>
+                tr[1][0] = tr[1][1];<a name="line66"></a>
+                tr[1][1] = c;<a name="line67"></a>
+            }<a name="line68"></a>
+            dict[i] = [new goog.math.Rect(tr[0][0], tr[0][1], tr[1][0], tr[1][1]),<a name="line69"></a>
+                new goog.math.Vec2(scr[0][0], scr[0][1]),<a name="line70"></a>
+                new goog.math.Size(ss[0], ss[1]), rotated<a name="line71"></a>
+            ];<a name="line72"></a>
+        }<a name="line73"></a>
+<a name="line74"></a>
+        return dict;<a name="line75"></a>
+    };<a name="line76"></a>
+})();<a name="line77"></a></code></pre>
 			<a name="line"></a>
         </article>
     </section>
@@ -108,15 +112,17 @@ lime.parser.ZWOPTEX2 = (function() {<a name="line15"></a>
 
 
 </div>
-
+</td>
+<td class="layout">
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="lime.animation.actionManager.html">actionManager</a></li><li><a href="lime.animation.Animation.html">Animation</a></li><li><a href="lime.animation.ColorTo.html">ColorTo</a></li><li><a href="lime.animation.Delay.html">Delay</a></li><li><a href="lime.animation.FadeTo.html">FadeTo</a></li><li><a href="lime.animation.KeyframeAnimation.html">KeyframeAnimation</a></li><li><a href="lime.animation.Loop.html">Loop</a></li><li><a href="lime.animation.MoveBy.html">MoveBy</a></li><li><a href="lime.animation.MoveTo.html">MoveTo</a></li><li><a href="lime.animation.Resize.html">Resize</a></li><li><a href="lime.animation.RotateBy.html">RotateBy</a></li><li><a href="lime.animation.RotateTo.html">RotateTo</a></li><li><a href="lime.animation.ScaleBy.html">ScaleBy</a></li><li><a href="lime.animation.ScaleTo.html">ScaleTo</a></li><li><a href="lime.animation.Sequence.html">Sequence</a></li><li><a href="lime.animation.Spawn.html">Spawn</a></li><li><a href="lime.audio.Audio.html">Audio</a></li><li><a href="lime.audio.AudioMap.html">AudioMap</a></li><li><a href="lime.Button.html">Button</a></li><li><a href="lime.CanvasContext.html">CanvasContext</a></li><li><a href="lime.Circle.html">Circle</a></li><li><a href="lime.CoverNode.html">CoverNode</a></li><li><a href="lime.Director.html">Director</a></li><li><a href="lime.events.Drag.html">Drag</a></li><li><a href="lime.events.Event.html">Event</a></li><li><a href="lime.events.EventDispatcher.html">EventDispatcher</a></li><li><a href="lime.fill.Color.html">Color</a></li><li><a href="lime.fill.Fill.html">Fill</a></li><li><a href="lime.fill.Frame.html">Frame</a></li><li><a href="lime.fill.Image.html">Image</a></li><li><a href="lime.fill.LinearGradient.html">LinearGradient</a></li><li><a href="lime.fill.Stroke.html">Stroke</a></li><li><a href="lime.GlossyButton.html">GlossyButton</a></li><li><a href="lime.helper.PauseScene.html">PauseScene</a></li><li><a href="lime.Label.html">Label</a></li><li><a href="lime.Layer.html">Layer</a></li><li><a href="lime.Node.html">Node</a></li><li><a href="lime.Polygon.html">Polygon</a></li><li><a href="lime.Renderer.html">Renderer</a></li><li><a href="lime.RoundedRect.html">RoundedRect</a></li><li><a href="lime.Scene.html">Scene</a></li><li><a href="lime.scheduleManager.html">scheduleManager</a></li><li><a href="lime.scheduleManager.Task.html">Task</a></li><li><a href="lime.Sprite.html">Sprite</a></li><li><a href="lime.SpriteSheet.html">SpriteSheet</a></li><li><a href="lime.style.Transform.html">Transform</a></li><li><a href="lime.transitions.Dissolve.html">Dissolve</a></li><li><a href="lime.transitions.MoveInDown.html">MoveInDown</a></li><li><a href="lime.transitions.MoveInLeft.html">MoveInLeft</a></li><li><a href="lime.transitions.MoveInRight.html">MoveInRight</a></li><li><a href="lime.transitions.MoveInUp.html">MoveInUp</a></li><li><a href="lime.transitions.SlideIn.html">SlideIn</a></li><li><a href="lime.transitions.SlideInDown.html">SlideInDown</a></li><li><a href="lime.transitions.SlideInRight.html">SlideInRight</a></li><li><a href="lime.transitions.SlideInUp.html">SlideInUp</a></li><li><a href="lime.transitions.Transition.html">Transition</a></li><li><a href="lime.ui.Container.html">Container</a></li><li><a href="lime.ui.Scroller.html">Scroller</a></li><li><a href="soy.$$augmentMap-TempCtor.html">TempCtor</a></li><li><a href="soy.StringBuilder.html">StringBuilder</a></li><li><a href="soydata.$$makeSanitizedContentFactory_-InstantiableCtor.html">InstantiableCtor</a></li><li><a href="soydata.SanitizedCss.html">SanitizedCss</a></li><li><a href="soydata.SanitizedHtml.html">SanitizedHtml</a></li><li><a href="soydata.SanitizedHtmlAttribute.html">SanitizedHtmlAttribute</a></li><li><a href="soydata.SanitizedJs.html">SanitizedJs</a></li><li><a href="soydata.SanitizedJsStrChars.html">SanitizedJsStrChars</a></li><li><a href="soydata.SanitizedUri.html">SanitizedUri</a></li><li><a href="soydata.UnsanitizedText.html">UnsanitizedText</a></li></ul><h3>Global</h3><ul><li><a href="global.html#active_">active_</a></li><li><a href="global.html#displayRate_">displayRate_</a></li><li><a href="global.html#intervalID_">intervalID_</a></li><li><a href="global.html#lastRunTime_">lastRunTime_</a></li><li><a href="global.html#taskStack_">taskStack_</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="lime.Button.html">lime.Button</a></li><li><a href="lime.CanvasContext.html">lime.CanvasContext</a></li><li><a href="lime.Circle.html">lime.Circle</a></li><li><a href="lime.CoverNode.html">lime.CoverNode</a></li><li><a href="lime.Director.html">lime.Director</a></li><li><a href="lime.GlossyButton.html">lime.GlossyButton</a></li><li><a href="lime.Label.html">lime.Label</a></li><li><a href="lime.Layer.html">lime.Layer</a></li><li><a href="lime.Node.html">lime.Node</a></li><li><a href="lime.Polygon.html">lime.Polygon</a></li><li><a href="lime.Renderer.html">lime.Renderer</a></li><li><a href="lime.RoundedRect.html">lime.RoundedRect</a></li><li><a href="lime.Scene.html">lime.Scene</a></li><li><a href="lime.Sprite.html">lime.Sprite</a></li><li><a href="lime.SpriteSheet.html">lime.SpriteSheet</a></li><li><a href="lime.animation.Animation.html">lime.animation.Animation</a></li><li><a href="lime.animation.ColorTo.html">lime.animation.ColorTo</a></li><li><a href="lime.animation.Delay.html">lime.animation.Delay</a></li><li><a href="lime.animation.FadeTo.html">lime.animation.FadeTo</a></li><li><a href="lime.animation.KeyframeAnimation.html">lime.animation.KeyframeAnimation</a></li><li><a href="lime.animation.Loop.html">lime.animation.Loop</a></li><li><a href="lime.animation.MoveBy.html">lime.animation.MoveBy</a></li><li><a href="lime.animation.MoveTo.html">lime.animation.MoveTo</a></li><li><a href="lime.animation.Resize.html">lime.animation.Resize</a></li><li><a href="lime.animation.RotateBy.html">lime.animation.RotateBy</a></li><li><a href="lime.animation.RotateTo.html">lime.animation.RotateTo</a></li><li><a href="lime.animation.ScaleBy.html">lime.animation.ScaleBy</a></li><li><a href="lime.animation.ScaleTo.html">lime.animation.ScaleTo</a></li><li><a href="lime.animation.Sequence.html">lime.animation.Sequence</a></li><li><a href="lime.animation.Spawn.html">lime.animation.Spawn</a></li><li><a href="lime.animation.actionManager.html">lime.animation.actionManager</a></li><li><a href="lime.audio.Audio.html">lime.audio.Audio</a></li><li><a href="lime.audio.AudioMap.html">lime.audio.AudioMap</a></li><li><a href="lime.events.Drag.html">lime.events.Drag</a></li><li><a href="lime.events.Event.html">lime.events.Event</a></li><li><a href="lime.events.EventDispatcher.html">lime.events.EventDispatcher</a></li><li><a href="lime.fill.Color.html">lime.fill.Color</a></li><li><a href="lime.fill.Fill.html">lime.fill.Fill</a></li><li><a href="lime.fill.Frame.html">lime.fill.Frame</a></li><li><a href="lime.fill.Image.html">lime.fill.Image</a></li><li><a href="lime.fill.LinearGradient.html">lime.fill.LinearGradient</a></li><li><a href="lime.fill.Stroke.html">lime.fill.Stroke</a></li><li><a href="lime.helper.PauseScene.html">lime.helper.PauseScene</a></li><li><a href="lime.scheduleManager.html">lime.scheduleManager</a></li><li><a href="lime.scheduleManager.Task.html">lime.scheduleManager.Task</a></li><li><a href="lime.style.Transform.html">lime.style.Transform</a></li><li><a href="lime.transitions.Dissolve.html">lime.transitions.Dissolve</a></li><li><a href="lime.transitions.MoveInDown.html">lime.transitions.MoveInDown</a></li><li><a href="lime.transitions.MoveInLeft.html">lime.transitions.MoveInLeft</a></li><li><a href="lime.transitions.MoveInRight.html">lime.transitions.MoveInRight</a></li><li><a href="lime.transitions.MoveInUp.html">lime.transitions.MoveInUp</a></li><li><a href="lime.transitions.SlideIn.html">lime.transitions.SlideIn</a></li><li><a href="lime.transitions.SlideInDown.html">lime.transitions.SlideInDown</a></li><li><a href="lime.transitions.SlideInRight.html">lime.transitions.SlideInRight</a></li><li><a href="lime.transitions.SlideInUp.html">lime.transitions.SlideInUp</a></li><li><a href="lime.transitions.Transition.html">lime.transitions.Transition</a></li><li><a href="lime.ui.Container.html">lime.ui.Container</a></li><li><a href="lime.ui.Scroller.html">lime.ui.Scroller</a></li><li><a href="soy.$$augmentMap-TempCtor.html">soy.$$augmentMap~TempCtor</a></li><li><a href="soy.StringBuilder.html">soy.StringBuilder</a></li><li><a href="soydata.$$makeSanitizedContentFactory_-InstantiableCtor.html">soydata.$$makeSanitizedContentFactory_~InstantiableCtor</a></li><li><a href="soydata.SanitizedCss.html">soydata.SanitizedCss</a></li><li><a href="soydata.SanitizedHtml.html">soydata.SanitizedHtml</a></li><li><a href="soydata.SanitizedHtmlAttribute.html">soydata.SanitizedHtmlAttribute</a></li><li><a href="soydata.SanitizedJs.html">soydata.SanitizedJs</a></li><li><a href="soydata.SanitizedJsStrChars.html">soydata.SanitizedJsStrChars</a></li><li><a href="soydata.SanitizedUri.html">soydata.SanitizedUri</a></li><li><a href="soydata.UnsanitizedText.html">soydata.UnsanitizedText</a></li></ul><h3>Namespaces</h3><ul><li><a href="lime.parser.html">lime.parser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#active_">active_</a></li><li><a href="global.html#displayRate_">displayRate_</a></li><li><a href="global.html#intervalID_">intervalID_</a></li><li><a href="global.html#lastRunTime_">lastRunTime_</a></li><li><a href="global.html#taskStack_">taskStack_</a></li></ul>
 </nav>
-
+</tr>
+</table
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri May 31 2013 00:29:04 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

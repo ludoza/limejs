@@ -15,7 +15,9 @@
 </head>
 
 <body>
-
+	<table class="layout-table">
+		<tr>
+			<td class="layout">
 <div id="main">
     
     <h1 class="page-title">Class: Node</h1>
@@ -106,6 +108,14 @@
 	</div>
 	
 	
+		<h3 class="subsection-title">Extends</h3>
+		
+		<ul>
+			<li>goog.events.EventTarget</li>
+		</ul>
+	
+	
+	
 	<div class="summary">
 		<a name="summary"></a>
 		<h3 class="subsection-title">Summary</h3>
@@ -120,6 +130,7 @@
 		</thead>
 		<tbody>
     
+			
 	        <tr>
 				<td class="attributes first text-right">
 					<span class="type-signature"></span>
@@ -127,9 +138,9 @@
 				<td class="last">
 						<a href="#allow3DCSSTransform_"><code class="name">allow3DCSSTransform_</code></a><span class="type-signature"><span class="type-signature"> :boolean</span></span>
 						<div class="summary-description"> Allow translate3d and other css optimizations</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -138,9 +149,9 @@
 				<td class="last">
 						<a href="#customEvent_"><code class="name">customEvent_</code></a><span class="type-signature"><span class="type-signature"> :boolean</span></span>
 						<div class="summary-description"> </div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -149,9 +160,9 @@
 				<td class="last">
 						<a href="#eventHandlers_"><code class="name">eventHandlers_</code></a><span class="type-signature"><span class="type-signature"> :Object</span></span>
 						<div class="summary-description"> Hash of active event handlers</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -160,9 +171,9 @@
 				<td class="last">
 						<a href="#inTree_"><code class="name">inTree_</code></a><span class="type-signature"><span class="type-signature"> :boolean</span></span>
 						<div class="summary-description"> Node has been added to DOM tree</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -171,9 +182,9 @@
 				<td class="last">
 						<a href="#supportedRenderers"><code class="name">supportedRenderers</code></a><span class="type-signature"><span class="type-signature"> :Array.&lt;<a href="lime.Renderer.html">lime.Renderer</a>></span></span>
 						<div class="summary-description"> Supported renderers for Node</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -182,9 +193,9 @@
 				<td class="last">
 						<a href="#transitionsAdd_"><code class="name">transitionsAdd_</code></a><span class="type-signature"><span class="type-signature"></span></span>
 						<div class="summary-description"> type {Object.<number, number>}</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -193,12 +204,13 @@
 				<td class="last">
 						<a href="#transitionsClear_"><code class="name">transitionsClear_</code></a><span class="type-signature"><span class="type-signature"></span></span>
 						<div class="summary-description"> type {Object.<number, number>}</div>
-						
 				</td>
 			</tr>
 			
 	</tbody>
 </table>
+
+
 </dl>
 
 </div><div class="doc_group"><a name="summary_methods"></a>
@@ -211,6 +223,7 @@
 		</thead>
 		<tbody>
     
+			
 	        <tr>
 				<td class="attributes first text-right">
 					<span class="type-signature">&lt;static> </span>
@@ -218,9 +231,9 @@
 				<td class="last">
 						<a href="#compareNode"><code class="name">compareNode</code></a><span class="type-signature"><span class="signature">(n1, n2)</span><span class="type-signature"> &rarr; {number}</span></span>
 						<div class="summary-description"> Compare two node positions in the tree</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -229,9 +242,9 @@
 				<td class="last">
 						<a href="#getPropertyForTransition"><code class="name">getPropertyForTransition</code></a><span class="type-signature"><span class="signature">(transition)</span><span class="type-signature"> &rarr; {string}</span></span>
 						<div class="summary-description"> Return CSS property name for transition constant</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -240,9 +253,9 @@
 				<td class="last">
 						<a href="#addEventListener"><code class="name">addEventListener</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
 						<div class="summary-description"> </div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -251,9 +264,9 @@
 				<td class="last">
 						<a href="#addTransition"><code class="name">addTransition</code></a><span class="type-signature"><span class="signature">(property, value, duration, ease)</span><span class="type-signature"></span></span>
 						<div class="summary-description"> Register transition property. Use through animations.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -262,9 +275,9 @@
 				<td class="last">
 						<a href="#appendChild"><code class="name">appendChild</code></a><span class="type-signature"><span class="signature">(child, <span class="optional">opt_pos</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Append element to the end of childrens array</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -274,9 +287,9 @@
 						<a href="#calcRelativeQuality"><code class="name">calcRelativeQuality</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
 						<div class="summary-description"> Calculates relative quality change from the
 parent objects quality</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -285,9 +298,9 @@ parent objects quality</div>
 				<td class="last">
 						<a href="#clearTransition"><code class="name">clearTransition</code></a><span class="type-signature"><span class="signature">(property)</span><span class="type-signature"></span></span>
 						<div class="summary-description"> Clear previously set transition</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -296,9 +309,9 @@ parent objects quality</div>
 				<td class="last">
 						<a href="#createDomElement"><code class="name">createDomElement</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
 						<div class="summary-description"> Create DOM element to render the node</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -307,9 +320,9 @@ parent objects quality</div>
 				<td class="last">
 						<a href="#getAnchorPoint"><code class="name">getAnchorPoint</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Vec2}</span></span>
 						<div class="summary-description"> Returns anchor point for the element.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -318,9 +331,9 @@ parent objects quality</div>
 				<td class="last">
 						<a href="#getAutoResize"><code class="name">getAutoResize</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
 						<div class="summary-description"> Returns autoresize rules bitmask.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -329,9 +342,9 @@ parent objects quality</div>
 				<td class="last">
 						<a href="#getBoundingBox"><code class="name">getBoundingBox</code></a><span class="type-signature"><span class="signature">(opt_frame)</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span>
 						<div class="summary-description"> Returns bounding box for element in parents coordinate space.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -340,9 +353,9 @@ parent objects quality</div>
 				<td class="last">
 						<a href="#getChildAt"><code class="name">getChildAt</code></a><span class="type-signature"><span class="signature">(index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>|Element|null}</span></span>
 						<div class="summary-description"> Return the child at defined index.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -351,9 +364,9 @@ parent objects quality</div>
 				<td class="last">
 						<a href="#getChildIndex"><code class="name">getChildIndex</code></a><span class="type-signature"><span class="signature">(child)</span><span class="type-signature"> &rarr; {number}</span></span>
 						<div class="summary-description"> Return the index position of a child.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -362,9 +375,9 @@ parent objects quality</div>
 				<td class="last">
 						<a href="#getCSS3DTransformsAllowed"><code class="name">getCSS3DTransformsAllowed</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span>
 						<div class="summary-description"> Returns css 3d transforms flag</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -374,9 +387,9 @@ parent objects quality</div>
 						<a href="#getDeepestDomElement"><code class="name">getDeepestDomElement</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {Element}</span></span>
 						<div class="summary-description"> Return deepest element in DOM tree that is used
 for drawing the Node.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -386,9 +399,9 @@ for drawing the Node.</div>
 						<a href="#getDeepestParentWithDom"><code class="name">getDeepestParentWithDom</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Return deepest parent node that requires DOM element
 for drawing on screen.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -398,9 +411,9 @@ for drawing on screen.</div>
 						<a href="#getDirector"><code class="name">getDirector</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Director.html">lime.Director</a>}</span></span>
 						<div class="summary-description"> Return the Director instance related to the node.
 Returns null if no director connection.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -410,9 +423,9 @@ Returns null if no director connection.</div>
 						<a href="#getDirty"><code class="name">getDirty</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
 						<div class="summary-description"> Return a bitmask of dirty values that need to be updated before next drawing
 The bitmask parts are values of lime.Dirty enum</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -421,9 +434,9 @@ The bitmask parts are values of lime.Dirty enum</div>
 				<td class="last">
 						<a href="#getFrame"><code class="name">getFrame</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span>
 						<div class="summary-description"> Returns a bounding box for the element in its own coordinate space</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -432,9 +445,9 @@ The bitmask parts are values of lime.Dirty enum</div>
 				<td class="last">
 						<a href="#getHidden"><code class="name">getHidden</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span>
 						<div class="summary-description"> Returns true if element currently not visible</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -443,9 +456,9 @@ The bitmask parts are values of lime.Dirty enum</div>
 				<td class="last">
 						<a href="#getMask"><code class="name">getMask</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Returns element used as a mask for current element</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -454,9 +467,9 @@ The bitmask parts are values of lime.Dirty enum</div>
 				<td class="last">
 						<a href="#getNumberOfChildren"><code class="name">getNumberOfChildren</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
 						<div class="summary-description"> Return number of childnodes current element has.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -465,9 +478,9 @@ The bitmask parts are values of lime.Dirty enum</div>
 				<td class="last">
 						<a href="#getOpacity"><code class="name">getOpacity</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
 						<div class="summary-description"> Returns the opacity value of the Node. 0.0=100% trasparent, 1.0=100% opaque</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -476,9 +489,9 @@ The bitmask parts are values of lime.Dirty enum</div>
 				<td class="last">
 						<a href="#getParent"><code class="name">getParent</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Return the parent object. Returns null in not in tree</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -487,9 +500,9 @@ The bitmask parts are values of lime.Dirty enum</div>
 				<td class="last">
 						<a href="#getParentStack_"><code class="name">getParentStack_</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;<a href="lime.Node.html">lime.Node</a>>}</span></span>
 						<div class="summary-description"> Return array of parent nodes until scene object</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -498,9 +511,9 @@ The bitmask parts are values of lime.Dirty enum</div>
 				<td class="last">
 						<a href="#getPosition"><code class="name">getPosition</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span>
 						<div class="summary-description"> Returns element's position coordinate</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -509,9 +522,9 @@ The bitmask parts are values of lime.Dirty enum</div>
 				<td class="last">
 						<a href="#getQuality"><code class="name">getQuality</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
 						<div class="summary-description"> Returns elements quality value.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -520,9 +533,9 @@ The bitmask parts are values of lime.Dirty enum</div>
 				<td class="last">
 						<a href="#getRelativeQuality"><code class="name">getRelativeQuality</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
 						<div class="summary-description"> Return cumulative quality value relative to screen full quality.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -531,9 +544,9 @@ The bitmask parts are values of lime.Dirty enum</div>
 				<td class="last">
 						<a href="#getRotation"><code class="name">getRotation</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></span>
 						<div class="summary-description"> Returns rotation angle for element in degrees</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -542,9 +555,9 @@ The bitmask parts are values of lime.Dirty enum</div>
 				<td class="last">
 						<a href="#getScale"><code class="name">getScale</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {goog.math.Vec2}</span></span>
 						<div class="summary-description"> Returns scale vector for the element. 1,1 means no scale.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -554,9 +567,9 @@ The bitmask parts are values of lime.Dirty enum</div>
 						<a href="#getScene"><code class="name">getScene</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Scene.html">lime.Scene</a>}</span></span>
 						<div class="summary-description"> Returns the Scene instance related to the node.
 Returns null if no scene connection.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -565,9 +578,9 @@ Returns null if no scene connection.</div>
 				<td class="last">
 						<a href="#getSize"><code class="name">getSize</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Size.html">goog.math.Size</a>}</span></span>
 						<div class="summary-description"> Returns elements dimension</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -578,9 +591,9 @@ Returns null if no scene connection.</div>
 						<div class="summary-description"> Checks if event should fire on element based on the position.
 Before returning true this function should set the position property
 of the event to the hit position in elements coordinate space</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -589,9 +602,9 @@ of the event to the hit position in elements coordinate space</div>
 				<td class="last">
 						<a href="#localToNode"><code class="name">localToNode</code></a><span class="type-signature"><span class="signature">(coord, node)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span>
 						<div class="summary-description"> Convert coordinate in node space to other nodes coordinate space</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -601,9 +614,9 @@ of the event to the hit position in elements coordinate space</div>
 						<a href="#localToParent"><code class="name">localToParent</code></a><span class="type-signature"><span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span>
 						<div class="summary-description"> Convert coordinate from current node space to
 parent node space</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -612,9 +625,9 @@ parent node space</div>
 				<td class="last">
 						<a href="#localToScreen"><code class="name">localToScreen</code></a><span class="type-signature"><span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span>
 						<div class="summary-description"> Convert coordinate in node space to screen coordinate</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -623,9 +636,9 @@ parent node space</div>
 				<td class="last">
 						<a href="#measureContents"><code class="name">measureContents</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="goog.math.Box.html">goog.math.Box</a>}</span></span>
 						<div class="summary-description"> Return box containing current element and all its children</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -634,9 +647,9 @@ parent node space</div>
 				<td class="last">
 						<a href="#needsDomElement"><code class="name">needsDomElement</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></span>
 						<div class="summary-description"> Does node require DOM element for drawing?</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -646,9 +659,9 @@ parent node space</div>
 						<a href="#parentToLocal"><code class="name">parentToLocal</code></a><span class="type-signature"><span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span>
 						<div class="summary-description"> Covert coordinate form parent node space to
 current node space</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -657,9 +670,9 @@ current node space</div>
 				<td class="last">
 						<a href="#removeAllChildren"><code class="name">removeAllChildren</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Removes all children of a node.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -668,9 +681,9 @@ current node space</div>
 				<td class="last">
 						<a href="#removeChild"><code class="name">removeChild</code></a><span class="type-signature"><span class="signature">(child)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Remove element from the childrens array</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -679,9 +692,9 @@ current node space</div>
 				<td class="last">
 						<a href="#removeChildAt"><code class="name">removeChildAt</code></a><span class="type-signature"><span class="signature">(index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Remove element at a given index from the childrens array</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -690,9 +703,9 @@ current node space</div>
 				<td class="last">
 						<a href="#removeDomElement"><code class="name">removeDomElement</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
 						<div class="summary-description"> Remove DOM element connected to teh node</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -701,9 +714,9 @@ current node space</div>
 				<td class="last">
 						<a href="#removeEventListener"><code class="name">removeEventListener</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
 						<div class="summary-description"> </div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -712,9 +725,9 @@ current node space</div>
 				<td class="last">
 						<a href="#runAction"><code class="name">runAction</code></a><span class="type-signature"><span class="signature">(action)</span><span class="type-signature"></span></span>
 						<div class="summary-description"> Add Node to action targets list and start the animation</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -723,9 +736,9 @@ current node space</div>
 				<td class="last">
 						<a href="#screenToLocal"><code class="name">screenToLocal</code></a><span class="type-signature"><span class="signature">(coord)</span><span class="type-signature"> &rarr; {goog.math.Coordinate}</span></span>
 						<div class="summary-description"> Convert screen coordinate to node coordinate space</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -738,9 +751,9 @@ XXX: This hack is required to fix a mobile Safari rendering bug.
 It should only be used on nodes that are affected by the bug!
 3D acceleration in css transforms is enabled by default and applied
 for iOS and Playbook.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -752,9 +765,9 @@ for iOS and Playbook.</div>
 when positioning the element to position coordinate. [0,0] means
 top left corner, [1,1] bottom right, [.5,.5] means that element
 is position by the center. You can also pass in 2 numbers.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -763,9 +776,9 @@ is position by the center. You can also pass in 2 numbers.</div>
 				<td class="last">
 						<a href="#setAutoResize"><code class="name">setAutoResize</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Sets new autoresixe rules. NOT IMPLEMENTED!</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -774,9 +787,9 @@ is position by the center. You can also pass in 2 numbers.</div>
 				<td class="last">
 						<a href="#setChildIndex"><code class="name">setChildIndex</code></a><span class="type-signature"><span class="signature">(child, index)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Move a child to another index in the childrens array.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -786,9 +799,9 @@ is position by the center. You can also pass in 2 numbers.</div>
 						<a href="#setDirty"><code class="name">setDirty</code></a><span class="type-signature"><span class="signature">(value, <span class="optional">opt_pass</span>, <span class="optional">opt_nextframe</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Sets a dirty value true. This means that object needs that
 kind of updates before next draw.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -797,9 +810,9 @@ kind of updates before next draw.</div>
 				<td class="last">
 						<a href="#setHidden"><code class="name">setHidden</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Sets if element is visible or not</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -808,9 +821,9 @@ kind of updates before next draw.</div>
 				<td class="last">
 						<a href="#setMask"><code class="name">setMask</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Sets element as a mask for current element</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -819,9 +832,9 @@ kind of updates before next draw.</div>
 				<td class="last">
 						<a href="#setOpacity"><code class="name">setOpacity</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Sets the opacity value of the Node object</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -830,9 +843,9 @@ kind of updates before next draw.</div>
 				<td class="last">
 						<a href="#setPosition"><code class="name">setPosition</code></a><span class="type-signature"><span class="signature">(value, <span class="optional">opt_y</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Sets new position for element. Also accepts 2 numbers(x and y value)</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -843,9 +856,9 @@ kind of updates before next draw.</div>
 						<div class="summary-description"> Sets quality value used while drawing. Not all rendermodes can draw
 more effectively on lower quality. 1.0 full quality, 0.5 half quality.
 Setting this walue larger than 1.0 almost never does anything good.</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -855,9 +868,9 @@ Setting this walue larger than 1.0 almost never does anything good.</div>
 						<a href="#setRenderer"><code class="name">setRenderer</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Set renderer for the node. Renderer defines what lower
 level technology will be used for drawing node on screen</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -866,9 +879,9 @@ level technology will be used for drawing node on screen</div>
 				<td class="last">
 						<a href="#setRotation"><code class="name">setRotation</code></a><span class="type-signature"><span class="signature">(value)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Rotates element to specific angle in degrees</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -878,9 +891,9 @@ level technology will be used for drawing node on screen</div>
 						<a href="#setScale"><code class="name">setScale</code></a><span class="type-signature"><span class="signature">(value, <span class="optional">opt_y</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Sets new scale vector for element. This function also accepts
 2 numbers or 1 number that would be coverted to vector before use</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -890,9 +903,9 @@ level technology will be used for drawing node on screen</div>
 						<a href="#setSize"><code class="name">setSize</code></a><span class="type-signature"><span class="signature">(value, <span class="optional">opt_height</span>)</span><span class="type-signature"> &rarr; {<a href="lime.Node.html">lime.Node</a>}</span></span>
 						<div class="summary-description"> Sets dimensions for element. This funciton also
 accepts 2 numbers: width,height</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -901,9 +914,9 @@ accepts 2 numbers: width,height</div>
 				<td class="last">
 						<a href="#update"><code class="name">update</code></a><span class="type-signature"><span class="signature">(<span class="optional">opt_pass</span>)</span><span class="type-signature"></span></span>
 						<div class="summary-description"> Update modified dirty parameters to visible elements properties</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -912,9 +925,9 @@ accepts 2 numbers: width,height</div>
 				<td class="last">
 						<a href="#updateDomElement"><code class="name">updateDomElement</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
 						<div class="summary-description"> Update DOM element connected to the node</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -923,9 +936,9 @@ accepts 2 numbers: width,height</div>
 				<td class="last">
 						<a href="#updateLayout"><code class="name">updateLayout</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
 						<div class="summary-description"> Update node's layout (tree relations)</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -934,9 +947,9 @@ accepts 2 numbers: width,height</div>
 				<td class="last">
 						<a href="#wasAddedToTree"><code class="name">wasAddedToTree</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
 						<div class="summary-description"> Handle adding Node to the DOM tree</div>
-						
 				</td>
 			</tr>
+			
 			
 	        <tr>
 				<td class="attributes first text-right">
@@ -945,24 +958,17 @@ accepts 2 numbers: width,height</div>
 				<td class="last">
 						<a href="#wasRemovedFromTree"><code class="name">wasRemovedFromTree</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
 						<div class="summary-description"> Handle removing Node from DOM tree</div>
-						
 				</td>
 			</tr>
 			
 	</tbody>
 </table>
+
+
 </dl>
 
 </div>
 	</div>
-	
-	
-	
-		<h3 class="subsection-title">Extends</h3>
-		
-		<ul>
-			<li>goog.events.EventTarget</li>
-		</ul>
 	
 	
 	
@@ -8736,15 +8742,17 @@ accepts 2 numbers: width,height
 
 
 </div>
-
+</td>
+<td class="layout">
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="lime.animation.actionManager.html">actionManager</a></li><li><a href="lime.animation.Animation.html">Animation</a></li><li><a href="lime.animation.ColorTo.html">ColorTo</a></li><li><a href="lime.animation.Delay.html">Delay</a></li><li><a href="lime.animation.FadeTo.html">FadeTo</a></li><li><a href="lime.animation.KeyframeAnimation.html">KeyframeAnimation</a></li><li><a href="lime.animation.Loop.html">Loop</a></li><li><a href="lime.animation.MoveBy.html">MoveBy</a></li><li><a href="lime.animation.MoveTo.html">MoveTo</a></li><li><a href="lime.animation.Resize.html">Resize</a></li><li><a href="lime.animation.RotateBy.html">RotateBy</a></li><li><a href="lime.animation.RotateTo.html">RotateTo</a></li><li><a href="lime.animation.ScaleBy.html">ScaleBy</a></li><li><a href="lime.animation.ScaleTo.html">ScaleTo</a></li><li><a href="lime.animation.Sequence.html">Sequence</a></li><li><a href="lime.animation.Spawn.html">Spawn</a></li><li><a href="lime.audio.Audio.html">Audio</a></li><li><a href="lime.audio.AudioMap.html">AudioMap</a></li><li><a href="lime.Button.html">Button</a></li><li><a href="lime.CanvasContext.html">CanvasContext</a></li><li><a href="lime.Circle.html">Circle</a></li><li><a href="lime.CoverNode.html">CoverNode</a></li><li><a href="lime.Director.html">Director</a></li><li><a href="lime.events.Drag.html">Drag</a></li><li><a href="lime.events.Event.html">Event</a></li><li><a href="lime.events.EventDispatcher.html">EventDispatcher</a></li><li><a href="lime.fill.Color.html">Color</a></li><li><a href="lime.fill.Fill.html">Fill</a></li><li><a href="lime.fill.Frame.html">Frame</a></li><li><a href="lime.fill.Image.html">Image</a></li><li><a href="lime.fill.LinearGradient.html">LinearGradient</a></li><li><a href="lime.fill.Stroke.html">Stroke</a></li><li><a href="lime.GlossyButton.html">GlossyButton</a></li><li><a href="lime.helper.PauseScene.html">PauseScene</a></li><li><a href="lime.Label.html">Label</a></li><li><a href="lime.Layer.html">Layer</a></li><li><a href="lime.Node.html">Node</a></li><li><a href="lime.Polygon.html">Polygon</a></li><li><a href="lime.Renderer.html">Renderer</a></li><li><a href="lime.RoundedRect.html">RoundedRect</a></li><li><a href="lime.Scene.html">Scene</a></li><li><a href="lime.scheduleManager.html">scheduleManager</a></li><li><a href="lime.scheduleManager.Task.html">Task</a></li><li><a href="lime.Sprite.html">Sprite</a></li><li><a href="lime.SpriteSheet.html">SpriteSheet</a></li><li><a href="lime.style.Transform.html">Transform</a></li><li><a href="lime.transitions.Dissolve.html">Dissolve</a></li><li><a href="lime.transitions.MoveInDown.html">MoveInDown</a></li><li><a href="lime.transitions.MoveInLeft.html">MoveInLeft</a></li><li><a href="lime.transitions.MoveInRight.html">MoveInRight</a></li><li><a href="lime.transitions.MoveInUp.html">MoveInUp</a></li><li><a href="lime.transitions.SlideIn.html">SlideIn</a></li><li><a href="lime.transitions.SlideInDown.html">SlideInDown</a></li><li><a href="lime.transitions.SlideInRight.html">SlideInRight</a></li><li><a href="lime.transitions.SlideInUp.html">SlideInUp</a></li><li><a href="lime.transitions.Transition.html">Transition</a></li><li><a href="lime.ui.Container.html">Container</a></li><li><a href="lime.ui.Scroller.html">Scroller</a></li><li><a href="soy.$$augmentMap-TempCtor.html">TempCtor</a></li><li><a href="soy.StringBuilder.html">StringBuilder</a></li><li><a href="soydata.$$makeSanitizedContentFactory_-InstantiableCtor.html">InstantiableCtor</a></li><li><a href="soydata.SanitizedCss.html">SanitizedCss</a></li><li><a href="soydata.SanitizedHtml.html">SanitizedHtml</a></li><li><a href="soydata.SanitizedHtmlAttribute.html">SanitizedHtmlAttribute</a></li><li><a href="soydata.SanitizedJs.html">SanitizedJs</a></li><li><a href="soydata.SanitizedJsStrChars.html">SanitizedJsStrChars</a></li><li><a href="soydata.SanitizedUri.html">SanitizedUri</a></li><li><a href="soydata.UnsanitizedText.html">UnsanitizedText</a></li></ul><h3>Global</h3><ul><li><a href="global.html#active_">active_</a></li><li><a href="global.html#displayRate_">displayRate_</a></li><li><a href="global.html#intervalID_">intervalID_</a></li><li><a href="global.html#lastRunTime_">lastRunTime_</a></li><li><a href="global.html#taskStack_">taskStack_</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="lime.Button.html">lime.Button</a></li><li><a href="lime.CanvasContext.html">lime.CanvasContext</a></li><li><a href="lime.Circle.html">lime.Circle</a></li><li><a href="lime.CoverNode.html">lime.CoverNode</a></li><li><a href="lime.Director.html">lime.Director</a></li><li><a href="lime.GlossyButton.html">lime.GlossyButton</a></li><li><a href="lime.Label.html">lime.Label</a></li><li><a href="lime.Layer.html">lime.Layer</a></li><li><a href="lime.Node.html">lime.Node</a></li><li><a href="lime.Polygon.html">lime.Polygon</a></li><li><a href="lime.Renderer.html">lime.Renderer</a></li><li><a href="lime.RoundedRect.html">lime.RoundedRect</a></li><li><a href="lime.Scene.html">lime.Scene</a></li><li><a href="lime.Sprite.html">lime.Sprite</a></li><li><a href="lime.SpriteSheet.html">lime.SpriteSheet</a></li><li><a href="lime.animation.Animation.html">lime.animation.Animation</a></li><li><a href="lime.animation.ColorTo.html">lime.animation.ColorTo</a></li><li><a href="lime.animation.Delay.html">lime.animation.Delay</a></li><li><a href="lime.animation.FadeTo.html">lime.animation.FadeTo</a></li><li><a href="lime.animation.KeyframeAnimation.html">lime.animation.KeyframeAnimation</a></li><li><a href="lime.animation.Loop.html">lime.animation.Loop</a></li><li><a href="lime.animation.MoveBy.html">lime.animation.MoveBy</a></li><li><a href="lime.animation.MoveTo.html">lime.animation.MoveTo</a></li><li><a href="lime.animation.Resize.html">lime.animation.Resize</a></li><li><a href="lime.animation.RotateBy.html">lime.animation.RotateBy</a></li><li><a href="lime.animation.RotateTo.html">lime.animation.RotateTo</a></li><li><a href="lime.animation.ScaleBy.html">lime.animation.ScaleBy</a></li><li><a href="lime.animation.ScaleTo.html">lime.animation.ScaleTo</a></li><li><a href="lime.animation.Sequence.html">lime.animation.Sequence</a></li><li><a href="lime.animation.Spawn.html">lime.animation.Spawn</a></li><li><a href="lime.animation.actionManager.html">lime.animation.actionManager</a></li><li><a href="lime.audio.Audio.html">lime.audio.Audio</a></li><li><a href="lime.audio.AudioMap.html">lime.audio.AudioMap</a></li><li><a href="lime.events.Drag.html">lime.events.Drag</a></li><li><a href="lime.events.Event.html">lime.events.Event</a></li><li><a href="lime.events.EventDispatcher.html">lime.events.EventDispatcher</a></li><li><a href="lime.fill.Color.html">lime.fill.Color</a></li><li><a href="lime.fill.Fill.html">lime.fill.Fill</a></li><li><a href="lime.fill.Frame.html">lime.fill.Frame</a></li><li><a href="lime.fill.Image.html">lime.fill.Image</a></li><li><a href="lime.fill.LinearGradient.html">lime.fill.LinearGradient</a></li><li><a href="lime.fill.Stroke.html">lime.fill.Stroke</a></li><li><a href="lime.helper.PauseScene.html">lime.helper.PauseScene</a></li><li><a href="lime.scheduleManager.html">lime.scheduleManager</a></li><li><a href="lime.scheduleManager.Task.html">lime.scheduleManager.Task</a></li><li><a href="lime.style.Transform.html">lime.style.Transform</a></li><li><a href="lime.transitions.Dissolve.html">lime.transitions.Dissolve</a></li><li><a href="lime.transitions.MoveInDown.html">lime.transitions.MoveInDown</a></li><li><a href="lime.transitions.MoveInLeft.html">lime.transitions.MoveInLeft</a></li><li><a href="lime.transitions.MoveInRight.html">lime.transitions.MoveInRight</a></li><li><a href="lime.transitions.MoveInUp.html">lime.transitions.MoveInUp</a></li><li><a href="lime.transitions.SlideIn.html">lime.transitions.SlideIn</a></li><li><a href="lime.transitions.SlideInDown.html">lime.transitions.SlideInDown</a></li><li><a href="lime.transitions.SlideInRight.html">lime.transitions.SlideInRight</a></li><li><a href="lime.transitions.SlideInUp.html">lime.transitions.SlideInUp</a></li><li><a href="lime.transitions.Transition.html">lime.transitions.Transition</a></li><li><a href="lime.ui.Container.html">lime.ui.Container</a></li><li><a href="lime.ui.Scroller.html">lime.ui.Scroller</a></li><li><a href="soy.$$augmentMap-TempCtor.html">soy.$$augmentMap~TempCtor</a></li><li><a href="soy.StringBuilder.html">soy.StringBuilder</a></li><li><a href="soydata.$$makeSanitizedContentFactory_-InstantiableCtor.html">soydata.$$makeSanitizedContentFactory_~InstantiableCtor</a></li><li><a href="soydata.SanitizedCss.html">soydata.SanitizedCss</a></li><li><a href="soydata.SanitizedHtml.html">soydata.SanitizedHtml</a></li><li><a href="soydata.SanitizedHtmlAttribute.html">soydata.SanitizedHtmlAttribute</a></li><li><a href="soydata.SanitizedJs.html">soydata.SanitizedJs</a></li><li><a href="soydata.SanitizedJsStrChars.html">soydata.SanitizedJsStrChars</a></li><li><a href="soydata.SanitizedUri.html">soydata.SanitizedUri</a></li><li><a href="soydata.UnsanitizedText.html">soydata.UnsanitizedText</a></li></ul><h3>Namespaces</h3><ul><li><a href="lime.parser.html">lime.parser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#active_">active_</a></li><li><a href="global.html#displayRate_">displayRate_</a></li><li><a href="global.html#intervalID_">intervalID_</a></li><li><a href="global.html#lastRunTime_">lastRunTime_</a></li><li><a href="global.html#taskStack_">taskStack_</a></li></ul>
 </nav>
-
+</tr>
+</table
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:42 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri May 31 2013 00:29:17 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

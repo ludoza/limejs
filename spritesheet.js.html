@@ -15,7 +15,9 @@
 </head>
 
 <body>
-
+	<table class="layout-table">
+		<tr>
+			<td class="layout">
 <div id="main">
     
     <h1 class="page-title">Source: helper/spritesheet.js</h1>
@@ -29,51 +31,55 @@
             <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.SpriteSheet');<a name="line2"></a>
 <a name="line3"></a>
 goog.require('lime.fill.Frame');<a name="line4"></a>
-goog.require('lime.parser.ZWOPTEX');<a name="line5"></a>
-<a name="line6"></a>
-/**<a name="line7"></a>
- * [Sprite Sheets]{@link http://www.limejs.com/2011/02/21/introducing-sprite-sheets} allows you to gather your image <a name="line8"></a>
- * assets to the same image file and define frames that contains the needed keyframe animations, <a name="line9"></a>
- * [multiple formats]{@link http://www.limejs.com/2011/02/27/new-formats-for-spritesheets} are supported.<a name="line10"></a>
- *<a name="line11"></a>
- * @param {string|Image|lime.Sprite} image The url, image or sprite, to use.<a name="line12"></a>
- * @param {object} metadata The metadata needed by the parser.<a name="line13"></a>
- * @param {lime.parser.JSON|lime.parser.TMX|lime.parser.ZWOPTEX|lime.parser.ZWOPTEX2} parser The parser that should be <a name="line14"></a>
- * used instead of ZWOPTEX.<a name="line15"></a>
- * @constructor<a name="line16"></a>
- */<a name="line17"></a>
-lime.SpriteSheet = function(image, metadata, parser) {<a name="line18"></a>
-    this.image_ = new lime.fill.Image(image);<a name="line19"></a>
-<a name="line20"></a>
-    if (!goog.isDef(parser) && goog.DEBUG && goog.global['console'] && goog.global['console']['warn']) {<a name="line21"></a>
-        goog.global['console']['warn']('DEPRECATED: SpriteSheet 3rd parser parameter is now required.');<a name="line22"></a>
-    }<a name="line23"></a>
+/** @namespace lime.parser */<a name="line5"></a>
+goog.require('lime.parser.ZWOPTEX');<a name="line6"></a>
+goog.require('lime.parser.ZWOPTEX2');<a name="line7"></a>
+goog.require('lime.parser.JSON');<a name="line8"></a>
+goog.require('lime.parser.TMX');<a name="line9"></a>
+<a name="line10"></a>
+/**<a name="line11"></a>
+ * [Sprite Sheets]{@link http://www.limejs.com/2011/02/21/introducing-sprite-sheets} allows you to gather your image <a name="line12"></a>
+ * assets to the same image file and define frames that contains the needed keyframe animations, <a name="line13"></a>
+ * [multiple formats]{@link http://www.limejs.com/2011/02/27/new-formats-for-spritesheets} are supported.<a name="line14"></a>
+ *<a name="line15"></a>
+ * @param {string|Image|lime.Sprite} image The url, image or sprite, to use.<a name="line16"></a>
+ * @param {object} metadata The metadata needed by the parser.<a name="line17"></a>
+ * @param {lime.parser.JSON|lime.parser.TMX|lime.parser.ZWOPTEX|lime.parser.ZWOPTEX2} parser The parser that should be <a name="line18"></a>
+ * used instead of ZWOPTEX.<a name="line19"></a>
+ * @constructor<a name="line20"></a>
+ */<a name="line21"></a>
+lime.SpriteSheet = function(image, metadata, parser) {<a name="line22"></a>
+    this.image_ = new lime.fill.Image(image);<a name="line23"></a>
 <a name="line24"></a>
-    var p = parser || lime.parser.ZWOPTEX,<a name="line25"></a>
-        data = metadata.data ? metadata.data() : metadata;<a name="line26"></a>
-<a name="line27"></a>
-    this.metadata_ = p(data);<a name="line28"></a>
-};<a name="line29"></a>
-<a name="line30"></a>
-/**<a name="line31"></a>
- * Return the frame from the sprite sheet that has the given name.<a name="line32"></a>
- * @param {string} name The name of the frame.<a name="line33"></a>
- */<a name="line34"></a>
-lime.SpriteSheet.prototype.getFrame = function(name) {<a name="line35"></a>
-    var m = this.metadata_[name];<a name="line36"></a>
-    if (!m) {<a name="line37"></a>
-        throw ("Frame " + name + " not found in the spritesheet");<a name="line38"></a>
-    }<a name="line39"></a>
-    return new lime.fill.Frame(this.image_.image_, m[0], m[1], m[2], m[3]);<a name="line40"></a>
-};<a name="line41"></a>
-<a name="line42"></a>
-/**<a name="line43"></a>
- * Returns true if the sprite sheet contains a frame with the given name.<a name="line44"></a>
- * @param {string} name The name to check if the sprite sheete contains.<a name="line45"></a>
- */<a name="line46"></a>
-lime.SpriteSheet.prototype.hasFrame = function(name) {<a name="line47"></a>
-    return goog.isDef(this.metadata_[name]);<a name="line48"></a>
-};<a name="line49"></a></code></pre>
+    if (!goog.isDef(parser) && goog.DEBUG && goog.global['console'] && goog.global['console']['warn']) {<a name="line25"></a>
+        goog.global['console']['warn']('DEPRECATED: SpriteSheet 3rd parser parameter is now required.');<a name="line26"></a>
+    }<a name="line27"></a>
+<a name="line28"></a>
+    var p = parser || lime.parser.ZWOPTEX,<a name="line29"></a>
+        data = metadata.data ? metadata.data() : metadata;<a name="line30"></a>
+<a name="line31"></a>
+    this.metadata_ = p(data);<a name="line32"></a>
+};<a name="line33"></a>
+<a name="line34"></a>
+/**<a name="line35"></a>
+ * Return the frame from the sprite sheet that has the given name.<a name="line36"></a>
+ * @param {string} name The name of the frame.<a name="line37"></a>
+ */<a name="line38"></a>
+lime.SpriteSheet.prototype.getFrame = function(name) {<a name="line39"></a>
+    var m = this.metadata_[name];<a name="line40"></a>
+    if (!m) {<a name="line41"></a>
+        throw ("Frame " + name + " not found in the spritesheet");<a name="line42"></a>
+    }<a name="line43"></a>
+    return new lime.fill.Frame(this.image_.image_, m[0], m[1], m[2], m[3]);<a name="line44"></a>
+};<a name="line45"></a>
+<a name="line46"></a>
+/**<a name="line47"></a>
+ * Returns true if the sprite sheet contains a frame with the given name.<a name="line48"></a>
+ * @param {string} name The name to check if the sprite sheete contains.<a name="line49"></a>
+ */<a name="line50"></a>
+lime.SpriteSheet.prototype.hasFrame = function(name) {<a name="line51"></a>
+    return goog.isDef(this.metadata_[name]);<a name="line52"></a>
+};<a name="line53"></a></code></pre>
 			<a name="line"></a>
         </article>
     </section>
@@ -82,15 +88,17 @@ lime.SpriteSheet.prototype.hasFrame = function(name) {<a name="line47"></a>
 
 
 </div>
-
+</td>
+<td class="layout">
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="lime.animation.actionManager.html">actionManager</a></li><li><a href="lime.animation.Animation.html">Animation</a></li><li><a href="lime.animation.ColorTo.html">ColorTo</a></li><li><a href="lime.animation.Delay.html">Delay</a></li><li><a href="lime.animation.FadeTo.html">FadeTo</a></li><li><a href="lime.animation.KeyframeAnimation.html">KeyframeAnimation</a></li><li><a href="lime.animation.Loop.html">Loop</a></li><li><a href="lime.animation.MoveBy.html">MoveBy</a></li><li><a href="lime.animation.MoveTo.html">MoveTo</a></li><li><a href="lime.animation.Resize.html">Resize</a></li><li><a href="lime.animation.RotateBy.html">RotateBy</a></li><li><a href="lime.animation.RotateTo.html">RotateTo</a></li><li><a href="lime.animation.ScaleBy.html">ScaleBy</a></li><li><a href="lime.animation.ScaleTo.html">ScaleTo</a></li><li><a href="lime.animation.Sequence.html">Sequence</a></li><li><a href="lime.animation.Spawn.html">Spawn</a></li><li><a href="lime.audio.Audio.html">Audio</a></li><li><a href="lime.audio.AudioMap.html">AudioMap</a></li><li><a href="lime.Button.html">Button</a></li><li><a href="lime.CanvasContext.html">CanvasContext</a></li><li><a href="lime.Circle.html">Circle</a></li><li><a href="lime.CoverNode.html">CoverNode</a></li><li><a href="lime.Director.html">Director</a></li><li><a href="lime.events.Drag.html">Drag</a></li><li><a href="lime.events.Event.html">Event</a></li><li><a href="lime.events.EventDispatcher.html">EventDispatcher</a></li><li><a href="lime.fill.Color.html">Color</a></li><li><a href="lime.fill.Fill.html">Fill</a></li><li><a href="lime.fill.Frame.html">Frame</a></li><li><a href="lime.fill.Image.html">Image</a></li><li><a href="lime.fill.LinearGradient.html">LinearGradient</a></li><li><a href="lime.fill.Stroke.html">Stroke</a></li><li><a href="lime.GlossyButton.html">GlossyButton</a></li><li><a href="lime.helper.PauseScene.html">PauseScene</a></li><li><a href="lime.Label.html">Label</a></li><li><a href="lime.Layer.html">Layer</a></li><li><a href="lime.Node.html">Node</a></li><li><a href="lime.Polygon.html">Polygon</a></li><li><a href="lime.Renderer.html">Renderer</a></li><li><a href="lime.RoundedRect.html">RoundedRect</a></li><li><a href="lime.Scene.html">Scene</a></li><li><a href="lime.scheduleManager.html">scheduleManager</a></li><li><a href="lime.scheduleManager.Task.html">Task</a></li><li><a href="lime.Sprite.html">Sprite</a></li><li><a href="lime.SpriteSheet.html">SpriteSheet</a></li><li><a href="lime.style.Transform.html">Transform</a></li><li><a href="lime.transitions.Dissolve.html">Dissolve</a></li><li><a href="lime.transitions.MoveInDown.html">MoveInDown</a></li><li><a href="lime.transitions.MoveInLeft.html">MoveInLeft</a></li><li><a href="lime.transitions.MoveInRight.html">MoveInRight</a></li><li><a href="lime.transitions.MoveInUp.html">MoveInUp</a></li><li><a href="lime.transitions.SlideIn.html">SlideIn</a></li><li><a href="lime.transitions.SlideInDown.html">SlideInDown</a></li><li><a href="lime.transitions.SlideInRight.html">SlideInRight</a></li><li><a href="lime.transitions.SlideInUp.html">SlideInUp</a></li><li><a href="lime.transitions.Transition.html">Transition</a></li><li><a href="lime.ui.Container.html">Container</a></li><li><a href="lime.ui.Scroller.html">Scroller</a></li><li><a href="soy.$$augmentMap-TempCtor.html">TempCtor</a></li><li><a href="soy.StringBuilder.html">StringBuilder</a></li><li><a href="soydata.$$makeSanitizedContentFactory_-InstantiableCtor.html">InstantiableCtor</a></li><li><a href="soydata.SanitizedCss.html">SanitizedCss</a></li><li><a href="soydata.SanitizedHtml.html">SanitizedHtml</a></li><li><a href="soydata.SanitizedHtmlAttribute.html">SanitizedHtmlAttribute</a></li><li><a href="soydata.SanitizedJs.html">SanitizedJs</a></li><li><a href="soydata.SanitizedJsStrChars.html">SanitizedJsStrChars</a></li><li><a href="soydata.SanitizedUri.html">SanitizedUri</a></li><li><a href="soydata.UnsanitizedText.html">UnsanitizedText</a></li></ul><h3>Global</h3><ul><li><a href="global.html#active_">active_</a></li><li><a href="global.html#displayRate_">displayRate_</a></li><li><a href="global.html#intervalID_">intervalID_</a></li><li><a href="global.html#lastRunTime_">lastRunTime_</a></li><li><a href="global.html#taskStack_">taskStack_</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="lime.Button.html">lime.Button</a></li><li><a href="lime.CanvasContext.html">lime.CanvasContext</a></li><li><a href="lime.Circle.html">lime.Circle</a></li><li><a href="lime.CoverNode.html">lime.CoverNode</a></li><li><a href="lime.Director.html">lime.Director</a></li><li><a href="lime.GlossyButton.html">lime.GlossyButton</a></li><li><a href="lime.Label.html">lime.Label</a></li><li><a href="lime.Layer.html">lime.Layer</a></li><li><a href="lime.Node.html">lime.Node</a></li><li><a href="lime.Polygon.html">lime.Polygon</a></li><li><a href="lime.Renderer.html">lime.Renderer</a></li><li><a href="lime.RoundedRect.html">lime.RoundedRect</a></li><li><a href="lime.Scene.html">lime.Scene</a></li><li><a href="lime.Sprite.html">lime.Sprite</a></li><li><a href="lime.SpriteSheet.html">lime.SpriteSheet</a></li><li><a href="lime.animation.Animation.html">lime.animation.Animation</a></li><li><a href="lime.animation.ColorTo.html">lime.animation.ColorTo</a></li><li><a href="lime.animation.Delay.html">lime.animation.Delay</a></li><li><a href="lime.animation.FadeTo.html">lime.animation.FadeTo</a></li><li><a href="lime.animation.KeyframeAnimation.html">lime.animation.KeyframeAnimation</a></li><li><a href="lime.animation.Loop.html">lime.animation.Loop</a></li><li><a href="lime.animation.MoveBy.html">lime.animation.MoveBy</a></li><li><a href="lime.animation.MoveTo.html">lime.animation.MoveTo</a></li><li><a href="lime.animation.Resize.html">lime.animation.Resize</a></li><li><a href="lime.animation.RotateBy.html">lime.animation.RotateBy</a></li><li><a href="lime.animation.RotateTo.html">lime.animation.RotateTo</a></li><li><a href="lime.animation.ScaleBy.html">lime.animation.ScaleBy</a></li><li><a href="lime.animation.ScaleTo.html">lime.animation.ScaleTo</a></li><li><a href="lime.animation.Sequence.html">lime.animation.Sequence</a></li><li><a href="lime.animation.Spawn.html">lime.animation.Spawn</a></li><li><a href="lime.animation.actionManager.html">lime.animation.actionManager</a></li><li><a href="lime.audio.Audio.html">lime.audio.Audio</a></li><li><a href="lime.audio.AudioMap.html">lime.audio.AudioMap</a></li><li><a href="lime.events.Drag.html">lime.events.Drag</a></li><li><a href="lime.events.Event.html">lime.events.Event</a></li><li><a href="lime.events.EventDispatcher.html">lime.events.EventDispatcher</a></li><li><a href="lime.fill.Color.html">lime.fill.Color</a></li><li><a href="lime.fill.Fill.html">lime.fill.Fill</a></li><li><a href="lime.fill.Frame.html">lime.fill.Frame</a></li><li><a href="lime.fill.Image.html">lime.fill.Image</a></li><li><a href="lime.fill.LinearGradient.html">lime.fill.LinearGradient</a></li><li><a href="lime.fill.Stroke.html">lime.fill.Stroke</a></li><li><a href="lime.helper.PauseScene.html">lime.helper.PauseScene</a></li><li><a href="lime.scheduleManager.html">lime.scheduleManager</a></li><li><a href="lime.scheduleManager.Task.html">lime.scheduleManager.Task</a></li><li><a href="lime.style.Transform.html">lime.style.Transform</a></li><li><a href="lime.transitions.Dissolve.html">lime.transitions.Dissolve</a></li><li><a href="lime.transitions.MoveInDown.html">lime.transitions.MoveInDown</a></li><li><a href="lime.transitions.MoveInLeft.html">lime.transitions.MoveInLeft</a></li><li><a href="lime.transitions.MoveInRight.html">lime.transitions.MoveInRight</a></li><li><a href="lime.transitions.MoveInUp.html">lime.transitions.MoveInUp</a></li><li><a href="lime.transitions.SlideIn.html">lime.transitions.SlideIn</a></li><li><a href="lime.transitions.SlideInDown.html">lime.transitions.SlideInDown</a></li><li><a href="lime.transitions.SlideInRight.html">lime.transitions.SlideInRight</a></li><li><a href="lime.transitions.SlideInUp.html">lime.transitions.SlideInUp</a></li><li><a href="lime.transitions.Transition.html">lime.transitions.Transition</a></li><li><a href="lime.ui.Container.html">lime.ui.Container</a></li><li><a href="lime.ui.Scroller.html">lime.ui.Scroller</a></li><li><a href="soy.$$augmentMap-TempCtor.html">soy.$$augmentMap~TempCtor</a></li><li><a href="soy.StringBuilder.html">soy.StringBuilder</a></li><li><a href="soydata.$$makeSanitizedContentFactory_-InstantiableCtor.html">soydata.$$makeSanitizedContentFactory_~InstantiableCtor</a></li><li><a href="soydata.SanitizedCss.html">soydata.SanitizedCss</a></li><li><a href="soydata.SanitizedHtml.html">soydata.SanitizedHtml</a></li><li><a href="soydata.SanitizedHtmlAttribute.html">soydata.SanitizedHtmlAttribute</a></li><li><a href="soydata.SanitizedJs.html">soydata.SanitizedJs</a></li><li><a href="soydata.SanitizedJsStrChars.html">soydata.SanitizedJsStrChars</a></li><li><a href="soydata.SanitizedUri.html">soydata.SanitizedUri</a></li><li><a href="soydata.UnsanitizedText.html">soydata.UnsanitizedText</a></li></ul><h3>Namespaces</h3><ul><li><a href="lime.parser.html">lime.parser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#active_">active_</a></li><li><a href="global.html#displayRate_">displayRate_</a></li><li><a href="global.html#intervalID_">intervalID_</a></li><li><a href="global.html#lastRunTime_">lastRunTime_</a></li><li><a href="global.html#taskStack_">taskStack_</a></li></ul>
 </nav>
-
+</tr>
+</table
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 28 2013 22:48:27 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri May 31 2013 00:29:04 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

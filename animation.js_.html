@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: animation.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+	<link type="text/css" rel="stylesheet" href="styles/sour.css">
+</head>
+
+<body>
+	<table class="layout-table">
+		<tr>
+			<td>
+<div id="main">
+    
+    <h1 class="page-title">Source: animation.js</h1>
+    
+    
+
+
+	
+    <section>
+        <article>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.animation.Animation');<a name="line2"></a>
+goog.provide('lime.animation.Easing');<a name="line3"></a>
+goog.provide('lime.animation.actionManager');<a name="line4"></a>
+goog.provide('lime.animation.Event');<a name="line5"></a>
+<a name="line6"></a>
+<a name="line7"></a>
+goog.require('goog.array');<a name="line8"></a>
+goog.require('goog.events.EventTarget');<a name="line9"></a>
+goog.require('goog.fx.easing');<a name="line10"></a>
+goog.require('lime.scheduleManager');<a name="line11"></a>
+<a name="line12"></a>
+<a name="line13"></a>
+/**<a name="line14"></a>
+ * breaking animationa<a name="line15"></a>
+ * @constructor<a name="line16"></a>
+ */<a name="line17"></a>
+lime.animation.Animation2 = function() {<a name="line18"></a>
+    goog.events.EventTarget.call(this);<a name="line19"></a>
+<a name="line20"></a>
+    /**<a name="line21"></a>
+     * Array of active target nodes<a name="line22"></a>
+     * @type {Array.&lt;lime.Node>}<a name="line23"></a>
+     * @protected<a name="line24"></a>
+     */<a name="line25"></a>
+    this.targets = [];<a name="line26"></a>
+    this.initTargets_ = [];<a name="line27"></a>
+<a name="line28"></a>
+    this.targetProp_ = {};<a name="line29"></a>
+<a name="line30"></a>
+    /**<a name="line31"></a>
+     * Animation is playing?<a name="line32"></a>
+     * @type {boolean}<a name="line33"></a>
+     * @private<a name="line34"></a>
+     */<a name="line35"></a>
+    this.isPlaying_ = false;<a name="line36"></a>
+<a name="line37"></a>
+    this.duration_ = 1.0;<a name="line38"></a>
+<a name="line39"></a>
+    this.ease = lime.animation.Easing.EASEINOUT;<a name="line40"></a>
+<a name="line41"></a>
+    this.status_ = 0;<a name="line42"></a>
+<a name="line43"></a>
+};<a name="line44"></a>
+goog.inherits(lime.animation.Animation, goog.events.EventTarget);<a name="line45"></a></code></pre>
+			<a name="line"></a>
+        </article>
+    </section>
+
+
+
+
+</div>
+</td>
+<td class="layout-last">
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="lime.Button.html">lime.Button</a></li><li><a href="lime.CanvasContext.html">lime.CanvasContext</a></li><li><a href="lime.Circle.html">lime.Circle</a></li><li><a href="lime.CoverNode.html">lime.CoverNode</a></li><li><a href="lime.Director.html">lime.Director</a></li><li><a href="lime.GlossyButton.html">lime.GlossyButton</a></li><li><a href="lime.Label.html">lime.Label</a></li><li><a href="lime.Layer.html">lime.Layer</a></li><li><a href="lime.Node.html">lime.Node</a></li><li><a href="lime.Polygon.html">lime.Polygon</a></li><li><a href="lime.Renderer.html">lime.Renderer</a></li><li><a href="lime.RoundedRect.html">lime.RoundedRect</a></li><li><a href="lime.Scene.html">lime.Scene</a></li><li><a href="lime.Sprite.html">lime.Sprite</a></li><li><a href="lime.SpriteSheet.html">lime.SpriteSheet</a></li><li><a href="lime.animation.Animation.html">lime.animation.Animation</a></li><li><a href="lime.animation.Animation2.html">lime.animation.Animation2</a></li><li><a href="lime.animation.ColorTo.html">lime.animation.ColorTo</a></li><li><a href="lime.animation.Delay.html">lime.animation.Delay</a></li><li><a href="lime.animation.FadeTo.html">lime.animation.FadeTo</a></li><li><a href="lime.animation.KeyframeAnimation.html">lime.animation.KeyframeAnimation</a></li><li><a href="lime.animation.Loop.html">lime.animation.Loop</a></li><li><a href="lime.animation.MoveBy.html">lime.animation.MoveBy</a></li><li><a href="lime.animation.MoveTo.html">lime.animation.MoveTo</a></li><li><a href="lime.animation.Resize.html">lime.animation.Resize</a></li><li><a href="lime.animation.RotateBy.html">lime.animation.RotateBy</a></li><li><a href="lime.animation.RotateTo.html">lime.animation.RotateTo</a></li><li><a href="lime.animation.ScaleBy.html">lime.animation.ScaleBy</a></li><li><a href="lime.animation.ScaleTo.html">lime.animation.ScaleTo</a></li><li><a href="lime.animation.Sequence.html">lime.animation.Sequence</a></li><li><a href="lime.animation.Spawn.html">lime.animation.Spawn</a></li><li><a href="lime.animation.actionManager.html">lime.animation.actionManager</a></li><li><a href="lime.audio.Audio.html">lime.audio.Audio</a></li><li><a href="lime.audio.AudioMap.html">lime.audio.AudioMap</a></li><li><a href="lime.events.Drag.html">lime.events.Drag</a></li><li><a href="lime.events.Event.html">lime.events.Event</a></li><li><a href="lime.events.EventDispatcher.html">lime.events.EventDispatcher</a></li><li><a href="lime.fill.Color.html">lime.fill.Color</a></li><li><a href="lime.fill.Fill.html">lime.fill.Fill</a></li><li><a href="lime.fill.Frame.html">lime.fill.Frame</a></li><li><a href="lime.fill.Image.html">lime.fill.Image</a></li><li><a href="lime.fill.LinearGradient.html">lime.fill.LinearGradient</a></li><li><a href="lime.fill.Stroke.html">lime.fill.Stroke</a></li><li><a href="lime.helper.PauseScene.html">lime.helper.PauseScene</a></li><li><a href="lime.scheduleManager.html">lime.scheduleManager</a></li><li><a href="lime.scheduleManager.Task.html">lime.scheduleManager.Task</a></li><li><a href="lime.style.Transform.html">lime.style.Transform</a></li><li><a href="lime.transitions.Dissolve.html">lime.transitions.Dissolve</a></li><li><a href="lime.transitions.MoveInDown.html">lime.transitions.MoveInDown</a></li><li><a href="lime.transitions.MoveInLeft.html">lime.transitions.MoveInLeft</a></li><li><a href="lime.transitions.MoveInRight.html">lime.transitions.MoveInRight</a></li><li><a href="lime.transitions.MoveInUp.html">lime.transitions.MoveInUp</a></li><li><a href="lime.transitions.SlideIn.html">lime.transitions.SlideIn</a></li><li><a href="lime.transitions.SlideInDown.html">lime.transitions.SlideInDown</a></li><li><a href="lime.transitions.SlideInRight.html">lime.transitions.SlideInRight</a></li><li><a href="lime.transitions.SlideInUp.html">lime.transitions.SlideInUp</a></li><li><a href="lime.transitions.Transition.html">lime.transitions.Transition</a></li><li><a href="lime.ui.Container.html">lime.ui.Container</a></li><li><a href="lime.ui.Scroller.html">lime.ui.Scroller</a></li><li><a href="soy.$$augmentMap-TempCtor.html">soy.$$augmentMap~TempCtor</a></li><li><a href="soy.StringBuilder.html">soy.StringBuilder</a></li><li><a href="soydata.$$makeSanitizedContentFactory_-InstantiableCtor.html">soydata.$$makeSanitizedContentFactory_~InstantiableCtor</a></li><li><a href="soydata.SanitizedCss.html">soydata.SanitizedCss</a></li><li><a href="soydata.SanitizedHtml.html">soydata.SanitizedHtml</a></li><li><a href="soydata.SanitizedHtmlAttribute.html">soydata.SanitizedHtmlAttribute</a></li><li><a href="soydata.SanitizedJs.html">soydata.SanitizedJs</a></li><li><a href="soydata.SanitizedJsStrChars.html">soydata.SanitizedJsStrChars</a></li><li><a href="soydata.SanitizedUri.html">soydata.SanitizedUri</a></li><li><a href="soydata.UnsanitizedText.html">soydata.UnsanitizedText</a></li></ul><h3>Namespaces</h3><ul><li><a href="lime.parser.html">parser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#active_">active_</a></li><li><a href="global.html#displayRate_">displayRate_</a></li><li><a href="global.html#intervalID_">intervalID_</a></li><li><a href="global.html#lastRunTime_">lastRunTime_</a></li><li><a href="global.html#taskStack_">taskStack_</a></li></ul>
+</nav>
+</tr>
+</table
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu May 30 2013 23:24:23 GMT+0200 (SAST)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>

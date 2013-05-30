@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: RotateTo</title>
+    <title>JSDoc: Namespace: parser</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -20,7 +20,7 @@
 			<td class="layout">
 <div id="main">
     
-    <h1 class="page-title">Class: RotateTo</h1>
+    <h1 class="page-title">Namespace: parser</h1>
     
     
 
@@ -30,7 +30,7 @@
 	
 <header>
 	<h2>
-	lime.animation.RotateTo
+	lime.parser
 	</h2>
 	
 </header>  
@@ -41,8 +41,201 @@
 	
 	
 		
+		
+		
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="spritesheet.js.html#line4">helper/spritesheet.js</a>, line 4
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+		
+		
+	
+	</div>
+	
+	
+	
+	
+	<div class="summary">
+		<a name="summary"></a>
+		<h3 class="subsection-title">Summary</h3>
+
+		<div class="doc_group"><a name="summary_properties"></a>
+<dl>
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Members</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static, constant> </span>
+				</td>
+				<td class="last">
+						<a href="#ZWOPTEX"><code class="name">ZWOPTEX</code></a><span class="type-signature"><span class="type-signature"></span></span>
+						<div class="summary-description"> </div>
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
+
+
+</dl>
+
+</div><div class="doc_group"><a name="summary_methods"></a>
+<dl>
+	<table class="summary-table">
+	    <thead>
+		<tr>
+			<th colspan="3" class= "last"><h5>Methods</h5></th>
+		</tr>
+		</thead>
+		<tbody>
+    
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static> </span>
+				</td>
+				<td class="last">
+						<a href="#JSON"><code class="name">JSON</code></a><span class="type-signature"><span class="signature">(data)</span><span class="type-signature"></span></span>
+						<div class="summary-description"> A JSON sprite sheet parser.</div>
+				</td>
+			</tr>
+			
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static> </span>
+				</td>
+				<td class="last">
+						<a href="#TMX"><code class="name">TMX</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> </div>
+				</td>
+			</tr>
+			
+			
+	        <tr>
+				<td class="attributes first text-right">
+					<span class="type-signature">&lt;static> </span>
+				</td>
+				<td class="last">
+						<a href="#ZWOPTEX2"><code class="name">ZWOPTEX2</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
+						<div class="summary-description"> </div>
+				</td>
+			</tr>
+			
+	</tbody>
+</table>
+
+
+</dl>
+
+</div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		<h3 class="subsection-title">Members</h3>
+		
+		<dl>
+			
 <dt>
-    <h4 class="name" id="RotateTo"><span class="type-signature"></span>new lime.animation.RotateTo<span class="signature">(angle)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ZWOPTEX"><span class="type-signature">&lt;static, constant> </span>ZWOPTEX<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="zwoptex.js.html#line13">helper/parser/zwoptex.js</a>, line 13
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+		</dl>
+	
+	
+	
+		<h3 class="subsection-title">Methods</h3>
+		
+		<dl>
+			
+<dt>
+    <h4 class="name" id="JSON"><span class="type-signature">&lt;static> </span>JSON<span class="signature">(data)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -50,7 +243,7 @@
     
     
     <div class="description">
-        Rotate to given angle in degrees
+        A JSON sprite sheet parser.
     </div>
     
 
@@ -84,13 +277,13 @@
 	
         <tr>
             
-                <td class="name"><code>angle</code></td>
+                <td class="name"><code>data</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">object</span>
 
 
             
@@ -100,7 +293,7 @@
             
             
             
-            <td class="description last">Target rotation value.</td>
+            <td class="description last">The JSON sprite sheet.</td>
         </tr>
 	
 	
@@ -131,7 +324,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="rotateto.js.html#line13">animation/rotateto.js</a>, line 13
+        <a href="json.js.html#line32">helper/parser/json.js</a>, line 32
     </li></ul></dd>
     
     
@@ -150,178 +343,34 @@
     
     
     
-</dd>
-
-	
-	</div>
-	
-	
-		<h3 class="subsection-title">Extends</h3>
-		
-		<ul>
-			<li><a href="lime.animation.Animation.html">lime.animation.Animation</a></li>
-		</ul>
-	
-	
-	
-	<div class="summary">
-		<a name="summary"></a>
-		<h3 class="subsection-title">Summary</h3>
-
-		<div class="doc_group"><a name="summary_properties"></a>
-<dl>
-	<table class="summary-table">
-	    <thead>
-		<tr>
-			<th colspan="3" class= "last"><h5>Members</h5></th>
-		</tr>
-		</thead>
-		<tbody>
-    
-			
-	        <tr>
-				<td class="attributes first text-right">
-					<span class="type-signature"></span>
-				</td>
-				<td class="last">
-						<a href="#scope"><code class="name">scope</code></a><span class="type-signature"><span class="type-signature"></span></span>
-						<div class="summary-description"> </div>
-				</td>
-			</tr>
-			
-	</tbody>
-</table>
-
- 
-<div class="inherited"><h6>Inherited</h6>  <div> <a href="lime.animation.Animation.html#isPlaying_">lime.animation.Animation.isPlaying_</a>,&nbsp <a href="lime.animation.Animation.html#targets">lime.animation.Animation.targets</a> </div>
-</div>
-
-</dl>
-
-</div><div class="doc_group"><a name="summary_methods"></a>
-<dl>
-	<table class="summary-table">
-	    <thead>
-		<tr>
-			<th colspan="3" class= "last"><h5>Methods</h5></th>
-		</tr>
-		</thead>
-		<tbody>
-    
-			
-	        <tr>
-				<td class="attributes first text-right">
-					<span class="type-signature"></span>
-				</td>
-				<td class="last">
-						<a href="#clearTransition"><code class="name">clearTransition</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
-						<div class="summary-description"> </div>
-				</td>
-			</tr>
-			
-			
-	        <tr>
-				<td class="attributes first text-right">
-					<span class="type-signature"></span>
-				</td>
-				<td class="last">
-						<a href="#makeTargetProp"><code class="name">makeTargetProp</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
-						<div class="summary-description"> </div>
-				</td>
-			</tr>
-			
-			
-	        <tr>
-				<td class="attributes first text-right">
-					<span class="type-signature"></span>
-				</td>
-				<td class="last">
-						<a href="#update"><code class="name">update</code></a><span class="type-signature"><span class="signature">()</span><span class="type-signature"></span></span>
-						<div class="summary-description"> </div>
-				</td>
-			</tr>
-			
-	</tbody>
-</table>
-
- 
-<div class="inherited"><h6>Inherited</h6>  <div> <a href="lime.animation.Animation.html#addTarget">lime.animation.Animation.addTarget</a>,&nbsp <a href="lime.animation.Animation.html#cloneParam">lime.animation.Animation.cloneParam</a>,&nbsp <a href="lime.animation.Animation.html#enableOptimizations">lime.animation.Animation.enableOptimizations</a>,&nbsp <a href="lime.animation.Animation.html#getDirector">lime.animation.Animation.getDirector</a>,&nbsp <a href="lime.animation.Animation.html#getDuration">lime.animation.Animation.getDuration</a>,&nbsp <a href="lime.animation.Animation.html#getEasing">lime.animation.Animation.getEasing</a>,&nbsp <a href="lime.animation.Animation.html#getTargetProp">lime.animation.Animation.getTargetProp</a>,&nbsp <a href="lime.animation.Animation.html#initTarget">lime.animation.Animation.initTarget</a>,&nbsp <a href="lime.animation.Animation.html#play">lime.animation.Animation.play</a>,&nbsp <a href="lime.animation.Animation.html#removeTarget">lime.animation.Animation.removeTarget</a>,&nbsp <a href="lime.animation.Animation.html#reverse">lime.animation.Animation.reverse</a>,&nbsp <a href="lime.animation.Animation.html#setDuration">lime.animation.Animation.setDuration</a>,&nbsp <a href="lime.animation.Animation.html#setEasing">lime.animation.Animation.setEasing</a>,&nbsp <a href="lime.animation.Animation.html#step_">lime.animation.Animation.step_</a>,&nbsp <a href="lime.animation.Animation.html#stop">lime.animation.Animation.stop</a>,&nbsp <a href="lime.animation.Animation.html#updateAll">lime.animation.Animation.updateAll</a>,&nbsp <a href="lime.animation.Animation.html#useTransitions">lime.animation.Animation.useTransitions</a> </div>
-</div>
-
-</dl>
-
-</div>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-		<h3 class="subsection-title">Members</h3>
-		
-		<dl>
-			
-<dt>
-    <h4 class="name" id="scope"><span class="type-signature"></span>scope<span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
+        <h5>Example</h5>
         
+        <p class="code-caption"> The JSON format is as follow: </p>
     
-    
-    
+    <pre class="prettyprint"><code>  {
+    "frames": {
+      "walk1": {
+        "frame": { "x": 0, "y": 0, "w": 72, "h": 96}, 
+        "spriteSourceSize": { "x": 0, "y": 0}, 
+        "sourceSize": { "w": 72, "h": 96 } ,
+        "rotated": false,
+      },
+      "walk2": {
+        "frame": { "x": 73, "y": 0, "w": 72, "h": 96}, 
+        "spriteSourceSize": { "x": 0, "y": 0}, 
+        "sourceSize": { "w": 72, "h": 96 } ,
+        "rotated": false,
+      }
+    }
+  }</code></pre>
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="rotateto.js.html#line24">animation/rotateto.js</a>, line 24
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
     
 </dd>
-		</dl>
-	
-	
-	
-		<h3 class="subsection-title">Methods</h3>
+
 		
-		<dl>
 			
 <dt>
-    <h4 class="name" id="clearTransition"><span class="type-signature"></span>clearTransition<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="TMX"><span class="type-signature">&lt;static> </span>TMX<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -358,19 +407,12 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="rotateto.js.html#line58">animation/rotateto.js</a>, line 58
+        <a href="tmx.js.html#line13">helper/parser/tmx.js</a>, line 13
     </li></ul></dd>
     
     
     
     
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li>lime.animation.Animation#clearTransition</li>
-        </ul>
-    </dd>
     
     
     
@@ -389,7 +431,7 @@
 		
 			
 <dt>
-    <h4 class="name" id="makeTargetProp"><span class="type-signature"></span>makeTargetProp<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ZWOPTEX2"><span class="type-signature">&lt;static> </span>ZWOPTEX2<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -426,87 +468,12 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="rotateto.js.html#line30">animation/rotateto.js</a>, line 30
+        <a href="zwoptex2.js.html#line16">helper/parser/zwoptex2.js</a>, line 16
     </li></ul></dd>
     
     
     
     
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="lime.animation.Animation.html#makeTargetProp">lime.animation.Animation#makeTargetProp</a></li>
-        </ul>
-    </dd>
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-		
-			
-<dt>
-    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="rotateto.js.html#line48">animation/rotateto.js</a>, line 48
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="lime.animation.Animation.html#update">lime.animation.Animation#update</a></li>
-        </ul>
-    </dd>
     
     
     
@@ -546,7 +513,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri May 31 2013 00:29:09 GMT+0200 (SAST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri May 31 2013 00:29:17 GMT+0200 (SAST)
 </footer>
 
 <script> prettyPrint(); </script>

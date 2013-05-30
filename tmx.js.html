@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: helper/parser/tmx.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+	<link type="text/css" rel="stylesheet" href="styles/sour.css">
+</head>
+
+<body>
+	<table class="layout-table">
+		<tr>
+			<td class="layout">
+<div id="main">
+    
+    <h1 class="page-title">Source: helper/parser/tmx.js</h1>
+    
+    
+
+
+	
+    <section>
+        <article>
+            <pre class="prettyprint source"><code><a name="line1"></a>goog.provide('lime.parser.TMX');<a name="line2"></a>
+goog.require('goog.dom');<a name="line3"></a>
+goog.require('goog.dom.xml');<a name="line4"></a>
+goog.require('goog.style');<a name="line5"></a>
+goog.require('lime.userAgent');<a name="line6"></a>
+goog.require('lime.fill.Frame');<a name="line7"></a>
+goog.require('goog.crypt.base64');<a name="line8"></a>
+goog.require('goog.string');<a name="line9"></a>
+<a name="line10"></a>
+// Based on MelonJS implementation.<a name="line11"></a>
+<a name="line12"></a>
+/** @memberof lime.parser */<a name="line13"></a>
+lime.parser.TMX = function(file) {<a name="line14"></a>
+    function loadXMLDoc(dname) {<a name="line15"></a>
+        var xhttp, xmlDoc, parser;<a name="line16"></a>
+        if (window.XMLHttpRequest) {<a name="line17"></a>
+            xhttp = new XMLHttpRequest();<a name="line18"></a>
+        } else {<a name="line19"></a>
+            xhttp = new ActiveXObject("Microsoft.XMLHTTP");<a name="line20"></a>
+        }<a name="line21"></a>
+<a name="line22"></a>
+        if (xhttp.overrideMimeType) xhttp.overrideMimeType('text/xml');<a name="line23"></a>
+        xhttp.open("GET", dname, false);<a name="line24"></a>
+        xhttp.send();<a name="line25"></a>
+        if (xhttp.responseXML == null) {<a name="line26"></a>
+<a name="line27"></a>
+            /* TODO 1 : Check if can be better */<a name="line28"></a>
+            if (window.DOMParser) {<a name="line29"></a>
+                parser = new DOMParser();<a name="line30"></a>
+                xmlDoc = parser.parseFromString(xhttp.responseText, "text/xml");<a name="line31"></a>
+            } else // Internet Explorer<a name="line32"></a>
+            {<a name="line33"></a>
+                xmlDoc = new ActiveXObject("Microsoft.XMLDOM");<a name="line34"></a>
+                xmlDoc.async = "false";<a name="line35"></a>
+                xmlDoc.loadXML(xhttp.responseText);<a name="line36"></a>
+            }<a name="line37"></a>
+            return xmlDoc;<a name="line38"></a>
+<a name="line39"></a>
+        }<a name="line40"></a>
+        return xhttp.responseXML;<a name="line41"></a>
+    }<a name="line42"></a>
+<a name="line43"></a>
+    function _parseProperties(obj, xmlNode) {<a name="line44"></a>
+        for (var pi = 0; pi &lt; xmlNode.length; pi++) {<a name="line45"></a>
+            var name = xmlNode[pi].attributes.getNamedItem("name").nodeValue;<a name="line46"></a>
+            var value = xmlNode[pi].attributes.getNamedItem("value").nodeValue;<a name="line47"></a>
+            obj.properties[name] = value;<a name="line48"></a>
+        }<a name="line49"></a>
+        return true;<a name="line50"></a>
+    }<a name="line51"></a>
+<a name="line52"></a>
+    function decodeBase64AsArray(input, bytes) {<a name="line53"></a>
+        bytes = bytes || 1;<a name="line54"></a>
+<a name="line55"></a>
+        var input = goog.string.collapseWhitespace(input);<a name="line56"></a>
+<a name="line57"></a>
+        var dec = goog.crypt.base64.decodeString(input),<a name="line58"></a>
+            ar = [],<a name="line59"></a>
+            i, j, len;<a name="line60"></a>
+<a name="line61"></a>
+        for (i = 0, len = dec.length / bytes; i &lt; len; i++) {<a name="line62"></a>
+            ar[i] = 0;<a name="line63"></a>
+            for (j = bytes - 1; j >= 0; --j) {<a name="line64"></a>
+                ar[i] += dec.charCodeAt((i * bytes) + j) &lt;&lt; (j &lt;&lt; 3);<a name="line65"></a>
+            }<a name="line66"></a>
+        }<a name="line67"></a>
+        return ar;<a name="line68"></a>
+    };<a name="line69"></a>
+<a name="line70"></a>
+    function _getLayerData(layer) {<a name="line71"></a>
+        var encoding = null;<a name="line72"></a>
+        if (layer.getElementsByTagName('data')[0].attributes.getNamedItem("encoding")) {<a name="line73"></a>
+            var encoding = layer.getElementsByTagName('data')[0].attributes.getNamedItem("encoding").nodeValue;<a name="line74"></a>
+        }<a name="line75"></a>
+        var compression = null;<a name="line76"></a>
+        if (layer.getElementsByTagName('data')[0].attributes.getNamedItem("compression")) {<a name="line77"></a>
+            var compression = layer.getElementsByTagName('data')[0].attributes.getNamedItem("compression").nodeValue;<a name="line78"></a>
+        }<a name="line79"></a>
+        var retdatas = new Array();<a name="line80"></a>
+<a name="line81"></a>
+        switch (compression) {<a name="line82"></a>
+            case null:<a name="line83"></a>
+                {<a name="line84"></a>
+                    switch (encoding) {<a name="line85"></a>
+                        case null:<a name="line86"></a>
+                            {<a name="line87"></a>
+                                var datas = layer.getElementsByTagName('tile');<a name="line88"></a>
+                                for (j = 0; j &lt; datas.length; j++) {<a name="line89"></a>
+                                    gid = parseInt(datas[j].attributes.getNamedItem("gid").nodeValue);<a name="line90"></a>
+                                    retdatas.push(gid);<a name="line91"></a>
+                                }<a name="line92"></a>
+                                return retdatas;<a name="line93"></a>
+                                break;<a name="line94"></a>
+                            }<a name="line95"></a>
+<a name="line96"></a>
+                        case 'base64':<a name="line97"></a>
+                            {<a name="line98"></a>
+                                var content = '';<a name="line99"></a>
+                                for (var x = 0, len = layer.getElementsByTagName('data')[0].childNodes.length; x &lt; len; x++) {<a name="line100"></a>
+                                    content += layer.getElementsByTagName('data')[0].childNodes[x].nodeValue;<a name="line101"></a>
+                                }<a name="line102"></a>
+                                retdatas = decodeBase64AsArray(content, 4);<a name="line103"></a>
+                                return retdatas;<a name="line104"></a>
+                                break;<a name="line105"></a>
+                            }<a name="line106"></a>
+<a name="line107"></a>
+                        default:<a name="line108"></a>
+                            throw "limejs: " + encoding + " encoded TMX Tile Map not supported!";<a name="line109"></a>
+                            break;<a name="line110"></a>
+                    }<a name="line111"></a>
+                }<a name="line112"></a>
+<a name="line113"></a>
+            default:<a name="line114"></a>
+                throw "limejs: " + compression + " compressed TMX Tile Map not supported!";<a name="line115"></a>
+                break;<a name="line116"></a>
+        }<a name="line117"></a>
+<a name="line118"></a>
+        return retdatas;<a name="line119"></a>
+    }<a name="line120"></a>
+<a name="line121"></a>
+    this.getTile = function(gid) {<a name="line122"></a>
+        var ret = this.tiles[gid - 1];<a name="line123"></a>
+        return ret;<a name="line124"></a>
+<a name="line125"></a>
+    }<a name="line126"></a>
+<a name="line127"></a>
+    var mapdirectory = file.substring(0, file.lastIndexOf("/") + 1);<a name="line128"></a>
+<a name="line129"></a>
+    var doc = loadXMLDoc(file);<a name="line130"></a>
+    var map = doc.getElementsByTagName("map")[0];<a name="line131"></a>
+    this.filename = file;<a name="line132"></a>
+    this.orientation = map.attributes.getNamedItem("orientation").nodeValue;<a name="line133"></a>
+    this.version = parseFloat(map.attributes.getNamedItem("version").nodeValue);<a name="line134"></a>
+    this.width = parseInt(map.attributes.getNamedItem("width").nodeValue);<a name="line135"></a>
+    this.height = parseInt(map.attributes.getNamedItem("height").nodeValue);<a name="line136"></a>
+    this.tilewidth = parseInt(map.attributes.getNamedItem("tilewidth").nodeValue);<a name="line137"></a>
+    this.tileheight = parseInt(map.attributes.getNamedItem("tileheight").nodeValue);<a name="line138"></a>
+    this.properties = new Array();<a name="line139"></a>
+    if (map.getElementsByTagName('properties').length) {<a name="line140"></a>
+        var mapproperties = map.getElementsByTagName('properties')[0].getElementsByTagName('property');<a name="line141"></a>
+        _parseProperties(this, mapproperties);<a name="line142"></a>
+    }<a name="line143"></a>
+<a name="line144"></a>
+<a name="line145"></a>
+    var tilesets = map.getElementsByTagName('tileset');<a name="line146"></a>
+    this.tilesets = new Array();<a name="line147"></a>
+    this.tiles = new Array();<a name="line148"></a>
+    for (var i = 0; i &lt; tilesets.length; i++) {<a name="line149"></a>
+        var instileset = new Object();<a name="line150"></a>
+        instileset.firstgid = parseInt(tilesets[i].attributes.getNamedItem("firstgid").nodeValue);<a name="line151"></a>
+        instileset.name = tilesets[i].attributes.getNamedItem("name").nodeValue;<a name="line152"></a>
+<a name="line153"></a>
+        if (tilesets[i].attributes.getNamedItem("spacing")) {<a name="line154"></a>
+            instileset.spacing = parseInt(tilesets[i].attributes.getNamedItem("spacing").nodeValue);<a name="line155"></a>
+        } else {<a name="line156"></a>
+            instileset.spacing = 0;<a name="line157"></a>
+        }<a name="line158"></a>
+<a name="line159"></a>
+        if (tilesets[i].attributes.getNamedItem("margin")) {<a name="line160"></a>
+            instileset.margin = parseInt(tilesets[i].attributes.getNamedItem("margin").nodeValue);<a name="line161"></a>
+        } else {<a name="line162"></a>
+            instileset.margin = 0;<a name="line163"></a>
+        }<a name="line164"></a>
+<a name="line165"></a>
+        instileset.tilewidth = parseInt(tilesets[i].attributes.getNamedItem("tilewidth").nodeValue);<a name="line166"></a>
+        instileset.tileheight = parseInt(tilesets[i].attributes.getNamedItem("tileheight").nodeValue);<a name="line167"></a>
+        instileset.image = new Object();<a name="line168"></a>
+        instileset.image.source = mapdirectory + tilesets[i].getElementsByTagName('image')[0].attributes.getNamedItem("source").nodeValue;<a name="line169"></a>
+        instileset.image.width = parseInt(tilesets[i].getElementsByTagName('image')[0].attributes.getNamedItem("width").nodeValue);<a name="line170"></a>
+        instileset.image.height = parseInt(tilesets[i].getElementsByTagName('image')[0].attributes.getNamedItem("height").nodeValue);<a name="line171"></a>
+<a name="line172"></a>
+        //instileset.image.transparencycolor = tilesets[i].getElementsByTagName('image')[0].attributes.getNamedItem("trans").nodeValue;<a name="line173"></a>
+        //instileset.image.image = new lime.fill.Image(instileset.image.source);<a name="line174"></a>
+        tilewidthcount = parseInt(instileset.image.width / instileset.tilewidth);<a name="line175"></a>
+        tileheightcount = parseInt(instileset.image.height / instileset.tileheight);<a name="line176"></a>
+<a name="line177"></a>
+        /* tiles */<a name="line178"></a>
+        for (var y = 0; y &lt; tileheightcount; y++) {<a name="line179"></a>
+            for (var x = 0; x &lt; tilewidthcount; x++) {<a name="line180"></a>
+                var instile = new Object();<a name="line181"></a>
+                instile.properties = new Array();<a name="line182"></a>
+                instile.tileset = instileset;<a name="line183"></a>
+                instile.width = instileset.tilewidth;<a name="line184"></a>
+                instile.height = instileset.tileheight;<a name="line185"></a>
+<a name="line186"></a>
+                instile.x = x;<a name="line187"></a>
+                instile.y = y;<a name="line188"></a>
+                instile.px = x * instile.width + instileset.spacing + (x * instileset.margin);<a name="line189"></a>
+                instile.py = y * instile.height + instileset.spacing + (y * instileset.margin);<a name="line190"></a>
+                instile.gid = parseInt(instileset.firstgid + (x + (y * tilewidthcount)));<a name="line191"></a>
+                instile.frame = new lime.fill.Frame(instileset.image.source, instile.px, instile.py, instile.width, instile.height);<a name="line192"></a>
+                this.tiles.push(instile);<a name="line193"></a>
+            }<a name="line194"></a>
+        }<a name="line195"></a>
+<a name="line196"></a>
+        /* tiles properties */<a name="line197"></a>
+        var tiles = tilesets[i].getElementsByTagName('tile');<a name="line198"></a>
+        for (var id = 0; id &lt; tiles.length; id++) {<a name="line199"></a>
+            var tileid = parseInt(tiles[id].attributes.getNamedItem("id").nodeValue);<a name="line200"></a>
+            var tileproperties = tiles[id].getElementsByTagName('property');<a name="line201"></a>
+<a name="line202"></a>
+            _parseProperties(this.tiles[instileset.firstgid + tileid - 1], tileproperties);<a name="line203"></a>
+        }<a name="line204"></a>
+        this.tilesets.push(instileset);<a name="line205"></a>
+    }<a name="line206"></a>
+<a name="line207"></a>
+    var layers = map.getElementsByTagName('layer');<a name="line208"></a>
+    this.layers = new Array();<a name="line209"></a>
+    for (i = 0; i &lt; layers.length; i++) {<a name="line210"></a>
+        var inslayer = new Object();<a name="line211"></a>
+        inslayer.properties = new Array();<a name="line212"></a>
+        inslayer.name = layers[i].attributes.getNamedItem("name").nodeValue;<a name="line213"></a>
+        inslayer.width = parseInt(layers[i].attributes.getNamedItem("width").nodeValue);<a name="line214"></a>
+        inslayer.height = parseInt(layers[i].attributes.getNamedItem("height").nodeValue);<a name="line215"></a>
+<a name="line216"></a>
+        var layerproperties = layers[i].getElementsByTagName('property');<a name="line217"></a>
+        _parseProperties(inslayer, layerproperties);<a name="line218"></a>
+        inslayer.tiles = new Array();<a name="line219"></a>
+<a name="line220"></a>
+        var datas = _getLayerData(layers[i]);<a name="line221"></a>
+        for (var j = 0; j &lt; datas.length; j++) {<a name="line222"></a>
+            var gid = parseInt(datas[j]);<a name="line223"></a>
+            if (gid != 0) {<a name="line224"></a>
+                var inslayertile = new Object();<a name="line225"></a>
+                inslayertile.tile = this.getTile(gid);<a name="line226"></a>
+                inslayertile.x = parseInt(j % inslayer.width);<a name="line227"></a>
+<a name="line228"></a>
+                inslayertile.y = parseInt(j / inslayer.width);<a name="line229"></a>
+<a name="line230"></a>
+                if (this.orientation === "isometric") {<a name="line231"></a>
+                    inslayertile.px = (inslayertile.x - inslayertile.y) * inslayertile.tile.width * .5;<a name="line232"></a>
+                    inslayertile.py = (inslayertile.y + inslayertile.x) * inslayertile.tile.height * .25;<a name="line233"></a>
+                } else if (this.orientation === "orthogonal") {<a name="line234"></a>
+                    inslayertile.px = inslayertile.x * inslayertile.tile.width;<a name="line235"></a>
+                    inslayertile.py = inslayertile.y * inslayertile.tile.height;<a name="line236"></a>
+                } else {<a name="line237"></a>
+                    throw "limejs: " + this.orientation + " type TMX Tile Map not supported !";<a name="line238"></a>
+                }<a name="line239"></a>
+<a name="line240"></a>
+                inslayer.tiles.push(inslayertile);<a name="line241"></a>
+            }<a name="line242"></a>
+        }<a name="line243"></a>
+        this.layers.push(inslayer);<a name="line244"></a>
+    }<a name="line245"></a>
+<a name="line246"></a>
+    var objects = map.getElementsByTagName('object');<a name="line247"></a>
+    this.objects = new Array();<a name="line248"></a>
+    for (i = 0; i &lt; objects.length; i++) {<a name="line249"></a>
+        var insobject = new Object();<a name="line250"></a>
+        insobject.properties = new Array();<a name="line251"></a>
+        insobject.name = objects[i].attributes.getNamedItem("name").nodeValue;<a name="line252"></a>
+        // if gid<a name="line253"></a>
+        if (objects[i].attributes.getNamedItem("gid")) {<a name="line254"></a>
+            insobject.gid = parseInt(objects[i].attributes.getNamedItem("gid").nodeValue);<a name="line255"></a>
+            insobject.tile = this.getTile(insobject.gid);<a name="line256"></a>
+            insobject.width = insobject.tile.width;<a name="line257"></a>
+            insobject.height = insobject.tile.height;<a name="line258"></a>
+            insobject.hastile = true;<a name="line259"></a>
+        } else {<a name="line260"></a>
+            // else<a name="line261"></a>
+            insobject.width = parseInt(objects[i].attributes.getNamedItem("width").nodeValue);<a name="line262"></a>
+            insobject.height = parseInt(objects[i].attributes.getNamedItem("height").nodeValue);<a name="line263"></a>
+            insobject.hastile = false;<a name="line264"></a>
+        }<a name="line265"></a>
+        insobject.x = parseInt(objects[i].attributes.getNamedItem("x").nodeValue);<a name="line266"></a>
+        insobject.px = insobject.x;<a name="line267"></a>
+        insobject.y = parseInt(objects[i].attributes.getNamedItem("y").nodeValue);<a name="line268"></a>
+        insobject.py = insobject.y;<a name="line269"></a>
+        var objectproperties = objects[i].getElementsByTagName('property');<a name="line270"></a>
+        _parseProperties(insobject, objectproperties);<a name="line271"></a>
+        this.objects.push(insobject);<a name="line272"></a>
+    }<a name="line273"></a>
+}<a name="line274"></a></code></pre>
+			<a name="line"></a>
+        </article>
+    </section>
+
+
+
+
+</div>
+</td>
+<td class="layout">
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="lime.Button.html">lime.Button</a></li><li><a href="lime.CanvasContext.html">lime.CanvasContext</a></li><li><a href="lime.Circle.html">lime.Circle</a></li><li><a href="lime.CoverNode.html">lime.CoverNode</a></li><li><a href="lime.Director.html">lime.Director</a></li><li><a href="lime.GlossyButton.html">lime.GlossyButton</a></li><li><a href="lime.Label.html">lime.Label</a></li><li><a href="lime.Layer.html">lime.Layer</a></li><li><a href="lime.Node.html">lime.Node</a></li><li><a href="lime.Polygon.html">lime.Polygon</a></li><li><a href="lime.Renderer.html">lime.Renderer</a></li><li><a href="lime.RoundedRect.html">lime.RoundedRect</a></li><li><a href="lime.Scene.html">lime.Scene</a></li><li><a href="lime.Sprite.html">lime.Sprite</a></li><li><a href="lime.SpriteSheet.html">lime.SpriteSheet</a></li><li><a href="lime.animation.Animation.html">lime.animation.Animation</a></li><li><a href="lime.animation.ColorTo.html">lime.animation.ColorTo</a></li><li><a href="lime.animation.Delay.html">lime.animation.Delay</a></li><li><a href="lime.animation.FadeTo.html">lime.animation.FadeTo</a></li><li><a href="lime.animation.KeyframeAnimation.html">lime.animation.KeyframeAnimation</a></li><li><a href="lime.animation.Loop.html">lime.animation.Loop</a></li><li><a href="lime.animation.MoveBy.html">lime.animation.MoveBy</a></li><li><a href="lime.animation.MoveTo.html">lime.animation.MoveTo</a></li><li><a href="lime.animation.Resize.html">lime.animation.Resize</a></li><li><a href="lime.animation.RotateBy.html">lime.animation.RotateBy</a></li><li><a href="lime.animation.RotateTo.html">lime.animation.RotateTo</a></li><li><a href="lime.animation.ScaleBy.html">lime.animation.ScaleBy</a></li><li><a href="lime.animation.ScaleTo.html">lime.animation.ScaleTo</a></li><li><a href="lime.animation.Sequence.html">lime.animation.Sequence</a></li><li><a href="lime.animation.Spawn.html">lime.animation.Spawn</a></li><li><a href="lime.animation.actionManager.html">lime.animation.actionManager</a></li><li><a href="lime.audio.Audio.html">lime.audio.Audio</a></li><li><a href="lime.audio.AudioMap.html">lime.audio.AudioMap</a></li><li><a href="lime.events.Drag.html">lime.events.Drag</a></li><li><a href="lime.events.Event.html">lime.events.Event</a></li><li><a href="lime.events.EventDispatcher.html">lime.events.EventDispatcher</a></li><li><a href="lime.fill.Color.html">lime.fill.Color</a></li><li><a href="lime.fill.Fill.html">lime.fill.Fill</a></li><li><a href="lime.fill.Frame.html">lime.fill.Frame</a></li><li><a href="lime.fill.Image.html">lime.fill.Image</a></li><li><a href="lime.fill.LinearGradient.html">lime.fill.LinearGradient</a></li><li><a href="lime.fill.Stroke.html">lime.fill.Stroke</a></li><li><a href="lime.helper.PauseScene.html">lime.helper.PauseScene</a></li><li><a href="lime.scheduleManager.html">lime.scheduleManager</a></li><li><a href="lime.scheduleManager.Task.html">lime.scheduleManager.Task</a></li><li><a href="lime.style.Transform.html">lime.style.Transform</a></li><li><a href="lime.transitions.Dissolve.html">lime.transitions.Dissolve</a></li><li><a href="lime.transitions.MoveInDown.html">lime.transitions.MoveInDown</a></li><li><a href="lime.transitions.MoveInLeft.html">lime.transitions.MoveInLeft</a></li><li><a href="lime.transitions.MoveInRight.html">lime.transitions.MoveInRight</a></li><li><a href="lime.transitions.MoveInUp.html">lime.transitions.MoveInUp</a></li><li><a href="lime.transitions.SlideIn.html">lime.transitions.SlideIn</a></li><li><a href="lime.transitions.SlideInDown.html">lime.transitions.SlideInDown</a></li><li><a href="lime.transitions.SlideInRight.html">lime.transitions.SlideInRight</a></li><li><a href="lime.transitions.SlideInUp.html">lime.transitions.SlideInUp</a></li><li><a href="lime.transitions.Transition.html">lime.transitions.Transition</a></li><li><a href="lime.ui.Container.html">lime.ui.Container</a></li><li><a href="lime.ui.Scroller.html">lime.ui.Scroller</a></li><li><a href="soy.$$augmentMap-TempCtor.html">soy.$$augmentMap~TempCtor</a></li><li><a href="soy.StringBuilder.html">soy.StringBuilder</a></li><li><a href="soydata.$$makeSanitizedContentFactory_-InstantiableCtor.html">soydata.$$makeSanitizedContentFactory_~InstantiableCtor</a></li><li><a href="soydata.SanitizedCss.html">soydata.SanitizedCss</a></li><li><a href="soydata.SanitizedHtml.html">soydata.SanitizedHtml</a></li><li><a href="soydata.SanitizedHtmlAttribute.html">soydata.SanitizedHtmlAttribute</a></li><li><a href="soydata.SanitizedJs.html">soydata.SanitizedJs</a></li><li><a href="soydata.SanitizedJsStrChars.html">soydata.SanitizedJsStrChars</a></li><li><a href="soydata.SanitizedUri.html">soydata.SanitizedUri</a></li><li><a href="soydata.UnsanitizedText.html">soydata.UnsanitizedText</a></li></ul><h3>Namespaces</h3><ul><li><a href="lime.parser.html">lime.parser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#active_">active_</a></li><li><a href="global.html#displayRate_">displayRate_</a></li><li><a href="global.html#intervalID_">intervalID_</a></li><li><a href="global.html#lastRunTime_">lastRunTime_</a></li><li><a href="global.html#taskStack_">taskStack_</a></li></ul>
+</nav>
+</tr>
+</table
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri May 31 2013 00:29:04 GMT+0200 (SAST)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>
