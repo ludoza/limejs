@@ -26,7 +26,7 @@ goog.require('goog.math.Size');
  *   }
  *
  * @param {object} data The JSON sprite sheet.
- * @function
+ * @const
  * @memberof lime.parser
  */
 lime.parser.JSON = function(data) {
